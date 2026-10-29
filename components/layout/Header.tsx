@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import type { Locale } from '@/lib/i18n/config';
+import { withBasePath } from '@/lib/site';
 import type { NavItem } from '@/lib/nav';
 import { homePath } from '@/lib/locale-path';
 import { Img } from '@/components/ui/Img';
@@ -62,7 +63,7 @@ export function Header({ locale, variant = 'solid', nav, t, name }: {
     <>
       <header className={`hdr ${solid ? 'hdr--solid' : 'hdr--transparent'}`} data-scrolled={scrolled || undefined}>
         {/* plain anchor on purpose: a full navigation, which reloads the page when you are already on the home page */}
-        <a href={homePath(locale)} className="hdr__logo inline-flex items-center" aria-label={t.homeAria}>
+        <a href={withBasePath(homePath(locale))} className="hdr__logo inline-flex items-center" aria-label={t.homeAria}>
           <Img src={logo} alt="" width={44} height={43} priority sizes="44px" className="h-10 w-auto" />
         </a>
         <nav aria-label={t.mainNav} className={`hdr__nav ${variant === 'overlay' && !scrolled ? 'hdr__nav--hidden' : ''}`}>
