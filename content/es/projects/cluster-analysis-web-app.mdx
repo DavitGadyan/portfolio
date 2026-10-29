@@ -1,0 +1,38 @@
+---
+title: "Aplicación web de análisis de clústeres en Python"
+coverAlt: "Aplicación web de clustering: CSV cargado, grafo de fuerzas D3 con clústeres coloreados y leyenda de histograma"
+summary: "Herramienta de clustering sin código construida para Reuben Vandeventer (producto propiedad de SecondSight): los analistas suben un archivo CSV o XLSX, eligen una columna de registro y tres dimensiones, ejecutan DBSCAN, MeanShift o MST desde una aplicación web en Python, exploran el resultado en un grafo de fuerzas interactivo en D3 y exportan los IDs de clúster a Excel. Desplegada en Heroku."
+description: "Aplicación web de clustering autoservicio: carga CSV/XLSX, DBSCAN, MeanShift y MST en Python, grafo de fuerzas interactivo en D3, exportación a Excel, desplegada en Heroku."
+outcomes:
+  - "Utilizable tanto por perfiles sin programación como por ingenieros de ML: carga, normalización, elección de lentes X, Y y Z y ajuste de hiperparámetros."
+  - Grafo de fuerzas interactivo en D3 con selección de nodos y coloreado por dimensión.
+  - Resultados exportados de vuelta a CSV o Excel con los IDs de clúster añadidos para análisis posteriores.
+  - Desplegada como aplicación web en Heroku; los derechos del producto pertenecen a SecondSight.
+metrics:
+  - label: Algoritmos de clustering
+    value: "3 (DBSCAN, MeanShift, MST)"
+  - label: Dimensiones de análisis
+    value: "3 lentes (X, Y, Z)"
+  - label: Programación necesaria
+    value: "código → sin código"
+---
+
+## El problema
+
+El clustering es útil mucho más allá de las personas que saben programarlo. El cliente quería una herramienta con la que un analista que entiende las técnicas de clustering, pero no Python, pudiera cargar un conjunto de datos, probar varios algoritmos, ver la estructura y llevarse el resultado en una hoja de cálculo, y que a la vez fuera lo bastante flexible para ingenieros de ML. El producto se construyó para Reuben Vandeventer y es propiedad de SecondSight.
+
+## Qué construí
+
+- Una aplicación web en Python con un flujo de trabajo fijo: subir un archivo CSV o XLSX, elegir la columna de nombre de registro que identifica de forma única cada fila, normalizar los datos opcionalmente y seleccionar las lentes X, Y y Z como las tres dimensiones del análisis.
+- Tres algoritmos de clustering, DBSCAN, MeanShift y MST, cada uno con sus hiperparámetros expuestos en la interfaz para que el usuario los ajuste sin tocar código.
+- Un grafo de red interactivo de fuerzas en D3 como salida principal, con nodos seleccionables y coloreados por dimensión para inspeccionar los clústeres visualmente.
+- Exportación del conjunto de datos enriquecido a CSV o Excel con nuevas columnas para los IDs de clúster y otra información útil para análisis posteriores.
+- Despliegue de la aplicación en Heroku para que el cliente pudiera usarla desde el navegador sin ninguna instalación local.
+
+## Cómo se entregó
+
+Todo el producto funciona como una única aplicación web, de modo que la carga, la normalización, el clustering y el renderizado del grafo viven detrás de una sola URL. Alojarla en Heroku mantuvo la operación sencilla para un equipo pequeño: sin servidores que administrar, y el cliente podía compartir un enlace en lugar de instalar nada. La demo original en Heroku ya se ha retirado.
+
+## Resultado
+
+La aplicación puso el clustering al alcance tanto de perfiles sin programación como de ingenieros de ML, con el ciclo completo, de la hoja de cálculo en bruto al grafo interactivo y a los IDs de clúster exportados, resuelto dentro del navegador. SecondSight posee todos los derechos del producto.

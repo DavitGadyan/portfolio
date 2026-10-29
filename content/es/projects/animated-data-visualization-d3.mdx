@@ -1,0 +1,37 @@
+---
+title: "Visualización de datos animada (gráficos de carrera en D3.js)"
+coverAlt: "Fotograma de un gráfico de barras horizontales con los 20 dominios con mayor exposición diaria"
+summary: "Visualización animada bar chart race e informes de principio a fin: ETL con pandas y SQLAlchemy desde las bases de datos relacionales del cliente, un prototipo en Plotly Dash, una reconstrucción en D3.js con animación JavaScript a medida para ganar fluidez y control de estilo, y un pipeline de exportación con FFmpeg a vídeo compartible y componentes web integrables."
+description: "Visualización animada bar chart race: ETL con pandas y SQLAlchemy desde bases de datos relacionales, prototipo en Plotly Dash, animación en D3.js y exportación con FFmpeg a vídeo."
+outcomes:
+  - "Gráfico de carrera reconstruido en D3.js cuando Plotly Dash no alcanzó la fluidez ni el control de estilo requeridos."
+  - "Pipeline de exportación de vídeo con FFmpeg y Python para vídeo compartible y componentes web integrables."
+  - "Informes entregados con gráficos estáticos, secuencias animadas y una cadena de herramientas documentada y reproducible."
+metrics:
+  - label: Motor del gráfico de carrera
+    value: "Plotly Dash → D3.js"
+  - label: Formatos de salida
+    value: "2 (vídeo + componente web integrable)"
+  - label: Fuente de datos
+    value: "archivo preparado a mano → ETL en vivo"
+---
+
+## El problema
+
+El cliente necesitaba una animación dinámica de tipo gráfico de carrera e informes completos, construidos sobre datos que vivían en sus propias bases de datos relacionales. El gráfico tenía que ser de alta fidelidad: movimiento fluido, estilo preciso y una salida que pudiera compartirse como vídeo o integrarse en la web. Esa mezcla de trabajo de datos en Python, acceso a bases de datos y animación en el frontend es para lo que se contrató el proyecto.
+
+## Qué construí
+
+- Un pipeline de datos en Python con pandas y SQLAlchemy que extrae, transforma y carga los conjuntos de datos específicos del dominio desde las bases de datos del cliente.
+- Un primer prototipo del gráfico de carrera en Plotly Dash, usado para medir rendimiento y calidad visual.
+- El gráfico de carrera definitivo en D3.js con animación JavaScript a medida, cuando el prototipo en Dash no logró la fluidez ni el control de estilo requeridos; D3 dio mejores tasas de fotogramas y fidelidad total al diseño.
+- Un flujo de exportación de vídeo con FFmpeg y scripts en Python que convierte la animación en D3 en formatos de vídeo compartibles y componentes web integrables.
+- Informes cuidados que combinan gráficos estáticos y secuencias animadas, con documentación de la cadena de herramientas y código reproducible.
+
+## Datos e infraestructura
+
+La animación se apoya en una capa ETL de verdad y no en un fichero preparado a mano. SQLAlchemy se conecta a las bases de datos relacionales del cliente, pandas se encarga de la transformación y los conjuntos resultantes alimentan tanto los gráficos de los informes como los fotogramas del gráfico de carrera.
+
+## Resultado
+
+Un gráfico de carrera que se mueve con la fluidez y el estilo que pedía el cliente, exportado como vídeo y como componentes integrables, junto con informes cuya cadena de herramientas está documentada y es reproducible. La propia decisión sobre las herramientas, prototipar en Dash y pasar a D3.js cuando se quedó corto, formó parte de lo entregado.

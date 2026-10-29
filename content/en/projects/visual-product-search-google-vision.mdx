@@ -1,0 +1,52 @@
+---
+title: "Visual Product Search with Google Vision AI"
+date: '2023-11-03'
+lastmod: 2026-10-29
+client: Josh Armstrong
+cover: /images/portfolio/product-search.jpg
+coverAlt: "Phone camera labelling sweater, jeans and sneakers beside a list of visually similar products"
+summary: "Visual product-matching service for an e-commerce client, built in Python on Google Cloud. It takes a batch of clothing images, queries the Google Cloud Vision Product Search API against the client's reference product images and returns an Excel file listing the top 10 visually similar products for each input image."
+description: "Python service on Google Cloud that runs batches of clothing images through the Vision Product Search API and returns the top 10 visually similar products per image as an Excel file."
+categories:
+  - computer-vision
+  - cloud-devops-llmops
+stack:
+  frontend: []
+  backend:
+    - Python
+  ai:
+    - Google Cloud Vision Product Search API
+  data:
+    - Batch image processing
+    - Excel reporting
+  infra:
+    - Google Cloud (GCP)
+  security: []
+links: {}
+outcomes:
+  - "Service returns the top 10 visually similar products per input image as an Excel export."
+  - "Processes a whole batch of images in one run rather than one upload per query."
+metrics:
+  - label: Matches per image
+    value: "top 10 similar products"
+  - label: Query mode
+    value: "1 upload per query → batch run"
+  - label: Custom models trained
+    value: "none (API reused)"
+featured: false
+---
+
+## The problem
+
+The client wanted to find, for any photo of a clothing item, the products in a reference catalogue that look most like it. Doing that by eye across a large catalogue is slow, and building and training a custom similarity model from scratch was more than the project needed. Google Cloud's Product Search API already does the heavy lifting, so the job was to put a usable service around it.
+
+## What I built
+
+- A service in Python that accepts a list of images as input rather than a single upload, so a whole batch can be processed in one run.
+- The integration with the Google Cloud Vision Product Search API, which matches each input image against the client's reference product images.
+- Result handling that keeps the top 10 visually similar products for each input image.
+- An Excel export with one block of results per product, so the client can review the matches in a spreadsheet.
+
+## Outcome
+
+The client submits a batch of clothing images and receives an Excel file with the ten closest catalogue matches for each one. The service runs on Google Cloud and reuses the Product Search API instead of a custom-trained model.

@@ -1,0 +1,38 @@
+---
+title: "Virgil.ai: asistente agéntico de seguros de salud"
+coverAlt: "Asistente de alta de Virgil.ai: pantalla de inscripción tipo chat para planes de seguro de salud en EE. UU."
+summary: "Sistema de IA agéntica que da de alta a usuarios de EE. UU. y les encuentra el mejor plan de seguro de salud, con consulta de cobertura de medicamentos y suscripción en minutos en lugar de días. Backend en LangChain y FastAPI, Docker y Kubernetes en AWS, tratamiento de datos conforme a HIPAA."
+description: "Virgil.ai: asistente de IA agéntica que da de alta a usuarios y selecciona planes de seguro de salud en EE. UU. LangChain, FastAPI, Docker, Kubernetes en AWS, datos conforme a HIPAA."
+outcomes:
+  - Suscripción (underwriting) completada en minutos en lugar de días.
+  - Cobertura de medicamentos comprobada automáticamente en los planes candidatos.
+  - Alta automatizada de principio a fin para un bróker asociado (One Health).
+  - Datos de IA y de solicitantes almacenados y transmitidos bajo controles guiados por HIPAA.
+metrics:
+  - label: Tiempo de suscripción
+    value: "días → minutos"
+  - label: Consulta de cobertura de medicamentos
+    value: "manual → automatizada"
+  - label: Alta del solicitante
+    value: "automatizada de principio a fin"
+---
+
+## El problema
+
+Elegir un plan de salud en Estados Unidos es lento y propenso a errores. El solicitante tiene que comprobar si sus medicamentos están cubiertos, comparar planes línea a línea y después esperar días a la suscripción. One Health, una agencia de corredores, se asoció con nuestro equipo para automatizar ese recorrido de modo que un solicitante pudiera darse de alta, ser evaluado y recibir una oferta en una sola sesión.
+
+## Qué construí
+
+- Un flujo de alta conversacional que recoge los datos del solicitante y guía la selección del plan sin formularios que rellenar a mano.
+- Un servicio FastAPI que expone el agente a la aplicación web por REST.
+- Agentes LangChain sobre un modelo de razonamiento de OpenAI, con herramientas MCP y propias que consultan precios de medicamentos y comprueban la cobertura en los planes candidatos.
+- Un paso de suscripción automatizado que devuelve una decisión en minutos, no en días.
+- Imágenes Docker orquestadas con Kubernetes en AWS, para que el servicio escale con una base de usuarios potencialmente grande.
+
+## Seguridad y cumplimiento
+
+Los datos sanitarios están regulados. El almacenamiento y la transmisión de los datos de IA y de los solicitantes se diseñaron conforme a los requisitos de HIPAA y a las buenas prácticas generales de seguridad, que es lo que hizo que el producto fuera utilizable por un bróker autorizado y no solo una demo.
+
+## Resultado
+
+Suscripción en minutos en lugar de días, cobertura de medicamentos comprobada automáticamente y alta automatizada para el bróker asociado. Frente al estándar del mercado, la facilidad de uso convirtió a Virgil.ai en una opción viable para clientes reales, no solo en una prueba de concepto.

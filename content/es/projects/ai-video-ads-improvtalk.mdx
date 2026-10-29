@@ -1,0 +1,46 @@
+---
+title: "Anuncios de vídeo con IA generativa para ImprovTalk"
+coverAlt: "Icono de la app iOS ImprovTalk y el lema Practice, Connect, Improvise sobre un degradado morado"
+summary: "Anuncios de vídeo con IA generativa para ImprovTalk, una app iOS para desarrollar carisma, comunicación y habilidades de rapport. Construí un pipeline sobre la API de Higgsfield, dirigido por Claude, que genera variantes de anuncio adaptadas a cada segmento de cliente y a Instagram, Meta, TikTok y YouTube, y comparé Seedance y Kling 2.6 Pro como modelos de vídeo. El código está en GitHub."
+description: "Anuncios en vídeo con IA generativa para ImprovTalk (iOS): API de Higgsfield con Claude, Seedance y Kling 2.6 Pro, creatividades por segmento para Instagram, Meta, TikTok y YouTube."
+outcomes:
+  - Variantes de anuncio en vídeo por segmento y plataforma generadas desde un único pipeline.
+  - Dos modelos de vídeo, Seedance y Kling 2.6 Pro, comparados sobre el mismo brief con ambos resultados publicados.
+  - Código del pipeline publicado en GitHub.
+metrics:
+  - label: Plataformas de anuncios
+    value: "4 (Instagram, Meta, TikTok, YouTube)"
+  - label: Modelos de vídeo comparados
+    value: "2 (Seedance, Kling 2.6 Pro)"
+  - label: Variantes por brief
+    value: "1 pipeline → por segmento y plataforma"
+---
+
+## El problema
+
+ImprovTalk es una app iOS que ayuda a desarrollar carisma, comunicación y habilidades de rapport. Para crecer necesitaba anuncios en vídeo en Instagram, Meta, TikTok y YouTube, y la misma creatividad rara vez funciona en todas las plataformas y para todos los segmentos de cliente. Producir tantas variantes a mano es lento y caro, así que el objetivo era generarlas con IA desde un único pipeline.
+
+## Qué construí
+
+- Un pipeline de generación sobre la API de Higgsfield, con Claude dirigiendo los prompts y la dirección creativa para cada segmento de cliente y cada red social.
+- Variantes por segmento y plataforma producidas a partir de un mismo brief, de modo que una sola ejecución entrega un anuncio adaptado a cada canal en lugar de un clip genérico.
+- Una comparación de modelos sobre el mismo brief, Seedance frente a Kling 2.6 Pro, para que la diferencia de calidad sea visible antes de que una campaña se comprometa con uno de ellos.
+- El código del pipeline, publicado en GitHub.
+
+## Cómo se entregó
+
+La mayor parte del trabajo está en el prompting, no en el renderizado. Claude convierte el brief de un segmento y una plataforma concretos en el contenido que necesita el modelo de vídeo, y el pipeline lo envía a la API de Higgsfield, donde el modelo elegido, Seedance o Kling 2.6 Pro, renderiza el clip. Pasar el mismo brief por ambos modelos es como se produjo la comparación que ves abajo.
+
+## Resultado
+
+Variantes de anuncio en vídeo por segmento y plataforma para ImprovTalk desde un único pipeline automatizado, dos modelos de vídeo comparados lado a lado y el código publicado para su reutilización. Los vídeos siguientes son los resultados de Seedance y de Kling 2.6 Pro.
+
+## Vídeo
+
+Seedance:
+
+<YouTube id="x0TMzQMH-w0" />
+
+Kling 2.6 Pro:
+
+<YouTube id="dzK5pUgSMo0" />

@@ -1,0 +1,36 @@
+---
+title: "Generación de texto multilingüe: fine-tuning de Mistral 7B y API"
+coverAlt: "Logotipo de Mistral AI junto a un gran número siete pixelado en naranja sobre blanco"
+summary: "Fine-tuning de Mistral 7B, modelo de código abierto, con HuggingFace y LangChain para que un cliente de contenidos pudiera parafrasear material multilingüe que los modelos alojados rechazan, servido después como API REST con FastAPI en GPUs alquiladas en Paperspace, DigitalOcean, Kaggle y GCP. Los resultados del primer contrato dieron lugar a dos contratos más de servicio y despliegue."
+description: "Mistral 7B ajustado con HuggingFace y LangChain para parafraseo multilingüe, servido como API REST con FastAPI en GPUs alquiladas (Paperspace, DigitalOcean, Kaggle, GCP)."
+outcomes:
+  - "Mistral 7B ajustado para la tarea concreta de parafraseo multilingüe del cliente."
+  - "Modelo servido mediante una API REST con FastAPI sobre infraestructura GPU alquilada."
+  - "Alcance ampliado de un contrato de fine-tuning a dos contratos más de servicio y despliegue."
+metrics:
+  - label: Alcance del encargo
+    value: "1 → 3 contratos"
+  - label: Modelo ajustado
+    value: "Mistral 7B (código abierto)"
+  - label: Proveedores de GPU de despliegue
+    value: "4 (Paperspace, DigitalOcean, Kaggle, GCP)"
+---
+
+## El problema
+
+El cliente necesitaba parafrasear contenido concreto para recursos concretos, en más de un idioma y con un volumen que solo la automatización hacía viable. Los asistentes alojados como ChatGPT rechazaban parte del material por sus restricciones de contenido, así que el trabajo no podía enviarse sin más a una API de terceros. Hacía falta un modelo controlado por el cliente: ajustado para la tarea de parafraseo y servido desde la infraestructura que él eligiera.
+
+## Qué construí
+
+- Un Mistral 7B, el modelo de código abierto, ajustado con fine-tuning usando HuggingFace y orquestado con LangChain, especializado en el parafraseo multilingüe del cliente.
+- Una API REST con FastAPI que envuelve el modelo para que los sistemas del cliente lo llamen como a cualquier otro servicio.
+- Despliegue en máquinas GPU alquiladas de Paperspace, DigitalOcean, Kaggle y VMs con GPU de GCP, de modo que el cliente paga por tiempo de GPU en lugar de tener hardware propio.
+- Python de principio a fin, desde los scripts de entrenamiento hasta el código de servicio.
+
+## Cómo se entregó
+
+El trabajo se repartió en tres contratos. El primero cubrió el fine-tuning de Mistral 7B y la evaluación de su salida; una vez que los resultados se confirmaron, dos contratos más cubrieron la construcción de la API REST y su despliegue en infraestructura GPU alquilada. Fui el único ingeniero en los tres.
+
+## Resultado
+
+Un Mistral 7B propiedad del cliente que parafrasea contenido multilingüe que los modelos alojados no aceptan, expuesto como servicio FastAPI en GPUs alquiladas. Los resultados del primer contrato de fine-tuning fueron lo bastante sólidos como para que el encargo se ampliara a dos más, llevando el modelo de experimento a API desplegada.

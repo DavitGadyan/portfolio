@@ -1,0 +1,39 @@
+---
+title: "Plataforma de IA para análisis de promociones inmobiliarias"
+coverAlt: "Ilustración: robot con el logo de Chrome, chip de IA, tres casas y gráficos de crecimiento"
+summary: "Plataforma de IA para un promotor inmobiliario de EE. UU. que extrae 365 días de anuncios de la MLS con Selenium, los unifica con pandas y SQLAlchemy, valora las viviendas con un AVM en XGBoost y ejecuta un motor pro forma basado en reglas para clasificar cientos de escenarios de parcela y tipo de vivienda por beneficio, ROI y tiempo de venta dentro de las restricciones urbanísticas."
+description: "Plataforma de IA inmobiliaria: scraper de la MLS con Selenium, datos en pandas y SQLAlchemy, valoración con XGBoost y motor pro forma que clasifica parcelas por beneficio y ROI."
+outcomes:
+  - Datos de 365 días de la MLS (activos, pendientes y vendidos) capturados automáticamente con un bot de Selenium.
+  - Modelo de valoración automática (AVM) en XGBoost que alimenta los KPI de beneficio y riesgo.
+  - Cientos de combinaciones de parcela y tipo de vivienda puntuadas por beneficio, ROI y tiempo de venta, con restricciones de zonificación y cupos aplicadas.
+  - Documentación completa y código reproducible entregados al equipo interno del cliente.
+metrics:
+  - label: Historial de la MLS extraído
+    value: "365 días"
+  - label: Escenarios puntuados
+    value: "cientos de combinaciones de parcela y tipo"
+  - label: KPI por escenario
+    value: "3 (beneficio, ROI, tiempo de venta)"
+---
+
+## El problema
+
+Decidir qué construir en una parcela obliga a sopesar el tipo de vivienda, el tamaño, el garaje, el sótano, el precio y la ubicación frente a lo que el mercado local paga de verdad, y las herramientas habituales para ello son comparables manuales y hojas de cálculo. Jake Happe quería una plataforma que modelara y comparara escenarios de obra nueva para cada parcela y señalara la construcción más rentable que además estuviera permitida, usando los datos de la MLS a los que su equipo ya tenía acceso.
+
+## Qué construí
+
+- Un bot en Python con Selenium que inicia sesión en el portal de la MLS y extrae 365 días de viviendas activas, pendientes y vendidas: tipo, número de garajes, superficie, acabado del sótano, precio y geolocalización.
+- Una capa de ingesta con pandas y SQLAlchemy que unifica los anuncios en bruto en un único conjunto de datos de atributos de vivienda (ranch, dos plantas y planta y media, superficie sobre rasante, garajes adosados, características del sótano, precio de venta, ubicación).
+- Un motor pro forma basado en reglas que calcula costes de construcción, plazos y calendarios de venta para escenarios de promoción configurables.
+- Un modelo de valoración automática (AVM) en XGBoost entrenado con comparables históricos para predecir el valor futuro de las viviendas y alimentar los KPI de beneficio y riesgo.
+- Un motor de escenarios que puntúa beneficio previsto, ROI y tiempo de venta en cientos de combinaciones de parcela y tipo de vivienda bajo distintos supuestos de coste y mercado, con las normas de zonificación y los cupos del mercado estadounidense integrados para que solo aparezcan opciones conformes.
+- Dashboards dinámicos e informes exportables que clasifican cada parcela por el tipo y la configuración de vivienda de mayor rendimiento.
+
+## Datos e infraestructura
+
+El scraper y el modelo de datos en SQLAlchemy son la base: cada KPI de los dashboards se remonta a un registro unificado de la MLS, de modo que un cambio en el mercado se refleja en las valoraciones y en la clasificación sin que nadie vuelva a teclear datos. Entregué documentación completa y código reproducible para que el equipo interno del cliente pueda volver a ejecutar el pipeline y ampliarlo por su cuenta.
+
+## Resultado
+
+Un año de datos de la MLS capturados automáticamente, un AVM que alimenta los KPI de beneficio y riesgo, y cientos de combinaciones de parcela y tipo de vivienda puntuadas dentro de las restricciones de zonificación y cupos. El equipo del cliente recibió documentación y código reproducible, así que la plataforma puede crecer internamente sin depender de mí.

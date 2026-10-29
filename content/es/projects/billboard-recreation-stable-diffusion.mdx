@@ -1,0 +1,35 @@
+---
+title: "Recreación de vallas con IA (Grounding DINO + Stable Diffusion)"
+coverAlt: "Comparativa de una valla publicitaria fotografiada en carretera y su recreación ampliada por IA"
+summary: "Pipeline de visión artificial e IA generativa que localiza una valla publicitaria en una foto de calle, la recorta y la regenera a mayor resolución con nuevos detalles. Grounding DINO hace la detección zero-shot, OpenCV extrae el recuadro delimitador y Stable Diffusion con ControlNet tile_resample y Ultimate SD Upscale reconstruye el anuncio, con todos los parámetros documentados."
+description: "Recreación de vallas con IA: detección zero-shot con Grounding DINO, extracción con OpenCV y Stable Diffusion con ControlNet tile_resample y Ultimate SD Upscale para regenerarla."
+outcomes:
+  - "Detección zero-shot de la valla con Grounding DINO que alimenta una cadena de inpainting y ampliación con Stable Diffusion."
+  - "Anuncio regenerado in situ a 1.280 × 1.664 con nuevos detalles conservando la composición original."
+  - "Parámetros de generación documentados al completo, para reproducir el resultado con exactitud."
+metrics:
+  - label: Resolución de salida
+    value: "1.280 × 1.664 px"
+  - label: Ampliador
+    value: "4x-UltraSharp, mosaicos de 512 px"
+  - label: Fuerza de denoising
+    value: "0,4 (solo detalles)"
+  - label: Datos de entrenamiento del detector
+    value: "zero-shot, ninguno"
+---
+
+## El problema
+
+El cliente tenía la foto de una valla publicitaria y quería una recreación del anuncio generada por IA: detectar la valla en la imagen, extraer sus límites, ampliarla a mayor resolución y cambiar detalles de la creatividad. Un modelo de imagen genérico no puede hacerlo de forma fiable a partir de una foto de calle, porque no sabe dónde termina la valla y empieza el cielo, y si se le deja solo reescribe toda la escena en lugar del anuncio.
+
+## Qué construí
+
+- Detección zero-shot de la valla con Grounding DINO, que devuelve un recuadro delimitador a partir de un prompt de texto sin ningún entrenamiento con datos de vallas.
+- Extracción de la región de la valla con OpenCV, usando las coordenadas del recuadro del detector para recortar el anuncio de la foto.
+- Una etapa de Stable Diffusion sobre el checkpoint Realistic Vision V6.0 que regenera el anuncio recortado a 1.280 × 1.664, con ControlNet tile_resample manteniendo la estructura del original y una fuerza de denoising de 0,4 para que solo cambien los detalles.
+- Ultimate SD Upscale con el ampliador 4x-UltraSharp trabajando en mosaicos de 512 píxeles, más soft inpainting en la zona enmascarada para unos bordes sin costuras.
+- Un conjunto de parámetros documentado, con prompt, prompt negativo, sampler, pasos, escala CFG, semilla y refiner, para que la salida exacta se pueda reproducir.
+
+## Resultado
+
+Un pipeline que recibe una foto de calle y devuelve una recreación limpia y de mayor resolución de la valla con los cambios solicitados, como muestra el antes y después de la portada. Como todos los parámetros de generación quedan registrados, el cliente puede repetir o ajustar el resultado en lugar de depender de una semilla afortunada.

@@ -1,0 +1,41 @@
+---
+title: "Detección de fatiga del conductor en dispositivos edge"
+coverAlt: "Ilustración de stock de un robot humanoide blanco junto a una red de iconos azules de IoT e industria"
+summary: "Detección de fatiga del conductor en el propio dispositivo para un cliente privado: un detector facial ONNX y un modelo de puntos faciales alimentan, con características FFT y FFV tomadas de un método publicado de entropía del movimiento facial, un clasificador XGBoost que lee la posición de la cabeza en una ventana de 3 a 5 segundos, con alarmas por bostezo y ojos cerrados basadas en reglas. Dockerizado y desplegado en Raspberry Pi 4 y Jetson Nano."
+description: "Detección de fatiga del conductor en el edge: ONNX para cara y puntos faciales, XGBoost sobre FFT/FFV, alarmas por bostezo y ojos cerrados, Docker en Raspberry Pi 4 y Jetson Nano."
+outcomes:
+  - Enfoque basado en investigación, a partir de un algoritmo publicado de fatiga por entropía del movimiento facial.
+  - XGBoost sobre el valor actual y los 10 anteriores de FFT/FFV lee la posición de la cabeza en una ventana de 3 a 5 segundos.
+  - Detectores de bostezo y ojos cerrados basados en reglas, por encima del modelo.
+  - Dockerizado y desplegado en Jetson Nano y Raspberry Pi 4 dentro de los límites de cómputo del edge.
+metrics:
+  - label: Ventana de decisión
+    value: "3–5 s de movimiento de cabeza"
+  - label: Historial FFT/FFV por predicción
+    value: "valor actual + 10 anteriores"
+  - label: Placas edge objetivo
+    value: "2 (Pi 4, Jetson Nano)"
+  - label: Inferencia
+    value: "servidor → en el dispositivo"
+---
+
+## El problema
+
+Un conductor somnoliento es un riesgo para la seguridad, y el aviso tiene que salir de dentro del vehículo, en tiempo real y sin conexión a un servidor. El cliente quería un sistema que observe al conductor a través de una cámara, decida si está fatigado y haga sonar una alarma, y tenía que ejecutarse en una placa IoT como una Raspberry Pi 4. Esa restricción de hardware descartó los modelos pesados desde el principio y condicionó cada decisión posterior.
+
+## Qué construí
+
+- Una fase de investigación que se decantó por un método publicado, [A Fatigue Driving Detection Algorithm Based on Facial Motion Information Entropy](https://www.researchgate.net/publication/342193728_A_Fatigue_Driving_Detection_Algorithm_Based_on_Facial_Motion_Information_Entropy), como base de la solución.
+- Detección de caras en el flujo de vídeo con ONNX, seguida de la detección de puntos faciales para el análisis posterior.
+- Extracción de las características FFT y FFV descritas en el artículo y un modelo XGBoost entrenado con el valor actual más los diez valores anteriores de cada una, usando datos que etiquetamos nosotros mismos con una simple webcam.
+- Una decisión con memoria temporal: el modelo lee la posición de la cabeza durante aproximadamente los últimos 3 a 5 segundos, de modo que un conductor que mantiene la cabeza baja sin moverla dispara la alarma, mientras que uno que mira activamente el tráfico no lo hace.
+- Detectores independientes basados en reglas que también activan la alarma ante bostezos u ojos cerrados.
+- Todo dockerizado y desplegado en dispositivos Jetson Nano y Raspberry Pi 4.
+
+## Cómo se entregó
+
+El despliegue en el edge era la restricción dura, no una idea tardía. Empaquetar el pipeline como imagen Docker permitió desplegar una misma build en cualquiera de las dos placas, y la combinación de un detector ONNX ligero con un clasificador de gradient boosting mantuvo la inferencia dentro de los límites de ese hardware.
+
+## Resultado
+
+El sistema detecta la fatiga a partir del movimiento de la cabeza a lo largo del tiempo y no de un único fotograma, añade las reglas de bostezo y ojos cerrados como red de seguridad y se ejecuta por completo en el dispositivo, que es lo que lo hace utilizable en un vehículo. Fue uno de los proyectos más complejos que he entregado de principio a fin, del artículo científico al despliegue en el edge.

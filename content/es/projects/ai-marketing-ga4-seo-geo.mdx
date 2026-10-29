@@ -1,0 +1,55 @@
+---
+title: "Marketing con IA: GA4, Ads, SEO y GEO/AEO"
+coverAlt: "Nube de palabras oscura en torno a AI Marketing con SEO, GEO, AEO, GA4, ROI y ROAS"
+summary: "Seguimiento de conversiones reconstruido para un sitio B2B de modo que cada consulta se cuenta y se vincula al clic que la pagó: eventos de GA4 y GTM, captura del ID de clic de Google Ads, crawler de auditoría en FastAPI con PostgreSQL y Playwright, además de SEO técnico y schema.org. Rutas de consulta medidas de 0/3 a 3/3, peso de la página de 11,58 MB a 1,21 MB, páginas indexables de 1 a 116."
+description: "Seguimiento de conversiones y SEO técnico: GA4, GTM, atribución por ID de clic de Google Ads, crawler FastAPI sobre PostgreSQL, Playwright y schema.org para motores de respuesta IA."
+outcomes:
+  - "Consultas medidas: 0 de 3 rutas de contacto antes, 3 de 3 después."
+  - Peso de la página reducido de 11,58 MB a 1,21 MB, con una imagen que pasó de 6,67 MB a 102 KB.
+  - Páginas indexables de 1 a 116.
+  - ID de clic de Google Ads capturado, de modo que cada consulta se remonta al clic de pago exacto.
+  - Meta descripción, estructura de encabezados y schema reescritos para buscadores y motores de respuesta con IA.
+metrics:
+  - label: Rutas de consulta medidas
+    value: "0/3 → 3/3"
+  - label: Peso de la página
+    value: "11,58 MB → 1,21 MB"
+  - label: Páginas indexables
+    value: "1 → 116"
+  - label: Imagen más pesada
+    value: "6,67 MB → 102 KB"
+---
+
+## El problema
+
+La mayoría de las empresas sabe cuánta gente visita su web. Muy pocas saben cuántos intentaron ponerse en contacto, y casi ninguna sabe qué anuncio, publicación o búsqueda trajo a los que sí lo hicieron. En este sitio B2B la analítica estaba instalada y reportando sin problemas, pero todas las vías reales de contacto la esquivaban: un formulario que enviaba a un gestor externo, botones que solo desplazaban la página y enlaces de salida a LinkedIn y WhatsApp. Ninguna genera una página vista, así que ninguna quedaba registrada. La empresa conocía su tráfico y no podía responder a la única pregunta que importa: ¿algo de esto nos ha traído clientes?
+
+## Qué construí
+
+- Eventos y eventos clave en GA4 y Google Tag Manager para cada ruta de contacto (formulario externo, botones de desplazamiento, enlaces a mensajes directos), verificados en DebugView.
+- Captura del ID de clic de Google Ads (gclid, gbraid, wbraid) e importación de conversiones a Google Ads, Meta y LinkedIn, para que el gasto en publicidad se juzgue por consultas y no por clics.
+- Un crawler y motor de auditoría en Python y FastAPI detrás de los hallazgos, con PostgreSQL guardando hechos de medición, procedencia e historial.
+- Comprobaciones con Playwright que confirman que cada evento se dispara de verdad.
+- Recortes de peso de la página (una imagen pasó de 6,67 MB a 102 KB) y trabajo en Core Web Vitals, para que el sitio deje de pagar por visitantes que se van antes de que cargue.
+- SEO técnico: una estructura de sitio indexable, una meta descripción escrita para un comprador real en lugar del texto de relleno del constructor de sitios, encabezados corregidos y JSON-LD de schema.org (Person, Organization, Product, FAQPage) para que los motores de respuesta con IA puedan citar el sitio y no solo enlazarlo.
+
+## Resultados medidos
+
+- Consultas medidas: 0 de 3 rutas de contacto antes, 3 de 3 después.
+- Peso de la página: de 11,58 MB a 1,21 MB.
+- Páginas indexables: de 1 a 116.
+- ID de clic de Google Ads capturado, de modo que una consulta se remonta al clic de pago exacto.
+
+## Resultado
+
+El sitio ahora cuenta cada consulta y la vincula al clic que la produjo, lo que da a las plataformas publicitarias algo real hacia lo que optimizar y al propietario una respuesta clara sobre qué ha devuelto la inversión. Mi método en cada proyecto: primero una auditoría, con un informe en lenguaje claro que puedes verificar tú mismo; después corregir donde se pierde dinero; y por último automatizar el flujo de marketing con IA, con una persona que aprueba cada decisión final.
+
+## Vídeo
+
+Recorrido guiado:
+
+<Loom id="9e18da56b3af46d59dd7f7a2e699931b" />
+
+Cómo arreglar el gasto en Google Ads con un marco de 3 pasos:
+
+<YouTube id="OSeQ7ZA5nlU" />

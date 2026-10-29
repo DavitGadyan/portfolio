@@ -1,0 +1,60 @@
+---
+title: "Document OCR & Data Extraction API"
+date: '2021-09-29'
+lastmod: 2026-10-29
+client: "Sick.org / Curogram"
+cover: /images/portfolio/ocr.jpg
+coverAlt: "Isometric laptop showing an OCR scan frame with an arrow from a row of binders"
+summary: "OCR and field-extraction REST API for Sick.org/Curogram, a healthcare booking platform that was keying driver licences and insurance cards into its system by hand. I prototyped custom YOLO detectors and OCR-plus-NLP models with AWS Textract, Comprehend and Rekognition, found them too slow at about 10 seconds per image, and shipped Textract plus regex at under 5 seconds."
+description: "REST API that extracts fields from driver licences and insurance cards with AWS Textract and regex in under 5 seconds, after benchmarking YOLO, Comprehend and Rekognition prototypes."
+categories:
+  - computer-vision
+  - cloud-devops-llmops
+stack:
+  frontend: []
+  backend:
+    - REST API
+  ai:
+    - AWS Textract
+    - AWS Comprehend
+    - AWS Rekognition
+    - YOLO
+    - NLP label extraction
+    - Regex field extraction
+  data: []
+  infra:
+    - AWS
+  security: []
+links: {}
+outcomes:
+  - "Prototyped OCR-plus-NLP and custom YOLO field detection; both too slow at about 10 seconds per image."
+  - "Shipped Textract plus regex instead, extracting the fields in under 5 seconds per image."
+  - "Deployed as a REST API, replacing manual data entry at scale for Sick.org / Curogram."
+metrics:
+  - label: Extraction latency
+    value: "~10 s → < 5 s per image"
+  - label: Document data entry
+    value: "manual → API call"
+  - label: Document types covered
+    value: "driver licences + insurance cards"
+featured: false
+---
+
+## The problem
+
+Sick.org / Curogram helps patients book doctors and tests. Every booking comes with documents, typically a driver licence and an insurance card, whose details had to be typed into Curogram's system by hand. As the user base grew, manual entry could not keep up with the volume of requests, so the client needed an algorithm that reads the documents and returns the fields.
+
+## What I built
+
+- A prototyping round that compared two families of approach: OCR followed by an NLP model that extracts custom labels, and a computer-vision model that detects each field (name, address, gender and so on) directly on the image.
+- Custom detection models trained with YOLO, alongside AWS Textract, Comprehend and Rekognition, to see which combination worked for the client's documents.
+- The production extractor: AWS Textract for OCR, with regular expressions that pull the required details out of driver licences and insurance cards.
+- A REST API wrapping the extractor so Curogram's system can send an image and receive structured fields back.
+
+## How it was delivered
+
+The deciding factor turned out to be latency. The YOLO and OCR-plus-NLP prototypes took around 10 seconds per image, too slow for a booking flow that processes large volumes. Textract plus regex came in under 5 seconds, so I shipped that path, deployed it as a REST API and kept the heavier models out of the critical path.
+
+## Outcome
+
+Document data entry at Sick.org / Curogram went from a manual step to an API call that returns the fields from a driver licence or insurance card in under 5 seconds. The service absorbs the growing volume of requests, and the simpler approach won on speed.

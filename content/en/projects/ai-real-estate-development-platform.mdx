@@ -1,0 +1,67 @@
+---
+title: "AI Real Estate Development Analysis Platform"
+date: 2024-10-30
+lastmod: 2026-10-29
+client: Jake Happe
+cover: /images/portfolio/ai_house.png
+coverAlt: "Illustration: robot holding a Chrome logo, AI chip, three houses and growth charts"
+summary: "AI real-estate development platform for a US property developer that scrapes 365 days of MLS listings with Selenium, harmonises them with pandas and SQLAlchemy, values homes with an XGBoost AVM and runs a rule-based pro forma engine to rank hundreds of lot-and-home-style scenarios by profit, ROI and time-to-sell within zoning constraints."
+description: "AI real-estate development platform: Selenium MLS scraper, pandas and SQLAlchemy data model, XGBoost valuation model and pro forma scenario engine ranking lots by profit and ROI."
+categories:
+  - data-science-ml
+  - databases-data-eng
+  - fullstack-uiux
+stack:
+  frontend:
+    - Dynamic dashboards
+    - Exportable reports
+  backend:
+    - Python
+    - Rule-based pro forma engine
+  ai:
+    - XGBoost
+    - Automated Valuation Model (AVM)
+  data:
+    - Selenium
+    - pandas
+    - SQLAlchemy
+    - MLS listings (365 days of active, pending and sold homes)
+  infra: []
+  security: []
+links: {}
+outcomes:
+  - 365-day MLS data (active, pending and sold) captured automatically by a Selenium bot.
+  - XGBoost automated valuation model feeding profit and risk KPIs.
+  - Hundreds of lot-and-home-style combinations scored on profit, ROI and time-to-sell, with zoning and quota constraints enforced.
+  - Full documentation and reproducible code handed over to the client's in-house team.
+metrics:
+  - label: MLS history scraped
+    value: "365 days"
+  - label: Scenarios scored
+    value: "hundreds of lot-and-style combinations"
+  - label: KPIs per scenario
+    value: "3 (profit, ROI, time-to-sell)"
+featured: true
+order: 7
+---
+
+## The problem
+
+Deciding what to build on a lot means weighing home style, size, garage, basement, price and location against what the local market actually pays, and the usual tools for that are manual comps and spreadsheets. Jake Happe wanted a platform that models and compares new-construction scenarios for every lot and points to the most profitable build that is also allowed to be built there, using the MLS data his team already had access to.
+
+## What I built
+
+- A Python Selenium bot that logs into the MLS portal and extracts 365 days of active, pending and sold homes: style, garage count, square footage, basement finishing, price and geolocation.
+- A pandas and SQLAlchemy ingestion layer that harmonises the raw listings into one dataset of home attributes (ranch, 2-story and 1.5-story, above-ground size, attached garages, basement specs, sale price, location).
+- A rule-based pro forma engine that calculates build costs, timelines and sale schedules for customisable development scenarios.
+- An XGBoost automated valuation model (AVM) trained on historical comps to predict future home values and feed the profit-and-risk KPIs.
+- A scenario engine that scores projected profit, ROI and time-to-sell across hundreds of lot-and-home-style combinations under varying cost and market assumptions, with US zoning rules and quota limits embedded so only compliant options surface.
+- Dynamic dashboards and exportable reports that rank each lot by its highest-yield home style and configuration.
+
+## Data and infrastructure
+
+The scraper and the SQLAlchemy data model are the foundation: every KPI on the dashboards traces back to a harmonised MLS record, so a shift in the market flows through to the valuations and rankings without anyone re-keying data. I handed over full documentation and reproducible code so the client's in-house team can rerun the pipeline and extend it themselves.
+
+## Outcome
+
+A year of MLS data captured automatically, an AVM feeding profit and risk KPIs, and hundreds of lot-and-style combinations scored within zoning and quota constraints. The client's team received documentation and reproducible code, so the platform can grow in-house rather than depend on me.

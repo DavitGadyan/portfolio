@@ -1,0 +1,226 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "about": "Sobre mí",
+    "services": "Servicios",
+    "portfolio": "Portfolio",
+    "testimonials": "Testimonios",
+    "bookCall": "Reserva una llamada",
+    "contact": "Contacto",
+    "blog": "Blog",
+    "openMenu": "Abrir menú",
+    "closeMenu": "Cerrar menú",
+    "menu": "Menú",
+    "mainNav": "Navegación principal",
+    "skipToContent": "Saltar al contenido",
+    "backToTop": "Volver arriba",
+    "homeAria": "David Gadyan — inicio"
+  },
+  "lang": {
+    "switch": "Cambiar idioma",
+    "suggest": "Prefer English?",
+    "suggestCta": "View in English",
+    "dismiss": "Cerrar"
+  },
+  "hero": {
+    "greeting": "Soy David Gadyan",
+    "h1": "David Gadyan — Ingeniero Full-Stack de IA",
+    "hireMe": "Escríbeme",
+    "primaryCta": "Reserva 15 min gratis",
+    "trust": [
+      "Expert-Vetted en Upwork · el 1 % mejor",
+      "Toptal",
+      "Más de 500.000 $ facturados",
+      "Más de 190 proyectos"
+    ],
+    "slideAlt": "David Gadyan, Ingeniero Full-Stack de IA en Barcelona"
+  },
+  "sections": {
+    "about": "Sobre mí",
+    "experience": "Formación y experiencia",
+    "skills": "Habilidades",
+    "languages": "Idiomas",
+    "capability": "Propuesta de valor y stack tecnológico",
+    "services": "Servicios",
+    "portfolio": "Portfolio",
+    "testimonials": "Testimonios",
+    "facts": "En cifras",
+    "faq": "Preguntas frecuentes",
+    "book": "Reserva una llamada",
+    "contact": "Envía un mensaje directo"
+  },
+  "about": {
+    "cv": "Descarga mi CV",
+    "portraitAlt": "David Gadyan, Científico de datos e Ingeniero de SaaS con IA en Barcelona"
+  },
+  "capability": {
+    "intro": "Una combinación de habilidades única que garantiza el desarrollo de aplicaciones de IA de nivel SaaS de principio a fin.",
+    "points": [
+      "Desarrollo 3 veces más rápido",
+      "Sprints semanales con dos llamadas por semana",
+      "Soporte 24/7 para casos de alta prioridad",
+      "Integración continua de tu feedback",
+      "Sin contratar ni gestionar un equipo de desarrolladores",
+      "Precios razonables, sin tarifas de agencia"
+    ],
+    "stage": "Etapa {n}",
+    "graphLabel": "Grafo de capacidades",
+    "back": "Cerrar",
+    "tools": "Herramientas",
+    "certHint": "Haz clic para ver el certificado",
+    "closeCert": "Cerrar certificado",
+    "issued": "Emitido",
+    "validUntil": "Válido hasta",
+    "certId": "ID del certificado"
+  },
+  "services": {
+    "intro": "Diez servicios, un solo ingeniero. Cada uno se entrega de principio a fin, desde el primer wireframe hasta el seguimiento que demuestra que ha funcionado."
+  },
+  "cta": {
+    "title": "¿Tienes una idea que necesita IA, o un producto que hay que lanzar?",
+    "sub": "Quince minutos, sin coste. Trae el problema, no una especificación.",
+    "button": "Reserva una llamada de 15 min"
+  },
+  "portfolio": {
+    "intro": "Estos 36 proyectos muestran cómo David Gadyan cubre todo el stack como un único ingeniero: agentes de IA y RAG, productos en Next.js y FastAPI, bases de datos Postgres y vectoriales, Docker y Kubernetes en AWS y GCP, seguridad conforme a HIPAA y medición de marketing con GA4. Filtra por capacidad o empieza por los proyectos destacados.",
+    "filterAll": "Todos",
+    "filterLabel": "Filtrar proyectos por capacidad",
+    "seeMore": "Ver todos los proyectos",
+    "securityNote": "Las auditorías de seguridad y los pentests suelen entregarse bajo acuerdo de confidencialidad. Pregúntame en una llamada.",
+    "count": "{n} proyectos",
+    "viewProject": "Ver proyecto"
+  },
+  "project": {
+    "client": "Cliente",
+    "metrics": "En cifras",
+    "stack": "Stack por capa",
+    "outcome": "Resultado",
+    "links": "Enlaces",
+    "live": "Ver proyecto",
+    "github": "Código fuente",
+    "video": "Ver vídeo",
+    "archived": "Demo retirada",
+    "related": "Proyectos relacionados",
+    "back": "Todos los proyectos",
+    "by": "Por",
+    "published": "Publicado el",
+    "updated": "Actualizado el",
+    "categories": "Capacidades",
+    "layers": {
+      "frontend": "Frontend",
+      "backend": "Backend",
+      "ai": "IA",
+      "data": "Datos",
+      "infra": "Infraestructura",
+      "security": "Seguridad"
+    }
+  },
+  "blog": {
+    "title": "Blog",
+    "intro": "Artículos de David Gadyan sobre cómo construir productos de IA que llegan a producción, ciencia de datos, trading algorítmico y el camino freelance desde Upwork hasta la Barcelona School of Economics.",
+    "by": "Por",
+    "published": "Publicado el",
+    "updated": "Actualizado el",
+    "minRead": "{n} min de lectura",
+    "takeaways": "Ideas clave",
+    "faq": "Preguntas que responde",
+    "back": "Todos los artículos",
+    "readMore": "Leer artículo",
+    "tags": "Etiquetas",
+    "related": "Proyectos relacionados",
+    "servicesHint": "¿Necesitas construir algo así? Mira mis"
+  },
+  "book": {
+    "heading": "Reserva una llamada",
+    "intro": "Quince minutos, sin coste. Trae un problema: una función que no acaba de salir, una web con tráfico pero sin contactos, un sistema que nadie se atreve a desplegar. Saldrás con una respuesta clara sobre si merece la pena resolverlo.",
+    "cardTitle": "Llamada introductoria de 15 minutos",
+    "cardMeta": "Gratis · Google Meet · elige cualquier hueco, se reserva directamente en mi calendario",
+    "cta": "Reserva 15 min gratis",
+    "openInNewTab": "Abrir Calendly en una pestaña nueva",
+    "thirdPartyNote": "Carga el calendario de Calendly, que usa sus propias cookies.",
+    "loading": "Cargando el calendario…"
+  },
+  "contact": {
+    "heading": "Envía un mensaje directo",
+    "name": "Nombre",
+    "email": "Correo electrónico",
+    "message": "Mensaje",
+    "submit": "Enviar mensaje",
+    "sending": "Enviando…",
+    "successTitle": "Mensaje recibido",
+    "successBody": "Gracias por escribirme. Respondo en un día laborable.",
+    "errorGeneric": "Algo ha salido mal. Inténtalo de nuevo o reserva una llamada.",
+    "errorNetwork": "Comprueba tu conexión e inténtalo de nuevo.",
+    "errorRateLimit": "Demasiados intentos. Espera un minuto e inténtalo de nuevo.",
+    "bookInstead": "O reserva una llamada de 15 min"
+  },
+  "footer": {
+    "copyright": "© {year} David Gadyan · Ingeniero Full-Stack de IA",
+    "portfolio": "Portfolio",
+    "blog": "Blog",
+    "cookies": "Política de cookies",
+    "privacy": "Política de privacidad",
+    "manageCookies": "Gestionar cookies",
+    "social": "Redes sociales"
+  },
+  "consent": {
+    "title": "Cookies en davidgadyan.com",
+    "body": "Este sitio utiliza cookies. Visita nuestra página de política de cookies para obtener más información y cambiar tus preferencias.",
+    "policyLink": "Política de cookies",
+    "acceptAll": "Aceptar todas las cookies",
+    "essentialOnly": "Aceptar solo las cookies esenciales",
+    "settings": "Configuración de cookies",
+    "change": "Cambiar preferencias",
+    "currentGranted": "Elección actual: todas las cookies",
+    "currentDenied": "Elección actual: solo esenciales"
+  },
+  "thankYou": {
+    "title": "Mensaje recibido",
+    "body": "Gracias por escribirme. Recibirás respuesta en un día laborable.",
+    "stepsTitle": "Qué pasa ahora",
+    "steps": [
+      "Leo tu mensaje y respondo con claridad: si merece la pena resolverlo, qué haría falta aproximadamente y si soy la persona adecuada.",
+      "Si lo soy, reservamos una llamada de 15 minutos para confirmar alcance y plazos.",
+      "Recibes una propuesta por escrito con hitos. Sin discurso comercial, sin permanencia."
+    ],
+    "back": "Volver al inicio"
+  },
+  "notFound": {
+    "title": "Página no encontrada",
+    "body": "La página que buscas no existe o se ha movido.",
+    "home": "Ir a la página de inicio",
+    "portfolio": "Ver el portfolio"
+  },
+  "policy": {
+    "updated": "Última actualización",
+    "changePreferences": "Cambiar las preferencias de cookies"
+  },
+  "meta": {
+    "homeTitle": "David Gadyan | Ingeniero Full-Stack de IA en Barcelona",
+    "homeDescription": "Ingeniero Full-Stack de IA en Barcelona. Integración de IA en webs y productos, ERP/SaaS con IA, bases de datos, DevOps, auditorías de seguridad y marketing con IA. Más de 190 proyectos.",
+    "portfolioTitle": "Portfolio: 36 proyectos de IA, full-stack y datos",
+    "portfolioDescription": "36 casos prácticos de David Gadyan: agentes de IA y RAG, productos en Next.js y FastAPI, bases de datos, despliegues con Docker y Kubernetes, seguridad y medición de marketing con GA4.",
+    "blogTitle": "Blog: IA, datos y creación de productos",
+    "blogDescription": "Artículos de David Gadyan, Ingeniero Full-Stack de IA en Barcelona: integración de LLM y agentes, ciencia de datos, trading algorítmico y productos de IA que llegan a producción.",
+    "cookiesTitle": "Política de cookies",
+    "cookiesDescription": "Qué cookies utiliza davidgadyan.com, por qué, y cómo cambiar tu elección en cualquier momento.",
+    "privacyTitle": "Política de privacidad",
+    "privacyDescription": "Cómo trata David Gadyan los datos personales enviados a través de este sitio y cuáles son tus derechos según el RGPD.",
+    "thankYouTitle": "Gracias",
+    "notFoundTitle": "Página no encontrada",
+    "ogAlt": "David Gadyan — Ingeniero Full-Stack de IA en Barcelona",
+    "titleTemplate": "%s | David Gadyan"
+  },
+  "a11y": {
+    "quote": "Cita",
+    "testimonialsCarousel": "Testimonios de clientes",
+    "prev": "Testimonio anterior",
+    "next": "Testimonio siguiente",
+    "goTo": "Ir al testimonio {n}",
+    "pause": "Pausar la reproducción automática",
+    "play": "Reanudar la reproducción automática",
+    "skillLevel": "{name}: {pct} por ciento",
+    "playVideo": "Reproducir vídeo: {title}",
+    "externalLink": "se abre en una pestaña nueva"
+  }
+}

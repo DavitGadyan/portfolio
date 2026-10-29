@@ -1,0 +1,59 @@
+---
+title: "Deploying a Dash ML App on AWS"
+date: '2023-11-03'
+lastmod: 2026-10-29
+client: Jacqueline McShan
+cover: /images/portfolio/jacqueline-website.jpg
+coverAlt: "Jacqueline McShan's site: blue hero banner with portrait, About Me text and a Simulations menu"
+summary: "Deployment of Jacqueline McShan's Dash Plotly ML application to AWS. I revised the documentation, pinned package versions so the app installs reproducibly, and made the edits needed for hosting, then ran it on an AWS EC2 instance with Route 53 routing requests to her custom domain. The site is live at jacquelinemcshan.net."
+description: "Dash Plotly application productionised on AWS: dependency pinning and documentation revision, EC2 hosting and Route 53 routing to a custom domain, live at jacquelinemcshan.net."
+categories:
+  - cloud-devops-llmops
+  - fullstack-uiux
+stack:
+  frontend:
+    - Python Dash
+    - Plotly
+  backend:
+    - Python
+  ai: []
+  data: []
+  infra:
+    - AWS EC2
+    - Route 53
+  security: []
+links:
+  live: http://jacquelinemcshan.net
+outcomes:
+  - "Application hosted on an AWS EC2 instance with Route 53 routing to a custom domain."
+  - "Documentation revised and package versions pinned for reproducible hosting."
+  - "Site live at jacquelinemcshan.net."
+metrics:
+  - label: Hosting
+    value: "local machine → AWS EC2"
+  - label: Public domain
+    value: "jacquelinemcshan.net live"
+  - label: Dependency versions
+    value: "unpinned → pinned, reproducible"
+featured: false
+---
+
+## The problem
+
+Jacqueline McShan had a working Dash Plotly ML application on her machine and wanted it on the public web under her own domain. Getting from a local script to a hosted service meant settling the dependency versions, documenting how the app is installed and run, and choosing AWS services that would serve it reliably without a heavy setup.
+
+## What I built
+
+- A revised set of documentation describing how to install, configure and run the application on a server.
+- Pinned package versions, so the environment on AWS matches the one the app was developed in and can be rebuilt at any time.
+- The code edits the application needed to run as a hosted service rather than a local development server.
+- An AWS EC2 instance hosting the Dash application.
+- Route 53 DNS configuration that redirects requests for the custom domain to the instance.
+
+## How it was delivered
+
+I treated the deployment as a small productionisation job rather than a copy-and-run. Reproducible dependencies and clear documentation came first, because an app that only runs on one laptop cannot be rehosted or fixed later. Once the package set was stable, the EC2 instance and the Route 53 records were straightforward.
+
+## Outcome
+
+The application is hosted on EC2 and reachable at jacquelinemcshan.net through Route 53, with documentation and pinned versions that make the hosting reproducible. The client has a setup that can be rebuilt from the docs rather than one that only works on a single machine.

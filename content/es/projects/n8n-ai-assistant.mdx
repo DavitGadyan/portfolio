@@ -1,0 +1,38 @@
+---
+title: "Asistente de productividad con IA en n8n"
+coverAlt: "Lienzo de n8n: nodo AI Agent conectado a OpenAI, memoria y herramientas de Calendar, Gmail, búsqueda y X"
+summary: "Asistente de IA low-code construido en n8n sobre OpenAI GPT-4o para emprendedores y profesionales con poco tiempo. Un único flujo agéntico investiga temas en la web, crea, actualiza y elimina eventos de Google Calendar, envía correos con Gmail, guarda contactos en Google Sheets y redacta publicaciones para X. Publicado como flujo abierto y reutilizable en GitHub."
+description: "Asistente de productividad con IA en n8n y GPT-4o: investigación web, eventos de Google Calendar, envío con Gmail, contactos en Google Sheets y publicaciones para X."
+outcomes:
+  - Un solo asistente cubre investigación web, CRUD de calendario, envío de correos, captura de contactos y generación de publicaciones para X.
+  - Construido en low-code con n8n, así que cada capacidad es un nodo de herramienta visible y no código de aplicación a medida.
+  - Publicado como flujo abierto y reutilizable en GitHub.
+metrics:
+  - label: Capacidades en un solo agente
+    value: "5"
+  - label: Operaciones sobre eventos
+    value: "crear / actualizar / eliminar"
+  - label: Código de backend a medida
+    value: "ninguno (low-code en n8n)"
+---
+
+## El problema
+
+La administración diaria de un fundador o de un profesional ocupado está repartida entre cinco herramientas: un buscador para investigar, un calendario, el correo, una lista de contactos y una cuenta social. Cada tarea es pequeña, pero saltar entre todas ellas durante el día no lo es. Quería un único asistente que recibiera una petición en lenguaje natural y la ejecutara en esas herramientas, y quería construirlo en n8n para que todo quedara visible y editable como un flujo, en lugar de oculto en el código.
+
+## Qué construí
+
+- Un flujo agéntico en n8n con OpenAI GPT-4o como modelo, que cubre tanto los embeddings como la generación de contenido.
+- Una herramienta de investigación web para que el asistente pueda documentarse sobre cualquier tema a petición.
+- Integración con Google Calendar que crea, actualiza y elimina eventos desde una conversación.
+- Integración con Gmail que redacta y envía correos.
+- Un paso de captura de contactos que guarda nombres y datos en Google Sheets.
+- Un generador de publicaciones para X (antes Twitter) que redacta contenido listo para publicar.
+
+## Cómo se entregó
+
+El lienzo low-code de n8n hace explícito el diseño: cada capacidad es un nodo de herramienta conectado al agente, y el agente decide a partir de la petición qué herramienta llamar. Una capacidad nueva es un nodo nuevo, no un cambio de código, y cualquiera que abra el flujo ve exactamente qué puede hacer el asistente. Lo publiqué como flujo abierto en GitHub para que otros puedan importarlo y conectar sus propias cuentas de Google y de X.
+
+## Resultado
+
+Un asistente que cubre investigación web, gestión de calendario, correo, captura de contactos y generación de publicaciones para X, construido sin un backend a medida y publicado como flujo abierto reutilizable. Es una demostración compacta de hasta dónde llegan n8n y GPT-4o en la automatización de la productividad diaria.

@@ -1,0 +1,58 @@
+---
+title: "AI Billboard Recreation (Grounding DINO + Stable Diffusion)"
+date: '2024-04-03'
+lastmod: '2026-10-29'
+client: Leonardo Santamaria
+cover: /images/portfolio/ai_billboard_det_upscale.png
+coverAlt: "Before-and-after view of a roadside drinks billboard photo and its AI-regenerated upscaled artwork"
+summary: "Computer-vision and generative pipeline that finds a billboard in a street photo, cuts it out and regenerates it at higher resolution with new details. Grounding DINO handles zero-shot detection, OpenCV extracts the bounding box, and Stable Diffusion with ControlNet tile_resample and Ultimate SD Upscale rebuilds the advert, with every generation parameter documented for reproducibility."
+description: "Billboard recreation pipeline: Grounding DINO zero-shot detection, OpenCV extraction, Stable Diffusion with ControlNet tile_resample and Ultimate SD Upscale to regenerate the advert."
+categories:
+  - computer-vision
+stack:
+  frontend: []
+  backend: []
+  ai:
+    - Grounding DINO
+    - OpenCV
+    - Stable Diffusion
+    - Realistic Vision V6.0 checkpoint
+    - ControlNet (tile_resample)
+    - Ultimate SD Upscale (4x-UltraSharp)
+    - Soft inpainting
+    - Prompt engineering
+  data: []
+  infra: []
+  security: []
+links: {}
+outcomes:
+  - "Zero-shot billboard detection with Grounding DINO feeding a Stable Diffusion inpaint-and-upscale chain."
+  - "Advert regenerated in place at 1280x1664 with new details while the original composition is preserved."
+  - "Full generation parameters documented, so the result can be reproduced exactly."
+metrics:
+  - label: Output resolution
+    value: "1280 × 1664 px"
+  - label: Upscaler
+    value: "4x-UltraSharp, 512 px tiles"
+  - label: Denoising strength
+    value: "0.4 (details only)"
+  - label: Detector training data
+    value: "zero-shot, none"
+featured: false
+---
+
+## The problem
+
+The client had a photo of a billboard and wanted an AI-generated recreation of the advert: detect the billboard in the image, extract its boundaries, upscale it to a higher resolution and change details in the artwork. A general image model cannot do that reliably from a street photo, because it does not know where the billboard ends and the sky begins, and left alone it rewrites the whole scene rather than the advert.
+
+## What I built
+
+- Zero-shot billboard detection with Grounding DINO, which returns a bounding box from a text prompt without any training on billboard data.
+- Extraction of the billboard region with OpenCV, using the detector's bounding-box coordinates to crop the advert out of the photo.
+- A Stable Diffusion stage on the Realistic Vision V6.0 checkpoint that regenerates the cropped advert at 1280x1664, with ControlNet tile_resample holding the structure of the original and a denoising strength of 0.4 so only the details change.
+- Ultimate SD Upscale with the 4x-UltraSharp upscaler working in 512-pixel tiles, plus soft inpainting on the masked area for seamless edges.
+- A documented parameter set, including prompt, negative prompt, sampler, steps, CFG scale, seed and refiner, so the exact output can be reproduced.
+
+## Outcome
+
+A pipeline that takes a street photo in and gives back a clean, higher-resolution recreation of the billboard with the requested changes, as shown in the before-and-after on the cover. Because every generation parameter is recorded, the client can rerun or adjust the result instead of depending on a lucky seed.

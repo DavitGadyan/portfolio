@@ -1,0 +1,60 @@
+---
+title: "AI Productivity Assistant in n8n"
+date: 2025-06-01
+lastmod: 2026-10-29
+cover: /images/portfolio/ai_assistant_f.png
+coverAlt: "n8n canvas: AI Agent node wired to OpenAI, memory, Calendar, Gmail, search and X tools"
+summary: "Low-code AI assistant built in n8n on OpenAI GPT-4o for entrepreneurs and busy professionals. One agent workflow researches topics on the web, creates, updates and deletes Google Calendar events, sends email through Gmail, saves contact details to Google Sheets and drafts posts for X. Published as an open, reusable workflow on GitHub."
+description: "AI productivity assistant built in n8n with OpenAI GPT-4o: web research, Google Calendar event management, Gmail sending, contact capture to Google Sheets and X post generation."
+categories:
+  - ai-agents
+stack:
+  frontend: []
+  backend:
+    - n8n workflow automation
+    - Google Calendar
+    - Gmail
+    - X/Twitter API
+  ai:
+    - OpenAI GPT-4o
+    - RAG
+  data:
+    - Google Sheets
+  infra: []
+  security: []
+links:
+  github: https://github.com/DavidGadyan/n8n_projects/tree/main/ai_assistant
+outcomes:
+  - One assistant covers web research, calendar CRUD, email sending, contact capture and X post generation.
+  - Built low-code in n8n, so each capability is a visible tool node rather than custom application code.
+  - Published as an open, reusable workflow on GitHub.
+metrics:
+  - label: Capabilities in one agent
+    value: "5"
+  - label: Calendar event operations
+    value: "create / update / delete"
+  - label: Custom back-end code
+    value: "none (low-code n8n)"
+featured: false
+---
+
+## The problem
+
+Day-to-day admin for a founder or a busy professional is spread across five tools: a search engine for research, a calendar, email, a contact list and a social account. Each task is small, but switching between them all day is not. I wanted one assistant that takes a plain-language request and carries it out across those tools, and I wanted to build it in n8n so the whole thing stays visible and editable as a workflow instead of hidden in code.
+
+## What I built
+
+- An n8n agent workflow with OpenAI GPT-4o as the model, covering both embeddings and content generation.
+- A web research tool, so the assistant can look into any topic on request.
+- Google Calendar integration that creates, updates and deletes events from a conversation.
+- Gmail integration that composes and sends email.
+- A contact-capture step that saves names and details to Google Sheets.
+- A post generator for X (formerly Twitter) that drafts content ready to publish.
+
+## How it was delivered
+
+n8n's low-code canvas makes the design explicit: every capability is a tool node attached to the agent, and the agent decides from the request which tool to call. A new capability is a new node rather than a code change, and anyone who opens the workflow can see exactly what the assistant is allowed to do. I published it as an open workflow on GitHub so others can import it and connect their own Google and X accounts.
+
+## Outcome
+
+One assistant covering web research, calendar management, email, contact capture and X post generation, built without a custom back end and published as a reusable open workflow. It is a compact demonstration of how far n8n and GPT-4o go for everyday productivity automation.

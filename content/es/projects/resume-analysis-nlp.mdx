@@ -1,0 +1,32 @@
+---
+title: "Análisis de currículums con NLP y LLM"
+coverAlt: "Ilustración plana de unas manos con una lupa sobre un currículum en un escritorio"
+summary: "Análisis con NLP y LLM de dos grupos de currículums, candidatos de alto valor y de bajo valor, para sacar a la luz los patrones, similitudes y diferencias que no se aprecian a simple vista. Partiendo de un conjunto de unos 30 CV etiquetados por la clienta, realicé un análisis exploratorio, diseñé características y ajusté un clasificador de alta precisión en Python."
+description: "Análisis de CV con NLP, ChatGPT y machine learning: EDA sobre unos 30 currículums etiquetados por la clienta, ingeniería de características y un clasificador de alta precisión."
+outcomes:
+  - "El EDA sobre un conjunto de unos 30 CV etiquetados por la clienta guió la ingeniería de características y el ajuste de parámetros."
+  - "Clasificador de alta precisión que separa a los candidatos de alto valor de los de bajo valor."
+  - "Patrones, similitudes y diferencias no evidentes entre los dos grupos hechos explícitos."
+metrics:
+  - label: CV etiquetados
+    value: "unos 30 etiquetados por la clienta"
+  - label: Grupos de candidatos separados
+    value: "2 (alto vs bajo valor)"
+  - label: Diferencias entre grupos
+    value: "ocultas → explícitas"
+---
+
+## El problema
+
+La clienta tenía dos conjuntos de currículums, candidatos potenciales de alto valor y de bajo valor, y quería saber qué los separa realmente. Las diferencias no se apreciaban a simple vista, así que el encargo consistía en aplicar herramientas de NLP e IA para encontrar los patrones, similitudes y diferencias ocultos entre los dos grupos y, a ser posible, predecir a qué grupo pertenece un CV nuevo.
+
+## Qué construí
+
+- Un análisis exploratorio de datos (EDA) sobre ambos grupos como primer paso, para identificar relaciones y patrones en el texto antes de tocar ningún modelo.
+- Ingeniería de características guiada por esas conclusiones del EDA, convirtiendo el texto de los CV en señales de las que el modelo pudiera aprender.
+- Un modelo de clasificación construido con herramientas de NLP y LLM (ChatGPT) que separa a los candidatos de alto valor de los de bajo valor.
+- Ajuste de parámetros contra el conjunto etiquetado hasta alcanzar una precisión alta.
+
+## Resultado
+
+La clienta aportó un conjunto etiquetado de unos 30 CV, lo que hizo el EDA y el modelado mucho más fiables de lo que habría permitido un corpus sin etiquetar. Las conclusiones de ese análisis alimentaron la ingeniería de características y el ajuste, y el modelo resultante separa los dos grupos de candidatos con alta precisión, dando a la clienta una imagen explícita de lo que los distingue.

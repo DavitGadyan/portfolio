@@ -1,0 +1,45 @@
+---
+title: "Agente de revisión de documentos legales (Gemini + LangGraph)"
+coverAlt: "Ilustración que une Google Gemini, una etiqueta MultiAgent y LangGraph, con dos robots de dibujo"
+summary: "API multiagente de revisión de documentos para la due diligence de un bufete, con LangChain y LangGraph sobre Google Gemini. Verifica con IA referencias cruzadas, números de página, direcciones de partes, bloques de firma e identificadores ABN/ACN, valida ABN/ACN con una API externa, acepta preguntas y recomendaciones configurables desde la web, procesa contratos largos y genera informes en Word."
+description: "API multiagente de revisión de documentos legales con LangChain, LangGraph y Google Gemini: verificaciones dinámicas, validación de ABN/ACN, contratos largos e informes en Word."
+outcomes:
+  - "Comprobaciones con IA de referencias cruzadas, números de página, direcciones de las partes, bloques de firma y formato de ABN/ACN."
+  - "Autenticidad y número de dígitos de los ABN/ACN verificados contra una API externa."
+  - "Prompts fijos sustituidos por preguntas y variables arbitrarias del usuario, más un número de recomendaciones configurable."
+  - "Contratos largos procesados de principio a fin mediante un flujo multiagente sobre la ventana de contexto ampliada de Gemini."
+  - "Informes de revisión en Word listos para usar, generados automáticamente."
+metrics:
+  - label: Número de recomendaciones
+    value: "10 fijas → configurable"
+  - label: Prompts de revisión
+    value: "fijos → definidos por el usuario"
+  - label: Tipos de comprobación
+    value: "5 (referencias, páginas, direcciones, firmas, ABN/ACN)"
+  - label: Identificadores ABN/ACN
+    value: "asumidos → verificados con API externa"
+---
+
+## El problema
+
+Un bufete de abogados ya usaba una API de revisión de documentos en su flujo de due diligence, pero era rígida: prompts fijos en el código, una lista cerrada de diez recomendaciones, sin espacio para contratos largos y sin ninguna comprobación de que los identificadores empresariales australianos (ABN/ACN) citados en un documento fueran reales. Esta fase amplió la API con verificaciones dinámicas, validación externa y salida configurable, todo impulsado por un pipeline de IA multiagente.
+
+## Qué construí
+
+Diseñé e implementé un sistema con LangChain y LangGraph respaldado por el LLM Gemini de Google:
+
+- Una sección de verificación de documentos con comprobaciones basadas en IA de referencias cruzadas, números de página, direcciones de las partes, bloques de firma y presencia y formato de los ABN/ACN.
+- Validación externa a través de una API de verificación de ABN/ACN que confirma que cada identificador es auténtico y tiene el número correcto de dígitos.
+- Preguntas dinámicas: la API acepta listas arbitrarias de preguntas y variables desde la aplicación web, de modo que el bufete define sus propias comprobaciones en lugar de depender de prompts fijos.
+- Una respuesta de recomendaciones parametrizada, para que el cliente elija cuántas sugerencias de mejora quiere en lugar de las diez fijas.
+- Un flujo multiagente sobre la ventana de contexto ampliada de Gemini que procesa contratos largos y materiales de due diligence de principio a fin.
+- Generación automática de informes de revisión en Word listos para usar que encajan en los procesos internos del bufete.
+- Documentación y un paquete de replicación para que futuros desarrolladores puedan mantener y ampliar el sistema.
+
+## Seguridad y cumplimiento
+
+La due diligence es un trabajo de verificación, y la API lo trata como tal. Comprueba el documento contra sí mismo (referencias cruzadas, números de página, bloques de firma) y contrasta los números ABN/ACN con una fuente externa de verdad, de modo que un identificador mal escrito o inventado se detecta antes de que alguien se fíe de él.
+
+## Resultado
+
+Los revisores del bufete pueden ahora plantear a la API cualquier conjunto de preguntas, elegir cuántas recomendaciones quieren, ejecutarla sobre contratos largos y recibir al final un informe en Word, con los identificadores empresariales verificados en lugar de dados por buenos. La documentación y el paquete de replicación permiten mantener y ampliar el sistema sin depender de mí.

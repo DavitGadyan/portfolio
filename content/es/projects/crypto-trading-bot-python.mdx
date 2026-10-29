@@ -1,0 +1,36 @@
+---
+title: "Bots de trading de criptomonedas en Python"
+coverAlt: "Primer plano de una pantalla de trading con barras de velas verdes, líneas de indicadores y cifras de precio"
+summary: "Dos bots de trading de criptomonedas en Python para Dale Hefferman: uno explota el retardo de precio de un exchange pequeño, causado por su zona horaria y su tamaño, y el otro ejecuta señales de una estrategia personalizada de TradingView; ambos operan a través de API de exchanges como Binance y se desplegaron en la nube. Rentables por momentos, pero las comisiones y los cambios de mercado exigieron monitorización constante."
+description: "Bots de trading cripto en Python con la API de Binance: uno opera el retardo horario de un exchange pequeño, otro ejecuta señales de TradingView; desplegados en la nube."
+outcomes:
+  - Retardo de precio por zona horaria y tamaño identificado y operado en un exchange pequeño.
+  - Bot seguidor de señales desplegado contra una estrategia personalizada de TradingView.
+  - "Resultado honesto: rentable por momentos, pero las comisiones y el cambio de régimen obligan a monitorizar y ajustar la estrategia constantemente."
+metrics:
+  - label: Bots de trading desplegados
+    value: "2"
+  - label: Ejecución de operaciones
+    value: "manual → desatendida, las 24 horas"
+  - label: Rentabilidad
+    value: "rentable por momentos, no estable"
+---
+
+## El problema
+
+El cliente quería bots que operasen criptomonedas automáticamente en varios exchanges, Binance entre ellos, en lugar de vigilar gráficos a mano. El encargo era abierto: encontrar una ventaja, construir algo que la opere y mantenerlo en marcha.
+
+## Qué construí
+
+- Un análisis de mercado del exchange objetivo, que mostró que iba por detrás de los mercados grandes por su zona horaria y su tamaño relativamente pequeño. Cuando una tendencia general en una moneda como BTC ya era visible en otros mercados, ese retardo se podía operar.
+- Un bot en Python que opera ese retardo observado a través de la API del exchange.
+- Un segundo bot que escucha señales de una estrategia personalizada de TradingView y ejecuta automáticamente las órdenes correspondientes, de modo que las reglas de la propia estrategia del cliente funcionan sin nadie al teclado.
+- Despliegue del bot de señales en la nube para que permanezca conectado al exchange y a TradingView las 24 horas.
+
+## Cómo se entregó
+
+Un bot de trading solo sirve si está en marcha cuando llega la señal, así que ambos bots se construyeron para funcionar desatendidos y no desde un portátil. El bot de TradingView es, en concreto, un oyente permanente: la estrategia se dispara, llega el webhook y sale la orden. Esa parte operativa, mantener el proceso vivo y monitorizar lo que hacía, resultó importar tanto como la estrategia.
+
+## Resultado
+
+¿Ganó dinero? Depende. Los bots fueron rentables por momentos, pero las altas comisiones de trading y un mercado cambiante hicieron que la ventaja no fuera estable, y el algoritmo necesitaba monitorización y ajustes constantes para mantenerse por delante. Esa es la lectura honesta de la mayoría de las estrategias cripto minoristas, y prefiero contarla a esconderla.

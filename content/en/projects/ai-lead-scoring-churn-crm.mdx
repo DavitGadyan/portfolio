@@ -1,0 +1,70 @@
+---
+title: "AI Lead Scoring & Churn Detection Engine (S1mple.ai)"
+date: 2026-03-28
+lastmod: 2026-10-29
+cover: /images/portfolio/aileadscores.png
+coverAlt: "Next.js dashboard showing AI lead scores and churn risk by account"
+summary: "AI engine that scores leads by repeat-conversion likelihood and flags churn risk inside S1mple.ai, with a Next.js dashboard, a FastAPI and LangChain back end, and MCP connectors into HubSpot, Monday, Zoho and four databases, scaled on Kubernetes."
+description: "AI lead scoring and churn detection SaaS: Next.js dashboard, FastAPI, LangChain, MCP connectors to HubSpot/Monday/Zoho and Postgres/MySQL/Supabase/MongoDB, Kubernetes."
+categories:
+  - ai-erp-saas
+  - ai-agents
+  - ai-marketing
+  - databases-data-eng
+stack:
+  frontend:
+    - Next.js
+    - React
+    - TypeScript
+  backend:
+    - FastAPI
+    - Python
+    - REST API
+  ai:
+    - LangChain
+    - MCP servers
+    - LLM-based scoring and churn classification
+  data:
+    - PostgreSQL
+    - MySQL
+    - Supabase
+    - MongoDB
+    - HubSpot
+    - Monday
+    - Zoho
+  infra:
+    - Kubernetes
+    - Docker
+  security: []
+links: {}
+outcomes:
+  - Marketing effort concentrated on accounts most likely to convert again and those at risk of churn.
+  - "One scoring engine, CRM-agnostic: HubSpot, Monday and Zoho through MCP connectors."
+  - "Runs against the client's existing database: Postgres, MySQL, Supabase or MongoDB."
+metrics:
+  - label: CRMs supported
+    value: "3 (HubSpot, Monday, Zoho)"
+  - label: Databases supported
+    value: "4 (Postgres, MySQL, Supabase, MongoDB)"
+  - label: Signals per account
+    value: "2 (conversion likelihood, churn risk)"
+featured: true
+order: 2
+---
+
+## The problem
+
+Marketing budgets get spread evenly across a CRM because nobody can say which accounts deserve attention. The client wanted every contact scored for repeat-conversion likelihood and churn risk, using the data already sitting in their CRM and database, so campaigns could concentrate on the few accounts where effort actually changes the outcome.
+
+## What I built
+
+- A Next.js dashboard that surfaces scores, churn flags and the reasoning behind each one.
+- A FastAPI back end that orchestrates scoring runs and serves results to the dashboard and back to the CRM.
+- LangChain-based scoring and churn classification, with MCP servers as the integration layer so the agent reads and writes through tools instead of bespoke glue code.
+- CRM connectors for HubSpot, Monday and Zoho.
+- Database connectors for PostgreSQL, MySQL, Supabase and MongoDB, so the engine runs on whatever the client already has.
+- Container orchestration on Kubernetes for scaling and management.
+
+## Outcome
+
+Marketing effort concentrated on high-propensity and at-risk accounts, one scoring engine that is independent of the CRM and of the database, and a product module that now lives inside the S1mple.ai platform.

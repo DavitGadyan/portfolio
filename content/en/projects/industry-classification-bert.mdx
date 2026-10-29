@@ -1,0 +1,62 @@
+---
+title: "Industry Classification of Firms (BERT + GPT-4 Labelling)"
+date: '2024-08-08'
+lastmod: '2026-10-29'
+client: Andrew Miles
+cover: /images/portfolio/bert_nyc_orgs.png
+coverAlt: "Flow diagram of NYC firm records passing through GPT-4 and BERT to industry labels"
+summary: "End-to-end pipeline that assigns NAICS/SIC industry codes to New York firms that had no labels. Fuzzy name and location matching against secondary registries recovers known codes, GPT-4 few-shot labelling expands the training set without manual annotation, and a BERT classifier, benchmarked against SVM and Random Forest, predicts codes for the rest, with QA reviews and a replication package."
+description: "NAICS/SIC classification for unlabelled NYC firms: fuzzy registry matching, GPT-4 few-shot labelling and a BERT classifier in Python, with QA controls and a replication package."
+categories:
+  - data-science-ml
+  - ai-agents
+stack:
+  frontend: []
+  backend:
+    - Python
+  ai:
+    - BERT
+    - GPT-4 few-shot labelling
+    - SVM
+    - Random Forest
+  data:
+    - Fuzzy string matching
+    - Location-based matching
+    - NAICS/SIC registries
+  infra: []
+  security: []
+links: {}
+outcomes:
+  - "Labelled training set built from registry matches plus GPT-4 few-shot augmentation, with no manual annotation."
+  - "BERT classifier chosen over SVM and Random Forest baselines, optimised for accuracy and inference cost."
+  - "Random manual QA reviews of both the matching results and the model predictions."
+  - "Documentation and a replication package so stakeholders can reproduce the whole workflow."
+metrics:
+  - label: Manual annotation
+    value: "none (GPT-4 few-shot)"
+  - label: Models benchmarked
+    value: "3 (BERT, SVM, Random Forest)"
+  - label: Firm coverage
+    value: "every firm assigned a NAICS/SIC code"
+featured: false
+---
+
+## The problem
+
+The client had records of New York firms with only a name, an owner, an address, zip code, city and state, and establishment or dissolution years, and no industry labels at all. They needed NAICS/SIC codes for every firm, at scale, and manual annotation was not an option at that volume.
+
+## What I built
+
+- A matching stage that links each unlabelled firm to secondary registries through fuzzy string matching on names and location-based matching on addresses, recovering known NAICS/SIC codes wherever a match exists.
+- A labelled training set assembled from the successful matches and expanded with GPT-4 few-shot labelling, so coverage grew without anyone annotating records by hand.
+- A BERT-based classifier in Python that predicts industry codes for the firms that could not be matched, chosen after comparing it with SVM and Random Forest baselines and optimised for both accuracy and inference cost.
+- QA controls in the form of random manual reviews of both the registry matches and the model's predictions, to keep data quality high.
+- Full documentation and a replication package covering the matching logic, the labelling strategy and the training and inference workflows.
+
+## How it was delivered
+
+I was the sole engineer. Rather than hand over predictions alone, I delivered the pipeline as something the client's stakeholders can rerun: the documentation and replication package reproduce the matching logic, the labelling strategy and the model training and inference end to end.
+
+## Outcome
+
+Every firm in the dataset ends up with a NAICS/SIC code: the matched ones from the registries, the rest from a BERT classifier trained on a set that GPT-4 helped label. The random QA reviews keep both stages honest, and the replication package means the workflow can be reproduced rather than treated as a one-off run.

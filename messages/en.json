@@ -1,0 +1,226 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About me",
+    "services": "Services",
+    "portfolio": "Portfolio",
+    "testimonials": "Testimonials",
+    "bookCall": "Book a call",
+    "contact": "Contact",
+    "blog": "Blog",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "menu": "Menu",
+    "mainNav": "Main navigation",
+    "skipToContent": "Skip to content",
+    "backToTop": "Back to top",
+    "homeAria": "David Gadyan — home"
+  },
+  "lang": {
+    "switch": "Switch language",
+    "suggest": "¿Prefieres español?",
+    "suggestCta": "Ver en español",
+    "dismiss": "Dismiss"
+  },
+  "hero": {
+    "greeting": "I'm David Gadyan",
+    "h1": "David Gadyan — Full-Stack AI Engineer",
+    "hireMe": "Email me",
+    "primaryCta": "Book 15-min free call",
+    "trust": [
+      "Upwork Expert-Vetted · top 1%",
+      "Toptal",
+      "$500k+ earned",
+      "190+ projects"
+    ],
+    "slideAlt": "David Gadyan, Full-Stack AI Engineer in Barcelona"
+  },
+  "sections": {
+    "about": "About me",
+    "experience": "Study & experience",
+    "skills": "Skills",
+    "languages": "Languages",
+    "capability": "Value Proposition & Tech Stack",
+    "services": "Services",
+    "portfolio": "Portfolio",
+    "testimonials": "Testimonials",
+    "facts": "In numbers",
+    "faq": "Frequently asked",
+    "book": "Book a call",
+    "contact": "Send direct message"
+  },
+  "about": {
+    "cv": "Download my CV",
+    "portraitAlt": "David Gadyan, Data Scientist & AI SaaS Engineer in Barcelona"
+  },
+  "capability": {
+    "intro": "A unique mix of skills that guarantees end-to-end, SaaS-level AI application development.",
+    "points": [
+      "Speed up development 3x",
+      "Weekly sprints with two calls per week",
+      "24/7 support for high-priority cases",
+      "Continuous feedback integration",
+      "No need to hire and manage a team of developers",
+      "Reasonable pricing, no agency rates"
+    ],
+    "stage": "Stage {n}",
+    "graphLabel": "Capability graph",
+    "back": "Close",
+    "tools": "Tools",
+    "certHint": "Click to view the certificate",
+    "closeCert": "Close certificate",
+    "issued": "Issued",
+    "validUntil": "Valid until",
+    "certId": "Certificate ID"
+  },
+  "services": {
+    "intro": "Ten services, one engineer. Each one is delivered end to end, from the first wireframe to the tracking that shows it worked."
+  },
+  "cta": {
+    "title": "Have an idea that needs AI, or a product that needs to ship?",
+    "sub": "Fifteen minutes, no charge. Bring the problem, not a specification.",
+    "button": "Book a 15-min call"
+  },
+  "portfolio": {
+    "intro": "These 36 projects show how David Gadyan covers the full stack as one engineer: AI agents and RAG, Next.js and FastAPI products, Postgres and vector databases, Docker and Kubernetes on AWS and GCP, HIPAA-aware security, and GA4-based marketing measurement. Filter by capability or start with the featured builds.",
+    "filterAll": "All",
+    "filterLabel": "Filter projects by capability",
+    "seeMore": "See all projects",
+    "securityNote": "Security audits and pentests are usually delivered under NDA. Ask about them on a call.",
+    "count": "{n} projects",
+    "viewProject": "View project"
+  },
+  "project": {
+    "client": "Client",
+    "metrics": "By the numbers",
+    "stack": "Stack by layer",
+    "outcome": "Outcome",
+    "links": "Links",
+    "live": "Live project",
+    "github": "Source code",
+    "video": "Watch video",
+    "archived": "Demo retired",
+    "related": "Related projects",
+    "back": "All projects",
+    "by": "By",
+    "published": "Published",
+    "updated": "Updated",
+    "categories": "Capabilities",
+    "layers": {
+      "frontend": "Front end",
+      "backend": "Back end",
+      "ai": "AI",
+      "data": "Data",
+      "infra": "Infrastructure",
+      "security": "Security"
+    }
+  },
+  "blog": {
+    "title": "Blog",
+    "intro": "Articles by David Gadyan on building AI products that reach production, data science, algorithmic trading and the freelance path from Upwork to the Barcelona School of Economics.",
+    "by": "By",
+    "published": "Published",
+    "updated": "Updated",
+    "minRead": "{n} min read",
+    "takeaways": "Key takeaways",
+    "faq": "Questions this answers",
+    "back": "All articles",
+    "readMore": "Read article",
+    "tags": "Tags",
+    "related": "Related projects",
+    "servicesHint": "Need something like this built? See my"
+  },
+  "book": {
+    "heading": "Book a call",
+    "intro": "Fifteen minutes, no charge. Bring a problem - a feature that will not ship, a site that gets traffic but no enquiries, a system nobody dares to deploy - and you will leave with a straight answer about whether it is worth solving.",
+    "cardTitle": "15-minute intro call",
+    "cardMeta": "Free · Google Meet · pick any slot, it books straight into my calendar",
+    "cta": "Book 15-min free call",
+    "openInNewTab": "Open Calendly in a new tab",
+    "thirdPartyNote": "Loads Calendly's scheduler, which sets its own cookies.",
+    "loading": "Loading calendar…"
+  },
+  "contact": {
+    "heading": "Send direct message",
+    "name": "Name",
+    "email": "Email",
+    "message": "Message",
+    "submit": "Send message",
+    "sending": "Sending…",
+    "successTitle": "Message received",
+    "successBody": "Thanks for getting in touch. I reply within one working day.",
+    "errorGeneric": "Something went wrong. Please try again or book a call instead.",
+    "errorNetwork": "Check your connection and try again.",
+    "errorRateLimit": "Too many attempts. Please wait a minute and try again.",
+    "bookInstead": "Or book a 15-min call"
+  },
+  "footer": {
+    "copyright": "© {year} David Gadyan · Full-Stack AI Engineer",
+    "portfolio": "Portfolio",
+    "blog": "Blog",
+    "cookies": "Cookie policy",
+    "privacy": "Privacy policy",
+    "manageCookies": "Manage cookies",
+    "social": "Social links"
+  },
+  "consent": {
+    "title": "Cookies on davidgadyan.com",
+    "body": "This site uses cookies. Visit our cookies policy page for more information and to change your preferences.",
+    "policyLink": "Cookies policy",
+    "acceptAll": "Accept all cookies",
+    "essentialOnly": "Accept only essential cookies",
+    "settings": "Cookie settings",
+    "change": "Change preferences",
+    "currentGranted": "Current choice: all cookies",
+    "currentDenied": "Current choice: essential only"
+  },
+  "thankYou": {
+    "title": "Message received",
+    "body": "Thanks for getting in touch. Expect a reply within one working day.",
+    "stepsTitle": "What happens next",
+    "steps": [
+      "I read your message and reply with a straight answer: worth solving, roughly what it would take, and whether I am the right person for it.",
+      "If it is, we book a 15-minute call to confirm scope and timeline.",
+      "You get a written proposal with milestones. No pitch, no lock-in."
+    ],
+    "back": "Back to home"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "body": "The page you are looking for does not exist or has moved.",
+    "home": "Go to the home page",
+    "portfolio": "Browse the portfolio"
+  },
+  "policy": {
+    "updated": "Last updated",
+    "changePreferences": "Change cookie preferences"
+  },
+  "meta": {
+    "homeTitle": "David Gadyan | Full-Stack AI Engineer in Barcelona",
+    "homeDescription": "Full-Stack AI Engineer in Barcelona. AI integration into websites and products, AI ERP/SaaS, databases, DevOps, security audits and AI marketing. 190+ projects, 8+ years.",
+    "portfolioTitle": "Portfolio: 36 AI, Full-Stack & Data Projects",
+    "portfolioDescription": "36 case studies by David Gadyan: AI agents and RAG, Next.js and FastAPI products, databases, Docker and Kubernetes deployments, security-aware builds and GA4 marketing measurement.",
+    "blogTitle": "Blog: AI, Data & Building Products",
+    "blogDescription": "Articles by David Gadyan, Full-Stack AI Engineer in Barcelona: LLM and agent integration, data science, algorithmic trading and building AI products that reach production.",
+    "cookiesTitle": "Cookie Policy",
+    "cookiesDescription": "Which cookies davidgadyan.com uses, why, and how to change your choice at any time.",
+    "privacyTitle": "Privacy Policy",
+    "privacyDescription": "How David Gadyan handles personal data submitted through this site, and your rights under the GDPR.",
+    "thankYouTitle": "Thanks",
+    "notFoundTitle": "Page not found",
+    "ogAlt": "David Gadyan — Full-Stack AI Engineer in Barcelona",
+    "titleTemplate": "%s | David Gadyan"
+  },
+  "a11y": {
+    "quote": "Quote",
+    "testimonialsCarousel": "Client testimonials",
+    "prev": "Previous testimonial",
+    "next": "Next testimonial",
+    "goTo": "Go to testimonial {n}",
+    "pause": "Pause autoplay",
+    "play": "Resume autoplay",
+    "skillLevel": "{name}: {pct} percent",
+    "playVideo": "Play video: {title}",
+    "externalLink": "opens in a new tab"
+  }
+}

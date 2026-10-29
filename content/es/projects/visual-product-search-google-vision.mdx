@@ -1,0 +1,31 @@
+---
+title: "Búsqueda visual de productos con Google Vision AI"
+coverAlt: "Cámara de móvil etiquetando jersey, vaqueros y zapatillas junto a una lista de productos visualmente similares"
+summary: "Servicio de emparejamiento visual de productos para un cliente de comercio electrónico, desarrollado en Python sobre Google Cloud. Recibe un lote de imágenes de ropa, consulta la API Vision Product Search de Google Cloud contra las imágenes de referencia de productos del cliente y devuelve un archivo Excel con los 10 productos visualmente más similares para cada imagen de entrada."
+description: "Servicio en Python sobre Google Cloud que pasa lotes de imágenes de ropa por la API Vision Product Search y devuelve los 10 productos visualmente más similares por imagen en Excel."
+outcomes:
+  - "El servicio devuelve los 10 productos visualmente más similares por imagen de entrada como exportación a Excel."
+  - "Procesa un lote completo de imágenes en una ejecución en lugar de una subida por consulta."
+metrics:
+  - label: Coincidencias por imagen
+    value: "10 productos más similares"
+  - label: Modo de consulta
+    value: "1 subida por consulta → lote"
+  - label: Modelos a medida entrenados
+    value: "ninguno (API reutilizada)"
+---
+
+## El problema
+
+El cliente quería encontrar, para cualquier foto de una prenda, los productos de un catálogo de referencia que más se le parecen. Hacerlo a ojo sobre un catálogo grande es lento, y construir y entrenar un modelo de similitud propio desde cero era más de lo que el proyecto necesitaba. La API Product Search de Google Cloud ya hace el trabajo pesado, así que la tarea consistía en montar un servicio utilizable alrededor de ella.
+
+## Qué construí
+
+- Un servicio en Python que acepta como entrada una lista de imágenes en lugar de una sola subida, de modo que un lote completo se procesa en una ejecución.
+- La integración con la API Vision Product Search de Google Cloud, que compara cada imagen de entrada con las imágenes de referencia de productos del cliente.
+- El tratamiento de resultados que conserva los 10 productos visualmente más similares para cada imagen de entrada.
+- Una exportación a Excel con un bloque de resultados por producto, para que el cliente revise las coincidencias en una hoja de cálculo.
+
+## Resultado
+
+El cliente envía un lote de imágenes de ropa y recibe un archivo Excel con las diez coincidencias más cercanas del catálogo para cada una. El servicio funciona sobre Google Cloud y reutiliza la API Product Search en lugar de un modelo entrenado a medida.

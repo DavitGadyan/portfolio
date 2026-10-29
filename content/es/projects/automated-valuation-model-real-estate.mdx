@@ -1,0 +1,36 @@
+---
+title: "Modelo de valoración automatizada y bot inmobiliario"
+coverAlt: "Casa en miniatura y lupa sobre planos de vivienda con una hucha de cerdito detrás"
+summary: "Modelo de valoración automatizada para el mercado inmobiliario australiano más un bot de evaluación al estilo de un agente, desarrollados para un cliente particular. Recopilé anuncios a través de la API de Domain.com.au y mediante scraping de portales inmobiliarios, entrené un modelo XGBoost en Python que alcanzó en torno al 84 % de R² y superó a los demás algoritmos probados, y después prototipé la lógica de evaluación del cliente para maximizar el beneficio."
+description: "Modelo de valoración automatizada para inmuebles en Australia: datos de la API de Domain.com.au y web scraping, XGBoost en Python con un 84 % de R² y un bot de evaluación en alfa."
+outcomes:
+  - "El AVM con XGBoost alcanzó en torno al 84 % de R² sobre precios de inmuebles australianos, superando a los demás algoritmos probados."
+  - "Datos de entrenamiento reunidos a partir de la API de Domain.com.au y del scraping directo de portales inmobiliarios."
+  - "Bot en alfa que implementa el algoritmo de evaluación del agente definido por el cliente, completo en funciones y a la espera de cobertura de datos."
+metrics:
+  - label: R² del modelo de valoración
+    value: "≈ 84 %"
+  - label: Comparativa de algoritmos
+    value: "XGBoost superó a todas las alternativas probadas"
+  - label: Funciones del bot de agente
+    value: "todas implementadas (alfa)"
+---
+
+## El problema
+
+El cliente quería dos cosas para el mercado inmobiliario australiano: un modelo que prediga el precio de un inmueble con la mayor precisión posible, y un bot que evalúe una propiedad como lo haría un agente inmobiliario experimentado, para encontrar la operación que dé el mayor beneficio. Ninguna de las dos existía, y ambas dependían de datos inmobiliarios que primero había que recopilar.
+
+## Qué construí
+
+- Una capa de recopilación de datos que obtenía anuncios a través de API como la [API para desarrolladores de Domain.com.au](https://developer.domain.com.au/) y extraía datos adicionales directamente de portales inmobiliarios mediante scraping.
+- Ingeniería de características sobre los anuncios recopilados para convertir los registros brutos de inmuebles en entradas del modelo.
+- Un modelo de regresión XGBoost, elegido tras compararlo con otros algoritmos sobre los mismos datos; superó a las alternativas.
+- Un prototipo del algoritmo de evaluación del agente, implementado a partir de la descripción del cliente de cómo un agente valora un inmueble para obtener el máximo beneficio.
+
+## Cómo se entregó
+
+La primera etapa fue el modelo de valoración. Mi métrica objetivo era el R², y el modelo XGBoost final alcanzó en torno al 84 %, un resultado sólido para este caso de uso. La segunda etapa fue el bot del agente: el cliente compartió la lógica de evaluación, construí el prototipo y empecé a probarlo. La versión alfa tiene todas las funciones implementadas; lo que todavía necesita son datos suficientes para cubrir todas las combinaciones de entradas que el algoritmo puede pedir.
+
+## Resultado
+
+Un modelo de valoración automatizada con un R² en torno al 84 % para precios de inmuebles australianos, construido sobre datos que recopilé mediante la API de Domain.com.au y web scraping, y una alfa completa en funciones del bot del cliente para maximizar el beneficio. El trabajo pendiente es cobertura de datos, no código.

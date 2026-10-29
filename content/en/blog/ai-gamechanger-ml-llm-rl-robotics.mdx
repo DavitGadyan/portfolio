@@ -1,0 +1,112 @@
+---
+title: 'AI Gamechanger: From Traditional ML to LLMs, and Why RL for Robotics Is Next'
+date: '2026-10-29'
+lastmod: '2026-10-29'
+author: David Gadyan
+cover: /images/blog/ai-gamechanger.jpg
+coverAlt: 'Dark cover with a small network graph and the words AI Gamechanger: traditional ML to LLMs to RL for robotics'
+tags:
+  - artificial intelligence
+  - machine learning
+  - large language models
+  - reinforcement learning
+  - robotics
+  - ai strategy
+articleSection: AI
+readingMinutes: 7
+description: >-
+  How AI work shifted from hand-built machine learning to LLM integration, what
+  stayed the same, and why the next big move is reinforcement learning for
+  robotics. Eight years of shipping AI products, condensed.
+summary: >-
+  In eight years the job changed from training one bespoke model per task to
+  integrating foundation models with retrieval, tools and evals. The next shift
+  is already visible: reinforcement learning leaving the lab and moving into
+  robots. What that means for anyone building a product now.
+about:
+  - Artificial intelligence
+  - Large language models
+  - Reinforcement learning
+  - Robotics
+takeaways:
+  - >-
+    **The unit of work changed.** From 2016 to 2020 every problem needed its
+    own model and most of the effort went into features. Since 2023 the model
+    is an API and the effort goes into data access, orchestration, evaluation
+    and reliability.
+  - >-
+    **What did not change** is the boring part: data quality, measurable
+    evaluation and a deployment you can monitor still decide whether an AI
+    feature survives contact with real users.
+  - >-
+    **Reinforcement learning is the next gamechanger.** It already trains the
+    reasoning models you use today, and the clearest frontier is physical:
+    policies for robots trained in simulation and refined on real hardware.
+  - >-
+    **Build for model swaps.** Abstract the model, budget cost and latency, keep
+    humans in the loop where decisions are regulated, and invest in the
+    evaluation data that outlives any single model.
+faq:
+  - q: Is traditional machine learning dead now that LLMs exist?
+    a: >-
+      No. Gradient boosting still wins most tabular problems such as pricing,
+      churn and credit risk, and a small classifier is cheaper and more
+      predictable than a language model for narrow tasks. What changed is the
+      starting point: you prompt first, then train when the data proves you
+      need to.
+  - q: Should a company fine-tune its own LLM?
+    a: >-
+      Rarely as a first step. Retrieval over your own documents, careful tool
+      design and evaluation get most teams further for far less money.
+      Fine-tuning pays off when you have a stable task, clean labelled data and
+      a measured gap that prompting cannot close.
+  - q: Why does David expect reinforcement learning for robotics to be the next shift?
+    a: >-
+      Because the ingredients are converging: reinforcement learning already
+      improves reasoning models, simulators are good enough to train control
+      policies at scale, and robot hardware is getting cheaper. When a language
+      model plans and a learned policy executes, robots stop being
+      pre-programmed and start being trained.
+---
+
+I have been shipping AI for clients since 2018, first as a data scientist on Upwork and today as a [full-stack AI engineer](/#services) building SaaS-level products end to end. In those eight years the work changed more than once. Not the goal, which was always a system that moves a business number, but the tools, the skills and even the definition of "building a model". This is the shift as I lived it, and where I think it goes next.
+
+### 2016 to 2020: the feature-engineering years
+
+When I took my first machine-learning contracts, "AI" on a brief meant a scikit-learn pipeline. The real work was eighty percent data: cleaning, joining, deduplicating, engineering features by hand. Gradient boosting won almost every tabular problem, which is why XGBoost sits behind projects like my [automated valuation model for real estate](/portfolio/automated-valuation-model-real-estate/). Deep learning was reserved for images and signals, such as the [driver-fatigue detector](/portfolio/driver-fatigue-detection-edge-ai/) running on edge hardware, and language work meant topic models, LSTMs and a lot of regular expressions.
+
+Every problem got its own model. Every model was fragile: a change in the input distribution, a new data source or a renamed column could break it, and nobody outside the team could tell why. The models were clever, but they did not generalise, and the cost of each new use case was roughly the cost of the first one.
+
+### 2020 to 2022: transformers everywhere
+
+The first crack in that pattern was transfer learning. Pre-trained transformers such as BERT made it possible to fine-tune a strong text classifier with a few thousand examples instead of building features. When I [classified firms into industries](/portfolio/industry-classification-bert/), the baseline came from a pre-trained model and the project became about data and evaluation rather than architecture. It was still one model per task, but the starting point had moved from zero to "most of the way there".
+
+### 2023 to today: the model is an API
+
+Then large language models arrived in products, and the job changed shape. For most companies the question is no longer "can we train a model?" but "how do we integrate a foundation model safely, cheaply and measurably into what we already have?" The craft moved to:
+
+- **Retrieval.** Grounding answers in your own documents, as in the [crypto-regulation chatbot](/portfolio/crypto-regulation-rag-chatbot/) built on a vector store, so the model answers from evidence and cites it.
+- **Agents and tools.** Multi-step workflows that take actions, not just answer: the [legal document review agent](/portfolio/legal-document-review-langgraph-agent/) runs verification checks through external APIs, and MCP tool servers let an assistant read a calendar or run a search instead of only describing how.
+- **Operations.** Evaluation sets, cost and latency budgets, monitoring, guardrails and compliance. The [Virgil.ai assistant](/portfolio/virgil-ai-health-insurance-agent/) only became usable by a licensed broker because of the HIPAA-guided data handling around the model, not because of the model itself.
+
+The differentiator is no longer the model. Everyone has access to the same models. The differentiator is the data you can reach, the tools you expose, the user experience and the reliability of the whole system. That is why the work now spans the full stack: interface, back end, database, deployment, security and the analytics that prove the feature worked.
+
+What did not change is the unglamorous part. Data quality still decides outcomes. You still need a measurable evaluation before you ship. You still need a deployment you can observe. Teams that skip these because "the model is smart now" rediscover them in production.
+
+### The next gamechanger: reinforcement learning leaves the lab
+
+Reinforcement learning is the technique that beat the world's best Go player in 2016, and for years it stayed a research story with narrow industrial uses. Two things changed. First, reinforcement learning from human feedback is what turned raw language models into assistants people can actually use. Second, the current generation of reasoning models is trained with reinforcement learning on tasks where the answer can be checked, such as mathematics and code, and that training is where much of their recent improvement comes from. RL stopped being an academic curiosity and became part of the production pipeline of the models you call every day.
+
+The frontier that follows is physical. Simulators are now good enough to train control policies for robots at scale, with randomised physics so the policy transfers to real hardware. Vision-language-action models connect perception, language and motor commands in one network. Robot hardware, including humanoids, is getting cheaper every year. Put those together and the division of labour becomes clear: the language model plans in words, the reinforcement-learned policy executes in the world, and the robot stops being pre-programmed and starts being trained.
+
+I expect a strong move toward reinforcement learning for robotics over the next few years, and I expect it to look like the LLM wave did: a few generalist models trained by large labs, then a long tail of integration work in warehouses, factories, inspection, agriculture and care. The honest caveats are real. Sample efficiency is still poor, the gap between simulation and reality bites, safety constraints matter far more when a mistake moves a motor instead of a word, and hardware costs money. Progress will be uneven. But the direction is set, and the companies that benefit will be the ones with the data, the simulators and the integration skills ready when the models arrive.
+
+### What this means if you are building a product now
+
+1. **Do not train what you can prompt.** Start with a foundation model, retrieval and good tool design. Train your own model only when you have the data that proves prompting cannot close the gap.
+2. **Invest in evaluation and data pipelines.** They outlive any model. The team with a clean evaluation set swaps models in a day; the team without one argues about vibes.
+3. **Design for model swaps.** Abstract the model behind your own interface, budget cost and latency, and expect to change vendors.
+4. **Keep humans in the loop where it is regulated.** Health, finance and legal decisions need audit trails, verification steps and GDPR or HIPAA-aware data handling from the first version.
+5. **Watch RL and robotics if you touch the physical world.** Logistics, manufacturing, inspection and field operations will feel the next shift first.
+
+If you want help turning any of this into a working product, that is exactly what I do, from the interface to the deployment and the tracking that shows it worked. [Book a free 15-minute call](/#book) and bring the problem, not a specification.

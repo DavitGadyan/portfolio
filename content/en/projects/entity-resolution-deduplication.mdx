@@ -1,0 +1,54 @@
+---
+title: "Entity Resolution & Record Deduplication"
+date: '2021-06-30'
+lastmod: 2026-10-29
+client: Dave Imrem
+cover: /images/portfolio/entity-resolution.jpg
+coverAlt: "Stock 3D render of a magnifying glass picking out one red figure among grey ones"
+summary: "Entity-resolution work for Dave Imrem to find and remove duplicate records that refer to the same real-world customer across and within datasets. I benchmarked the JedAI toolkit, rejected it on compute time, then trained the ML-based Python dedupe library on a labelled set; output analysis confirmed it matched duplicates well enough to adopt as the solution."
+description: "Entity resolution and record deduplication in Python: JedAI benchmarked and rejected on compute cost, ML-based dedupe library trained on a labelled set to merge duplicate records."
+categories:
+  - data-science-ml
+  - databases-data-eng
+stack:
+  frontend: []
+  backend: []
+  ai:
+    - dedupe (Python)
+    - Active-learning labelling
+    - JedAI (evaluated)
+    - Python
+  data:
+    - Client customer records
+    - Labelled training set
+  infra: []
+  security: []
+links: {}
+outcomes:
+  - Benchmarked JedAI and rejected it because compute time was too high.
+  - Selected and trained the ML-based dedupe library on a labelled training set.
+  - Output analysis confirmed match quality, and dedupe was adopted as the solution.
+metrics:
+  - label: Toolkits benchmarked
+    value: "2 (JedAI, dedupe)"
+  - label: Matching rules
+    value: "hand-written → learned"
+  - label: Rows per customer
+    value: "duplicates → 1"
+featured: false
+---
+
+## The problem
+
+Companies record the same customer more than once: a slightly different spelling, a new email address, a second form submission, and the same person becomes three rows. Entity resolution is the task of working out which records refer to the same real-world entity, across datasets and within them, so that duplicates can be removed before any analysis. It matters most in large public-sector and federal datasets in health, transport, finance and law enforcement, but the client's need was the ordinary business version: clean customer data.
+
+## What I built
+
+- An evaluation of JedAI, the open-source entity-resolution toolkit, which I rejected because its compute time was too high for the client's datasets.
+- A deduplication pipeline on top of [dedupe](https://github.com/dedupeio/dedupe), an open-source Python library that uses machine learning to learn which records match.
+- A labelled training set for the library's active-learning loop, so the model learned from real examples of matching and non-matching pairs rather than hand-written rules.
+- An analysis of the model's output to confirm it was finding the right duplicates before recommending it.
+
+## Outcome
+
+The dedupe-based approach did a good job on the client's data: output analysis showed it matched duplicate records accurately at a compute cost that JedAI could not reach, and it was adopted as one solution to the problem. Cleaner, deduplicated records mean every downstream analysis counts each customer once.

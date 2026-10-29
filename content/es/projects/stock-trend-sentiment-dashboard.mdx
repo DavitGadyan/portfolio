@@ -1,0 +1,37 @@
+---
+title: "Dashboard de tendencias y sentimiento bursátil"
+coverAlt: "Dashboard bursátil de Equeum: selector de ticker, rango de fechas, control de suavizado y gráfico de sentimiento frente a precio"
+summary: "Dashboard web para Equeum (antes Machina Software) que permite a un analista elegir un ticker y comparar su interés de búsqueda en Google Trends con las puntuaciones de sentimiento de varias API, con gráficos de correlaciones y patrones entre ambas series. Construido en Python como dos aplicaciones enlazadas y ampliado con un análisis de sentimiento en Reddit frente a cambios de precio y rentabilidades durante el episodio de GameStop."
+description: "Dashboard bursátil de tendencias y sentimiento para Equeum: app web en Python que une la API de Google Trends, API de sentimiento y datos de Reddit con gráficos de correlación."
+outcomes:
+  - Dos aplicaciones enlazadas que muestran las series de Google Trends y de sentimiento por ticker, con gráficos de correlación.
+  - Sentimiento de Reddit analizado frente a cambios de precio y rentabilidades de meme stocks como GameStop.
+  - El analista elige un ticker de una lista y obtiene la última foto de tendencia y sentimiento sin ejecutar código.
+metrics:
+  - label: Aplicaciones enlazadas
+    value: "2 (tendencias + sentimiento)"
+  - label: Fuentes unidas por ticker
+    value: "4 tipos de fuente"
+  - label: Recogida de datos
+    value: "a mano → elegir un ticker"
+---
+
+## El problema
+
+Equeum (antes Machina Software) quería ver si la atención y el ánimo del público respecto a una acción se movían con su precio. El interés de búsqueda y el sentimiento viven en API distintas, así que un analista tenía que extraer cada fuente a mano antes de poder comparar nada. La petición era una interfaz web en la que alguien elige un ticker y ve de inmediato tendencias, sentimiento y cómo se relacionan.
+
+## Qué construí
+
+- Un dashboard web en el que el usuario selecciona un ticker de una lista de valores soportados.
+- Dos aplicaciones separadas por detrás: una obtiene las últimas tendencias de búsqueda de esa acción desde la API de Google Trends y la otra recoge sus puntuaciones de sentimiento de varias API de sentimiento.
+- Un conjunto de gráficos que alinean ambas series y muestran correlaciones y patrones recurrentes entre el sentimiento y la tendencia de cada valor.
+- Una capa de análisis de Reddit que relaciona cambios de precio y rentabilidades con el sentimiento público hacia acciones concretas, construida en torno al episodio de GameStop.
+- Python de principio a fin, desde los clientes de las API hasta el análisis de correlación que alimenta los gráficos.
+
+## Datos e infraestructura
+
+El valor de la herramienta está en unir fuentes que nunca se diseñaron para unirse: series de Google Trends, puntuaciones de varios proveedores de sentimiento, publicaciones de Reddit e histórico de precios. Cada fuente se obtiene por ticker y se representa junto a las demás, de modo que las vistas de correlación comparan series comparables y no feeds en bruto y separados.
+
+## Resultado
+
+Equeum obtuvo dos aplicaciones enlazadas que convierten la selección de un ticker en series de tendencia y sentimiento con gráficos de correlación, además de un estudio de Reddit que muestra cómo el sentimiento público siguió los movimientos de precio y las rentabilidades de meme stocks como GameStop.

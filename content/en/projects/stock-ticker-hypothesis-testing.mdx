@@ -1,0 +1,50 @@
+---
+title: "Stock Ticker Hypothesis Testing"
+date: '2021-03-29'
+lastmod: 2026-10-29
+client: Yisroel Weisz
+cover: /images/portfolio/stock-analysis.jpg
+coverAlt: "Stock-market chart with price lines, candlesticks and columns of figures in blue and orange"
+summary: "Statistical test of a client's hypothesis that price changes in similarly named stock tickers affect one another. I assembled the market data, framed the idea as a testable hypothesis and ran the time-series analysis in Python. The result confirmed a measurable relationship; the exact details stay confidential at the client's request."
+description: "Python hypothesis test and time-series analysis of market data, confirming a measurable price relationship between similarly named stock tickers for a private client."
+categories:
+  - finance-quant
+  - data-science-ml
+stack:
+  frontend: []
+  backend:
+    - Python
+  ai:
+    - Hypothesis testing
+    - Time-series analysis
+  data:
+    - Market price data
+  infra: []
+  security: []
+links: {}
+outcomes:
+  - "Confirmed a measurable relationship between price changes in similarly named tickers."
+  - "Delivered the statistical evidence behind the result, not just a yes or no."
+  - "The client's idea and the exact method kept confidential."
+metrics:
+  - label: Hypothesis result
+    value: "relationship confirmed"
+  - label: Basis for decision
+    value: "chart impression → statistical test"
+featured: false
+---
+
+## The problem
+
+The client had a hunch about the stock market: that tickers with similar names move together, and that a price change in one shows up in the others. He wanted to know whether the effect was real before building anything on top of it. Because the idea was his, the exact formulation and the tickers involved stay confidential; what I can describe is the shape of the work.
+
+## What I built
+
+- A clean dataset of market price data for the groups of similarly named tickers the client was interested in.
+- A formal statement of the client's idea as a testable hypothesis, so the answer would be a statistical result rather than an impression taken from a chart.
+- Time-series analysis in Python of how price changes in one ticker relate to price changes in its similarly named counterparts.
+- A short write-up of the method and the evidence behind the result.
+
+## Outcome
+
+The analysis found that there is indeed a measurable relationship between price changes in similarly named tickers. The client received the statistical evidence behind that conclusion, which is what he needed to decide whether the idea was worth pursuing further.

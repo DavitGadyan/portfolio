@@ -1,0 +1,33 @@
+---
+title: "Sistema de recomendación híbrido para una plataforma de matchmaking"
+coverAlt: "Ilustración plana de un hombre cogiendo bolsas de compra que salen de un monitor con un icono de carrito"
+summary: "Sistema de recomendación híbrido para la web de matchmaking de Rafi Newman, en tres capas Python: reglas del cliente, como el emparejamiento por género y una diferencia máxima de edad; filtrado colaborativo basado en las elecciones previas de los miembros; y una capa basada en contenido, un ensemble de regresión logística, Random Forest y red neuronal. Sus emparejamientos coincidieron con los que los expertos de la empresa recomendaban a mano."
+description: "Recomendador híbrido de tres capas para una web de matchmaking: reglas de negocio, filtrado colaborativo y un ensemble de regresión logística, Random Forest y red neuronal en Python."
+outcomes:
+  - "Arquitectura de tres capas: reglas del cliente, filtrado colaborativo y, por último, un modelo ensemble basado en contenido."
+  - Las recomendaciones coincidieron con las parejas que los expertos humanos de la empresa recomendaban manualmente.
+metrics:
+  - label: Capas del recomendador
+    value: "3 (reglas, colaborativa, contenido)"
+  - label: Modelos del ensemble
+    value: "3 (reg. logística, Random Forest, red neuronal)"
+  - label: Selección de parejas
+    value: "a mano → automatizada"
+  - label: Coincidencia con expertos
+    value: "igual que las elecciones manuales"
+---
+
+## El problema
+
+Una web de matchmaking emparejaba a sus miembros en gran medida a mano, apoyándose en expertos internos que conocían las reglas y a las personas. El cliente quería un sistema de recomendación capaz de proponer parejas automáticamente, respetar las restricciones duras que el negocio ya aplicaba, aprender de lo que los miembros habían elegido antes y, aun así, producir emparejamientos que los expertos reconocieran como buenos.
+
+## Qué construí
+
+- Una primera capa basada en reglas que codifica las restricciones del cliente, como el emparejamiento hombre-mujer y una diferencia máxima de edad permitida, de modo que nada que incumpla una regla de negocio llegue a la fase de ranking.
+- Una capa de filtrado colaborativo que sugiere parejas a partir de las elecciones previas de los miembros, para que el comportamiento de miembros similares informe las nuevas recomendaciones.
+- Una capa final basada en contenido implementada como modelo de machine learning: un ensemble de regresión logística, Random Forest y una red neuronal que puntúa las parejas candidatas según sus atributos.
+- Un pipeline en Python que ejecuta las tres capas en secuencia, de forma que cada capa filtra o clasifica la salida de la anterior.
+
+## Resultado
+
+El sistema híbrido dio resultados correctos y sus recomendaciones coincidieron con las parejas que los propios expertos de la empresa venían recomendando manualmente. Esa coincidencia con el criterio experto es lo que hizo que el recomendador fuera utilizable junto al proceso que la empresa ya tenía.

@@ -1,0 +1,57 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 20
+          cache: npm
+      # No `static_site_generator: next` here: that would inject basePath/images.unoptimized and break the image optimizer.
+      - uses: actions/configure-pages@v6
+      - run: npm ci
+      - name: Build (static export + image optimisation + checks)
+        run: npm run build
+        env:
+          # Repo variables: set BASE_PATH=/portfolio and SITE_URL=https://davitgadyan.github.io/portfolio while on the
+          # github.io URL; set BASE_PATH='' , SITE_URL=https://davidgadyan.com and CUSTOM_DOMAIN=davidgadyan.com after DNS cut-over.
+          # GTM_ID (GTM-XXXXXXX) switches tracking to a Tag Manager container; GA_ID / ADS_* are only used without a container.
+          NEXT_PUBLIC_SITE_URL: ${{ vars.SITE_URL || 'https://davidgadyan.com' }}
+          NEXT_PUBLIC_BASE_PATH: ${{ vars.BASE_PATH || '' }}
+          CUSTOM_DOMAIN: ${{ vars.CUSTOM_DOMAIN || '' }}
+          VERIFY_STRICT_ES: ${{ vars.VERIFY_STRICT_ES || '' }}
+          NEXT_PUBLIC_GTM_ID: ${{ vars.GTM_ID || '' }}
+          NEXT_PUBLIC_GA_ID: ${{ vars.GA_ID || '' }}
+          NEXT_PUBLIC_ADS_ID: ${{ vars.ADS_ID || '' }}
+          NEXT_PUBLIC_ADS_LABEL_LEAD: ${{ vars.ADS_LABEL_LEAD || '' }}
+          NEXT_PUBLIC_ADS_LABEL_BOOKING: ${{ vars.ADS_LABEL_BOOKING || '' }}
+      - run: npm run check:bundle
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: out
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5

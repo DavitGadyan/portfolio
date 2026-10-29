@@ -1,0 +1,28 @@
+# dependencies
+node_modules/
+# next.js
+.next/
+out/
+next-env.d.ts
+*.tsbuildinfo
+# image optimizer cache/output
+public/images/nextImageExportOptimizer/
+# generated at prebuild
+public/llms.txt
+public/llms-full.txt
+public/es/llms.txt
+public/es/llms-full.txt
+# env
+.env*.local
+# tooling
+.lighthouse/
+playwright-report/
+test-results/
+.DS_Store
+content/_source/
+.playwright-mcp/
+
+public/nextImageExportOptimizer/
+errors/
+public/images/**/nextImageExportOptimizer/
+legacy-out/

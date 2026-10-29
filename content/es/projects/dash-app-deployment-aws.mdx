@@ -1,0 +1,37 @@
+---
+title: "Despliegue de una app Dash de ML en AWS"
+coverAlt: "Sitio de Jacqueline McShan: cabecera azul con retrato, texto About Me y un menú Simulations"
+summary: "Despliegue de la aplicación Dash Plotly de ML de Jacqueline McShan en AWS. Revisé la documentación, fijé las versiones de los paquetes para que la app se instale de forma reproducible e hice los ajustes necesarios para el alojamiento; después la puse en marcha en una instancia AWS EC2 con Route 53 dirigiendo las peticiones a su dominio propio. El sitio está en producción en jacquelinemcshan.net."
+description: "Aplicación Dash Plotly puesta en producción en AWS: fijación de dependencias y revisión de la documentación, alojamiento en EC2 y enrutado con Route 53 a un dominio propio."
+outcomes:
+  - "Aplicación alojada en una instancia AWS EC2 con Route 53 enrutando a un dominio propio."
+  - "Documentación revisada y versiones de paquetes fijadas para un alojamiento reproducible."
+  - "Sitio en producción en jacquelinemcshan.net."
+metrics:
+  - label: Alojamiento
+    value: "máquina local → AWS EC2"
+  - label: Dominio público
+    value: "jacquelinemcshan.net en producción"
+  - label: Versiones de dependencias
+    value: "sin fijar → fijadas y reproducibles"
+---
+
+## El problema
+
+Jacqueline McShan tenía una aplicación Dash Plotly de ML que funcionaba en su máquina y quería tenerla en la web pública bajo su propio dominio. Pasar de un script local a un servicio alojado implicaba fijar las versiones de las dependencias, documentar cómo se instala y se ejecuta la app, y elegir servicios de AWS que la sirvieran con fiabilidad sin una configuración pesada.
+
+## Qué construí
+
+- Una documentación revisada que describe cómo instalar, configurar y ejecutar la aplicación en un servidor.
+- Versiones de paquetes fijadas, para que el entorno en AWS coincida con aquel en el que se desarrolló la app y pueda reconstruirse en cualquier momento.
+- Los cambios de código que la aplicación necesitaba para funcionar como servicio alojado y no como servidor de desarrollo local.
+- Una instancia AWS EC2 que aloja la aplicación Dash.
+- La configuración DNS en Route 53 que redirige las peticiones del dominio propio a la instancia.
+
+## Cómo se entregó
+
+Traté el despliegue como un pequeño trabajo de puesta en producción y no como un copiar y ejecutar. Las dependencias reproducibles y una documentación clara fueron lo primero, porque una app que solo funciona en un portátil no se puede volver a alojar ni arreglar más adelante. Una vez estabilizado el conjunto de paquetes, la instancia EC2 y los registros de Route 53 fueron directos.
+
+## Resultado
+
+La aplicación está alojada en EC2 y accesible en jacquelinemcshan.net a través de Route 53, con documentación y versiones fijadas que hacen reproducible el alojamiento. La clienta tiene una configuración que puede reconstruirse a partir de la documentación, en lugar de una que solo funciona en una única máquina.

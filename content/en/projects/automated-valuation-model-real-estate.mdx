@@ -1,0 +1,58 @@
+---
+title: "Automated Valuation Model & Real Estate Bot"
+date: '2021-07-07'
+lastmod: 2026-10-29
+client: Chris Ambas
+cover: /images/portfolio/avm.jpg
+coverAlt: "Model house and magnifying glass on floor plans with a piggy bank behind"
+summary: "Automated valuation model for the Australian property market plus a broker-style evaluation bot, built for a private client. I collected listings through the Domain.com.au API and by scraping real-estate sites, trained an XGBoost model in Python that reached around 84% R² and beat the other algorithms tested, then prototyped the client's profit-maximising evaluation logic."
+description: "Automated valuation model for Australian property: Domain.com.au API and web-scraped listings, XGBoost in Python at around 84% R², plus an alpha broker evaluation bot."
+categories:
+  - data-science-ml
+  - databases-data-eng
+stack:
+  frontend: []
+  backend:
+    - Python
+  ai:
+    - XGBoost
+    - Feature engineering
+    - Model comparison
+  data:
+    - Domain.com.au API
+    - Web scraping of real-estate listings
+  infra: []
+  security: []
+links: {}
+outcomes:
+  - "XGBoost AVM reached around 84% R² on Australian property prices, outperforming the other algorithms tested."
+  - "Training data assembled from the Domain.com.au API and direct scraping of real-estate websites."
+  - "Alpha bot implementing the client's broker evaluation algorithm, feature-complete and waiting on data coverage."
+metrics:
+  - label: Valuation model R²
+    value: "~84%"
+  - label: Algorithm benchmark
+    value: "XGBoost beat all alternatives tested"
+  - label: Broker bot features
+    value: "all implemented (alpha)"
+featured: false
+---
+
+## The problem
+
+The client wanted two things for the Australian real-estate market: a model that predicts a property's price as closely as possible, and a bot that evaluates a property the way an experienced broker would, to find the deal that yields the highest profit. Neither existed, and both depended on property data that first had to be collected.
+
+## What I built
+
+- A data-collection layer that pulled listings through APIs such as the [Domain.com.au developer API](https://developer.domain.com.au/) and scraped additional data directly from real-estate websites.
+- Feature engineering over the collected listings to turn raw property records into model inputs.
+- An XGBoost regression model, chosen after comparing it against other algorithms on the same data; it outperformed the alternatives.
+- A prototype of the broker evaluation algorithm, implemented from the client's description of how a broker assesses a property for maximum profit.
+
+## How it was delivered
+
+Stage one was the valuation model. My target metric was R², and the final XGBoost model reached around 84%, a strong result for this use case. Stage two was the broker bot: the client shared the evaluation logic, I built the prototype and started testing. The alpha has all the features implemented; what it still needs is enough data to cover every combination of inputs the algorithm can ask for.
+
+## Outcome
+
+An automated valuation model at around 84% R² for Australian property prices, built on data I collected through the Domain.com.au API and web scraping, and a feature-complete alpha of the client's profit-maximising broker bot. The remaining work is data coverage rather than code.

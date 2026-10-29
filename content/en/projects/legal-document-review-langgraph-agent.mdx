@@ -1,0 +1,73 @@
+---
+title: "Legal Document Review Agent (Gemini + LangGraph)"
+date: '2024-08-06'
+lastmod: '2026-10-29'
+client: Alan Arnott
+cover: /images/portfolio/gemini_langgraph.png
+coverAlt: "Illustration linking Google Gemini, a MultiAgent label and LangGraph, with two cartoon robots"
+summary: "Multi-agent document-review API for a law firm's due-diligence workflow, built with LangChain and LangGraph on Google Gemini. It runs AI verification checks on cross-references, page numbers, party addresses, signature blocks and ABN/ACN identifiers, validates ABN/ACN against an external API, accepts configurable questions and recommendation counts from the web app, processes long contracts and generates Word review reports."
+description: "Multi-agent legal document-review API on LangChain, LangGraph and Google Gemini: dynamic verification checks, external ABN/ACN validation, long-contract processing and Word reports."
+categories:
+  - ai-agents
+  - security-compliance
+  - fullstack-uiux
+stack:
+  frontend: []
+  backend:
+    - Python
+    - Document-review API
+    - Word report generation
+  ai:
+    - LangChain
+    - LangGraph
+    - Google Gemini
+    - Multi-agent workflow
+    - Long-context processing
+  data: []
+  infra: []
+  security:
+    - External ABN/ACN verification API
+    - AI document-verification checks
+links: {}
+outcomes:
+  - "AI checks for cross-references, page numbers, party addresses, signature blocks and ABN/ACN formatting."
+  - "ABN/ACN authenticity and digit count verified against an external API."
+  - "Hard-coded prompts replaced with arbitrary user-supplied questions and variables, plus a configurable number of recommendations."
+  - "Long contracts processed end to end via a multi-agent workflow on Gemini's extended context window."
+  - "Ready-to-use Word review reports generated automatically."
+metrics:
+  - label: Recommendation count
+    value: "fixed 10 → configurable"
+  - label: Review prompts
+    value: "hard-coded → user-defined"
+  - label: Verification check types
+    value: "5 (cross-refs, pages, addresses, signatures, ABN/ACN)"
+  - label: ABN/ACN identifiers
+    value: "assumed → verified via external API"
+featured: true
+order: 6
+---
+
+## The problem
+
+A law firm was already using a document-review API in its due-diligence workflow, but it was rigid: hard-coded prompts, a fixed list of ten recommendations, no room for long contracts, and no check that the Australian business identifiers (ABN/ACN) quoted in a document were real. This phase extended the API with dynamic verification checks, external validation and configurable output, all driven by a multi-agent AI pipeline.
+
+## What I built
+
+I architected and implemented a LangChain and LangGraph system backed by Google's Gemini LLM:
+
+- A document-verification section with AI-driven checks for cross-references, page numbers, party addresses, signature blocks, and ABN/ACN presence and formatting.
+- External validation through an ABN/ACN verification API that confirms each identifier is authentic and has the right digit count.
+- Dynamic questioning: the API accepts arbitrary lists of questions and variables from the web app, so the firm defines its own checks instead of relying on hard-coded prompts.
+- A parameterised recommendation response, so the client chooses how many improvement suggestions they want instead of a fixed ten.
+- A multi-agent workflow on Gemini's extended context window that processes lengthy contracts and due-diligence materials end to end.
+- Automated generation of ready-to-use Word review reports that fit the firm's internal processes.
+- Documentation and a replication package so future developers can maintain and extend the system.
+
+## Security and compliance
+
+Due diligence is a verification job, and the API treats it as one. It checks the document against itself (cross-references, page numbers, signature blocks) and checks ABN/ACN numbers against an external source of truth, so a mistyped or fabricated identifier is caught before anyone relies on it.
+
+## Outcome
+
+The firm's reviewers can now ask the API any set of questions, choose how many recommendations they want, run it over long contracts and receive a Word report at the end, with business identifiers verified rather than assumed. The documentation and replication package mean the system can be maintained and extended without me.

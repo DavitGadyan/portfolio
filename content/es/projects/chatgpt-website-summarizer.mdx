@@ -1,0 +1,31 @@
+---
+title: "Resumen y extracción de información web con ChatGPT"
+coverAlt: "Manos tecleando en un portátil con un gráfico luminoso de Chat GPT con cabeza y engranajes"
+summary: "Aplicación web que recibe una URL, hace scraping de la página y envía el contenido a ChatGPT para resumirlo y extraer los datos clave especificados por el cliente, devueltos en una tabla limpia descargable como archivo Excel. Desarrollada en Python Dash con la API de ChatGPT para un cliente particular como herramienta de URL de entrada y resumen estructurado de salida."
+description: "App web en Python Dash que hace scraping de una URL, la resume con la API de ChatGPT, extrae los campos definidos por el cliente y la exporta como tabla Excel descargable."
+outcomes:
+  - "Aplicación web de URL de entrada y resumen estructurado de salida con descarga limpia en Excel."
+  - "Datos clave extraídos según los campos especificados por el cliente, no un resumen genérico."
+metrics:
+  - label: De página a datos estructurados
+    value: "1 URL → tabla Excel"
+  - label: Lectura y copia
+    value: "manual → automatizada"
+  - label: Campos extraídos
+    value: "definidos por el cliente, no genéricos"
+---
+
+## El problema
+
+El cliente necesitaba convertir páginas web en información estructurada con rapidez: pegar una URL y recibir un resumen y un conjunto fijo de datos clave que le interesaban, en un formato que se abriera en una hoja de cálculo. Leer cada página y copiar los datos a mano no escalaba, y un resumidor genérico no devolvería los campos concretos que el cliente quería.
+
+## Qué construí
+
+- Una aplicación web en Python Dash con un único campo de entrada para la URL.
+- Un paso de scraping que descarga la página y extrae su contenido.
+- Una integración con la API de ChatGPT que resume el contenido extraído y saca los datos clave especificados por el cliente, de modo que la salida sigue esos campos y no un resumen libre.
+- Una tabla de resultados limpia dentro de la app, descargable como archivo Excel.
+
+## Resultado
+
+Una herramienta de URL de entrada y resumen estructurado de salida: el cliente pega un enlace, la app hace scraping, ChatGPT lo resume según la lista acordada de datos clave y el resultado aparece en una tabla que puede descargarse en Excel. Una pequeña aplicación web sustituyó la lectura y el copiado manuales.

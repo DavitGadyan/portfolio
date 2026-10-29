@@ -1,0 +1,57 @@
+---
+title: "AI Persona Content Pipeline (Stable Diffusion)"
+date: '2024-02-12'
+lastmod: '2026-10-29'
+client: W Krogmann
+cover: /images/portfolio/fit_aitana2.jpg
+coverAlt: "AI-generated photoreal portrait of a woman with pink hair against a white background"
+summary: "Photoreal AI persona in the style of Aitana Lopez, built for a social-media client by fine-tuning Stable Diffusion through Automatic1111 on a local NVIDIA 2080 Ti. I curated the dataset, trained the model and ran a daily content pipeline that produced consistent, on-brand imagery to grow the follower base."
+description: "AI persona content pipeline: Stable Diffusion fine-tuned via Automatic1111 on a local NVIDIA 2080 Ti GPU, with a curated dataset and daily photoreal social-media imagery."
+categories:
+  - computer-vision
+  - ai-marketing
+stack:
+  frontend: []
+  backend: []
+  ai:
+    - Stable Diffusion
+    - Automatic1111
+    - Model fine-tuning
+  data:
+    - Curated image dataset
+  infra:
+    - Local NVIDIA 2080 Ti GPU
+  security: []
+links: {}
+outcomes:
+  - "Fine-tuned model producing consistent, realistic imagery to a defined aesthetic."
+  - "Daily content cadence established to grow the persona's follower base."
+  - "Whole pipeline, from fine-tuning to generation, run on a single local GPU."
+metrics:
+  - label: Content cadence
+    value: "daily"
+  - label: Training and generation hardware
+    value: "1 local GPU (NVIDIA 2080 Ti)"
+  - label: Pipeline stages owned
+    value: "4 of 4"
+featured: false
+---
+
+## The problem
+
+AI-generated content had become a market of its own, and the client wanted a virtual persona in the style of Aitana Lopez (@fit_aitana): a photoreal character whose images could be published every day to build an audience. A stock model can produce a convincing face once; the hard part is producing the same face, in the same aesthetic, on demand. The job was to make that consistency repeatable.
+
+## What I built
+
+- Stable Diffusion running through the Automatic1111 web UI, installed and configured on a local machine with an NVIDIA 2080 Ti GPU so training and generation stayed in-house with quick turnaround.
+- A collected and preprocessed dataset that defined the persona's look and the target aesthetic.
+- A fine-tuned Stable Diffusion model trained on that dataset, using the 2080 Ti for the training runs.
+- A daily content-generation routine that produced realistic, engaging images on a fixed cadence to keep the account active and growing.
+
+## How it was delivered
+
+I was the sole builder across all four stages: environment setup, data preparation, model training and ongoing generation. Keeping the whole stack on one local GPU kept processing efficient and turnaround short, so changes to the aesthetic could be tested and regenerated the same day.
+
+## Outcome
+
+A fine-tuned model that produces consistent, realistic imagery to a defined aesthetic, and a daily content cadence built to grow the persona's follower base. The result is a generative-AI content pipeline rather than a one-off image: the same character, on brand, every day.

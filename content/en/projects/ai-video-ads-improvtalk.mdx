@@ -1,0 +1,73 @@
+---
+title: "Generative AI Video Ads for ImprovTalk"
+date: 2026-08-20
+lastmod: 2026-10-29
+cover: /images/portfolio/improvtalk.png
+coverAlt: "ImprovTalk iOS app icon and the tagline Practice, Connect, Improvise on a purple gradient"
+summary: "Generative AI video ads for ImprovTalk, an iOS app for building charisma, communication and rapport skills. I built a pipeline on the Higgsfield API, driven by Claude, that generates ad variants tailored to each customer segment and to Instagram, Meta, TikTok and YouTube, and compared Seedance and Kling 2.6 Pro as the video models. Code is on GitHub."
+description: "Generative AI video ads for the ImprovTalk iOS app: Higgsfield API driven by Claude, Seedance and Kling 2.6 Pro, creative tailored per segment for Instagram, Meta, TikTok and YouTube."
+categories:
+  - ai-marketing
+  - computer-vision
+stack:
+  frontend: []
+  backend:
+    - Higgsfield API
+  ai:
+    - Claude
+    - Seedance
+    - Kling 2.6 Pro
+    - Prompt engineering
+    - Creative automation
+  data:
+    - Instagram, Meta, TikTok and YouTube ad placements
+  infra: []
+  security: []
+links:
+  github: https://github.com/DavitGadyan/AIVideo_Generation_higgsfield
+  video:
+    - https://youtu.be/x0TMzQMH-w0
+    - https://youtu.be/dzK5pUgSMo0
+outcomes:
+  - Segment- and platform-specific video ad variants generated from a single pipeline.
+  - Two video models, Seedance and Kling 2.6 Pro, compared on the same brief with both results published.
+  - Pipeline code published on GitHub.
+metrics:
+  - label: Ad platforms targeted
+    value: "4 (Instagram, Meta, TikTok, YouTube)"
+  - label: Video models compared
+    value: "2 (Seedance, Kling 2.6 Pro)"
+  - label: Ad variants per brief
+    value: "1 pipeline → per segment and platform"
+featured: true
+order: 8
+---
+
+## The problem
+
+ImprovTalk is an iOS app that helps people develop charisma, communication and rapport skills. To grow, it needed video ads on Instagram, Meta, TikTok and YouTube, and the same creative rarely works for every platform and every customer segment. Producing that many variants by hand is slow and expensive, so the goal was to generate them with AI from a single pipeline.
+
+## What I built
+
+- A generation pipeline on the Higgsfield API, with Claude driving the prompts and creative direction for each customer segment and social platform.
+- Segment- and platform-specific variants produced from one brief, so a single run yields a tailored ad for each channel rather than one generic clip.
+- A model comparison on the same brief, Seedance against Kling 2.6 Pro, so the difference in output quality is visible before a campaign commits to one model.
+- The pipeline code, published on GitHub.
+
+## How it was delivered
+
+Most of the work is in the prompting rather than the rendering. Claude turns the brief for a given segment and platform into the content the video model needs, and the pipeline sends it to the Higgsfield API, where the chosen model, Seedance or Kling 2.6 Pro, renders the clip. Running the same brief through both models is how the comparison below was produced.
+
+## Outcome
+
+Segment- and platform-specific video ad variants for ImprovTalk from one automated pipeline, two video models compared side by side, and the code published for reuse. The videos below are the Seedance and Kling 2.6 Pro outputs.
+
+## Video
+
+Seedance:
+
+<YouTube id="x0TMzQMH-w0" />
+
+Kling 2.6 Pro:
+
+<YouTube id="dzK5pUgSMo0" />

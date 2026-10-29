@@ -1,0 +1,35 @@
+---
+title: "API REST en R y gráficos Plotly para una plataforma médica"
+coverAlt: "Logotipo del lenguaje R junto a un perfil humano de circuitos sobre fondo azul oscuro"
+summary: "API REST en R que pone en producción un algoritmo de KPIs para expertos en imagen médica CTE dentro de una plataforma de evaluación de expertos existente en Vue.js, con gráficos interactivos en R Plotly construidos según la especificación del cliente. Entregado como único desarrollador en tres contratos consecutivos, cada uno ampliando el anterior con mejoras y nuevas funciones."
+description: "API REST en R que sirve un algoritmo de KPIs para expertos en imagen médica CTE, integrada en una plataforma Vue.js con gráficos interactivos en R Plotly, en tres contratos."
+outcomes:
+  - "Algoritmo de KPIs para expertos en imagen médica CTE en producción, servido por REST desde R."
+  - "Gráficos interactivos en Plotly construidos según la especificación del cliente dentro de la app Vue.js existente."
+  - "Tres contratos consecutivos, cada uno ampliando el anterior."
+metrics:
+  - label: Contratos consecutivos
+    value: "3"
+  - label: Algoritmo de KPIs
+    value: "script aislado → API REST en producción"
+  - label: Resultados para los usuarios
+    value: "números en bruto → gráficos interactivos"
+---
+
+## El problema
+
+El cliente tenía un sistema de evaluación de expertos médicos construido en Vue.js y un algoritmo, escrito en R, que calcula KPIs para expertos en imagen médica CTE. El algoritmo funcionaba como script; no funcionaba como parte del producto. Había que ponerlo en producción para que la aplicación Vue.js pudiera llamarlo, y los usuarios de la aplicación necesitaban ver sus resultados como gráficos interactivos y no como números en bruto.
+
+## Qué construí
+
+- Una API REST escrita en R que envuelve el algoritmo de KPIs y lo expone a la aplicación Vue.js existente, convirtiendo un script aislado en un servicio de producción.
+- Gráficos interactivos construidos con R Plotly, según las especificaciones e instrucciones del cliente, para los usuarios de la aplicación principal.
+- Mejoras sucesivas y nuevas funciones a lo largo de tres contratos consecutivos, cada uno ampliando la API y las visualizaciones entregadas en el anterior.
+
+## Cómo se entregó
+
+El encargo se estructuró en tres contratos consecutivos, cada uno centrado en mejorar lo que ya existía y en desarrollar nuevas funciones encima. Fui el único desarrollador, trabajando a partir de las especificaciones del cliente e integrando directamente con el frontend Vue.js existente, de modo que el servicio en R y los gráficos pasaron a formar parte de la plataforma en lugar de ser una herramienta aparte.
+
+## Resultado
+
+Un algoritmo de puntuación para expertos en imagen médica CTE que funciona en producción detrás de una API REST en R, con gráficos interactivos en Plotly integrados en la plataforma Vue.js del cliente. El resultado final fue justo lo que el cliente buscaba, y la colaboración continuó de forma natural durante los tres contratos.

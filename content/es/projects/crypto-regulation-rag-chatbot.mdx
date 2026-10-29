@@ -1,0 +1,39 @@
+---
+title: "Chatbot RAG sobre regulación cripto (GPT-4 + Pinecone)"
+coverAlt: "Diagrama RAG: fuentes de datos y base vectorial Pinecone, ChatGPT-4, recuperación e interfaz"
+summary: "Asistente de investigación RAG sobre la regulación de blockchain y criptoactivos de 2024 en varias jurisdicciones. Pipelines en LangChain convierten PDF, CSV, HTML y texto plano en vectores dentro de una base de datos vectorial Pinecone, GPT-4 responde preguntas legales por jurisdicción con citas de las fuentes en una interfaz Streamlit, y todo se entrega con configuración Docker y scripts de despliegue para que otros equipos lo adapten."
+description: "Chatbot RAG sobre regulación cripto: LangChain, GPT-4, base de datos vectorial Pinecone, interfaz Streamlit, OCR para PDF escaneados, despliegue con Docker y Streamlit Cloud."
+outcomes:
+  - Recuperación en menos de un segundo sobre textos legales indexados en Pinecone.
+  - Ingesta multiformato (PDF, CSV, HTML, texto plano) con OCR automático para PDF escaneados.
+  - Cada respuesta cita sus fuentes en línea, por jurisdicción.
+  - Entregado con scripts de despliegue, configuración Docker y README para que otros equipos lo adapten a sus propios datos.
+metrics:
+  - label: Latencia de recuperación
+    value: "< 1 s"
+  - label: Formatos de documento ingeridos
+    value: "4 (PDF, CSV, HTML, texto)"
+  - label: Citas de fuentes
+    value: "en línea, en cada respuesta"
+---
+
+## El problema
+
+La regulación de blockchain y criptoactivos cambió deprisa en 2024 y varía según la jurisdicción, y las fuentes primarias están repartidas entre PDF escaneados, tablas CSV, páginas HTML de sitios como Global Legal Insights y notas en texto plano. Responder a una sola pregunta obligaba a leerlas todas y aun así no quedaba claro de qué documento salía cada afirmación. El objetivo era un chatbot que respondiera preguntas legales por jurisdicción en segundos y mostrara la fuente de cada respuesta.
+
+## Qué construí
+
+- Un backend en LangChain que convierte los textos legales y regulatorios en vectores y los indexa en Pinecone para recuperarlos en menos de un segundo.
+- GPT-4 como modelo de generación, con prompts que combinan el contexto recuperado con la pregunta del usuario para que las respuestas se apoyen en la normativa indexada.
+- Un frontend en Streamlit: una interfaz conversacional donde el usuario plantea preguntas por jurisdicción y ve las citas de las fuentes en línea.
+- Pipelines de ingesta para PDF, CSV, HTML y texto plano, con OCR automático para PDF escaneados, análisis de tablas CSV y web scraping de HTML desde Global Legal Insights.
+- Ajuste de la base de datos vectorial: dimensiones de los embeddings y parámetros del índice de Pinecone elegidos para un almacenamiento económico y búsquedas por similitud rápidas a escala.
+- Empaquetado con scripts de despliegue, configuración Docker y un README, además de una capa de conectores pensada para añadir bases de datos, API o fuentes en streaming con cambios mínimos de código.
+
+## Datos e infraestructura
+
+La capa de recuperación es lo que hace fiables las respuestas. Cada documento se vectoriza y se guarda en Pinecone junto con su referencia de origen, que es lo que permite a la interfaz citar de dónde sale cada pasaje. Ajustar las dimensiones de los embeddings y los parámetros del índice mantuvo bajo el coste de almacenamiento sin ralentizar la búsqueda por similitud. La aplicación corre en Streamlit Cloud, y la configuración Docker y los scripts permiten que un equipo la despliegue igualmente en su propia infraestructura.
+
+## Resultado
+
+Recuperación en menos de un segundo sobre el corpus regulatorio, ingesta multiformato con OCR y una cita en línea en cada respuesta. Como la solución se entrega como un paquete documentado y en contenedores, con una capa de conectores ampliable, otros equipos pueden apuntarla a sus propios documentos legales o de políticas en lugar de empezar de cero.

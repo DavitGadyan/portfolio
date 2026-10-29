@@ -1,0 +1,67 @@
+---
+title: "Python Cluster Analysis Web App"
+date: '2020-05-25'
+lastmod: 2026-10-29
+client: Reuben Vandeventer
+cover: /images/portfolio/input-section-clust-app-black.jpg
+coverAlt: "Clustering web app: uploaded CSV, D3 force-directed graph with coloured clusters and histogram legend"
+summary: "No-code clustering workbench built for Reuben Vandeventer (product owned by SecondSight): analysts upload a CSV or XLSX file, pick a record column and three dimensions, run DBSCAN, MeanShift or MST clustering from a Python web app, explore the result as an interactive D3 force-directed graph and export cluster IDs back to Excel. Deployed on Heroku."
+description: "Self-serve clustering web app: CSV/XLSX upload, DBSCAN, MeanShift and MST in Python, interactive D3 force-directed graph, Excel export, deployed on Heroku."
+categories:
+  - data-science-ml
+  - fullstack-uiux
+  - cloud-devops-llmops
+stack:
+  frontend:
+    - D3.js force-directed graph
+    - Web upload and selection UI
+  backend:
+    - Python
+  ai:
+    - DBSCAN
+    - MeanShift
+    - MST clustering
+    - Data normalisation
+  data:
+    - CSV/XLSX I/O
+  infra:
+    - Heroku
+  security: []
+links:
+  archived:
+    - label: Heroku demo (synth3-s2shape)
+      note: Demo retired
+outcomes:
+  - "Usable by non-coders and ML engineers alike: upload, normalise, choose X, Y and Z lenses, tune hyperparameters."
+  - Interactive D3 force-directed graph with node selection and colouring by dimension.
+  - Results exported back to CSV or Excel with cluster IDs appended for downstream analysis.
+  - Deployed as a Heroku web app; product rights held by SecondSight.
+metrics:
+  - label: Clustering algorithms
+    value: "3 (DBSCAN, MeanShift, MST)"
+  - label: Analysis dimensions
+    value: "3 lenses (X, Y, Z)"
+  - label: Coding required
+    value: "code → no-code"
+featured: false
+---
+
+## The problem
+
+Clustering is useful well beyond the people who can code it. The client wanted a tool that would let an analyst who understands clustering techniques, but not Python, load a dataset, try several algorithms, see the structure and take the result away in a spreadsheet, while still being flexible enough for ML engineers. The product was built for Reuben Vandeventer and is owned by SecondSight.
+
+## What I built
+
+- A Python web application with a fixed workflow: upload a CSV or XLSX file, choose the record-name column that uniquely identifies each row, optionally normalise the data, and select X, Y and Z lenses as the three dimensions for analysis.
+- Three clustering algorithms, DBSCAN, MeanShift and MST, each with its hyperparameters exposed in the UI so users can tune them without touching code.
+- An interactive D3 force-directed network graph as the main output, with nodes selectable and coloured by dimension so clusters can be inspected visually.
+- Export of the enriched dataset to CSV or Excel with new columns for cluster IDs and other useful information for downstream analysis.
+- Deployment of the app on Heroku so the client could use it from a browser without any local setup.
+
+## How it was delivered
+
+The whole product runs as a single web app, so the upload, normalisation, clustering and graph rendering live behind one URL. Hosting it on Heroku kept operations simple for a small team: no servers to manage, and the client could share a link rather than install anything. The original Heroku demo has since been retired.
+
+## Outcome
+
+The application made clustering accessible to non-coders and ML engineers alike, with the full loop from raw spreadsheet to interactive graph to exported cluster IDs handled inside the browser. SecondSight holds all rights to the product.

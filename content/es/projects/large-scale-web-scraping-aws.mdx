@@ -1,0 +1,36 @@
+---
+title: "Web scraping a gran escala en AWS (Scrapy, EC2, S3)"
+coverAlt: "Logotipo de Scrapy, un signo más y el logotipo de Amazon EC2 con un sello de seguridad"
+summary: "Pipeline de web scraping a gran escala para Cary Sparrow: un crawler Scrapy en Python que recoge datos de millones de páginas de indeed.com, rota proxies mediante Crawlera para no ser bloqueado y envía cada elemento, a través de un middleware propio, a un bucket de AWS S3 bajo una convención definida de carpetas y nombres. Desplegado en una instancia Ubuntu de AWS EC2 y ejecutado de forma programada."
+description: "Crawler Scrapy programado en AWS EC2 con rotación de proxies Crawlera y middleware propio hacia S3: millones de datos de ofertas de empleo de Indeed en almacenamiento S3 estructurado."
+outcomes:
+  - Millones de datos extraídos y almacenados en S3 bajo una convención definida de carpetas y nombres.
+  - Ejecución programada desde una instancia Ubuntu de EC2 sin bloqueos.
+  - Un middleware propio de Scrapy enviaba los elementos extraídos directamente a S3.
+metrics:
+  - label: Páginas de Indeed rastreadas
+    value: "millones"
+  - label: Ejecuciones del crawler
+    value: "manuales → programadas en EC2"
+  - label: Rastreos bloqueados
+    value: "ninguno (rotación Crawlera)"
+---
+
+## El problema
+
+El cliente necesitaba datos de millones de páginas de indeed.com, no una muestra puntual, y necesitaba que aterrizaran en un bucket de AWS S3 con una estructura de carpetas y una convención de nombres concretas para que otras herramientas pudieran consumirlos. A ese volumen fallan dos cosas: el bloqueo, porque una única IP que golpea un sitio millones de veces acaba cortada, y la operación, porque un rastreo que solo se ejecuta cuando alguien se acuerda de lanzarlo no es un pipeline de datos.
+
+## Qué construí
+
+- Un crawler sobre el framework Scrapy de Python, escrito para la estructura de las páginas de ofertas de Indeed.
+- Crawlera como rotador de proxies, de modo que las peticiones salen desde un conjunto cambiante de direcciones y el bot no es bloqueado.
+- Un middleware propio de Scrapy que envía cada elemento extraído a S3 según se produce, escribiendo en el esquema de carpetas y nombres de archivo que especificó el cliente.
+- Despliegue en una instancia Ubuntu de AWS EC2, con el spider ejecutándose según una programación definida y no a mano.
+
+## Datos e infraestructura
+
+EC2 aporta la máquina siempre encendida, la programación lanza cada ejecución, Crawlera se encarga del lado de red y S3 guarda la salida bajo la estructura acordada. Como la convención de carpetas y nombres se pactó de antemano, los datos quedaban listos para su uso posterior directamente desde el bucket.
+
+## Resultado
+
+El pipeline extrajo millones de datos de Indeed y los almacenó en S3 con la estructura acordada, ejecutándose de forma programada desde EC2 sin ser bloqueado. Es un sistema pequeño, pero tiene la forma que acaban adoptando la mayoría de los scrapers en producción: un crawler sobre un framework, una capa de proxies, un middleware de almacenamiento y un planificador en un host en la nube.

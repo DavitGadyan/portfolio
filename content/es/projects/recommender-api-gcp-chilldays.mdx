@@ -1,0 +1,39 @@
+---
+title: "API de recomendación híbrida en GCP (Chilldays)"
+coverAlt: "Maquetas de la app ChillDays en dos móviles con un chat que recomienda restaurantes"
+summary: "Líder técnico del equipo de IA del cliente que construyó un sistema de recomendación híbrido para ChillDays, una app de ocio. Orienté el diseño del filtrado por reglas, colaborativo y por contenido en Python, revisé el código y dirigí el despliegue como API REST en GCP, con endpoints que recomiendan restaurantes, fiestas de playa y discotecas desde datos de Firebase."
+description: "Sistema de recomendación híbrido (reglas, colaborativo y contenido) en Python, desplegado como API REST en GCP con datos de Firebase para la app de ocio ChillDays; rol de líder técnico."
+outcomes:
+  - "Sistema de recomendación híbrido desplegado como API REST en GCP."
+  - "Endpoints que sirven recomendaciones de restaurantes, fiestas en la playa y discotecas a partir de datos de Firebase."
+  - "Equipo de ingeniería de IA del cliente guiado en el diseño, la revisión de código y el despliegue."
+metrics:
+  - label: Estrategias de filtrado combinadas
+    value: "3 (reglas, colaborativo, contenido)"
+  - label: Tipos de recomendación servidos
+    value: "3 (restaurantes, fiestas en la playa, discotecas)"
+  - label: Estado del recomendador
+    value: "diseño → API en producción en GCP"
+---
+
+## El problema
+
+ChillDays es una app de ocio: sugiere restaurantes donde comer, fiestas en la playa a las que apuntarse y discotecas para salir de noche. El cliente tenía un equipo de ingenieros de IA, pero necesitaba a alguien que los guiara para construir un sistema de recomendación híbrido y ponerlo en producción, no otro par de manos escribiendo código por su cuenta.
+
+## Qué construí
+
+Como consultor y líder técnico, orienté al equipo del cliente en el diseño, la revisión y el despliegue del sistema:
+
+- Un sistema de recomendación híbrido en Python que combina filtrado basado en reglas, colaborativo y basado en contenido, para que las recomendaciones no dependan de una sola señal.
+- Una API REST con varios endpoints, cada uno para un tipo de petición distinto: dónde comer, a qué fiesta en la playa ir, qué discoteca elegir.
+- Acceso a datos en Firebase, donde viven los datos de la app.
+- Despliegue de la API en Google Cloud Platform.
+- Revisión de código y mentoría técnica para los ingenieros que hacían la implementación.
+
+## Cómo se entregó
+
+Mi papel fue de consultoría y orientación, no de implementación en solitario. Definí la arquitectura del filtrado híbrido, revisé el código del equipo a medida que llegaba y dirigí el despliegue en GCP para que el sistema de recomendación saliera como un servicio que la app pudiera llamar.
+
+## Resultado
+
+Un sistema de recomendación híbrido desplegado como API REST en GCP, con endpoints que sirven recomendaciones de restaurantes, fiestas en la playa y discotecas a partir de datos de Firebase. Lo construyeron los propios ingenieros del cliente y es suyo; mi aportación fue el liderazgo técnico que lo llevó del diseño a la revisión y a producción.

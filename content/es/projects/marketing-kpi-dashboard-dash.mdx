@@ -1,0 +1,37 @@
+---
+title: "Dashboard de KPI de marketing (Meta, Google Ads, Stripe, GA)"
+coverAlt: "Mano tocando un icono de KPI entre símbolos hexagonales de gráficos, diana y personas sobre un portátil"
+summary: "Medición de marketing de principio a fin para una empresa que quería saber cuánto impulsan realmente sus campañas el rendimiento del negocio. Definí los KPI, extraje los datos de las API de Meta, Google Ads, Stripe y Google Analytics en Python, calculé las métricas y entregué un dashboard interactivo en Plotly Dash que muestra los KPI a lo largo del tiempo y por sector con filtros."
+description: "Programa de KPI de marketing: diseño de KPI, extracción de datos de las API de Meta, Google Ads, Stripe y Google Analytics en Python y un dashboard interactivo en Plotly Dash."
+outcomes:
+  - "Marco de KPI definido a partir de las preguntas reales del negocio del cliente."
+  - "Datos extraídos de las API de Meta, Google Ads, Stripe y Google Analytics."
+  - "Aplicación Dash interactiva que muestra los KPI a lo largo del tiempo y por sector, filtrados mediante desplegables y campos de entrada."
+metrics:
+  - label: Fuentes de datos unificadas
+    value: "Meta, Google Ads, Stripe, GA → 1 dashboard"
+  - label: Documentación de API revisada
+    value: "decenas de páginas"
+  - label: Reporting de campañas
+    value: "exportaciones dispersas → interactivo y filtrable"
+---
+
+## El problema
+
+Tras varios años de actividad, la empresa quería una respuesta clara a una pregunta difícil: ¿las campañas de marketing que organiza impulsan de verdad el rendimiento, y cuánto? La evidencia estaba repartida entre plataformas publicitarias, un proveedor de pagos y la analítica web, ninguno de los cuales hablaba con los demás, y nadie había definido todavía cómo había que medir ese rendimiento. Los detalles del negocio son confidenciales; el enfoque se describe a continuación.
+
+## Qué construí
+
+- Un marco de KPI acordado con el cliente, de modo que cada métrica respondiera a una pregunta concreta sobre el impacto de las campañas.
+- Una auditoría de datos: qué datos necesitaba cada KPI, si la empresa ya los almacenaba, dónde, y si no, qué fuente externa podía proporcionarlos.
+- Código de extracción en Python contra la API de Facebook/Meta, la API de Google Ads, la API de Stripe y Google Analytics, tras revisar decenas de páginas de documentación de API.
+- Limpieza de datos y cálculo de KPI que conciliaron las fuentes en un único conjunto coherente de métricas.
+- Una aplicación web interactiva en Plotly Dash que muestra cada KPI a lo largo del tiempo y dentro de sectores concretos, controlada mediante desplegables y campos de entrada.
+
+## Cómo se entregó
+
+Ejecuté el programa por etapas en lugar de empezar por el dashboard. Primero la definición de KPI, después la auditoría de datos, luego la extracción, después el cálculo y solo entonces la aplicación, de modo que la aplicación final respondiera a las preguntas que el cliente había hecho realmente y no a las que los datos hacían fáciles por casualidad.
+
+## Resultado
+
+El cliente pasó de exportaciones dispersas de cada plataforma a un único dashboard interactivo que muestra cómo evoluciona el rendimiento a lo largo del tiempo y por sector, con filtros bajo demanda. Los KPI están anclados en las preguntas del negocio, y los datos que hay detrás se extraen directamente de las API de Meta, Google Ads, Stripe y Google Analytics.

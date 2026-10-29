@@ -1,0 +1,65 @@
+---
+title: "Driver Fatigue Detection on Edge Devices"
+date: '2021-04-19'
+lastmod: 2026-10-29
+cover: /images/portfolio/cv-iot.jpg
+coverAlt: "Stock illustration of a white humanoid robot beside a network of blue IoT and industry icons"
+summary: "On-device driver-fatigue detection for a private client: an ONNX face detector and facial-landmark model feed FFT and FFV features from a published facial-motion-entropy method into an XGBoost classifier that reads head position over a 3 to 5 second window, with rule-based yawn and eye-closure alarms. Dockerised and deployed to Raspberry Pi 4 and Jetson Nano."
+description: "Driver fatigue detection on the edge: ONNX face and landmark detection, XGBoost over FFT/FFV features, rule-based yawn and eye alarms, Docker on Raspberry Pi 4 and Jetson Nano."
+categories:
+  - computer-vision
+  - cloud-devops-llmops
+stack:
+  frontend: []
+  backend: []
+  ai:
+    - ONNX face detection
+    - Facial landmark detection
+    - XGBoost
+    - FFT/FFV time-series features
+    - Rule-based yawn and eye-closure detection
+  data:
+    - Webcam-collected labelled training data
+  infra:
+    - Docker
+    - Raspberry Pi 4
+    - Jetson Nano
+  security: []
+links: {}
+outcomes:
+  - Research-led approach based on a published facial-motion-entropy fatigue algorithm.
+  - XGBoost over the current and 10 previous FFT/FFV values reads head position across a 3 to 5 second window.
+  - Rule-based yawn and eye-closure triggers layered on top of the model.
+  - Dockerised and deployed to Jetson Nano and Raspberry Pi 4 within edge compute limits.
+metrics:
+  - label: Fatigue decision window
+    value: "3–5 s of head motion"
+  - label: FFT/FFV history per prediction
+    value: "current + 10 previous values"
+  - label: Target edge boards
+    value: "2 (Pi 4, Jetson Nano)"
+  - label: Inference
+    value: "server → on-device"
+featured: false
+---
+
+## The problem
+
+A drowsy driver is a safety risk, and the warning has to come from inside the vehicle, in real time, without a connection to a server. The client wanted a system that watches the driver through a camera, decides whether they are fatigued and sounds an alarm, and it had to run on an IoT board such as a Raspberry Pi 4. That hardware constraint ruled out heavy models from the start and shaped every choice that followed.
+
+## What I built
+
+- A research phase that settled on a published method, [A Fatigue Driving Detection Algorithm Based on Facial Motion Information Entropy](https://www.researchgate.net/publication/342193728_A_Fatigue_Driving_Detection_Algorithm_Based_on_Facial_Motion_Information_Entropy), as the basis of the solution.
+- Face detection on the video stream with ONNX, followed by facial-landmark detection for the downstream analysis.
+- Extraction of the FFT and FFV features described in the paper, and an XGBoost model trained on the current value plus the ten previous values of each, using data we labelled ourselves with a simple webcam.
+- A time-aware decision: the model reads head position over roughly the last 3 to 5 seconds, so a driver who keeps their head down without moving triggers the alarm, while one who actively looks around at traffic does not.
+- Separate rule-based detectors that also raise the alarm on yawning or closed eyes.
+- Everything dockerised and deployed to Jetson Nano and Raspberry Pi 4 devices.
+
+## How it was delivered
+
+Edge deployment was the hard constraint, not an afterthought. Packaging the pipeline as a Docker image meant one build could be deployed to either board, and the combination of a light ONNX detector with a gradient-boosted classifier kept inference within the limits of that hardware.
+
+## Outcome
+
+The system detects fatigue from head motion over time rather than from a single frame, adds yawn and eye-closure rules as a safety net, and runs entirely on-device, which is what makes it usable in a vehicle. It was one of the most complex projects I have delivered end to end, from paper to edge deployment.

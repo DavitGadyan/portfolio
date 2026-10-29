@@ -1,0 +1,63 @@
+---
+title: "Stock Trend & Sentiment Dashboard"
+date: '2020-12-04'
+lastmod: 2026-10-29
+client: Equeum (fka Machina Software)
+cover: /images/portfolio/stock-trend-sentiment.jpg
+coverAlt: "Equeum stock analysis dashboard: ticker selector, date range, smoothing slider and sentiment versus price chart"
+summary: "Web dashboard for Equeum (formerly Machina Software) that lets an analyst pick a stock ticker and compare its Google Trends search interest with sentiment scores from several APIs, charting correlations and patterns between the two. Built in Python as two linked apps, then extended with Reddit sentiment analysis against price changes and returns during the GameStop episode."
+description: "Stock trend and sentiment dashboard for Equeum: Python web app combining the Google Trends API, sentiment APIs and Reddit data with correlation charts per ticker."
+categories:
+  - data-science-ml
+  - fullstack-uiux
+  - finance-quant
+stack:
+  frontend:
+    - Web dashboard UI
+    - Correlation and trend charts
+  backend:
+    - Python
+  ai:
+    - Sentiment analysis
+    - Correlation analysis
+  data:
+    - Google Trends API
+    - Sentiment analysis APIs
+    - Reddit data
+    - Stock price and return series
+  infra: []
+  security: []
+links: {}
+outcomes:
+  - Two linked apps surfacing Google Trends and sentiment series per ticker, with correlation charts.
+  - Reddit sentiment analysed against price changes and returns for meme stocks such as GameStop.
+  - Analysts pick a ticker from a list and get the latest trend and sentiment picture without running code.
+metrics:
+  - label: Linked apps
+    value: "2 (trends + sentiment)"
+  - label: Sources joined per ticker
+    value: "4 source types"
+  - label: Data collection
+    value: "by hand → one ticker pick"
+featured: false
+---
+
+## The problem
+
+Equeum (formerly Machina Software) wanted a way to see whether public attention and mood around a stock moved with its price. Search interest and sentiment live in different APIs, so an analyst had to pull each one by hand before any comparison was possible. The ask was a web-based UI where someone picks a ticker and immediately sees trends, sentiment and how they relate.
+
+## What I built
+
+- A web dashboard where the user selects a ticker from a list of supported stocks.
+- Two separate apps behind it: one fetches the latest search trends for that stock from the Google Trends API, the other collects sentiment scores for it from several sentiment APIs.
+- A set of charts that line the two series up and surface correlations and recurring patterns between stock sentiment and trend data.
+- A Reddit analysis layer that relates price changes and returns to public sentiment for specific stocks, built around the GameStop episode.
+- Python throughout, from the API clients to the correlation analysis feeding the charts.
+
+## Data and infrastructure
+
+The value of the tool is in joining sources that were never designed to be joined: Google Trends series, scores from multiple sentiment providers, Reddit posts and price history. Each source is fetched per ticker and charted alongside the others, so the correlation views compare comparable series rather than raw, separate feeds.
+
+## Outcome
+
+Equeum got two linked apps that turn a ticker selection into trend and sentiment series with correlation charts, plus a Reddit study showing how public sentiment tracked price moves and returns for meme stocks such as GameStop.

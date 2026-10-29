@@ -1,0 +1,58 @@
+---
+title: "Hybrid Recommender System for a Matchmaking Platform"
+date: '2019-02-10'
+lastmod: 2026-10-29
+client: Rafi Newman
+cover: /images/portfolio/recommender-system.jpg
+coverAlt: "Flat illustration of a man grabbing shopping bags streaming from a monitor with a cart icon"
+summary: "Hybrid recommender system for Rafi Newman's matchmaking website, built as three Python layers: client-defined rules such as gender pairing and a maximum age difference, collaborative filtering that suggests pairs from members' previous choices, and a content-based layer, an ensemble of Logistic Regression, Random Forest and a neural network. Its matches agreed with the pairs the company's experts recommended manually."
+description: "Three-layer hybrid recommender for a matchmaking site: business rules, collaborative filtering and a Logistic Regression, Random Forest and neural-network ensemble in Python."
+categories:
+  - data-science-ml
+stack:
+  frontend: []
+  backend: []
+  ai:
+    - Rule-based filtering
+    - Collaborative filtering
+    - Content-based filtering
+    - Logistic Regression
+    - Random Forest
+    - Neural network
+    - Ensemble modelling
+    - Python
+  data:
+    - Member profiles and previous choices
+    - Client-defined matching rules
+  infra: []
+  security: []
+links: {}
+outcomes:
+  - "Three-layer architecture: client rules, collaborative filtering, then an ensemble content-based model."
+  - Recommendations matched the pairs the company's human experts were recommending manually.
+metrics:
+  - label: Recommender layers
+    value: "3 (rules, collaborative, content)"
+  - label: Ensemble models
+    value: "3 (LogReg, Random Forest, NN)"
+  - label: Pair selection
+    value: "by hand → automated"
+  - label: Agreement with experts
+    value: "matched manual picks"
+featured: false
+---
+
+## The problem
+
+A matchmaking website was pairing members largely by hand, relying on in-house experts who knew the rules and the people. The client wanted a recommender system that could propose pairs automatically, respect the hard constraints the business already applied, learn from what members had chosen before, and still produce matches the experts would recognise as good.
+
+## What I built
+
+- A rule-based first layer encoding the client's constraints, such as male-female pairing and a maximum allowed age difference, so nothing that breaks a business rule ever reaches the ranking stage.
+- A collaborative-filtering layer that suggests pairs based on members' previous choices, so the behaviour of similar members informs new recommendations.
+- A content-based final layer implemented as a machine learning model: an ensemble of Logistic Regression, Random Forest and a neural network that scores candidate pairs on their attributes.
+- A pipeline in Python that runs the three layers in sequence, with each layer narrowing or ranking the output of the one before.
+
+## Outcome
+
+The hybrid system produced decent results, and its recommendations matched the pairs that the company's own experts had been recommending manually. That agreement with expert judgement is what made the recommender usable alongside the process the company already had.

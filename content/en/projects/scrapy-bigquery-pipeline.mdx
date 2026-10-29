@@ -1,0 +1,58 @@
+---
+title: "Scrapy + BigQuery Data Pipeline"
+date: '2021-06-09'
+lastmod: 2026-10-29
+client: Josh
+cover: /images/portfolio/scrapy+python.jpg
+coverAlt: "Scrapy logo with a green ring and putty knife next to the Python logo"
+summary: "Scrapy web-scraping pipeline that extracts damaged-car listings from a site with no usable API, reads its target URLs from a BigQuery table and writes the extracted records back into several BigQuery tables. Built in Python for a private client and deployed to the cloud as a bot that runs 24/7."
+description: "Scrapy web-scraping pipeline in Python that reads target URLs from BigQuery and writes damaged-car listings back to BigQuery tables, deployed to the cloud to run 24/7."
+categories:
+  - databases-data-eng
+  - cloud-devops-llmops
+stack:
+  frontend: []
+  backend:
+    - Python
+    - Scrapy
+  ai: []
+  data:
+    - BigQuery
+    - Scrapy item pipelines
+  infra:
+    - Cloud deployment
+    - 24/7 scheduled scraping
+  security: []
+links: {}
+outcomes:
+  - "BigQuery-in, BigQuery-out scraping pipeline running 24/7 in the cloud."
+  - "Damaged-car listings extracted from a site that offered no usable API."
+  - "Scrapy pipelines write the results into several BigQuery tables for downstream use."
+metrics:
+  - label: Scraper uptime
+    value: "24/7 in the cloud"
+  - label: Source site API
+    value: "none → structured BigQuery tables"
+  - label: Manual runs
+    value: "started by hand → zero"
+featured: false
+---
+
+## The problem
+
+The client needed structured data on damaged cars from a listings website that offered no proper API. The list of pages to scrape already lived in BigQuery, and the extracted records had to land back in BigQuery, so a one-off scrape or a CSV export was not an option. The scraper had to be a service that runs continuously and keeps the tables fresh.
+
+## What I built
+
+- A Scrapy spider in Python that crawls the damaged-car listing pages and extracts the fields the client needed.
+- A BigQuery input stage: the spider reads its target URLs from a BigQuery table instead of a hard-coded list.
+- Scrapy item pipelines that take the scraped items and push them into several BigQuery output tables.
+- A deployment of the Scrapy bot to the cloud so it runs 24/7 rather than from a laptop.
+
+## Data and infrastructure
+
+BigQuery was both the source and the sink. Keeping the URL queue in a table meant the list of targets could change without touching the code, and writing the results straight into BigQuery meant the data was queryable the moment the spider finished a page. Running the bot in the cloud removed the need for anyone to start it by hand.
+
+## Outcome
+
+A BigQuery-in, BigQuery-out scraping pipeline that runs around the clock in the cloud and extracts damaged-car listings from a site with no usable API. The client gets fresh, queryable data in the tables they already use, with no manual steps.

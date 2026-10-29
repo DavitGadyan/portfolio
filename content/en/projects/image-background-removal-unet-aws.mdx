@@ -1,0 +1,58 @@
+---
+title: "Image Background Removal Service (U-Net on AWS)"
+date: '2020-12-03'
+lastmod: 2026-10-29
+client: Rashed Buqaraa
+cover: /images/portfolio/back-rem.jpg
+coverAlt: "Before and after: blue sneakers photographed on stone, then isolated on a white background"
+summary: "Background-removal service for apparel photography, built for Rashed Buqaraa: a U-Net encoder-decoder segmentation network in Python that separates the garment from its background, deployed on an AWS EC2 instance as a web service that takes an image URL and returns the cut-out. Results were high quality and the service could be demoed live from the browser."
+description: "U-Net image segmentation service in Python that removes backgrounds from apparel photos, deployed on AWS EC2 as a web endpoint that takes an image URL."
+categories:
+  - computer-vision
+  - cloud-devops-llmops
+stack:
+  frontend: []
+  backend:
+    - Python
+    - HTTP inference service (image URL in, cut-out image out)
+  ai:
+    - U-Net
+    - Encoder-decoder network
+    - Image segmentation
+  data:
+    - Apparel product images
+  infra:
+    - AWS EC2
+  security: []
+links:
+  archived:
+    - label: Live demo on AWS EC2
+      note: Demo retired
+outcomes:
+  - High-quality background removal on apparel photography.
+  - Deployed as a web service on AWS EC2 and demoable from a browser with any image URL.
+metrics:
+  - label: Garment cut-outs
+    value: "manual retouching → automated"
+  - label: Model delivery
+    value: "notebook → hosted HTTP endpoint"
+featured: false
+---
+
+## The problem
+
+E-commerce apparel images need a clean, consistent background, and cutting garments out by hand does not scale past a handful of products. The client wanted a service that takes an apparel photo and returns the same image with the background removed, good enough to use on product pages without manual retouching.
+
+## What I built
+
+- A U-Net segmentation model, an encoder-decoder neural network, that separates the garment from everything behind it at pixel level.
+- A Python inference service around the model that accepts an image URL, runs the segmentation and returns the background-removed result.
+- Deployment of the service on an AWS EC2 instance, exposed over HTTP so it could be called from a browser or from other systems.
+
+## How it was delivered
+
+Shipping the model as a hosted endpoint rather than a notebook was the point of the project. On EC2 the client could point the service at any product image URL and see the output immediately, which made it easy to validate quality on real catalogue photos before integrating it anywhere. The original demo instance has since been retired.
+
+## Outcome
+
+The U-Net approach produced very good results on apparel photography, and the deployed service on EC2 gave the client a working, demoable background-removal tool rather than a research prototype.

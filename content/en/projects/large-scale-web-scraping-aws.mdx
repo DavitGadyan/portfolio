@@ -1,0 +1,60 @@
+---
+title: "Large-Scale Web Scraping on AWS (Scrapy, EC2, S3)"
+date: '2021-04-19'
+lastmod: 2026-10-29
+client: Cary Sparrow
+cover: /images/portfolio/scrapy_awsec2.jpg
+coverAlt: "Scrapy logo, a plus sign and the Amazon EC2 logo with a secure badge"
+summary: "Large-scale web scraping pipeline for Cary Sparrow: a Python Scrapy crawler that collects data from millions of indeed.com pages, rotates proxies through Crawlera so it is not blocked, and pushes every item through a custom middleware into an AWS S3 bucket under a defined folder and naming convention. Deployed on an AWS EC2 Ubuntu instance and run on a schedule."
+description: "Scheduled Scrapy crawler on AWS EC2 with Crawlera proxy rotation and a custom S3 middleware, extracting millions of Indeed job-listing data points into structured S3 storage."
+categories:
+  - databases-data-eng
+  - cloud-devops-llmops
+stack:
+  frontend: []
+  backend:
+    - Python
+    - Scrapy
+  ai: []
+  data:
+    - AWS S3
+    - Custom Scrapy S3 middleware
+    - Indeed job-listing pages
+  infra:
+    - AWS EC2 (Ubuntu)
+    - Crawlera proxy rotation
+    - Scheduled jobs
+  security: []
+links: {}
+outcomes:
+  - Millions of data points extracted and stored in S3 under a defined folder and naming convention.
+  - Ran on schedule from an EC2 Ubuntu instance without being blocked.
+  - Custom Scrapy middleware pushed scraped items straight into S3.
+metrics:
+  - label: Indeed pages crawled
+    value: "millions"
+  - label: Crawl runs
+    value: "manual → scheduled on EC2"
+  - label: Blocked crawls
+    value: "none (Crawlera rotation)"
+featured: false
+---
+
+## The problem
+
+The client needed data from millions of indeed.com pages, not a one-off sample, and needed it landing in an AWS S3 bucket under a specific folder structure and naming convention so other tooling could pick it up. At that volume two things break: blocking, because a single IP hitting a site millions of times gets cut off, and operations, because a crawl that only runs when someone remembers to start it is not a data pipeline.
+
+## What I built
+
+- A crawler on Python's Scrapy framework, written for the structure of Indeed's listing pages.
+- Crawlera as the proxy rotator, so requests come from a changing pool of addresses and the bot does not get blocked.
+- A custom Scrapy middleware that pushes each scraped item into S3 as it is produced, writing to the folder and file-naming scheme the client specified.
+- Deployment onto an AWS EC2 Ubuntu instance, with the spider running on a specified schedule rather than by hand.
+
+## Data and infrastructure
+
+EC2 provides the always-on machine, the schedule starts each run, Crawlera handles the network side, and S3 holds the output under the agreed structure. Because the folder and naming convention were agreed up front, the data was ready for downstream use directly from the bucket.
+
+## Outcome
+
+The pipeline extracted millions of data points from Indeed and stored them in S3 under the agreed structure, running on schedule from EC2 without being blocked. It is a small system, but it is the shape most production scrapers end up with: a framework crawler, a proxy layer, a storage middleware and a scheduler on a cloud host.

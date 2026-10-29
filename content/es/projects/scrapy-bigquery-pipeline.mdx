@@ -1,0 +1,36 @@
+---
+title: "Pipeline de datos con Scrapy y BigQuery"
+coverAlt: "Logotipo de Scrapy con anillo verde y espátula junto al logotipo de Python"
+summary: "Pipeline de web scraping con Scrapy que extrae anuncios de coches siniestrados de un sitio sin API utilizable, lee las URL objetivo de una tabla de BigQuery y escribe los registros extraídos en varias tablas de BigQuery. Desarrollado en Python para un cliente particular y desplegado en la nube como un bot que funciona 24/7."
+description: "Pipeline de web scraping con Scrapy en Python que lee URL objetivo de BigQuery y escribe anuncios de coches siniestrados en tablas de BigQuery, desplegado en la nube 24/7."
+outcomes:
+  - "Pipeline de scraping con BigQuery como entrada y salida, funcionando 24/7 en la nube."
+  - "Anuncios de coches siniestrados extraídos de un sitio que no ofrecía ninguna API utilizable."
+  - "Los pipelines de Scrapy escriben los resultados en varias tablas de BigQuery para su uso posterior."
+metrics:
+  - label: Disponibilidad del scraper
+    value: "24/7 en la nube"
+  - label: API del sitio origen
+    value: "ninguna → tablas estructuradas en BigQuery"
+  - label: Ejecuciones manuales
+    value: "arranque a mano → cero"
+---
+
+## El problema
+
+El cliente necesitaba datos estructurados sobre coches siniestrados de un sitio web de anuncios que no ofrecía una API en condiciones. La lista de páginas a rastrear ya vivía en BigQuery, y los registros extraídos tenían que volver a BigQuery, así que un scraping puntual o una exportación a CSV no servían. El scraper tenía que ser un servicio que funcionara de forma continua y mantuviera las tablas al día.
+
+## Qué construí
+
+- Un spider de Scrapy en Python que rastrea las páginas de anuncios de coches siniestrados y extrae los campos que el cliente necesitaba.
+- Una etapa de entrada desde BigQuery: el spider lee sus URL objetivo de una tabla de BigQuery en lugar de una lista fija en el código.
+- Pipelines de ítems de Scrapy que toman los elementos extraídos y los vuelcan en varias tablas de salida de BigQuery.
+- El despliegue del bot de Scrapy en la nube para que funcione 24/7 en lugar de desde un portátil.
+
+## Datos e infraestructura
+
+BigQuery era a la vez el origen y el destino. Mantener la cola de URL en una tabla permitía cambiar la lista de objetivos sin tocar el código, y escribir los resultados directamente en BigQuery hacía que los datos fueran consultables en cuanto el spider terminaba una página. Ejecutar el bot en la nube eliminó la necesidad de que alguien lo arrancara a mano.
+
+## Resultado
+
+Un pipeline de scraping con BigQuery como entrada y salida que funciona las 24 horas en la nube y extrae anuncios de coches siniestrados de un sitio sin API utilizable. El cliente obtiene datos frescos y consultables en las tablas que ya usa, sin pasos manuales.

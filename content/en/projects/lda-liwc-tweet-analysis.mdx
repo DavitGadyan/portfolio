@@ -1,0 +1,47 @@
+---
+title: "LDA & LIWC Analysis of Tweets"
+date: '2021-01-27'
+lastmod: 2026-10-29
+client: Hamad S.
+cover: /images/portfolio/lda-liwc.jpg
+coverAlt: "pyLDAvis screen: intertopic distance map of four topics and top terms bar chart led by covid"
+summary: "Text-analytics study for Hamad S. on Trump's tweets about Covid and a few other topics. After exploratory analysis and preprocessing in Python, I ran LDA topic modelling and delivered the discovered topic clusters as interactive pyLDAvis HTML files, then scored the corpus with the LIWC2015 dictionary, after resolving a dictionary encoding problem with its author, Dr. James W. Pennebaker."
+description: "LDA topic modelling with pyLDAvis and LIWC2015 psycholinguistic analysis of Trump's Covid-era tweets in Python, delivered as interactive HTML topic visualisations."
+categories:
+  - data-science-ml
+stack:
+  frontend:
+    - pyLDAvis interactive HTML outputs
+  backend: []
+  ai:
+    - LDA topic modelling
+    - LIWC2015 psycholinguistic analysis
+    - Text preprocessing
+    - Python
+  data:
+    - Tweet corpus
+    - LIWC2015 dictionary
+    - Exploratory data analysis
+  infra: []
+  security: []
+links: {}
+outcomes:
+  - Interactive pyLDAvis HTML outputs of the topic clusters discovered by LDA.
+  - LIWC analysis completed in Python after resolving the dictionary encoding with its author, Dr. James W. Pennebaker.
+featured: false
+---
+
+## The problem
+
+The client wanted to understand what Trump was tweeting about during Covid, and on a few other topics, in two complementary ways: which themes the tweets clustered into, and what the language itself revealed psychologically. That called for two different methods on the same corpus, LDA topic modelling for the themes and LIWC for the psycholinguistic scoring.
+
+## What I built
+
+- Exploratory data analysis of the tweet corpus, followed by text preprocessing to get it into shape for modelling.
+- LDA topic modelling in Python, with the discovered clusters exported as interactive pyLDAvis HTML files so the client could explore each topic, its top terms and how topics relate to one another in a browser.
+- LIWC analysis in Python using the LIWC2015 dictionary, producing the linguistic and psychological category scores for the corpus.
+- A fix for the dictionary itself: the LIWC2015 file we had was encoded in a way the tooling could not read, so I contacted the author of the work, Dr. James W. Pennebaker, who kindly sent a decoded version.
+
+## Outcome
+
+The client received interactive topic-cluster visualisations alongside LIWC scoring for the full corpus, which together give both a thematic and a psycholinguistic read of the tweets. Many thanks to Dr. Pennebaker for unblocking the LIWC part.

@@ -1,0 +1,71 @@
+---
+title: "Crypto Regulation RAG Chatbot (GPT-4 + Pinecone)"
+date: 2024-09-30
+lastmod: 2026-10-29
+cover: /images/portfolio/rag_pinecone.png
+coverAlt: "RAG system diagram: data sources and Pinecone vector store, ChatGPT-4, retrieval step and UI"
+summary: "RAG research assistant over 2024 blockchain and crypto regulation across multiple jurisdictions. LangChain pipelines embed PDFs, CSVs, HTML and plain text into a Pinecone vector store, GPT-4 answers jurisdiction-specific legal questions with inline source citations in a Streamlit UI, and the whole thing ships with Docker configuration and deployment scripts so other teams can adapt it."
+description: "RAG chatbot over multi-jurisdiction crypto regulation: LangChain, GPT-4, Pinecone vector store, Streamlit UI, OCR ingestion for scanned PDFs, Docker and Streamlit Cloud deployment."
+categories:
+  - ai-agents
+  - databases-data-eng
+  - cloud-devops-llmops
+stack:
+  frontend:
+    - Streamlit
+  backend:
+    - LangChain
+    - Multi-format ingestion pipelines
+    - Web scraping
+  ai:
+    - GPT-4
+    - Vector embeddings
+    - OCR for scanned PDFs
+  data:
+    - Pinecone vector store
+    - PDF, CSV, HTML and plain-text sources
+  infra:
+    - Docker
+    - Streamlit Cloud
+    - Deployment scripts
+  security: []
+links:
+  archived:
+    - label: Streamlit Cloud demo
+      note: Private deployment, sign-in required
+outcomes:
+  - Sub-second retrieval over legal texts indexed in Pinecone.
+  - Multi-format ingestion (PDF, CSV, HTML, plain text) with automated OCR for scanned PDFs.
+  - Every answer cites its sources inline, per jurisdiction.
+  - Shipped with deployment scripts, Docker configuration and a README so other teams can adapt it to their own data.
+metrics:
+  - label: Retrieval latency
+    value: "< 1 s (sub-second)"
+  - label: Document formats ingested
+    value: "4 (PDF, CSV, HTML, text)"
+  - label: Source citations
+    value: "inline, on every answer"
+featured: true
+order: 5
+---
+
+## The problem
+
+Crypto and blockchain regulation moved fast in 2024 and differs by jurisdiction, and the primary sources are scattered across scanned PDFs, CSV tables, HTML pages on sites such as Global Legal Insights and plain-text notes. Answering one question meant reading across all of them and still not being sure which document a claim came from. The goal was a chatbot that answers jurisdiction-specific legal questions in seconds and shows the source for every answer.
+
+## What I built
+
+- A LangChain back end that embeds legal and regulatory texts into vectors and indexes them in Pinecone for sub-second retrieval.
+- GPT-4 as the generation backbone, with prompts that combine the retrieved context with the user's question so answers stay grounded in the indexed law.
+- A Streamlit front end: a conversational UI where users ask jurisdiction-specific questions and see source citations inline.
+- Ingestion pipelines for PDFs, CSVs, HTML and plain text, including automated OCR for scanned PDFs, CSV table parsing and HTML scraping from Global Legal Insights.
+- Vector-store tuning: embedding dimensions and Pinecone index parameters chosen for cost-effective storage and fast similarity search at scale.
+- Packaging with deployment scripts, Docker configuration and a README, plus a connector layer designed so databases, APIs or streaming sources can be added with minimal code changes.
+
+## Data and infrastructure
+
+The retrieval layer is what makes the answers trustworthy. Each document is embedded and stored in Pinecone with its source reference, which is what lets the UI cite where a passage came from. Tuning the embedding dimensions and index parameters kept storage cheap without slowing similarity search. The app runs on Streamlit Cloud, and the Docker configuration and scripts mean a team can equally deploy it on its own infrastructure.
+
+## Outcome
+
+Sub-second retrieval over the regulatory corpus, multi-format ingestion with OCR, and an inline citation on every answer. Because the solution ships as a documented, containerised package with an extensible connector layer, other teams can point it at their own legal or policy documents instead of starting from scratch.

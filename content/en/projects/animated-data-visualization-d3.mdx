@@ -1,0 +1,62 @@
+---
+title: "Animated Data Visualisation (D3.js Race Charts)"
+date: '2024-08-15'
+lastmod: '2026-10-29'
+client: Alen Kojadinovic
+cover: /images/portfolio/d3_vis.png
+coverAlt: "Horizontal bar chart frame ranking the top 20 domains by daily exposure percentage"
+summary: "Animated bar-chart-race visualisation and reports built end to end: pandas and SQLAlchemy ETL from the client's relational databases, a Plotly Dash prototype, then a D3.js rebuild with custom JavaScript animation for frame rate and styling control, and an FFmpeg export pipeline that renders the animation as shareable video and embeddable web components."
+description: "Animated bar-chart-race visualisation: pandas and SQLAlchemy ETL from relational databases, Plotly Dash prototype, D3.js custom animation, FFmpeg export to video and web components."
+categories:
+  - fullstack-uiux
+  - databases-data-eng
+stack:
+  frontend:
+    - D3.js
+    - JavaScript
+    - Plotly Dash
+  backend:
+    - Python
+    - FFmpeg
+  ai: []
+  data:
+    - pandas
+    - SQLAlchemy
+    - Relational databases
+    - ETL
+  infra: []
+  security: []
+links: {}
+outcomes:
+  - "Race chart rebuilt in D3.js after Plotly Dash could not reach the required smoothness and styling control."
+  - "Video export pipeline via FFmpeg and Python for shareable video and embeddable web components."
+  - "Reports delivered with static graphics, animated sequences and a documented, reproducible toolchain."
+metrics:
+  - label: Race-chart engine
+    value: "Plotly Dash → D3.js"
+  - label: Output formats
+    value: "2 (video + embeddable web component)"
+  - label: Data source
+    value: "hand-prepared file → live ETL"
+featured: false
+---
+
+## The problem
+
+The client needed a dynamic race-chart animation and comprehensive reports, built on data that lived in their own relational databases. The chart had to be high-fidelity: smooth motion, precise styling, and output that could be shared as video or embedded on the web. That mix of Python data work, database access and front-end animation is what the engagement was for.
+
+## What I built
+
+- A data pipeline in Python with pandas and SQLAlchemy that extracts, transforms and loads the domain-specific datasets from the client's databases.
+- A first race-chart prototype in Plotly Dash, used to benchmark performance and visual quality.
+- The production race chart in D3.js with custom JavaScript animation, after the Dash prototype could not reach the required smoothness and styling control; D3 delivered better frame rates and full design fidelity.
+- A video export workflow using FFmpeg and Python scripts that renders the D3 animation into shareable video formats and embeddable web components.
+- Polished reports combining static graphics and animated sequences, with documentation of the toolchain and reproducible code.
+
+## Data and infrastructure
+
+The animation sits on a real ETL layer rather than a hand-prepared file. SQLAlchemy connects to the client's relational databases, pandas handles the transformation, and the resulting datasets feed both the report graphics and the frames of the race chart.
+
+## Outcome
+
+A race chart that runs at the smoothness and styling the client asked for, exported as video and as embeddable components, together with reports whose toolchain is documented and reproducible. The toolchain decision itself, prototyping in Dash and moving to D3.js when it fell short, was part of what was delivered.

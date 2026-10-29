@@ -1,0 +1,86 @@
+---
+title: "AI Marketing: GA4, Ads, SEO & GEO/AEO"
+date: 2026-08-29
+lastmod: 2026-10-29
+cover: /images/portfolio/ai-marketing-card.png
+coverAlt: "Dark word cloud around AI Marketing with SEO, GEO, AEO, GA4, ROI and ROAS"
+summary: "Conversion measurement rebuilt for a B2B site so every enquiry is counted and traced to the click that paid for it: GA4 and GTM events, Google Ads click-ID capture, FastAPI audit crawler with PostgreSQL and Playwright, plus technical SEO and schema.org. Enquiry routes measured 0/3 to 3/3, page weight 11.58 MB to 1.21 MB, indexable pages 1 to 116."
+description: "Conversion tracking and technical SEO rebuild: GA4, GTM, Google Ads click-ID attribution, FastAPI audit crawler on PostgreSQL, Playwright checks, schema.org for AI answer engines."
+categories:
+  - ai-marketing
+  - databases-data-eng
+stack:
+  frontend:
+    - Technical SEO
+    - Core Web Vitals
+    - schema.org JSON-LD (Person, Organization, Product, FAQPage)
+  backend:
+    - Python
+    - FastAPI audit crawler
+  ai:
+    - AI answer-engine readiness (GEO/AEO)
+  data:
+    - GA4
+    - Google Tag Manager
+    - PostgreSQL
+    - Google Ads, Meta Ads and LinkedIn Ads conversion import
+    - Click-ID attribution (gclid, gbraid, wbraid)
+  infra:
+    - Playwright event verification
+  security: []
+links:
+  video:
+    - https://www.loom.com/share/9e18da56b3af46d59dd7f7a2e699931b
+    - https://youtu.be/OSeQ7ZA5nlU
+outcomes:
+  - "Enquiries measured: 0 of 3 contact routes before, 3 of 3 after."
+  - Page weight cut from 11.58 MB to 1.21 MB, with one image taken from 6.67 MB to 102 KB.
+  - Indexable pages up from 1 to 116.
+  - Google Ads click ID captured, so each enquiry traces to the exact paid click.
+  - Meta description, heading structure and schema rewritten for search and AI answer engines.
+metrics:
+  - label: Enquiry routes measured
+    value: "0/3 → 3/3"
+  - label: Page weight
+    value: "11.58 MB → 1.21 MB"
+  - label: Indexable pages
+    value: "1 → 116"
+  - label: Largest image
+    value: "6.67 MB → 102 KB"
+featured: true
+order: 4
+---
+
+## The problem
+
+Most businesses can see how many people visit their website. Very few can say how many tried to get in touch, and almost none can say which ad, post or search brought the ones who did. On this B2B site analytics was installed and reporting happily, but every real contact route bypassed it: a form posting to an external handler, buttons that only scrolled the page, and links out to LinkedIn and WhatsApp. None produces a page view, so none was recorded. The business knew its traffic and could not answer the only question that matters: did any of this bring us customers?
+
+## What I built
+
+- GA4 and Google Tag Manager events and key events for every contact route (off-site form, scroll buttons, DM links), verified in DebugView.
+- Google Ads click-ID capture (gclid, gbraid, wbraid) and conversion import to Google Ads, Meta and LinkedIn, so paid spend is judged on enquiries, not clicks.
+- A Python and FastAPI crawler and audit engine behind the findings, with PostgreSQL holding measurement facts, provenance and history.
+- Playwright checks that confirm every event actually fires.
+- Page-weight cuts (one image from 6.67 MB to 102 KB) and Core Web Vitals work, so the site stops paying for visitors who leave before it loads.
+- Technical SEO: an indexable site structure, a meta description written for an actual buyer instead of the site builder's placeholder, corrected headings and schema.org JSON-LD (Person, Organization, Product, FAQPage) so the site can be quoted by AI answer engines, not just linked.
+
+## Results, measured
+
+- Enquiries measured: 0 of 3 contact routes before, 3 of 3 after.
+- Page weight: 11.58 MB to 1.21 MB.
+- Indexable pages: 1 to 116.
+- Google ad click ID captured, so an enquiry traces to the exact paid click.
+
+## Outcome
+
+The site now counts every enquiry and ties it to the click that produced it, which gives the ad platforms something real to optimise toward and the owner a straight answer on what the spend returned. My method on every engagement: audit first, with a plain-language report you can verify yourself; then fix where money is being lost; then automate the marketing flow with AI, with a human approving each final decision.
+
+## Video
+
+Walkthrough:
+
+<Loom id="9e18da56b3af46d59dd7f7a2e699931b" />
+
+Fix Google Ads spend with a 3-step framework:
+
+<YouTube id="OSeQ7ZA5nlU" />

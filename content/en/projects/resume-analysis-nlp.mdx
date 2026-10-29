@@ -1,0 +1,55 @@
+---
+title: "Resume Analysis with NLP and LLMs"
+date: '2023-12-31'
+lastmod: 2026-10-29
+client: Alejandra Leibovich
+cover: /images/portfolio/resume_analysis.jpeg
+coverAlt: "Flat illustration of hands holding a magnifying glass over a resume on a desk"
+summary: "NLP and LLM analysis of two groups of CVs, high-value and low-value prospect candidates, to surface the patterns, similarities and differences that are not obvious on a read-through. Starting from a client-labelled set of around 30 CVs, I ran exploratory analysis, engineered features and tuned a high-accuracy classifier in Python."
+description: "NLP, ChatGPT and machine learning analysis of CVs: EDA on a client-labelled set of around 30 resumes, feature engineering and a high-accuracy classifier separating candidate groups."
+categories:
+  - data-science-ml
+  - ai-agents
+stack:
+  frontend: []
+  backend:
+    - Python
+  ai:
+    - NLP
+    - LLM / ChatGPT
+    - Exploratory data analysis (EDA)
+    - Feature engineering
+    - Model tuning
+  data:
+    - Client-labelled set of around 30 CVs
+  infra: []
+  security: []
+links: {}
+outcomes:
+  - "EDA on a client-labelled set of around 30 CVs drove the feature engineering and parameter tuning."
+  - "High-accuracy classifier separating high-value from low-value prospect candidates."
+  - "Non-obvious patterns, similarities and differences between the two groups made explicit."
+metrics:
+  - label: Labelled CVs
+    value: "~30 client-labelled"
+  - label: Candidate groups separated
+    value: "2 (high vs low value)"
+  - label: Group differences
+    value: "hidden → explicit"
+featured: false
+---
+
+## The problem
+
+The client had two sets of resumes, high-value prospect candidates and low-value ones, and wanted to know what actually separates them. The differences were not obvious on a read-through, so the brief was to apply NLP and AI tooling to find the hidden patterns, similarities and differences between the two groups and, ideally, to predict which group a new CV belongs to.
+
+## What I built
+
+- Exploratory data analysis over both groups as the first step, to identify relationships and patterns in the text before touching a model.
+- Feature engineering driven by those EDA insights, turning the CV text into signals the model could learn from.
+- A classification model built with NLP and LLM (ChatGPT) tooling that separates high-value from low-value candidates.
+- Parameter tuning against the labelled set to reach high accuracy.
+
+## Outcome
+
+The client provided a labelled set of around 30 CVs, which made the EDA and modelling far more reliable than an unlabelled corpus would have. The insights from that analysis powered the feature engineering and tuning, and the resulting model separates the two candidate groups with high accuracy, giving the client an explicit picture of what distinguishes them.

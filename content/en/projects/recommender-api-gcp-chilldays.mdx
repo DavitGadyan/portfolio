@@ -1,0 +1,66 @@
+---
+title: "Hybrid Recommender API on GCP (Chilldays)"
+date: '2024-04-09'
+lastmod: '2026-10-29'
+client: Federico Rossi
+cover: /images/portfolio/chilldays2.png
+coverAlt: "ChillDays app mock-ups on two phones showing a chat that recommends restaurants"
+summary: "Technical lead and consultant for a client's AI engineering team building a hybrid recommender for ChillDays, a leisure-discovery app. I guided the design of rule-based, collaborative and content-based filtering in Python, reviewed the code, and steered deployment as a REST API on Google Cloud, with endpoints serving restaurant, beach-party and night-club recommendations from Firebase data."
+description: "Hybrid rule-based, collaborative and content-based recommender in Python, deployed as a REST API on GCP against Firebase data for the ChillDays leisure app, as technical lead."
+categories:
+  - data-science-ml
+  - cloud-devops-llmops
+  - databases-data-eng
+stack:
+  frontend: []
+  backend:
+    - Python
+    - REST API
+  ai:
+    - Rule-based filtering
+    - Collaborative filtering
+    - Content-based filtering
+  data:
+    - Firebase
+  infra:
+    - GCP
+  security: []
+links:
+  archived:
+    - label: "chilldays.com (private project link)"
+      note: "Site offline: deployment disabled as of October 2026"
+outcomes:
+  - "Hybrid recommender deployed as a REST API on GCP."
+  - "Endpoints serving restaurant, beach-party and night-club recommendations from Firebase data."
+  - "Client's AI engineering team guided through design, code review and deployment."
+metrics:
+  - label: Filtering strategies combined
+    value: "3 (rule-based, collaborative, content-based)"
+  - label: Recommendation types served
+    value: "3 (restaurants, beach parties, night clubs)"
+  - label: Recommender status
+    value: "design → production API on GCP"
+featured: false
+---
+
+## The problem
+
+ChillDays is a leisure app: it suggests restaurants to eat at, beach parties to join and night clubs for a night out. The client had a team of AI engineers but needed someone to lead them through building a hybrid recommender system and getting it into production, rather than another pair of hands writing code in isolation.
+
+## What I built
+
+As consultant and technical lead, I guided the client's team through the design, review and deployment of the system:
+
+- A hybrid recommender in Python that combines rule-based, collaborative and content-based filtering, so recommendations do not depend on a single signal.
+- A REST API with several endpoints, each answering a different kind of request: where to eat, which beach party to go to, which club to pick.
+- Data access against Firebase, where the app's data lives.
+- Deployment of the API on Google Cloud Platform.
+- Code review and technical mentoring for the engineers doing the implementation.
+
+## How it was delivered
+
+My role was consulting and guidance rather than sole implementation. I set the architecture for the hybrid filtering, reviewed the team's code as it landed, and steered the GCP deployment so the recommender shipped as a service the app could call.
+
+## Outcome
+
+A hybrid recommender deployed as a REST API on GCP, with endpoints serving restaurant, beach-party and night-club recommendations from Firebase data. The client's own engineers built it and own it; my contribution was the technical leadership that took it from design through review and into production.

@@ -1,0 +1,36 @@
+---
+title: "API de OCR y extracción de datos de documentos"
+coverAlt: "Portátil isométrico con un marco de escaneo OCR y una flecha desde una fila de archivadores"
+summary: "API REST de OCR y extracción de campos para Sick.org/Curogram, una plataforma sanitaria de citas que tecleaba a mano los permisos de conducir y las tarjetas de seguro en su sistema. Prototipé detectores YOLO a medida y modelos de OCR más NLP con AWS Textract, Comprehend y Rekognition, comprobé que eran demasiado lentos (unos 10 segundos por imagen) y entregué Textract más regex en menos de 5 segundos."
+description: "API REST que extrae campos de permisos de conducir y tarjetas de seguro con AWS Textract y regex en menos de 5 segundos, tras evaluar prototipos con YOLO, Comprehend y Rekognition."
+outcomes:
+  - "Prototipos de OCR más NLP y de detección de campos con YOLO a medida; ambos demasiado lentos, unos 10 segundos por imagen."
+  - "Entregado Textract más regex en su lugar, extrayendo los campos en menos de 5 segundos por imagen."
+  - "Desplegado como API REST, sustituyendo la entrada manual de datos a escala en Sick.org / Curogram."
+metrics:
+  - label: Latencia de extracción
+    value: "≈ 10 s → < 5 s por imagen"
+  - label: Entrada de datos de documentos
+    value: "manual → llamada a la API"
+  - label: Tipos de documento cubiertos
+    value: "permisos de conducir + tarjetas de seguro"
+---
+
+## El problema
+
+Sick.org / Curogram ayuda a los pacientes a reservar citas con médicos y pruebas. Cada reserva llega con documentos, normalmente un permiso de conducir y una tarjeta de seguro, cuyos datos había que teclear a mano en el sistema de Curogram. A medida que crecía la base de usuarios, la entrada manual no daba abasto con el volumen de solicitudes, así que el cliente necesitaba un algoritmo que leyera los documentos y devolviera los campos.
+
+## Qué construí
+
+- Una ronda de prototipado que comparó dos familias de enfoque: OCR seguido de un modelo de NLP que extrae etiquetas personalizadas, y un modelo de visión artificial que detecta cada campo (nombre, dirección, sexo, etc.) directamente sobre la imagen.
+- Modelos de detección a medida entrenados con YOLO, junto con AWS Textract, Comprehend y Rekognition, para ver qué combinación funcionaba con los documentos del cliente.
+- El extractor de producción: AWS Textract para el OCR, con expresiones regulares que sacan los datos requeridos de los permisos de conducir y las tarjetas de seguro.
+- Una API REST que envuelve el extractor, de modo que el sistema de Curogram pueda enviar una imagen y recibir de vuelta campos estructurados.
+
+## Cómo se entregó
+
+El factor decisivo resultó ser la latencia. Los prototipos con YOLO y con OCR más NLP tardaban unos 10 segundos por imagen, demasiado para un flujo de reservas que procesa grandes volúmenes. Textract más regex bajó de los 5 segundos, así que entregué esa vía, la desplegué como API REST y dejé los modelos más pesados fuera del camino crítico.
+
+## Resultado
+
+La entrada de datos de documentos en Sick.org / Curogram pasó de ser un paso manual a una llamada a una API que devuelve los campos de un permiso de conducir o una tarjeta de seguro en menos de 5 segundos. El servicio absorbe el volumen creciente de solicitudes, y el enfoque más sencillo ganó por velocidad.

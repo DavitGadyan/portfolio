@@ -1,0 +1,36 @@
+---
+title: "Pipeline de contenido con persona de IA (Stable Diffusion)"
+coverAlt: "Retrato fotorrealista generado por IA de una mujer con el pelo rosa sobre fondo blanco"
+summary: "Persona de IA fotorrealista al estilo de Aitana Lopez, creada para un cliente de redes sociales mediante el fine-tuning de Stable Diffusion con Automatic1111 en una NVIDIA 2080 Ti local. Preparé el dataset, entrené el modelo y lancé un pipeline de contenido diario que producía imágenes coherentes y fieles a la marca para hacer crecer la base de seguidores."
+description: "Pipeline de contenido con persona de IA: Stable Diffusion ajustado con Automatic1111 en una GPU NVIDIA 2080 Ti local e imágenes fotorrealistas diarias para redes sociales."
+outcomes:
+  - "Modelo ajustado que produce imágenes coherentes y realistas con una estética definida."
+  - "Cadencia de contenido diaria establecida para hacer crecer la base de seguidores de la persona."
+  - "Todo el pipeline, del fine-tuning a la generación, ejecutado en una única GPU local."
+metrics:
+  - label: Cadencia de contenido
+    value: "diaria"
+  - label: Hardware de entrenamiento y generación
+    value: "1 GPU local (NVIDIA 2080 Ti)"
+  - label: Fases del pipeline a mi cargo
+    value: "4 de 4"
+---
+
+## El problema
+
+El contenido generado por IA se había convertido en un mercado propio, y el cliente quería una persona virtual al estilo de Aitana Lopez (@fit_aitana): un personaje fotorrealista cuyas imágenes pudieran publicarse cada día para construir una audiencia. Un modelo de serie puede producir una cara convincente una vez; lo difícil es producir la misma cara, con la misma estética, bajo demanda. El trabajo consistía en hacer repetible esa coherencia.
+
+## Qué construí
+
+- Stable Diffusion ejecutado a través de la interfaz web Automatic1111, instalada y configurada en una máquina local con una GPU NVIDIA 2080 Ti, para que el entrenamiento y la generación se quedaran en casa con tiempos de respuesta cortos.
+- Un dataset recopilado y preprocesado que definía el aspecto de la persona y la estética objetivo.
+- Un modelo de Stable Diffusion ajustado con fine-tuning sobre ese dataset, usando la 2080 Ti para las ejecuciones de entrenamiento.
+- Una rutina de generación de contenido diaria que producía imágenes realistas y atractivas con una cadencia fija para mantener la cuenta activa y en crecimiento.
+
+## Cómo se entregó
+
+Fui el único responsable de las cuatro fases: configuración del entorno, preparación de datos, entrenamiento del modelo y generación continua. Mantener toda la pila en una sola GPU local hizo que el procesamiento fuera eficiente y los tiempos de respuesta cortos, de modo que los cambios en la estética se podían probar y regenerar el mismo día.
+
+## Resultado
+
+Un modelo ajustado que produce imágenes coherentes y realistas con una estética definida, y una cadencia de contenido diaria pensada para hacer crecer la base de seguidores de la persona. El resultado es un pipeline de contenido de IA generativa y no una imagen aislada: el mismo personaje, fiel a la marca, cada día.

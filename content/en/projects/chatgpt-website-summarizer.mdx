@@ -1,0 +1,52 @@
+---
+title: "ChatGPT Website Summariser & Extractor"
+date: '2023-07-03'
+lastmod: 2026-10-29
+client: Blake Schindler
+cover: /images/portfolio/chatgpt.jpg
+coverAlt: "Hands typing on a laptop with a glowing Chat GPT head-and-gears graphic"
+summary: "Web application that takes a URL, scrapes the page and sends the content to ChatGPT to summarise it and extract the key details the client specified, returned as a clean table that downloads as an Excel file. Built in Python Dash with the ChatGPT API for a private client as a URL-in, structured-summary-out tool."
+description: "Python Dash web app that scrapes a URL, summarises it with the ChatGPT API, extracts client-specified fields and exports the result as a downloadable Excel table."
+categories:
+  - ai-agents
+  - fullstack-uiux
+stack:
+  frontend:
+    - Python Dash
+  backend:
+    - Python
+    - Web scraping
+  ai:
+    - ChatGPT API
+  data:
+    - Excel export
+  infra: []
+  security: []
+links: {}
+outcomes:
+  - "URL-in, structured-summary-out web app with a clean Excel download."
+  - "Key details extracted according to the fields the client specified, not a generic summary."
+metrics:
+  - label: Page to structured data
+    value: "1 URL → Excel table"
+  - label: Reading and copying
+    value: "manual → automated"
+  - label: Extracted fields
+    value: "client-specified, not generic"
+featured: false
+---
+
+## The problem
+
+The client needed to turn web pages into structured information quickly: paste a URL, get back a summary and a fixed set of key details the client cared about, in a format that opens in a spreadsheet. Reading each page and copying the details by hand did not scale, and a generic summariser would not return the specific fields the client wanted.
+
+## What I built
+
+- A Python Dash web application with a single input field for the URL.
+- A scraping step that fetches the page and pulls out its content.
+- An integration with the ChatGPT API that summarises the scraped content and extracts the key details the client specified, so the output follows those fields rather than a free-form summary.
+- A clean results table in the app, downloadable as an Excel file.
+
+## Outcome
+
+A URL-in, structured-summary-out tool: the client pastes a link, the app scrapes it, ChatGPT summarises it against the agreed list of key details, and the result lands in a table that can be downloaded as Excel. One small web app replaced manual reading and copying.

@@ -1,0 +1,32 @@
+---
+title: "Resolución de entidades y deduplicación de registros"
+coverAlt: "Render 3D de stock de una lupa que destaca una figura roja entre figuras grises"
+summary: "Trabajo de resolución de entidades para Dave Imrem para encontrar y eliminar registros duplicados que se refieren al mismo cliente real, entre conjuntos de datos y dentro de ellos. Evalué el toolkit JedAI, lo descarté por su tiempo de cómputo y entrené la librería Python dedupe, basada en machine learning, con un conjunto etiquetado; el análisis de la salida confirmó que detectaba los duplicados con calidad suficiente para adoptarla como solución."
+description: "Resolución de entidades y deduplicación de registros en Python: JedAI evaluado y descartado por coste de cómputo; librería dedupe basada en ML entrenada con un conjunto etiquetado."
+outcomes:
+  - JedAI evaluado y descartado porque su tiempo de cómputo era demasiado alto.
+  - Librería dedupe, basada en machine learning, seleccionada y entrenada con un conjunto de entrenamiento etiquetado.
+  - El análisis de la salida confirmó la calidad de los emparejamientos y dedupe se adoptó como solución.
+metrics:
+  - label: Toolkits evaluados
+    value: "2 (JedAI, dedupe)"
+  - label: Reglas de emparejamiento
+    value: "escritas a mano → aprendidas"
+  - label: Filas por cliente
+    value: "duplicados → 1"
+---
+
+## El problema
+
+Las empresas registran al mismo cliente más de una vez: una grafía ligeramente distinta, un correo nuevo, un segundo formulario enviado, y la misma persona se convierte en tres filas. La resolución de entidades consiste en determinar qué registros se refieren a la misma entidad del mundo real, entre conjuntos de datos y dentro de ellos, para poder eliminar los duplicados antes de cualquier análisis. Donde más importa es en grandes conjuntos de datos del sector público y federal en salud, transporte, finanzas y cuerpos de seguridad, pero la necesidad del cliente era la versión empresarial de siempre: datos de clientes limpios.
+
+## Qué construí
+
+- Una evaluación de JedAI, el toolkit open source de resolución de entidades, que descarté porque su tiempo de cómputo era demasiado alto para los datos del cliente.
+- Un pipeline de deduplicación sobre [dedupe](https://github.com/dedupeio/dedupe), una librería Python open source que usa machine learning para aprender qué registros coinciden.
+- Un conjunto de entrenamiento etiquetado para el ciclo de aprendizaje activo de la librería, de modo que el modelo aprendiera de ejemplos reales de pares coincidentes y no coincidentes en lugar de reglas escritas a mano.
+- Un análisis de la salida del modelo para confirmar que encontraba los duplicados correctos antes de recomendarlo.
+
+## Resultado
+
+El enfoque basado en dedupe hizo un buen trabajo con los datos del cliente: el análisis de la salida mostró que emparejaba los registros duplicados con precisión y con un coste de cómputo que JedAI no podía alcanzar, y se adoptó como una de las soluciones al problema. Unos registros limpios y sin duplicados hacen que cada análisis posterior cuente a cada cliente una sola vez.

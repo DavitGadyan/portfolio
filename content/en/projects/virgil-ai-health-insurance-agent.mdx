@@ -1,0 +1,72 @@
+---
+title: "Virgil.ai: Agentic Health-Insurance Assistant"
+date: 2026-02-03
+lastmod: 2026-10-29
+client: Virgil.ai
+cover: /images/portfolio/virgilai.jpg
+coverAlt: "Virgil.ai onboarding assistant: chat-style enrolment screen for US health-insurance plans"
+summary: "Agentic AI system that onboards US users and finds their best health-insurance plan, with medication-coverage lookup and underwriting in minutes instead of days. LangChain and FastAPI back end, Docker and Kubernetes on AWS, HIPAA-guided data handling."
+description: "Virgil.ai: agentic AI assistant that onboards users and selects US health-insurance plans. LangChain, FastAPI, Docker, Kubernetes on AWS, HIPAA-guided data handling."
+categories:
+  - ai-agents
+  - ai-erp-saas
+  - cloud-devops-llmops
+  - security-compliance
+stack:
+  frontend:
+    - Conversational onboarding web UI
+  backend:
+    - FastAPI
+    - Python
+    - REST API
+  ai:
+    - LangChain
+    - OpenAI reasoning model
+    - MCP tools
+    - Custom tools
+  data:
+    - Medication-price and plan-coverage lookups
+  infra:
+    - Docker
+    - Kubernetes
+    - AWS
+  security:
+    - HIPAA-guided data handling
+    - Secure storage and transfer of applicant data
+links:
+  live: https://virgil.liambo.ai
+outcomes:
+  - Underwriting completed in minutes instead of days.
+  - Medication coverage checked automatically across candidate plans.
+  - Onboarding automated end to end for a broker partner (One Health).
+  - AI and applicant data stored and transferred under HIPAA-guided controls.
+metrics:
+  - label: Underwriting time
+    value: "days → minutes"
+  - label: Medication coverage lookup
+    value: "manual → automated"
+  - label: Applicant onboarding
+    value: "automated end to end"
+featured: true
+order: 1
+---
+
+## The problem
+
+Choosing a health plan in the United States is slow and error-prone. Applicants have to check whether their medications are covered, compare plans line by line, and then wait days for underwriting. One Health, a broker agency, partnered with our team to automate that path so an applicant could be onboarded, checked and quoted in a single session.
+
+## What I built
+
+- A conversational onboarding flow that collects the applicant's details and drives plan selection without forms to fill in by hand.
+- A FastAPI service that exposes the agent to the web app over REST.
+- LangChain agents on an OpenAI reasoning model, with MCP and custom tools that look up medication prices and check coverage across the candidate plans.
+- An automated underwriting step that returns a decision in minutes rather than days.
+- Docker images orchestrated with Kubernetes on AWS, so the service scales with a potentially large user base.
+
+## Security and compliance
+
+Health data is regulated. Storage and transfer of AI and applicant data were designed around HIPAA requirements and general security best practice, which is what made the product usable by a licensed broker rather than a demo.
+
+## Outcome
+
+Underwriting in minutes instead of days, medication coverage checked automatically, and onboarding automated for the broker partner. Compared with the market standard, the ease of use made Virgil.ai a viable option for real clients, not just a proof of concept.

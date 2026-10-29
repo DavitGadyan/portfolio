@@ -1,0 +1,61 @@
+---
+title: "AI-Powered Web Scraper (LSTM + Scrapy)"
+date: '2019-12-30'
+lastmod: 2026-10-29
+client: Robin Tar
+cover: /images/portfolio/ai-powered-bot.jpeg
+coverAlt: "Stock image of an open hand holding a glowing circuit-board brain hologram"
+summary: "Scrapy crawler for Robin Tar that visits thousands of websites in one sector and extracts company about pages, addresses, news and employee information. Because every site had a different HTML structure, I trained an LSTM model on a labelled set to detect which tags hold each field, replacing per-site XPath rules, and deployed it to the cloud behind the crawler."
+description: "Scrapy crawler plus an LSTM deep-learning model that detects which HTML tags hold company and employee data across thousands of site layouts, deployed in the cloud."
+categories:
+  - databases-data-eng
+  - data-science-ml
+  - cloud-devops-llmops
+stack:
+  frontend: []
+  backend:
+    - Python
+    - Scrapy
+  ai:
+    - LSTM
+    - Deep learning
+    - HTML tag detection model
+    - Training-set labelling
+  data:
+    - Labelled HTML training set
+    - Company, address, news and employee data points
+  infra:
+    - Cloud deployment
+  security: []
+links: {}
+outcomes:
+  - Replaced per-site XPath rules with a learned tag-detection model, so the crawler generalises across thousands of layouts.
+  - LSTM model trained on a labelled set and deployed to the cloud in production behind the Scrapy bot.
+metrics:
+  - label: Websites covered
+    value: "thousands, each a different layout"
+  - label: Extraction rules
+    value: "thousands of XPaths → 1 model"
+  - label: Fields extracted per site
+    value: "4 (about, address, news, staff)"
+featured: false
+---
+
+## The problem
+
+The client wanted a Scrapy bot that would visit thousands of websites in a particular sector and pull out the data points that matter: the company's about page, its address, news, and above all information about employees. The catch was that every one of those sites had a different HTML structure. Writing XPath rules per site was never going to work at that count, and the usual answer, a long list of brittle selectors, would break as fast as it was written.
+
+## What I built
+
+- A Scrapy crawler that fetches pages across thousands of sector websites.
+- A deep-learning model, an LSTM, that looks at a page's tags and predicts which of them contain the information we need. Once a tag is identified, the crawler simply extracts its text or attributes, so the extraction logic no longer depends on any site's layout.
+- A labelled training set for the model, built with some help, covering the target fields across many different page structures.
+- Deployment of the trained model to the cloud so the crawler could call it in production rather than only in a notebook.
+
+## How it was delivered
+
+The model was deployed to the cloud and the Scrapy bot calls it as part of its extraction step, which keeps crawling and tag detection as separate concerns: Scrapy fetches, the model decides which tags matter, the spider extracts.
+
+## Outcome
+
+One learned model replaced what would have been thousands of hand-written XPath rules, and the crawler generalised across the layouts it met. The LSTM performed well on the task and ran in production in the cloud, turning a scraping problem that did not scale into one that did.

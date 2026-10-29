@@ -1,0 +1,24 @@
+---
+title: "Análisis LDA y LIWC de tuits"
+coverAlt: "Pantalla de pyLDAvis: mapa de distancia entre cuatro temas y gráfico de barras de términos principales encabezado por covid"
+summary: "Estudio de analítica de texto para Hamad S. sobre los tuits de Trump acerca de la Covid y algunos otros temas. Tras un análisis exploratorio y el preprocesado en Python, ejecuté un modelado de temas con LDA y entregué los clústeres descubiertos como archivos HTML interactivos de pyLDAvis; después puntué el corpus con el diccionario LIWC2015, tras resolver un problema de codificación del diccionario con su autor, el Dr. James W. Pennebaker."
+description: "Modelado de temas con LDA y pyLDAvis y análisis psicolingüístico LIWC2015 de los tuits de Trump en la era Covid, en Python, entregado como visualizaciones HTML interactivas de temas."
+outcomes:
+  - Salidas HTML interactivas de pyLDAvis con los clústeres de temas descubiertos por LDA.
+  - Análisis LIWC completado en Python tras resolver la codificación del diccionario con su autor, el Dr. James W. Pennebaker.
+---
+
+## El problema
+
+El cliente quería entender de qué tuiteaba Trump durante la Covid, y sobre algunos otros temas, de dos maneras complementarias: en qué temas se agrupaban los tuits y qué revelaba psicológicamente el propio lenguaje. Eso exigía dos métodos distintos sobre el mismo corpus: modelado de temas con LDA para los temas y LIWC para la puntuación psicolingüística.
+
+## Qué construí
+
+- Análisis exploratorio del corpus de tuits, seguido de un preprocesado de texto para dejarlo listo para el modelado.
+- Modelado de temas con LDA en Python, con los clústeres descubiertos exportados como archivos HTML interactivos de pyLDAvis, para que el cliente pudiera explorar en el navegador cada tema, sus términos principales y cómo se relacionan los temas entre sí.
+- Análisis LIWC en Python con el diccionario LIWC2015, generando las puntuaciones de categorías lingüísticas y psicológicas del corpus.
+- Una solución para el propio diccionario: el archivo LIWC2015 del que disponíamos estaba codificado de un modo que las herramientas no podían leer, así que contacté con el autor del trabajo, el Dr. James W. Pennebaker, que amablemente envió una versión decodificada.
+
+## Resultado
+
+El cliente recibió visualizaciones interactivas de los clústeres de temas junto con la puntuación LIWC del corpus completo, que juntas ofrecen una lectura temática y psicolingüística de los tuits. Muchas gracias al Dr. Pennebaker por desbloquear la parte de LIWC.

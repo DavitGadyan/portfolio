@@ -1,0 +1,58 @@
+---
+title: "Crypto Trading Bots in Python"
+date: '2021-03-02'
+lastmod: 2026-10-29
+client: Dale Hefferman
+cover: /images/portfolio/algo-trading.jpg
+coverAlt: "Close-up of a trading screen with green candlestick bars, indicator lines and price figures"
+summary: "Two crypto trading bots in Python for Dale Hefferman: one exploiting the price lag of a smaller exchange caused by its time zone and size, the other executing signals from a custom TradingView strategy, both trading through exchange APIs such as Binance and deployed in the cloud. Profitable at times, but trading fees and changing market conditions meant constant monitoring."
+description: "Python crypto trading bots on exchange APIs such as Binance: one trading a time-zone lag on a smaller exchange, one executing custom TradingView strategy signals, deployed in the cloud."
+categories:
+  - finance-quant
+  - cloud-devops-llmops
+stack:
+  frontend: []
+  backend:
+    - Python
+    - Binance API
+    - TradingView webhook signals
+  ai: []
+  data:
+    - Exchange market data
+    - Market microstructure analysis
+  infra:
+    - Cloud deployment
+  security: []
+links: {}
+outcomes:
+  - Identified and traded a time-zone and size-driven price lag on a smaller exchange.
+  - Signal-following bot deployed against a custom TradingView strategy.
+  - "Honest result: profitable at times, but trading fees and regime change mean the strategy needs constant monitoring and tuning."
+metrics:
+  - label: Trading bots deployed
+    value: "2"
+  - label: Trade execution
+    value: "manual → unattended, around the clock"
+  - label: Profitability
+    value: "profitable at times, not stable"
+featured: false
+---
+
+## The problem
+
+The client wanted bots that would trade cryptocurrencies automatically on a few exchanges, Binance among them, instead of watching charts by hand. The brief was open: find an edge, build something that trades it, and keep it running.
+
+## What I built
+
+- Market analysis of the target exchange, which showed it lagged behind the larger markets because of its time zone and relatively small size. Where a general trend in a coin such as BTC was already visible elsewhere, that lag could be traded.
+- A Python bot that trades on that observed lag through the exchange API.
+- A second bot that listens for signals from a custom TradingView strategy and executes the corresponding orders automatically, so the client's own strategy rules could run without anyone at the keyboard.
+- Deployment of the signal bot to the cloud so it stays connected to the exchange and to TradingView around the clock.
+
+## How it was delivered
+
+A trading bot is only useful if it is running when the signal arrives, so both bots were built to run unattended rather than from a laptop. The TradingView bot in particular is an always-on listener: the strategy fires, the webhook arrives, the order goes out. That operational side, keeping the process alive and monitoring what it did, turned out to matter as much as the strategy.
+
+## Outcome
+
+Did it make money? It depends. The bots were profitable at times, but high trading fees and a changing market meant the edge was not stable, and the algorithm needed constant monitoring and tweaking to stay ahead of it. That is the honest read on most retail crypto strategies, and I would rather report it than hide it.

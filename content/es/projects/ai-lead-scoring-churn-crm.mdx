@@ -1,0 +1,34 @@
+---
+title: "Motor de lead scoring y detección de churn con IA (S1mple.ai)"
+coverAlt: "Dashboard en Next.js con puntuaciones de leads y riesgo de abandono por cuenta"
+summary: "Motor de IA que puntúa leads por probabilidad de volver a convertir y detecta riesgo de abandono dentro de S1mple.ai, con dashboard en Next.js, backend en FastAPI y LangChain y conectores MCP a HubSpot, Monday, Zoho y cuatro bases de datos, escalado en Kubernetes."
+description: "SaaS de lead scoring y detección de churn con IA: dashboard Next.js, FastAPI, LangChain, conectores MCP a HubSpot/Monday/Zoho y Postgres/MySQL/Supabase/MongoDB, Kubernetes."
+outcomes:
+  - El esfuerzo de marketing se concentra en las cuentas con más probabilidad de volver a convertir y en las que están en riesgo de abandono.
+  - "Un único motor de puntuación, independiente del CRM: HubSpot, Monday y Zoho mediante conectores MCP."
+  - "Funciona sobre la base de datos que ya tiene el cliente: Postgres, MySQL, Supabase o MongoDB."
+metrics:
+  - label: CRM compatibles
+    value: "3 (HubSpot, Monday, Zoho)"
+  - label: Bases de datos compatibles
+    value: "4 (Postgres, MySQL, Supabase, MongoDB)"
+  - label: Señales por cuenta
+    value: "2 (probabilidad de conversión, riesgo de abandono)"
+---
+
+## El problema
+
+El presupuesto de marketing se reparte por igual en todo el CRM porque nadie sabe qué cuentas merecen atención. El cliente quería puntuar cada contacto por probabilidad de repetir conversión y por riesgo de abandono, usando los datos que ya tenía en su CRM y su base de datos, para concentrar las campañas en las pocas cuentas donde el esfuerzo cambia de verdad el resultado.
+
+## Qué construí
+
+- Un dashboard en Next.js que muestra las puntuaciones, las alertas de abandono y el razonamiento de cada una.
+- Un backend en FastAPI que orquesta las ejecuciones de puntuación y sirve los resultados al dashboard y de vuelta al CRM.
+- Puntuación y clasificación de churn basadas en LangChain, con servidores MCP como capa de integración para que el agente lea y escriba mediante herramientas y no con código pegamento a medida.
+- Conectores CRM para HubSpot, Monday y Zoho.
+- Conectores de base de datos para PostgreSQL, MySQL, Supabase y MongoDB, para que el motor funcione sobre lo que el cliente ya tiene.
+- Orquestación de contenedores en Kubernetes para escalado y gestión.
+
+## Resultado
+
+Esfuerzo de marketing concentrado en cuentas de alta propensión y en riesgo, un único motor de puntuación independiente del CRM y de la base de datos, y un módulo de producto que ahora vive dentro de la plataforma S1mple.ai.

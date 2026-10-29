@@ -1,0 +1,32 @@
+---
+title: "Servicio de eliminación de fondos de imágenes (U-Net en AWS)"
+coverAlt: "Antes y después: zapatillas azules fotografiadas sobre piedra y luego aisladas sobre fondo blanco"
+summary: "Servicio de eliminación de fondos para fotografía de moda, construido para Rashed Buqaraa: una red de segmentación U-Net con estructura encoder-decoder en Python que separa la prenda de su fondo, desplegada en una instancia de AWS EC2 como servicio web que recibe la URL de una imagen y devuelve el recorte. Los resultados fueron de alta calidad y el servicio podía demostrarse en directo desde el navegador."
+description: "Servicio de segmentación de imágenes con U-Net en Python que elimina el fondo de fotos de moda, desplegado en AWS EC2 como endpoint web que recibe la URL de una imagen."
+outcomes:
+  - Eliminación de fondos de alta calidad en fotografía de moda.
+  - Desplegado como servicio web en AWS EC2 y demostrable desde el navegador con cualquier URL de imagen.
+metrics:
+  - label: Recortes de prendas
+    value: "retoque manual → automatizado"
+  - label: Entrega del modelo
+    value: "notebook → endpoint HTTP alojado"
+---
+
+## El problema
+
+Las imágenes de moda en e-commerce necesitan un fondo limpio y uniforme, y recortar prendas a mano no escala más allá de un puñado de productos. El cliente quería un servicio que reciba una foto de una prenda y devuelva la misma imagen sin fondo, con calidad suficiente para usarla en fichas de producto sin retoque manual.
+
+## Qué construí
+
+- Un modelo de segmentación U-Net, una red neuronal encoder-decoder, que separa la prenda de todo lo que hay detrás a nivel de píxel.
+- Un servicio de inferencia en Python alrededor del modelo que acepta la URL de una imagen, ejecuta la segmentación y devuelve el resultado sin fondo.
+- Despliegue del servicio en una instancia de AWS EC2, expuesto por HTTP para poder llamarlo desde un navegador o desde otros sistemas.
+
+## Cómo se entregó
+
+Entregar el modelo como endpoint alojado y no como notebook era el objetivo del proyecto. En EC2 el cliente podía apuntar el servicio a cualquier URL de imagen de producto y ver la salida al instante, lo que facilitó validar la calidad con fotos reales de catálogo antes de integrarlo en ningún sitio. La instancia de demo original ya se ha retirado.
+
+## Resultado
+
+El enfoque con U-Net produjo muy buenos resultados en fotografía de moda, y el servicio desplegado en EC2 dio al cliente una herramienta de eliminación de fondos operativa y demostrable, no un prototipo de investigación.

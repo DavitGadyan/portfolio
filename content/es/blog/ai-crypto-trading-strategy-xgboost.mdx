@@ -1,0 +1,162 @@
+---
+title: Cómo construí una estrategia de trading de criptomonedas con IA y XGBoost
+description: >-
+  Cómo un modelo XGBoost sustituye las reglas de trading fijas por
+  probabilidades, por qué usa líneas de tendencia y rupturas como segunda
+  confirmación, y dónde ver los resultados en vivo, drawdowns incluidos.
+summary: >-
+  Una estrategia de trading de criptomonedas con IA que opera en vivo en
+  Binance con ocho símbolos. XGBoost convierte decenas de indicadores en una
+  sola probabilidad, con confirmación por líneas de tendencia y rupturas en un
+  segundo marco temporal y entradas en el intervalo de 1 minuto.
+coverAlt: >-
+  Primer plano de una pantalla de trading con varios gráficos de velas y líneas
+  de indicadores en verde, rojo, amarillo y azul sobre fondo oscuro, con
+  columnas de cifras a la derecha.
+about:
+  - Trading algorítmico
+  - Machine learning
+  - Criptomonedas
+takeaways:
+  - >-
+    El modelo es un **clasificador XGBoost**, no un conjunto de reglas escritas
+    a mano. Entran decenas de indicadores y variables construidas; sale una
+    única probabilidad.
+  - >-
+    Antes de cada operación se exigen **dos confirmaciones independientes**: la
+    probabilidad de la IA más una señal clásica de línea de tendencia o ruptura
+    en un marco temporal de análisis distinto.
+  - >-
+    El análisis se hace en un marco temporal superior; **la ejecución ocurre en
+    el intervalo de 1 minuto**, así que la entrada es precisa aunque la decisión
+    sea más lenta.
+  - >-
+    **Los trailing stops y los límites estrictos de riesgo forman parte de la
+    estrategia**, no son un añadido posterior. Controlar el drawdown es la
+    diferencia entre un backtest y una cuenta real.
+  - >-
+    Cada operación se publica en un **panel público en vivo**, incluidos los
+    periodos de pérdidas. Una estrategia cuyos resultados no puedes inspeccionar
+    es una afirmación, no un historial.
+faq:
+  - q: '¿Qué modelo usa la estrategia?'
+    a: >-
+      Un clasificador XGBoost de árboles con gradient boosting. Recibe como
+      entrada decenas de indicadores técnicos y variables construidas y
+      devuelve la probabilidad de que un determinado setup se resuelva con
+      beneficio, sustituyendo las reglas fijas de tipo «si esto, entonces
+      aquello» de las estrategias individuales por una única señal calibrada.
+  - q: '¿Por qué XGBoost y no una red neuronal?'
+    a: >-
+      Las variables tabulares de mercado son exactamente el terreno donde mejor
+      rinden los árboles con gradient boosting. Se entrenan en minutos en lugar
+      de horas, manejan escalas de variables mixtas sin un preprocesado pesado
+      y sus importancias de variables se pueden inspeccionar, algo que importa
+      cuando necesitas explicar por qué el modelo abrió una operación. El deep
+      learning gana con secuencias en bruto, no con unos cientos de indicadores
+      construidos.
+  - q: '¿Qué mercados y marcos temporales opera?'
+    a: >-
+      Ocho símbolos cripto en Binance: BTC, ETH, SOL, XRP, ADA, DOGE, PEPE y
+      TRUMP. El análisis se ejecuta en un marco temporal superior, mientras que
+      las entradas se ejecutan en el intervalo de 1 minuto. En el panel se
+      pueden consultar intervalos desde 1m hasta 1d.
+  - q: '¿Cómo se controla el riesgo?'
+    a: >-
+      Los trailing stops integrados y los controles de riesgo a nivel de
+      posición limitan la pérdida de cualquier operación individual, y el panel
+      sigue de forma continua el drawdown máximo y el profit factor. El control
+      del riesgo forma parte de la definición de la estrategia, no es una capa
+      manual añadida por encima.
+  - q: '¿Puedo ver los resultados reales?'
+    a: >-
+      Sí. El panel en vivo de aicrypto42.io/entries publica la tasa de acierto,
+      la curva de capital, el PnL neto, el drawdown máximo, el profit factor y
+      el P&L por símbolo, en ventanas de 1 día, 7 días, 30 días y 1 año.
+      Muestra tanto los periodos de pérdidas como los de ganancias.
+  - q: '¿Esto es asesoramiento financiero?'
+    a: >-
+      No. Es la descripción de un proyecto de ingeniería. El trading
+      algorítmico conlleva un riesgo sustancial de pérdida, los resultados
+      pasados no predicen los futuros y nada de lo que aquí se cuenta es una
+      recomendación para operar o invertir.
+---
+
+Desde el **1 de enero de 2026** tengo en marcha una estrategia de trading de criptomonedas impulsada por IA que opera en vivo en Binance. En este post explico cómo está construida y dónde puedes inspeccionar los resultados por ti mismo.
+
+Puedes ver la estrategia y sus estadísticas en vivo en **[aicrypto42.io](https://aicrypto42.io/)**, y el panel de rendimiento completo en **[aicrypto42.io/entries](https://aicrypto42.io/entries)**.
+
+## ¿Qué problema resuelve realmente un modelo de trading con IA?
+
+La mayoría de las estrategias de trading minorista son una pila de reglas fijas. *Si el RSI está por debajo de 30, el precio cruza la EMA de 50 y el volumen está por encima de la media, entonces compra.*
+
+El problema no es que esas reglas estén mal. Es que son **pesos fijos elegidos por una persona** y aplicados de forma idéntica a cualquier condición de mercado. Un RSI por debajo de 30 significa una cosa en un mercado con tendencia y otra distinta en un mercado lateral, y otra más para BTC que para PEPE.
+
+Un modelo resuelve una versión acotada de este problema: en lugar de decidir tú cuánto pesa cada indicador, el modelo lo aprende de lo que ocurrió de verdad.
+
+## ¿Cómo funciona el modelo?
+
+El núcleo es un **clasificador XGBoost**. Entran decenas de indicadores técnicos y variables construidas. Sale una única probabilidad.
+
+Esa probabilidad sustituye todo el árbol de condiciones. En lugar de preguntar *«¿se han cumplido mis seis condiciones?»*, la estrategia pregunta *«con todo lo que puedo medir ahora mismo, ¿qué probabilidad hay de que este setup se resuelva con beneficio?»*
+
+Esto importa por una razón práctica. Las reglas fijas se combinan mal: cada condición que añades hace que el sistema se active menos, hasta que opera una vez al mes. Un modelo combina las señales **de forma multiplicativa, no restrictiva**: evidencia débil de seis fuentes puede sumar una predicción sólida que un sistema basado en reglas habría descartado.
+
+## ¿Por qué exigir una segunda confirmación?
+
+Porque un modelo que se equivoca con confianza es peor que no tener modelo.
+
+La estrategia exige **dos confirmaciones independientes** antes de abrir una operación:
+
+1. La **probabilidad de la IA** que devuelve el modelo XGBoost
+2. Una señal clásica de **línea de tendencia o ruptura**: muy extendida, bien entendida y, lo que es importante, *no* derivada del modelo
+
+Se calculan en marcos temporales distintos: uno de análisis para la decisión y otro de entrada para la ejecución. Que coincidan un método distinto y una escala temporal distinta filtra una buena parte de los falsos positivos del modelo.
+
+Es una decisión de diseño deliberada, y tiene un coste. La estrategia opera menos de lo que lo haría el modelo por sí solo. Esa es precisamente la idea.
+
+## ¿Por qué analizar en un marco temporal y entrar en otro?
+
+Porque las dos tareas tienen requisitos distintos.
+
+**Decidir** si un setup merece la pena se beneficia de un marco temporal más lento: más contexto, menos ruido, menos señales falsas. **Entrar** se beneficia del marco temporal más rápido disponible, porque cada tick de slippage entre la decisión y la ejecución es un coste directo.
+
+Así que el análisis corre en el marco temporal superior y la ejecución ocurre en el **intervalo de 1 minuto**. La estrategia sabe lo que quiere antes de tener que actuar rápido, que es la única forma de actuar rápido sin actuar con descuido.
+
+## ¿Cómo se gestiona el riesgo?
+
+Los trailing stops y los límites de riesgo a nivel de posición están integrados en la estrategia, no atornillados después.
+
+Aquí es donde fallan en producción la mayoría de las estrategias con backtest. Un backtest informa del resultado medio; una cuenta real vive la *secuencia*. Una estrategia con una buena media y sin control del drawdown acabará, tarde o temprano, topándose con la racha de pérdidas que la liquida.
+
+Por eso el panel sigue el **drawdown máximo** y el **profit factor** como métricas de primer orden, junto a la curva de capital.
+
+## ¿Qué muestran las cifras en vivo?
+
+Muestran lo que muestran: esa es precisamente la razón de publicarlas.
+
+El panel de [aicrypto42.io/entries](https://aicrypto42.io/entries) informa, de forma continua y sin seleccionar nada:
+
+- **Tasa de acierto** de todos los símbolos, en ventanas de 1 día, 7 días, 30 días y 1 año
+- **Curva de capital**, diaria
+- **PnL neto**
+- **Drawdown máximo** y **profit factor**
+- **P&L desglosado por símbolo**: BTC, ETH, SOL, XRP, ADA, DOGE, PEPE y TRUMP
+
+Incluidos los periodos de pérdidas. Una página de estrategia que solo enseña las ventanas ganadoras es marketing, y deberías leerla como tal; la mía incluida, y por eso los números están en vivo y no en capturas de pantalla.
+
+Si estás evaluando cualquier estrategia algorítmica, las dos cifras que hay que mirar primero son el **profit factor** (beneficio total dividido entre pérdida total; por encima de 1,0 es rentable) y el **drawdown máximo** (la peor caída de pico a valle). Una tasa de acierto alta con un profit factor por debajo de 1,0 significa muchas ganancias pequeñas y unas pocas pérdidas catastróficas.
+
+## Lo que le diría a alguien que esté construyendo esto
+
+Tres cosas, por orden del tiempo que te van a ahorrar:
+
+1. **La ingeniería de variables gana a la elección del modelo.** La diferencia entre un modelo XGBoost mediocre y uno bueno estuvo aquí casi por completo en cómo se construyeron las variables, no en los hiperparámetros.
+2. **Haz backtests realistas o no los hagas.** Comisiones, slippage y el hecho de que tu ejecución no es el precio que viste. Los backtests optimistas son, con diferencia, la razón más habitual de que los resultados reales se alejen de lo esperado.
+3. **Publica los resultados.** Te obliga a ser honesto sobre lo que el sistema hace de verdad, y es la única evidencia que cualquiera debería aceptar.
+
+---
+
+*Este post describe un proyecto de ingeniería. No es asesoramiento financiero, y nada de lo que aquí se cuenta es una recomendación para operar o invertir. El trading algorítmico conlleva un riesgo sustancial de pérdida, y el rendimiento pasado no indica resultados futuros.*
+
+**Verlo en vivo:** [aicrypto42.io](https://aicrypto42.io/) · **Estadísticas en vivo:** [aicrypto42.io/entries](https://aicrypto42.io/entries)
