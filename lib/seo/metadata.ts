@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { SITE_NAME, SITE_URL, TWITTER_HANDLE } from '@/lib/site';
+import { SITE_NAME, SITE_URL, TWITTER_HANDLE, withBasePath } from '@/lib/site';
 import { ogLocale, otherLocale, type Locale } from '@/lib/i18n/config';
 import { getMessages } from '@/lib/i18n/messages';
 import { localizePath } from '@/lib/locale-path';
@@ -22,9 +22,9 @@ export function rootMetadata(locale: Locale): Metadata {
     authors: [{ name: SITE_NAME, url: SITE_URL }],
     creator: SITE_NAME,
     publisher: SITE_NAME,
-    manifest: '/manifest.webmanifest',
+    manifest: withBasePath('/manifest.webmanifest'), // explicit metadata paths are not basePath-aware
     formatDetection: { telephone: false },
-    icons: { icon: '/icon.png', apple: '/apple-icon.png' },
+    icons: { icon: withBasePath('/icon.png'), apple: withBasePath('/apple-icon.png') },
   };
 }
 
