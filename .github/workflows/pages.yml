@@ -25,6 +25,8 @@ jobs:
           cache: npm
       # No `static_site_generator: next` here: that would inject basePath/images.unoptimized and break the image optimizer.
       - uses: actions/configure-pages@v6
+        with:
+          enablement: true # creates the Pages site (source: GitHub Actions) on first run if the repo does not have one yet
       - run: npm ci
       - name: Build (static export + image optimisation + checks)
         run: npm run build
