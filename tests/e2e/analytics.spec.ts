@@ -13,8 +13,7 @@ test.describe('page tracking', () => {
 
     const card = page.locator('a[href$="/portfolio/virgil-ai-health-insurance-agent/"]').first();
     await card.scrollIntoViewIfNeeded();
-    await page.waitForTimeout(900); // the card sits in a scroll-reveal wrapper (opacity 0 → 1 on entering the viewport)
-    await card.click({ force: true });
+    await card.evaluate((a) => (a as HTMLAnchorElement).click()); // through next/link's handler; a coordinate click hits the caption overlay that phones draw over the card
     await page.waitForURL(/\/portfolio\/virgil-ai-health-insurance-agent\/$/);
     const view = async () => (await layer(page)).find((e) => Array.isArray(e) && e[0] === 'event' && e[1] === 'page_view' && String((e[2] as { page_path?: string })?.page_path).includes('virgil')) as unknown[] | undefined;
     await expect.poll(view, { timeout: 5000 }).toBeTruthy();
