@@ -81,7 +81,7 @@ export function PostPage({ locale, slug }: { locale: Locale; slug: string }) {
                 {getRelatedProjectsForPost(locale, [...p.tags, ...p.about]).map((r) => <ProjectCard key={r.slug} p={r} locale={locale} />)}
               </div>
               <p className="mt-6 text-sm text-ink-500">
-                {m.blog.servicesHint} <Link href={`${homePath(locale)}#services`} className="underline">{m.nav.services}</Link> · <Link href={pagePath(locale, '/portfolio/')} className="underline">{m.nav.portfolio}</Link> · <Link href={`${homePath(locale)}#book`} className="underline">{m.hero.primaryCta}</Link>
+                {m.blog.servicesHint} <Link href={`${homePath(locale)}#services`} className="underline">{m.nav.services}</Link> · <Link href={pagePath(locale, '/portfolio/')} className="underline">{m.nav.portfolio}</Link> · <Link href={`${homePath(locale)}#book`} className="underline">{m.book.cta}</Link>
               </p>
             </section>
             <p className="mt-10"><Link href={pagePath(locale, '/blog/')} className="btn btn-outline-dark btn-sm">← {m.blog.back}</Link></p>

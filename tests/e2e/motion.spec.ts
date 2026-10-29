@@ -1,14 +1,12 @@
 import { expect, test } from '@playwright/test';
 
 test.describe('home-page motion', () => {
-  test('hero has two outlined buttons, the free-call wording and pulsing dots', async ({ page }) => {
+  test('hero shows only the name, the typewriter title and the four KPI chips (no buttons)', async ({ page }) => {
     await page.goto('/');
-    const buttons = page.locator('#home .btn');
-    await expect(buttons).toHaveCount(2);
-    await expect(buttons.nth(0)).toHaveText(/email me/i);
-    await expect(buttons.nth(1)).toHaveText(/book 15-min free call/i);
-    for (const b of await buttons.all()) await expect(b).toHaveClass(/btn-outline-light/);
+    await expect(page.locator('#home h1')).toHaveText('David Gadyan');
+    await expect(page.locator('#home .tw')).toBeVisible();
     await expect(page.locator('#home .hero-dot')).toHaveCount(4);
+    await expect(page.locator('#home .btn, #home a[href="#book"], #home a[href="#contact"]')).toHaveCount(0);
   });
 
   test('skill bars: greyed out until hovered on pointer devices; fill on scroll (and replay) on touch devices', async ({ page, isMobile }) => {

@@ -32,10 +32,6 @@ export function Hero({ locale }: { locale: Locale }) {
             </li>
           ))}
         </ul>
-        <div className="hero-in [--d:600ms] mt-9 flex flex-wrap gap-3">
-          <a href="#contact" className="btn btn-outline-light" data-track="hire_me_click">{m.hero.hireMe}</a>
-          <a href="#book" className="btn btn-outline-light" data-track="book_call_click">{m.hero.primaryCta}</a>
-        </div>
       </div>
     </section>
   );
