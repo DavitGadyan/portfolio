@@ -14,7 +14,8 @@
     "mainNav": "Main navigation",
     "skipToContent": "Skip to content",
     "backToTop": "Back to top",
-    "homeAria": "David Gadyan — home"
+    "homeAria": "David Gadyan — home",
+    "materials": "Materials"
   },
   "lang": {
     "switch": "Switch language",
@@ -45,7 +46,8 @@
     "facts": "In numbers",
     "faq": "Frequently asked",
     "book": "Book a call",
-    "contact": "Send direct message"
+    "contact": "Send direct message",
+    "materials": "Materials"
   },
   "about": {
     "cv": "Download my CV",
@@ -207,7 +209,9 @@
     "thankYouTitle": "Thanks",
     "notFoundTitle": "Page not found",
     "ogAlt": "David Gadyan — Full-Stack AI Engineer in Barcelona",
-    "titleTemplate": "%s | David Gadyan"
+    "titleTemplate": "%s | David Gadyan",
+    "materialsTitle": "Materials: Optimization Techniques by Tool",
+    "materialsDescription": "Practical, tested techniques for the tools David Gadyan builds with, starting with Claude: how to cut Claude Code and API cost without losing quality. Interactive maps, one per tool."
   },
   "a11y": {
     "quote": "Quote",
@@ -220,5 +224,25 @@
     "skillLevel": "{name}: {pct} percent",
     "playVideo": "Play video: {title}",
     "externalLink": "opens in a new tab"
+  },
+  "materials": {
+    "intro": "Practical, tested ways to get more from the tools I build with: lower cost, better output. Pick a tool, then a technique.",
+    "pick": "Pick a tool",
+    "hint": "Pick a technique on the map to see when it helps, what to do and why it works.",
+    "when": "When it helps",
+    "action": "What to do",
+    "why": "Why it works",
+    "saving": "Typical saving",
+    "estimate": "estimate",
+    "official": "official figure",
+    "close": "Close details",
+    "graphLabel": "Technique map for {tool}",
+    "groups": {
+      "code": "Claude Code",
+      "api": "Claude API"
+    },
+    "sources": "Official figures: Anthropic pricing and API documentation. Estimates: LOW/CODE Agency, \"Claude Code Cost Optimization\" (Sep 2026), and project experience; ranges vary by codebase.",
+    "count": "{n} techniques",
+    "open": "Open the map"
   }
 }

@@ -1,4 +1,5 @@
 import { SITE_URL, SOCIAL, absUrl, CALENDLY_URL } from '@/lib/site';
+import { materials } from '@/data/materials';
 import type { Locale } from '@/lib/i18n/config';
 import { getMessages } from '@/lib/i18n/messages';
 import { localizePath } from '@/lib/locale-path';
@@ -45,6 +46,14 @@ export function buildLlms(locale: Locale, full: boolean): string {
   L.push('');
   for (const s of capabilityStages) L.push(`${s.order}. **${s.title[locale]}** — ${s.line[locale]}`);
   L.push('');
+  L.push(`## ${m.sections.materials}`);
+  L.push('');
+  L.push(`${m.materials.intro} ${url('/materials/')}`, '');
+  for (const mat of materials) {
+    L.push(`### [${mat.title[locale]}](${url(`/materials/${mat.id}/`)})`, '');
+    for (const k of mat.techniques) L.push(`- **${k.title[locale]}** — ${k.action[locale]}`);
+    L.push('');
+  }
   L.push(`## ${es ? 'Proyectos destacados' : 'Featured projects'}`);
   L.push('');
   for (const p of projects.filter((x) => x.featured).sort((a, b) => (a.order ?? 99) - (b.order ?? 99))) L.push(`- [${p.title}](${url(`/portfolio/${p.slug}/`)}) — ${p.summary}`);

@@ -14,7 +14,8 @@
     "mainNav": "Navegación principal",
     "skipToContent": "Saltar al contenido",
     "backToTop": "Volver arriba",
-    "homeAria": "David Gadyan — inicio"
+    "homeAria": "David Gadyan — inicio",
+    "materials": "Materiales"
   },
   "lang": {
     "switch": "Cambiar idioma",
@@ -45,7 +46,8 @@
     "facts": "En cifras",
     "faq": "Preguntas frecuentes",
     "book": "Reserva una llamada",
-    "contact": "Envía un mensaje directo"
+    "contact": "Envía un mensaje directo",
+    "materials": "Materiales"
   },
   "about": {
     "cv": "Descarga mi CV",
@@ -207,7 +209,9 @@
     "thankYouTitle": "Gracias",
     "notFoundTitle": "Página no encontrada",
     "ogAlt": "David Gadyan — Ingeniero Full-Stack de IA en Barcelona",
-    "titleTemplate": "%s | David Gadyan"
+    "titleTemplate": "%s | David Gadyan",
+    "materialsTitle": "Materiales: técnicas de optimización por herramienta",
+    "materialsDescription": "Técnicas prácticas y probadas para las herramientas con las que construye David Gadyan, empezando por Claude: cómo reducir el coste de Claude Code y de la API sin perder calidad. Mapas interactivos, uno por herramienta."
   },
   "a11y": {
     "quote": "Cita",
@@ -220,5 +224,25 @@
     "skillLevel": "{name}: {pct} por ciento",
     "playVideo": "Reproducir vídeo: {title}",
     "externalLink": "se abre en una pestaña nueva"
+  },
+  "materials": {
+    "intro": "Formas prácticas y probadas de sacar más partido a las herramientas con las que construyo: menos coste, mejores resultados. Elige una herramienta y después una técnica.",
+    "pick": "Elige una herramienta",
+    "hint": "Elige una técnica en el mapa para ver cuándo ayuda, qué hacer y por qué funciona.",
+    "when": "Cuándo ayuda",
+    "action": "Qué hacer",
+    "why": "Por qué funciona",
+    "saving": "Ahorro típico",
+    "estimate": "estimación",
+    "official": "cifra oficial",
+    "close": "Cerrar detalles",
+    "graphLabel": "Mapa de técnicas de {tool}",
+    "groups": {
+      "code": "Claude Code",
+      "api": "API de Claude"
+    },
+    "sources": "Cifras oficiales: precios y documentación de la API de Anthropic. Estimaciones: LOW/CODE Agency, \"Claude Code Cost Optimization\" (sep. 2026) y experiencia en proyectos; los rangos varían según el código base.",
+    "count": "{n} técnicas",
+    "open": "Abrir el mapa"
   }
 }

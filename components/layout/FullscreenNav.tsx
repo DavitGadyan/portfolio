@@ -62,7 +62,7 @@ export function FullscreenNav({ id, open, onClose, returnFocusTo, locale, nav, t
         <nav aria-label={t.mainNav}>
           <ul role="list" className="fsnav__links">
             {nav.map((n) => (
-              <li key={n.id}>{n.kind === 'file' ? <a href={n.href} download onClick={onClose}>{n.label}</a> : <Link href={n.href} onClick={onClose}>{n.label}</Link>}</li>
+              <li key={n.id}>{n.kind === 'file' ? <a href={n.href} download onClick={onClose}>{n.label}</a> : <Link href={n.href} onClick={onClose} prefetch={n.prefetch}>{n.label}</Link>}</li>
             ))}
           </ul>
         </nav>

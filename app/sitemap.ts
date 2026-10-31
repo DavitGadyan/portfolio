@@ -4,6 +4,7 @@ import { locales } from '@/lib/i18n/config';
 import { localizePath } from '@/lib/locale-path';
 import { getProjects } from '@/lib/content/projects';
 import { getPosts } from '@/lib/content/posts';
+import { materials } from '@/data/materials';
 
 export const dynamic = 'force-static';
 
@@ -20,6 +21,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...entry('/', undefined, 1),
     ...entry('/portfolio/', undefined, 0.8),
     ...entry('/blog/', undefined, 0.8),
+    ...entry('/materials/', undefined, 0.7),
+    ...materials.flatMap((mat) => entry(`/materials/${mat.id}/`, undefined, 0.7)),
     ...getProjects('en').flatMap((p) => entry(`/portfolio/${p.slug}/`, p.lastmod ?? p.date)),
     ...getPosts('en').flatMap((p) => entry(`/blog/${p.slug}/`, p.lastmod ?? p.date, 0.6)),
     ...entry('/cookies/', undefined, 0.2),

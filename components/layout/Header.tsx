@@ -75,7 +75,7 @@ export function Header({ locale, variant = 'solid', nav, t, name }: {
                 : (pathname.startsWith(n.href.replace(/#.*$/, '')) ? 'page' : undefined);
               return (
                 <li key={n.id}>
-                  <Link href={n.href} aria-current={current}>{n.label}</Link>
+                  <Link href={n.href} aria-current={current} prefetch={n.prefetch}>{n.label}</Link>
                 </li>
               );
             })}

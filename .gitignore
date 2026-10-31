@@ -26,3 +26,7 @@ public/nextImageExportOptimizer/
 errors/
 public/images/**/nextImageExportOptimizer/
 legacy-out/
+
+# private working notes for Claude Code (never committed)
+CLAUDE.md
+CLAUDE.local.md
