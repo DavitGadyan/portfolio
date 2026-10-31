@@ -1,12 +1,11 @@
 import { expect, test } from '@playwright/test';
 
 test.describe('project showcase', () => {
-  test('portfolio index lists the featured projects first: Virgil, the real-estate platform, ImprovTalk', async ({ page }) => {
+  test('portfolio index lists the six showcase projects first, in the hand-set order (two rows of three on desktop)', async ({ page }) => {
     await page.goto('/portfolio/');
     const titles = page.getByTestId('project-card').locator('h2');
-    await expect(titles.nth(0)).toHaveText(/Virgil\.ai/);
-    await expect(titles.nth(1)).toHaveText(/Real Estate/);
-    await expect(titles.nth(2)).toHaveText(/ImprovTalk/);
+    const order = [/Virgil\.ai/, /Real Estate/, /ImprovTalk/, /YOLO26\/27/, /Crypto Trading Bots/, /Receptra/];
+    for (const [i, re] of order.entries()) await expect(titles.nth(i)).toHaveText(re);
   });
 
   test('the YOLO26 page embeds three self-hosted demos that load no video bytes until played', async ({ page }) => {
@@ -26,11 +25,25 @@ test.describe('project showcase', () => {
     await expect(page.locator('.prose-dg video')).toHaveCount(3);
   });
 
-  test('the Receptra and real-estate pages render their new content', async ({ page }) => {
+  test('the Receptra, real-estate and ImprovTalk pages render their new content', async ({ page }) => {
     await page.goto('/portfolio/ai-voice-receptionist-saas/');
     await expect(page.locator('h1')).toHaveText(/Receptra/);
     await page.goto('/portfolio/ai-real-estate-development-platform/');
     await expect(page.locator('.prose-dg img')).toHaveCount(5);
     await expect(page.locator('h1')).toHaveText(/Lot Analysis/);
+    await page.goto('/portfolio/ai-video-ads-improvtalk/');
+    await expect(page.locator('h1')).toHaveText(/React Native AI Coach/);
+    await expect(page.locator('.prose-dg img:not(.facade img)')).toHaveCount(4); // case-study screenshots (the facades carry their own thumbnails)
+    await expect(page.locator('.prose-dg .facade__btn')).toHaveCount(2); // the two ad videos, still click-to-load
+    const phones = page.locator('.prose-dg .vidgrid video');
+    await expect(phones).toHaveCount(4); // app screen recordings: poster only until played
+    for (const v of await phones.all()) {
+      await expect(v).toHaveAttribute('preload', 'none');
+      await expect(v).toHaveAttribute('poster', /\/videos\/improvtalk-[a-z-]+\.webp$/);
+    }
+    await expect(page.locator('.prose-dg .vidgrid figcaption.vid__cap')).toHaveCount(4);
+    await expect(page.locator('a[href="https://improvtalk.vip"]')).toBeVisible();
+    await page.goto('/es/portfolio/ai-video-ads-improvtalk/');
+    await expect(page.locator('h1')).toHaveText(/coach de IA en React Native/);
   });
 });

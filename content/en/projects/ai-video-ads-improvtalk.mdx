@@ -1,68 +1,114 @@
 ---
-title: "Generative AI Video Ads for ImprovTalk"
-date: 2026-08-20
+title: "ImprovTalk: React Native AI Coach for Charisma and Rapport"
+date: 2026-09-07
 lastmod: 2026-10-31
 cover: /images/portfolio/improvtalk-app-cover.jpg
 coverAlt: "ImprovTalk on two phones: the welcome screen with a couple talking on a beach and the home screen with Simulate, Practice, Learn and Solo Drills"
-summary: "Generative AI video ads for ImprovTalk, an iOS app for building charisma, communication and rapport skills. I built a pipeline on the Higgsfield API, driven by Claude, that generates ad variants tailored to each customer segment and to Instagram, Meta, TikTok and YouTube, and compared Seedance and Kling 2.6 Pro as the video models. Code is on GitHub."
-description: "Generative AI video ads for the ImprovTalk iOS app: Higgsfield API driven by Claude, Seedance and Kling 2.6 Pro, creative tailored per segment for Instagram, Meta, TikTok and YouTube."
+summary: "ImprovTalk is a voice-first mobile app for building charisma, communication and rapport. You pick a real-world scene, hold one button and talk out loud to a live AI persona, then get a Charisma Score with line-level feedback on what you said and how you sounded. I designed and built it end to end: the design system and UX, the React Native front end, the FastAPI back end, real-time voice, the three-plan paywall, and the generative AI video ads that market it."
+description: "ImprovTalk, a voice-first React Native app: talk out loud to a live AI persona and get a Charisma Score measured from your voice. Design system, FastAPI, paywall and AI video ads."
 categories:
+  - fullstack-uiux
+  - ai-agents
   - ai-marketing
-  - computer-vision
 stack:
-  frontend: []
+  frontend:
+    - React Native (Expo, New Architecture)
+    - iOS and Android, dark and derived light themes
+    - Design tokens enforced in CI
+    - Satoshi and a 30 KB Material Symbols subset
+    - Haptics and motion, off under Reduce Motion
   backend:
-    - Higgsfield API
+    - FastAPI
+    - Postgres
+    - Redis
+    - Apple In-App Purchase
+    - Stripe
+    - Playwright-based profile reader
   ai:
-    - Claude
-    - Seedance
-    - Kling 2.6 Pro
-    - Prompt engineering
-    - Creative automation
+    - OpenAI real-time voice over WebRTC
+    - Live AI personas and personality blends
+    - "Charisma Score: fluency, confidence, improvisation"
+    - "Voice delivery analysis: pace, pauses, intonation, fillers"
+    - Claude and the Higgsfield API (Seedance, Kling 2.6 Pro) for video ads
   data:
-    - Instagram, Meta, TikTok and YouTube ad placements
-  infra: []
-  security: []
+    - 128 live scenarios, 104 techniques, 2,766 topics
+    - English, Spanish and Russian
+  infra:
+    - Prometheus and Grafana
+    - TestFlight
+  security:
+    - Recordings used only to score sessions; no access to contacts, photos or location
 links:
+  live: https://improvtalk.vip
   github: https://github.com/DavitGadyan/AIVideo_Generation_higgsfield
   video:
     - https://youtu.be/x0TMzQMH-w0
     - https://youtu.be/dzK5pUgSMo0
 outcomes:
-  - Segment- and platform-specific video ad variants generated from a single pipeline.
-  - Two video models, Seedance and Kling 2.6 Pro, compared on the same brief with both results published.
-  - Pipeline code published on GitHub.
+  - One session journey (setup, live voice call, score, history) in place of five disconnected features.
+  - A token-driven UI on iOS and Android with dark and derived light themes; CI fails the build on any colour literal outside the token file.
+  - A three-plan paywall (Free, Pro, Max) on Apple In-App Purchase and Stripe; the app is in TestFlight with the App Store release in progress.
+  - Segment- and platform-specific video ads for Instagram, Meta, TikTok and YouTube from one Claude-driven Higgsfield pipeline, with Seedance and Kling 2.6 Pro compared.
 metrics:
-  - label: Ad platforms targeted
-    value: "4 (Instagram, Meta, TikTok, YouTube)"
-  - label: Video models compared
-    value: "2 (Seedance, Kling 2.6 Pro)"
-  - label: Ad variants per brief
-    value: "1 pipeline → per segment and platform"
+  - label: Live scenarios
+    value: "128"
+  - label: Conversation techniques
+    value: "104"
+  - label: Languages
+    value: "3 (EN, ES, RU)"
+  - label: "Charisma Score: fluency / confidence / improvisation"
+    value: "40 / 35 / 25 %"
 featured: true
 order: 3
 ---
 
 ## The problem
 
-ImprovTalk is an iOS app that helps people develop charisma, communication and rapport skills. To grow, it needed video ads on Instagram, Meta, TikTok and YouTube, and the same creative rarely works for every platform and every customer segment. Producing that many variants by hand is slow and expensive, so the goal was to generate them with AI from a single pipeline.
+Charisma is a set of trainable behaviours, listening and building on what the other person said, and real conversations are unscripted. The only honest practice is out loud, unrehearsed and with feedback, which is what ImprovTalk is for. The build had two product problems to solve first. Practice, Simulate, Learn, History and Custom Practice had accumulated as separate features, while what users want is one path: set up, talk, get scored, look back, and see progress. And the visual language had drifted: a navy theme, six iOS system colours on the Home tiles, hand-typed reds and a brand gradient on every button, with nothing deciding between them.
 
 ## What I built
 
-- A generation pipeline on the Higgsfield API, with Claude driving the prompts and creative direction for each customer segment and social platform.
-- Segment- and platform-specific variants produced from one brief, so a single run yields a tailored ad for each channel rather than one generic clip.
-- A model comparison on the same brief, Seedance against Kling 2.6 Pro, so the difference in output quality is visible before a campaign commits to one model.
-- The pipeline code, published on GitHub.
+- **Scenes and live personas.** Pick a real-world scene, a café, a bar, the beach, a gym, a festival, campus or the street, hold one button and talk. The AI persona answers aloud in real time over OpenAI real-time voice and WebRTC; there is no typing.
+- **Charisma Score with line-level feedback.** When the conversation ends you get what worked, what to work on and how you sounded: pace, pauses, intonation and fillers, measured from your own voice rather than guessed. The score weighs fluency, confidence and improvisation.
+- **Simulate.** Multi-round scenarios against different personality blends, with a verdict after each run.
+- **Learn and Custom Practice.** 104 techniques and 27 catalogs of things to talk about; Custom Practice builds a persona from a description or from a public Instagram profile.
+- **Real Talk.** Upload a recording or describe a conversation you had and get a 0–100 grade, a transcript and advice on openers and next steps.
+- **Plans and languages.** Free, Pro and Max on Apple In-App Purchase and Stripe, in English, Spanish and Russian.
+
+![Live session with the persona's portrait and the hold-to-speak disc, the Charisma Score screen, the setup rows and the recommended plan](/images/portfolio/improvtalk-live-session.jpg)
+
+## The app in use
+
+Four short screen recordings of the app, silent, a few seconds each.
+
+<VideoGrid>
+<Video src="/videos/improvtalk-home.mp4" poster="/videos/improvtalk-home.webp" ratio="480 / 1040" title="ImprovTalk intro and Home screen" caption="Intro and Home: streak, Charisma Score and closed rate up top, then Simulate, Practice, Learn, Real Talk, Stats and History." />
+<Video src="/videos/improvtalk-practice-setup.mp4" poster="/videos/improvtalk-practice-setup.webp" ratio="480 / 1040" title="Simulate and Practice: choosing a bar scene and setting up the persona" caption="Simulate and Practice: pick a scene (bar, beach, festival, park, campus, airport, date), choose the situation, set language, mood, guard and the personality blend, then start talking." />
+<Video src="/videos/improvtalk-learn.mp4" poster="/videos/improvtalk-learn.webp" ratio="480 / 1040" title="Learn: Coach, Knowledge and Tricks" caption="Learn: Coach, Knowledge and Tricks, from conversation coaching and charisma training to catalogs such as city attractions, tattoos, horoscopes and movies." />
+<Video src="/videos/improvtalk-attractions-stats.mp4" poster="/videos/improvtalk-attractions-stats.webp" ratio="480 / 1040" title="World Attractions globe, a place page and Stats" caption="World Attractions: spin the globe to a city, open a place such as Montjuïc Castle for the facts and what to say there, then Stats with the Charisma trend and the leaderboard." />
+</VideoGrid>
+
+## A design system the build enforces
+
+- **One journey.** Four surfaces, Home, Practice, Learn and History, and a single session path: setup, live voice call, score, history.
+- **A palette you cannot leave.** The five brand colours plus the four an app needs, one accent and four data colours, Satoshi, and a 30 KB Material Symbols subset so the app draws exactly the glyphs the mockups were drawn with. A CI check fails the build on any colour literal outside the token file.
+- **Three versions, one decision.** Flat violet; violet with the gradient kept in two places; violet plus a signal colour. The same screens each time, so the choice was between systems, not aesthetics. The gradient now lives on Hold-to-speak and the intro only, which makes it the signature rather than a button style.
+- **One flexible element.** On the live screen only the portrait flexes and everything under it has a fixed height, so the controls never leave the screen on any phone.
+- **Motion as feedback.** Press response with haptics, a breathing hold-to-speak disc, a counting score and staggered entrances, all off under Reduce Motion.
+
+![Setup, one line per setting with a personality blend that always totals 100, and Plans with Max first, then Pro and Free](/images/portfolio/improvtalk-setup-plans.jpg)
+
+![Light mode, derived from the tokens rather than inverted, with every value re-checked for contrast](/images/portfolio/improvtalk-light-mode.jpg)
+
+![The design system: five colours, one accent, four data colours, Satoshi and the Material Symbols subset](/images/portfolio/improvtalk-design-system.jpg)
 
 ## How it was delivered
 
-Most of the work is in the prompting rather than the rendering. Claude turns the brief for a given segment and platform into the content the video model needs, and the pipeline sends it to the Higgsfield API, where the chosen model, Seedance or Kling 2.6 Pro, renders the clip. Running the same brief through both models is how the comparison below was produced.
+React Native with Expo on the New Architecture for iOS and Android; FastAPI with Postgres and Redis behind it; OpenAI real-time voice over WebRTC for the live persona; a Playwright-based profile reader for Custom Practice; Apple In-App Purchase and Stripe for the plans; Prometheus and Grafana for monitoring. Voice recordings are used only to score sessions, and the app does not access contacts, photos or location and shows no ads.
 
-## Outcome
+## Marketing: generative AI video ads
 
-Segment- and platform-specific video ad variants for ImprovTalk from one automated pipeline, two video models compared side by side, and the code published for reuse. The videos below are the Seedance and Kling 2.6 Pro outputs.
-
-## Video
+The same toolchain markets the app. A pipeline on the Higgsfield API, with Claude driving the prompts and creative direction for each customer segment and platform, produces tailored variants for Instagram, Meta, TikTok and YouTube from one brief. The same brief was run through Seedance and Kling 2.6 Pro so the difference is visible before a campaign commits to one model; both outputs are below and the pipeline code is on GitHub.
 
 Seedance:
 
@@ -71,3 +117,7 @@ Seedance:
 Kling 2.6 Pro:
 
 <YouTube id="dzK5pUgSMo0" />
+
+## Outcome
+
+A coherent, token-driven UI on iOS and Android with light and dark themes, a three-plan paywall and a live-session layout that fits every phone. The app is in TestFlight with the App Store release in progress, and its ads are generated rather than produced by hand.

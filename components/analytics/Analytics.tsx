@@ -21,21 +21,31 @@ export function Analytics() {
   const pathname = usePathname();
   const granted = consent?.analytics === 'granted';
   const last = useRef<string | null>(null);
+  const lastTitle = useRef('');
 
   useEffect(() => {
     if (!granted) return;
-    if (last.current === null) { last.current = pathname; return; } // this view is reported by gtag('config') / the container
+    if (last.current === null) { last.current = pathname; lastTitle.current = document.title; return; } // this view is reported by gtag('config') / the container
     if (last.current === pathname) return;
     last.current = pathname;
-    const t = window.setTimeout(() => { // the new page's <title> is committed just after the route change
+    const previous = lastTitle.current;
+    let tries = 0;
+    let t = 0;
+    const send = () => {
+      const title = document.title;
+      // the new page's <title> is committed shortly after the route change; until then it is empty (between the old
+      // and the new element) or still the old one, so wait for it, up to ~3 s, rather than report a blank title
+      if ((title === '' || title === previous) && tries++ < 12) { t = window.setTimeout(send, 250); return; }
+      lastTitle.current = title;
       const params = {
-        page_title: document.title, page_location: location.href, page_path: withBasePath(pathname),
+        page_title: title, page_location: location.href, page_path: withBasePath(pathname),
         content_group: pageType(pathname), language: document.documentElement.lang,
       };
       window.dataLayer = window.dataLayer || [];
       if (GTM_ID) window.dataLayer.push({ event: 'virtual_page_view', ...params });
       else window.gtag?.('event', 'page_view', params);
-    }, 250);
+    };
+    t = window.setTimeout(send, 250);
     return () => clearTimeout(t);
   }, [pathname, granted]);
 

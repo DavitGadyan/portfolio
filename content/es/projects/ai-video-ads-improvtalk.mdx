@@ -1,41 +1,71 @@
 ---
-title: "Anuncios de vídeo con IA generativa para ImprovTalk"
+title: "ImprovTalk: coach de IA en React Native para carisma y rapport"
 coverAlt: "ImprovTalk en dos teléfonos: la pantalla de bienvenida con una pareja conversando en la playa y la pantalla de inicio con Simulate, Practice, Learn y Solo Drills"
-summary: "Anuncios de vídeo con IA generativa para ImprovTalk, una app iOS para desarrollar carisma, comunicación y habilidades de rapport. Construí un pipeline sobre la API de Higgsfield, dirigido por Claude, que genera variantes de anuncio adaptadas a cada segmento de cliente y a Instagram, Meta, TikTok y YouTube, y comparé Seedance y Kling 2.6 Pro como modelos de vídeo. El código está en GitHub."
-description: "Anuncios en vídeo con IA generativa para ImprovTalk (iOS): API de Higgsfield con Claude, Seedance y Kling 2.6 Pro, creatividades por segmento para Instagram, Meta, TikTok y YouTube."
+summary: "ImprovTalk es una app móvil voice-first para desarrollar carisma, comunicación y rapport. Eliges una escena real, mantienes pulsado un botón y hablas en voz alta con un personaje de IA en directo; al terminar recibes un Charisma Score con feedback línea a línea sobre lo que dijiste y cómo sonaste. La diseñé y construí de principio a fin: sistema de diseño y UX, front end en React Native, back end en FastAPI, voz en tiempo real, el paywall de tres planes y los anuncios en vídeo con IA generativa que la promocionan."
+description: "ImprovTalk, app voice-first en React Native: habla con un personaje de IA en directo y recibe un Charisma Score medido en tu voz. Sistema de diseño, FastAPI, paywall y anuncios con IA."
 outcomes:
-  - Variantes de anuncio en vídeo por segmento y plataforma generadas desde un único pipeline.
-  - Dos modelos de vídeo, Seedance y Kling 2.6 Pro, comparados sobre el mismo brief con ambos resultados publicados.
-  - Código del pipeline publicado en GitHub.
+  - Un único recorrido de sesión (configuración, llamada de voz en directo, puntuación, historial) en lugar de cinco funciones inconexas.
+  - Una interfaz basada en tokens para iOS y Android con tema oscuro y tema claro derivado; la CI hace fallar el build ante cualquier color literal fuera del archivo de tokens.
+  - Un paywall de tres planes (Free, Pro y Max) sobre Apple In-App Purchase y Stripe; la app está en TestFlight y el lanzamiento en App Store está en curso.
+  - Anuncios en vídeo por segmento y plataforma para Instagram, Meta, TikTok y YouTube desde un único pipeline de Higgsfield dirigido por Claude, con Seedance y Kling 2.6 Pro comparados.
 metrics:
-  - label: Plataformas de anuncios
-    value: "4 (Instagram, Meta, TikTok, YouTube)"
-  - label: Modelos de vídeo comparados
-    value: "2 (Seedance, Kling 2.6 Pro)"
-  - label: Variantes por brief
-    value: "1 pipeline → por segmento y plataforma"
+  - label: Escenarios en directo
+    value: "128"
+  - label: Técnicas de conversación
+    value: "104"
+  - label: Idiomas
+    value: "3 (EN, ES, RU)"
+  - label: "Charisma Score: fluidez / confianza / improvisación"
+    value: "40 / 35 / 25 %"
 ---
 
 ## El problema
 
-ImprovTalk es una app iOS que ayuda a desarrollar carisma, comunicación y habilidades de rapport. Para crecer necesitaba anuncios en vídeo en Instagram, Meta, TikTok y YouTube, y la misma creatividad rara vez funciona en todas las plataformas y para todos los segmentos de cliente. Producir tantas variantes a mano es lento y caro, así que el objetivo era generarlas con IA desde un único pipeline.
+El carisma es un conjunto de conductas entrenables, escuchar y construir sobre lo que dijo la otra persona, y las conversaciones reales no tienen guion. La única práctica honesta es en voz alta, sin ensayar y con feedback, y para eso existe ImprovTalk. Antes había que resolver dos problemas de producto. Practice, Simulate, Learn, History y Custom Practice se habían acumulado como funciones separadas, cuando lo que la gente quiere es un solo camino: configurar, hablar, recibir una puntuación, revisar y ver el progreso. Y el lenguaje visual se había desviado: un tema azul marino, seis colores de sistema de iOS en las fichas de inicio, rojos escritos a mano y un degradado de marca en cada botón, sin nada que decidiera entre ellos.
 
 ## Qué construí
 
-- Un pipeline de generación sobre la API de Higgsfield, con Claude dirigiendo los prompts y la dirección creativa para cada segmento de cliente y cada red social.
-- Variantes por segmento y plataforma producidas a partir de un mismo brief, de modo que una sola ejecución entrega un anuncio adaptado a cada canal en lugar de un clip genérico.
-- Una comparación de modelos sobre el mismo brief, Seedance frente a Kling 2.6 Pro, para que la diferencia de calidad sea visible antes de que una campaña se comprometa con uno de ellos.
-- El código del pipeline, publicado en GitHub.
+- **Escenas y personajes en directo.** Eliges una escena real, una cafetería, un bar, la playa, un gimnasio, un festival, el campus o la calle, mantienes pulsado un botón y hablas. El personaje de IA responde en voz alta y en tiempo real sobre OpenAI real-time voice y WebRTC; no se escribe nada.
+- **Charisma Score con feedback línea a línea.** Al terminar la conversación ves qué funcionó, qué mejorar y cómo sonaste: ritmo, pausas, entonación y muletillas, medidos desde tu propia voz y no estimados. La puntuación pondera fluidez, confianza e improvisación.
+- **Simulate.** Escenarios de varias rondas contra distintas mezclas de personalidad, con un veredicto tras cada intento.
+- **Learn y Custom Practice.** 104 técnicas y 27 catálogos de temas de conversación; Custom Practice crea un personaje a partir de una descripción o de un perfil público de Instagram.
+- **Real Talk.** Sube una grabación o describe una conversación que tuviste y recibe una nota de 0 a 100, la transcripción y consejos sobre cómo abrir y qué hacer después.
+- **Planes e idiomas.** Free, Pro y Max sobre Apple In-App Purchase y Stripe, en inglés, español y ruso.
+
+![Sesión en directo con el retrato del personaje y el disco de mantener pulsado para hablar, la pantalla del Charisma Score, las filas de configuración y el plan recomendado](/images/portfolio/improvtalk-live-session.jpg)
+
+## La app en uso
+
+Cuatro grabaciones de pantalla breves de la app, sin sonido, de unos segundos cada una.
+
+<VideoGrid>
+<Video src="/videos/improvtalk-home.mp4" poster="/videos/improvtalk-home.webp" ratio="480 / 1040" title="Intro y pantalla de inicio de ImprovTalk" caption="Intro e inicio: racha, Charisma Score y tasa de cierre arriba, y después Simulate, Practice, Learn, Real Talk, Stats e History." />
+<Video src="/videos/improvtalk-practice-setup.mp4" poster="/videos/improvtalk-practice-setup.webp" ratio="480 / 1040" title="Simulate y Practice: elegir una escena de bar y configurar el personaje" caption="Simulate y Practice: eliges una escena (bar, playa, festival, parque, campus, aeropuerto, cita), la situación, el idioma, el ánimo, la guardia y la mezcla de personalidad, y empiezas a hablar." />
+<Video src="/videos/improvtalk-learn.mp4" poster="/videos/improvtalk-learn.webp" ratio="480 / 1040" title="Learn: Coach, Knowledge y Tricks" caption="Learn: Coach, Knowledge y Tricks, desde coaching de conversación y entrenamiento de carisma hasta catálogos como atracciones de ciudades, tatuajes, horóscopos y películas." />
+<Video src="/videos/improvtalk-attractions-stats.mp4" poster="/videos/improvtalk-attractions-stats.webp" ratio="480 / 1040" title="Globo de World Attractions, la página de un lugar y Stats" caption="World Attractions: giras el globo hasta una ciudad, abres un lugar como el castillo de Montjuïc con sus datos y qué decir allí, y luego Stats con la tendencia del Charisma y la clasificación." />
+</VideoGrid>
+
+## Un sistema de diseño que el build hace cumplir
+
+- **Un solo recorrido.** Cuatro superficies, Home, Practice, Learn e History, y un único camino de sesión: configuración, llamada de voz en directo, puntuación, historial.
+- **Una paleta de la que no se puede salir.** Los cinco colores de marca más los cuatro que necesita una app, un acento y cuatro colores de datos, Satoshi y un subconjunto de Material Symbols de 30 KB para que la app dibuje exactamente los glifos con los que se dibujaron las maquetas. Una comprobación en CI hace fallar el build ante cualquier color literal fuera del archivo de tokens.
+- **Tres versiones, una decisión.** Violeta plano; violeta con el degradado conservado en dos sitios; violeta más un color de señal. Las mismas pantallas cada vez, de modo que la elección fue entre sistemas y no entre estéticas. El degradado vive ahora solo en Hold-to-speak y en la intro, lo que lo convierte en la firma y no en un estilo de botón.
+- **Un solo elemento flexible.** En la pantalla en directo solo el retrato se estira y todo lo que queda debajo tiene altura fija, así que los controles nunca salen de la pantalla en ningún teléfono.
+- **Movimiento como feedback.** Respuesta al pulsar con hápticos, un disco que respira al mantener pulsado, una puntuación que cuenta y entradas escalonadas, todo desactivado con Reducir movimiento.
+
+![Configuración, una línea por ajuste con una mezcla de personalidad que siempre suma 100, y Planes con Max primero, luego Pro y Free](/images/portfolio/improvtalk-setup-plans.jpg)
+
+![Modo claro, derivado de los tokens en lugar de invertido, con cada valor revisado de nuevo para el contraste](/images/portfolio/improvtalk-light-mode.jpg)
+
+![El sistema de diseño: cinco colores, un acento, cuatro colores de datos, Satoshi y el subconjunto de Material Symbols](/images/portfolio/improvtalk-design-system.jpg)
 
 ## Cómo se entregó
 
-La mayor parte del trabajo está en el prompting, no en el renderizado. Claude convierte el brief de un segmento y una plataforma concretos en el contenido que necesita el modelo de vídeo, y el pipeline lo envía a la API de Higgsfield, donde el modelo elegido, Seedance o Kling 2.6 Pro, renderiza el clip. Pasar el mismo brief por ambos modelos es como se produjo la comparación que ves abajo.
+React Native con Expo sobre la New Architecture para iOS y Android; FastAPI con Postgres y Redis detrás; OpenAI real-time voice sobre WebRTC para el personaje en directo; un lector de perfiles basado en Playwright para Custom Practice; Apple In-App Purchase y Stripe para los planes; Prometheus y Grafana para la monitorización. Las grabaciones de voz se usan solo para puntuar las sesiones, y la app no accede a contactos, fotos ni ubicación y no muestra anuncios.
 
-## Resultado
+## Marketing: anuncios en vídeo con IA generativa
 
-Variantes de anuncio en vídeo por segmento y plataforma para ImprovTalk desde un único pipeline automatizado, dos modelos de vídeo comparados lado a lado y el código publicado para su reutilización. Los vídeos siguientes son los resultados de Seedance y de Kling 2.6 Pro.
-
-## Vídeo
+La misma caja de herramientas promociona la app. Un pipeline sobre la API de Higgsfield, con Claude dirigiendo los prompts y la dirección creativa para cada segmento de cliente y cada plataforma, produce variantes adaptadas a Instagram, Meta, TikTok y YouTube a partir de un solo brief. El mismo brief se pasó por Seedance y por Kling 2.6 Pro para que la diferencia sea visible antes de que una campaña se comprometa con un modelo; ambos resultados están abajo y el código del pipeline está en GitHub.
 
 Seedance:
 
@@ -44,3 +74,7 @@ Seedance:
 Kling 2.6 Pro:
 
 <YouTube id="dzK5pUgSMo0" />
+
+## Resultado
+
+Una interfaz coherente y basada en tokens para iOS y Android con tema claro y oscuro, un paywall de tres planes y una pantalla de sesión que cabe en cualquier teléfono. La app está en TestFlight con el lanzamiento en App Store en curso, y sus anuncios se generan en lugar de producirse a mano.
