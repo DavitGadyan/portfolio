@@ -33,15 +33,15 @@ test.describe('project showcase', () => {
     await expect(page.locator('h1')).toHaveText(/Lot Analysis/);
     await page.goto('/portfolio/ai-video-ads-improvtalk/');
     await expect(page.locator('h1')).toHaveText(/React Native AI Coach/);
-    await expect(page.locator('.prose-dg img:not(.facade img)')).toHaveCount(4); // case-study screenshots (the facades carry their own thumbnails)
+    await expect(page.locator('.prose-dg img:not(.facade img)')).toHaveCount(3); // design-system screenshots (the facades carry their own thumbnails)
     await expect(page.locator('.prose-dg .facade__btn')).toHaveCount(2); // the two ad videos, still click-to-load
-    const phones = page.locator('.prose-dg .vidgrid video');
+    const phones = page.locator('.prose-dg .screen video');
     await expect(phones).toHaveCount(4); // app screen recordings: poster only until played
     for (const v of await phones.all()) {
       await expect(v).toHaveAttribute('preload', 'none');
       await expect(v).toHaveAttribute('poster', /\/videos\/improvtalk-[a-z-]+\.webp$/);
     }
-    await expect(page.locator('.prose-dg .vidgrid figcaption.vid__cap')).toHaveCount(4);
+    await expect(page.locator('.prose-dg .screen h3')).toHaveCount(4); // one explained screen per clip
     await expect(page.locator('a[href="https://improvtalk.vip"]')).toBeVisible();
     await page.goto('/es/portfolio/ai-video-ads-improvtalk/');
     await expect(page.locator('h1')).toHaveText(/coach de IA en React Native/);
