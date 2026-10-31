@@ -1,67 +1,86 @@
 ---
-title: "AI Real Estate Development Analysis Platform"
+title: "AI Real Estate Lot Analysis Platform for a Residential Builder"
 date: 2024-10-30
-lastmod: 2026-10-29
+lastmod: 2026-10-31
 client: Jake Happe
-cover: /images/portfolio/ai_house.png
-coverAlt: "Illustration: robot holding a Chrome logo, AI chip, three houses and growth charts"
-summary: "AI real-estate development platform for a US property developer that scrapes 365 days of MLS listings with Selenium, harmonises them with pandas and SQLAlchemy, values homes with an XGBoost AVM and runs a rule-based pro forma engine to rank hundreds of lot-and-home-style scenarios by profit, ROI and time-to-sell within zoning constraints."
-description: "AI real-estate development platform: Selenium MLS scraper, pandas and SQLAlchemy data model, XGBoost valuation model and pro forma scenario engine ranking lots by profit and ROI."
+cover: /images/portfolio/real-estate-lots-cover.jpg
+coverAlt: "Landing page headline Find the right lot, an isometric map of lots and a card listing the top-ranked lots of the day"
+summary: "AI-powered lot analysis platform for a US residential builder, plus a full website redesign with SEO and GEO. An automated MLS pipeline pulls every land listing into the database twice a day. Estimators filter by city, zoning, lot size, price, year built, utilities, slope and more, see what can legally be built on each lot, compare cottage, duplex, townhome and multi-unit costs and ROI with the best option ranked, and ask an AI analyst plain-English questions answered with cited MLS and zoning sources."
+description: "AI lot analysis platform for a residential builder: automated MLS pipeline twice a day, 22-field search, cottage vs duplex vs multi-unit ROI, and an AI analyst that cites its sources."
 categories:
-  - data-science-ml
-  - databases-data-eng
+  - ai-agents
   - fullstack-uiux
+  - data-science-ml
 stack:
   frontend:
-    - Dynamic dashboards
-    - Exportable reports
+    - Next.js
+    - Landing page with live product widgets
+    - Dashboard, search, lot analysis and AI assistant views
   backend:
     - Python
-    - Rule-based pro forma engine
+    - Automated MLS sync (every 12 h)
+    - Pro forma cost, ROI and time-to-sell engine
+    - Postgres
   ai:
-    - XGBoost
-    - Automated Valuation Model (AVM)
+    - LLM analyst with cited answers (MLS, zoning code, uploaded reports)
+    - XGBoost automated valuation model (first phase)
   data:
-    - Selenium
-    - pandas
-    - SQLAlchemy
-    - MLS listings (365 days of active, pending and sold homes)
+    - MLS land listings
+    - County zoning code (by-right uses, conditional uses, limits)
+    - 22-field lot catalog (utilities, sewer vs septic, flood zone, slope, FAR)
+    - Selenium, pandas, SQLAlchemy (first phase)
   infra: []
-  security: []
+  security:
+    - Session-only PDF/Word uploads, discarded when the session ends and never used for training
 links: {}
 outcomes:
-  - 365-day MLS data (active, pending and sold) captured automatically by a Selenium bot.
-  - XGBoost automated valuation model feeding profit and risk KPIs.
-  - Hundreds of lot-and-home-style combinations scored on profit, ROI and time-to-sell, with zoning and quota constraints enforced.
-  - Full documentation and reproducible code handed over to the client's in-house team.
+  - Every MLS land listing lands in the database automatically twice a day, with listings stored, added, removed and price changes visible on a sync card.
+  - Estimators filter the feed with a 22-field catalog and saved searches that re-run after every sync.
+  - Each lot shows what can legally be built, with cottage, duplex, townhome and multi-unit compared on all-in cost, ROI, margin and months, the best option ranked and "not by-right" flags where a permit is needed.
+  - An AI analyst answers plain-English questions over the shortlist, the live MLS database, the zoning code and session-only uploads, returning comparison tables and naming its sources.
+  - Website redesigned end to end with SEO and GEO, with live product widgets in the hero.
 metrics:
-  - label: MLS history scraped
-    value: "365 days"
-  - label: Scenarios scored
-    value: "hundreds of lot-and-style combinations"
-  - label: KPIs per scenario
-    value: "3 (profit, ROI, time-to-sell)"
+  - label: MLS sync
+    value: "automated, every 12 h"
+  - label: Search filters
+    value: "22-field catalog"
+  - label: Unit types compared per lot
+    value: "4 (cottage, duplex, townhome, multi-unit)"
+clientNote: "Client review on Upwork (5.0): “David did an outstanding job designing an AI program for me. His technical expertise was evident from day one, and he quickly grasped the requirements of the project.”"
 featured: true
-order: 7
+order: 2
 ---
 
 ## The problem
 
-Deciding what to build on a lot means weighing home style, size, garage, basement, price and location against what the local market actually pays, and the usual tools for that are manual comps and spreadsheets. Jake Happe wanted a platform that models and compares new-construction scenarios for every lot and points to the most profitable build that is also allowed to be built there, using the MLS data his team already had access to.
+A US residential builder buys land, not houses: the question for every listing is what can legally be built on it and which option makes money. Estimators were checking MLS listings, zoning tables and cost spreadsheets by hand, lot by lot. The engagement started in 2024 with a scraper, a valuation model and a pro forma engine; the current platform turns that into a product the whole team uses every morning, with an AI analyst on top and a redesigned public website.
 
 ## What I built
 
-- A Python Selenium bot that logs into the MLS portal and extracts 365 days of active, pending and sold homes: style, garage count, square footage, basement finishing, price and geolocation.
-- A pandas and SQLAlchemy ingestion layer that harmonises the raw listings into one dataset of home attributes (ranch, 2-story and 1.5-story, above-ground size, attached garages, basement specs, sale price, location).
-- A rule-based pro forma engine that calculates build costs, timelines and sale schedules for customisable development scenarios.
-- An XGBoost automated valuation model (AVM) trained on historical comps to predict future home values and feed the profit-and-risk KPIs.
-- A scenario engine that scores projected profit, ROI and time-to-sell across hundreds of lot-and-home-style combinations under varying cost and market assumptions, with US zoning rules and quota limits embedded so only compliant options surface.
-- Dynamic dashboards and exportable reports that rank each lot by its highest-yield home style and configuration.
+![Landing page: Find the right lot, with live ranked-lot widgets inside the hero](/images/portfolio/real-estate-landing.jpg)
 
-## Data and infrastructure
+**Landing page.** Live product widgets (ranked lots, top lots today) sit inside the hero, so the page sells what the tool actually does. The site was redesigned end to end with SEO and GEO in mind.
 
-The scraper and the SQLAlchemy data model are the foundation: every KPI on the dashboards traces back to a harmonised MLS record, so a shift in the market flows through to the valuations and rankings without anyone re-keying data. I handed over full documentation and reproducible code so the client's in-house team can rerun the pipeline and extend it themselves.
+![Dashboard: county land inventory by zoning, scored lots on a map, the best options with ROI and the team shortlist](/images/portfolio/real-estate-dashboard.jpg)
+
+**Dashboard.** The morning view: county land inventory by zoning, every scored lot on the map, the AI's two best options with ROI and score, the team's shortlist and projected portfolio ROI. MLS sync status is always visible.
+
+![Search: filters for city, zoning, lot size, price and year built, a 22-field catalog and the results on a map](/images/portfolio/real-estate-search.jpg)
+
+**Search.** The stored MLS feed with the fields an estimator actually uses: city, zoning, lot size, price, year built or vacant, unit type, days on market, plus a 22-field catalog (utilities at street, sewer vs septic, flood zone, slope, allowed unit types, max units, FAR). Sort by score, ROI or price; saved searches re-run after every sync.
+
+![Lot analysis: cost breakdown, cottage vs duplex vs townhome vs multi-unit scenarios, the zoning card and the recommended option](/images/portfolio/real-estate-lot-analysis.jpg)
+
+**Lot analysis.** One lot, fully modelled: cost breakdown (land, hard, soft, margin), cottage vs duplex vs townhome ×4 vs multi-unit ×6 compared on all-in cost, ROI, margin and months, with "not by-right" flags where a permit is needed. A zoning card shows by-right uses, conditional uses and limits, and the AI's recommended option explains its reasoning. PDF and Word reports can be uploaded for the session only.
+
+![AI assistant: a plain-English question answered with a comparison table and cited MLS and zoning sources](/images/portfolio/real-estate-ai-analyst.jpg)
+
+**AI assistant.** Ask in plain English, get a cited answer with the numbers. The analyst reads the shortlist, the live MLS database, the zoning code and any uploaded report, returns a comparison table and names its sources. Documents are discarded when the session ends and never used for training. The sync card shows the automated MLS update: listings stored, added, removed, price changes.
+
+## How it was delivered
+
+The first phase (2024) was data and modelling: a Selenium bot captured 365 days of MLS history (active, pending and sold), pandas and SQLAlchemy harmonised it, an XGBoost automated valuation model priced homes, and a rule-based pro forma engine scored hundreds of lot-and-home-style combinations on profit, ROI and time-to-sell within zoning and quota constraints, handed over with documentation and reproducible code. The current platform replaces the manual loop with an automated MLS pipeline that pulls every land listing into Postgres twice a day, a Next.js application for the dashboard, search, lot analysis and assistant views, and an LLM analyst grounded in the shortlist, the MLS database and the zoning code that cites what it used. The public website was rebuilt at the same time.
 
 ## Outcome
 
-A year of MLS data captured automatically, an AVM feeding profit and risk KPIs, and hundreds of lot-and-style combinations scored within zoning and quota constraints. The client's team received documentation and reproducible code, so the platform can grow in-house rather than depend on me.
+Estimators start the day with a ranked shortlist instead of a spreadsheet, see for any lot what can be built by right and which unit type pays, and can ask the analyst for a cited comparison. The client's Upwork review calls the result an outstanding job that exceeded expectations.

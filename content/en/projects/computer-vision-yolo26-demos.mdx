@@ -1,0 +1,96 @@
+---
+title: "Computer Vision with YOLO26/27: Three Edge-Ready Demos"
+date: 2026-10-31
+lastmod: 2026-10-31
+cover: /images/portfolio/yolo26-cover.jpg
+coverAlt: "Robot cell safety monitor: a worker next to a UR10 robot arm with pose keypoints, floor zones and a red PROTECTIVE STOP banner"
+summary: "Three production-style computer-vision demos on Ultralytics YOLO26, all running in real time on a laptop CPU: an AI workout monitor that counts reps and gives form cues from pose estimation, a drone parking-occupancy system on oriented bounding boxes with drift compensation, and a human-robot safety monitor that combines pose with open-vocabulary segmentation. Each one exports to Raspberry Pi, the Pi AI Camera, Jetson or mobile."
+description: "Three YOLO26 computer-vision demos: pose-based rep counting, drone parking occupancy with oriented boxes, and human-robot safety monitoring. Real time on CPU, edge exports."
+categories:
+  - computer-vision
+  - data-science-ml
+  - cloud-devops-llmops
+stack:
+  frontend:
+    - OpenCV HUD overlays
+    - Live occupancy dashboard
+  backend:
+    - Python
+    - OpenCV
+    - JSON / MQTT event payloads
+  ai:
+    - Ultralytics YOLO26-pose
+    - YOLO26-OBB (oriented boxes)
+    - YOLOE-26 open-vocabulary segmentation
+    - ByteTrack
+  data:
+    - ORB + RANSAC homography (drift compensation)
+    - Distance transform (separation in metres)
+    - Hysteresis state machines
+  infra:
+    - NCNN (Raspberry Pi)
+    - Sony IMX500 (Raspberry Pi AI Camera)
+    - TensorRT (NVIDIA Jetson)
+    - OpenVINO
+    - TFLite / CoreML export
+  security: []
+links:
+  github: https://github.com/DavitGadyan/Computer_Vision/tree/master/Yolo26
+outcomes:
+  - "Workout monitor: 4/4 push-ups and 7/7 squats counted correctly on the test clips, exercise detected automatically, about 15 FPS on a laptop CPU."
+  - "Drone parking: 34 angled slots monitored with rotated boxes; drift compensation cut false slot events from 32 to 3 over a 35-second clip."
+  - "Robot cell: robots segmented from text prompts with no training data; hand-level separation in metres drives SAFE, SLOW and STOP commands and a timestamped event log at about 9 FPS on CPU."
+  - All three export to edge targets (NCNN, IMX500, TensorRT, OpenVINO, TFLite/CoreML) because the YOLO26 graph is NMS-free end to end.
+metrics:
+  - label: Reps counted on test clips
+    value: "4/4 push-ups, 7/7 squats"
+  - label: False parking events, 35 s drone clip
+    value: "32 → 3"
+  - label: CPU throughput, no GPU
+    value: "5.5–15 FPS"
+featured: false
+---
+
+## The problem
+
+Three briefs that come up again and again in computer-vision work: fitness apps and connected gyms need rep counting and form feedback from an ordinary camera, parking operators want live occupancy without $200–400 in-ground sensors per space, and factories need to know how close people get to robots that have left their cages. All three were built on the same YOLO26 toolkit, run in real time on a laptop CPU, and export to cheap edge hardware.
+
+## What I built
+
+### AI workout monitor: rep counting and form feedback
+
+![AI workout monitor: a squat tracked with pose keypoints, the rep counter and the knee angle drawn on screen](/images/portfolio/yolo26-workout-1.jpg)
+
+YOLO26-pose gives 17 keypoints per person in one pass and ByteTrack keeps a stable ID per athlete, so each person in a group gets their own counter. A joint-angle engine (knee, elbow, hip, body line) reads whichever side the camera sees better. The exercise is detected automatically: a horizontal torso means push-up, a moving knee means squat, a moving elbow with static knees means curl. A per-exercise hysteresis state machine separates full-range reps from partial ones, and form rules produce cues such as "Go deeper" or "Keep body straight". Mirror reflections and background people are filtered out. Each session writes a JSON report with reps, full-range reps, a form score and the issues raised.
+
+Rep counting, auto-detected exercises and live cues (25 s):
+
+<Video src="/videos/yolo-workout-monitoring.mp4" poster="/videos/yolo-workout-monitoring.jpg" title="AI workout monitor demo" />
+
+### Drone smart parking: slot occupancy from aerial video
+
+![Drone view of a parking lot with rotated vehicle boxes, free slots in green and a live occupancy dashboard](/images/portfolio/yolo26-parking-1.jpg)
+
+Top-down cars are rotated and densely packed, which defeats axis-aligned detectors, so this one uses YOLO26-OBB, pre-trained on aerial imagery, for tight rotated boxes. A whole row of angled spaces is six numbers in a YAML file. ORB features matched against a reference frame plus a RANSAC homography warp the slot map every few frames, so it follows the drifting drone: without it, misalignment produced 32 false slot events in 35 seconds, with it 3. An asymmetric debounce needs 1.5 s of evidence before a slot is called free and 0.3 s before it is called occupied, because a dark car missed in shadow is far more common than a phantom car. Occupancy uses the fraction of the slot that is covered rather than IoU, so vans bigger than the slot still count. The device publishes a few bytes of JSON per minute.
+
+Drone pass with the live dashboard (20 s):
+
+<Video src="/videos/yolo-drone-parking-edge.mp4" poster="/videos/yolo-drone-parking-edge.jpg" title="Drone smart parking demo" ratio="1280/572" />
+
+### Robot cell safety monitor: human-robot separation
+
+![Robot cell safety monitor: worker keypoints, the robot mask, floor zones and a PROTECTIVE STOP banner](/images/portfolio/yolo26-robot-cell-1.jpg)
+
+Laser scanners only see an ankle-height slice; this monitor adds hand-level awareness from a single camera. YOLO26-pose tracks the workers and YOLOE-26 segments the robots from text prompts ("robot arm", "collaborative robot"), with negative prompts so people are never labelled as robots and with no robot dataset at all. A distance transform gives the pixel distance from any of 12 body keypoints, wrists included, to the robot mask, converted to metres using the worker's own torso as a scale. Floor zones, a hysteresis state machine (escalate immediately, release after one second) and a person-down detector drive a recommended robot speed of 100, 30 or 0 % and a timestamped event log ready for a PLC, OPC UA or MQTT. If a worker blocks the camera's view of the robot, the last robot mask is kept for six seconds so the robot is never forgotten. It is designed as a decision-support and near-miss analytics layer next to certified safety devices, not as a safety function on its own.
+
+UR10 cell going SAFE → STOP → SLOW → STOP → SAFE, then a cobot assembly line (24 s):
+
+<Video src="/videos/yolo-robot-cell-safety.mp4" poster="/videos/yolo-robot-cell-safety.jpg" title="Robot cell safety monitor demo" ratio="1280/572" />
+
+## How it was delivered
+
+The three projects share one small toolkit (video I/O, drawing, registration, zones and a training script), so a new demo is mostly a run script and a YAML file. YOLO26 is NMS-free end to end, which is what makes the exported graphs clean enough for NPUs: the parking model was exported and benchmarked to ONNX, NCNN (Raspberry Pi 4/5) and OpenVINO (Intel IPCs), packaged for the Sony IMX500 on the Raspberry Pi AI Camera, with a TensorRT FP16 path for Jetson. The workout monitor exports to TFLite, CoreML and NCNN for on-device mobile apps, so video never leaves the phone. Frame rates were measured on an i9 laptop CPU while two training jobs shared the same CPU: about 15 FPS for the workout monitor at 1280×720, 5.5 FPS for parking at 1024 px including stabilisation and dashboard, and about 9 FPS for the safety monitor running two models per frame.
+
+## Outcome
+
+Three working demos with annotated videos, per-session JSON reports and edge export paths, published with the code on GitHub. Each one is a configuration change away from a new use case: another exercise is one rule entry, another parking lot is a slot file and a reference frame, another robot cell is a YAML with prompts, thresholds and floor polygons. The demo clips are short excerpts of public YouTube videos used for technical demonstration.

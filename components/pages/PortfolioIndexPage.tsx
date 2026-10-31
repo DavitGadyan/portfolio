@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import type { Locale } from '@/lib/i18n/config';
 import { getMessages, fmt } from '@/lib/i18n/messages';
 import { buildMetadata } from '@/lib/seo/metadata';
-import { countByCategory, getProjects } from '@/lib/content/projects';
+import { countByCategory, getProjectsShowcase } from '@/lib/content/projects';
 import { portfolioGraph } from '@/lib/seo/jsonld';
 import { homePath } from '@/lib/locale-path';
 import { SiteFrame } from '@/components/layout/SiteFrame';
@@ -18,7 +18,7 @@ export function portfolioMetadata(locale: Locale): Metadata {
 
 export function PortfolioIndexPage({ locale }: { locale: Locale }) {
   const m = getMessages(locale);
-  const projects = getProjects(locale);
+  const projects = getProjectsShowcase(locale);
   return (
     <SiteFrame locale={locale}>
       <JsonLd data={portfolioGraph(locale, projects)} />

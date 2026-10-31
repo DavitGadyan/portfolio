@@ -3,6 +3,7 @@ import remarkGfm from 'remark-gfm';
 import rehypeSlug from 'rehype-slug';
 import type { AnchorHTMLAttributes, ImgHTMLAttributes } from 'react';
 import { VideoFacade } from '@/components/embeds/VideoFacade';
+import { Video } from '@/components/embeds/Video';
 import { MdImage } from './MdImage';
 import { withBasePath } from '@/lib/site';
 
@@ -17,6 +18,7 @@ export function Markdown({ source, playLabel = 'Play video' }: { source: string;
   const components = {
     YouTube: (p: { id: string; title?: string }) => <VideoFacade provider="youtube" {...p} playLabel={playLabel} />,
     Loom: (p: { id: string; title?: string }) => <VideoFacade provider="loom" {...p} playLabel={playLabel} />,
+    Video: (p: { src: string; poster?: string; title?: string; ratio?: string }) => <Video {...p} />,
     img: (p: ImgHTMLAttributes<HTMLImageElement>) => <MdImage src={String(p.src ?? '')} alt={String(p.alt ?? '')} />,
     a: MdLink,
   };

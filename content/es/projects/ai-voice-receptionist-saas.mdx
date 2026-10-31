@@ -1,0 +1,39 @@
+---
+title: "Receptra: SaaS de recepcionista de voz con IA para pymes"
+coverAlt: "Receptra: una recepcionista sonriente con auriculares junto al lema AI receptionist that never misses a call"
+summary: "Receptra es una recepcionista de voz con IA multiempresa para oficios, clínicas, centros de estética, peluquerías, despachos de abogados, inmobiliarias y alquiler de eventos. Atiende todas las llamadas con una voz natural, reserva citas contra un calendario real, clasifica las emergencias, deriva a una persona cuando toca y envía un resumen por SMS a ambas partes. Un negocio nuevo se incorpora en una hora aproximadamente desde un formulario o un PDF con la lista de precios, sin código nuevo."
+description: "Receptra: SaaS de recepcionista de voz con IA multiempresa. Atiende llamadas, reserva citas, clasifica emergencias y envía resúmenes por SMS. FastAPI, Next.js 15, OpenAI, Vapi, Twilio."
+outcomes:
+  - Una sola base de código sirve a siete sectores; cada negocio es configuración, no código.
+  - Incorporación en una hora aproximadamente desde un formulario o un PDF con la lista de precios, aprobada campo por campo.
+  - La recepcionista solo dice "confirmado" cuando la herramienta de reserva lo consigue, y cada llamada registra la versión del perfil con la que se ejecutó.
+  - "Tras cada llamada: transcripción, resumen de dos frases, campos extraídos, resumen por SMS, WhatsApp o correo, webhooks firmados y seguimientos a los 2, 5 y 10 días."
+  - Coste operativo estimado de unos 30 $ al mes con 200 minutos de voz (estimación combinada de Vapi, Deepgram, GPT-4o-mini, ElevenLabs y Twilio).
+metrics:
+  - label: Sectores cubiertos por los presets
+    value: "7"
+  - label: Incorporar un negocio nuevo
+    value: "alrededor de 1 hora"
+  - label: Herramientas de la recepcionista (teléfono, chat, simulador)
+    value: "13"
+---
+
+## El problema
+
+Las pequeñas empresas pierden trabajos cada vez que una llamada acaba en el buzón de voz: el fontanero está debajo de un fregadero, la clínica está con un paciente, la agencia ya ha cerrado. Decenas de encargos de "recepcionista de voz con IA" tienen la misma forma, así que en lugar de un bot por cliente construí un producto genérico y multiempresa donde cada negocio es configuración, no código.
+
+## Qué construí
+
+- Una recepcionista que atiende 24/7, como desbordamiento o fuera de horario, con aviso de IA y de grabación, capta leads, clasifica emergencias con un guion de seguridad propio de cada negocio y comprueba la zona de servicio.
+- Reservas, cambios y cancelaciones contra un calendario interno o Cal.com, o envío de un enlace de reserva por SMS. Solo dice "confirmado" cuando la reserva se ha completado.
+- Transferencia en caliente con resumen, o una tarea de devolución de llamada cuando nadie puede atender; SMS automático tras llamadas perdidas y seguimientos a los 2, 5 y 10 días a los leads no convertidos; filtrado de spam y llamadas comerciales con bloqueo progresivo.
+- Tras cada llamada: transcripción, resumen de dos frases, campos extraídos, resultado, resumen por SMS, WhatsApp o correo y webhooks firmados con HMAC para Make, n8n o un CRM.
+- Un panel de control con actividad, contactos, flujo de llamadas, conocimiento (importación de PDF), un simulador de llamadas de prueba, números, analítica, facturación y ajustes, con un diseño de cristal líquido y una recepcionista 3D en la portada.
+
+## Cómo se entregó
+
+Quien llama → número de Twilio o Vapi → Vapi (voz a texto, LLM, texto a voz, interrupciones). El backend responde a la petición de asistente de Vapi con un asistente por llamada construido a partir del preset del sector y del perfil del negocio, sirve las llamadas a herramientas (consulta, reserva, transferencia, notificación y nueve más) y convierte el informe de fin de llamada en resumen, resultado, notificaciones, webhooks y seguimientos. El chat web, el simulador y las llamadas telefónicas pasan por las mismas 13 herramientas, así que un escenario que supera el simulador se comporta igual en la línea. La incorporación parte de la lista de precios o del PDF de políticas que el negocio ya tiene; Receptra propone servicios, precios, preguntas frecuentes y políticas para aprobarlos campo por campo, y cada guardado crea una versión del perfil que cada llamada registra. La capa de voz es un adaptador intercambiable (primero Vapi, con stubs de Retell y Pipecat), así que se puede cambiar de proveedor sin tocar la lógica de negocio. Las pruebas del backend cubren el aislamiento entre empresas, la importación de PDF, el ciclo de vida del webhook de Vapi y los escenarios de reserva, emergencia, spam, fuera de zona, transferencia y retraso. Sin claves de API la recepcionista recurre a un cerebro basado en reglas, de modo que el simulador, las pruebas y la demo funcionan sin conexión.
+
+## Resultado
+
+Un producto en lugar de un bot a medida: siete empresas de demostración (fontanería, clínica, centro de estética, peluquería, despacho de abogados, inmobiliaria, alquiler de eventos) corren en un solo despliegue, un negocio nuevo entra en servicio en una hora aproximadamente, y un número de teléfono real se conecta apuntando la URL de servidor de Vapi al backend. La estimación combinada del proyecto sitúa el coste operativo en unos 30 $ al mes por 200 minutos de llamada más 300 SMS, con una canalización autoalojada (Pipecat o LiveKit, Deepgram, Cartesia) como vía para reducirlo aproximadamente a la mitad. El código está en GitHub.

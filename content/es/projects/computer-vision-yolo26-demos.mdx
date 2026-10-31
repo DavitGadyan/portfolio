@@ -1,0 +1,62 @@
+---
+title: "Visión artificial con YOLO26/27: tres demos listas para edge"
+coverAlt: "Monitor de seguridad en celda robótica: un operario junto a un brazo UR10 con puntos clave de pose, zonas de suelo y un cartel rojo de parada de protección"
+summary: "Tres demos de visión artificial de nivel producción sobre Ultralytics YOLO26, todas en tiempo real en la CPU de un portátil: un monitor de entrenamiento que cuenta repeticiones y corrige la técnica a partir de la estimación de pose, un sistema de ocupación de aparcamiento desde dron con cajas orientadas y compensación de deriva, y un monitor de seguridad persona-robot que combina pose con segmentación de vocabulario abierto. Cada una se exporta a Raspberry Pi, a la Pi AI Camera, a Jetson o a móvil."
+description: "Tres demos de visión artificial con YOLO26: conteo de repeticiones por pose, ocupación de aparcamiento desde dron con cajas orientadas y seguridad persona-robot. Tiempo real en CPU."
+outcomes:
+  - "Monitor de entrenamiento: 4/4 flexiones y 7/7 sentadillas contadas correctamente en los clips de prueba, ejercicio detectado automáticamente, unos 15 FPS en la CPU de un portátil."
+  - "Aparcamiento desde dron: 34 plazas en ángulo vigiladas con cajas rotadas; la compensación de deriva redujo los falsos eventos de plaza de 32 a 3 en un clip de 35 segundos."
+  - "Celda robótica: robots segmentados a partir de prompts de texto sin datos de entrenamiento; la separación a nivel de mano en metros genera órdenes SAFE, SLOW y STOP y un registro de eventos con marca de tiempo a unos 9 FPS en CPU."
+  - Las tres se exportan a dispositivos edge (NCNN, IMX500, TensorRT, OpenVINO, TFLite/CoreML) porque el grafo de YOLO26 no necesita NMS de extremo a extremo.
+metrics:
+  - label: Repeticiones contadas en los clips de prueba
+    value: "4/4 flexiones, 7/7 sentadillas"
+  - label: Falsos eventos de plaza, clip de dron de 35 s
+    value: "32 → 3"
+  - label: Rendimiento en CPU, sin GPU
+    value: "5,5–15 FPS"
+---
+
+## El problema
+
+Tres encargos que se repiten una y otra vez en visión artificial: las apps de fitness y los gimnasios conectados necesitan contar repeticiones y corregir la técnica con una cámara corriente, los operadores de aparcamientos quieren ocupación en vivo sin sensores enterrados de 200–400 $ por plaza, y las fábricas necesitan saber cuánto se acercan las personas a robots que ya no están enjaulados. Las tres demos se construyeron sobre el mismo kit de YOLO26, funcionan en tiempo real en la CPU de un portátil y se exportan a hardware edge barato.
+
+## Qué construí
+
+### Monitor de entrenamiento con IA: conteo de repeticiones y corrección de técnica
+
+![Monitor de entrenamiento: una sentadilla seguida con puntos clave de pose, el contador de repeticiones y el ángulo de rodilla en pantalla](/images/portfolio/yolo26-workout-1.jpg)
+
+YOLO26-pose devuelve 17 puntos clave por persona en una sola pasada y ByteTrack mantiene un identificador estable por atleta, así que cada persona de un grupo tiene su propio contador. Un motor de ángulos articulares (rodilla, codo, cadera, línea del cuerpo) lee el lado que la cámara ve mejor. El ejercicio se detecta solo: torso horizontal significa flexión, rodilla en movimiento significa sentadilla, codo en movimiento con rodillas quietas significa curl. Una máquina de estados con histéresis por ejercicio separa las repeticiones completas de las parciales, y unas reglas de técnica generan avisos como "Baja más" o "Mantén el cuerpo recto". Se descartan los reflejos de espejo y las personas del fondo. Cada sesión escribe un informe JSON con repeticiones, repeticiones completas, una puntuación de técnica y los problemas detectados.
+
+Conteo de repeticiones, ejercicios detectados automáticamente y avisos en vivo (25 s):
+
+<Video src="/videos/yolo-workout-monitoring.mp4" poster="/videos/yolo-workout-monitoring.jpg" title="Demo del monitor de entrenamiento" />
+
+### Aparcamiento inteligente desde dron: ocupación de plazas en vídeo aéreo
+
+![Vista de dron de un aparcamiento con cajas de vehículo rotadas, plazas libres en verde y un panel de ocupación en vivo](/images/portfolio/yolo26-parking-1.jpg)
+
+Vistos desde arriba, los coches están girados y muy juntos, algo que descoloca a los detectores de cajas alineadas, así que esta demo usa YOLO26-OBB, preentrenado con imágenes aéreas, para obtener cajas rotadas ajustadas. Una fila entera de plazas en ángulo son seis números en un archivo YAML. Las características ORB emparejadas con un fotograma de referencia y una homografía RANSAC reajustan el mapa de plazas cada pocos fotogramas, de modo que sigue al dron cuando deriva: sin ello, la desalineación produjo 32 falsos eventos de plaza en 35 segundos; con ello, 3. Un antirrebote asimétrico exige 1,5 s de evidencia antes de dar una plaza por libre y 0,3 s antes de darla por ocupada, porque un coche oscuro que pasa desapercibido en la sombra es mucho más frecuente que un coche fantasma. La ocupación usa la fracción de plaza cubierta en lugar de IoU, así que las furgonetas más grandes que la plaza también cuentan. El dispositivo publica unos pocos bytes de JSON por minuto.
+
+Pasada de dron con el panel en vivo (20 s):
+
+<Video src="/videos/yolo-drone-parking-edge.mp4" poster="/videos/yolo-drone-parking-edge.jpg" title="Demo de aparcamiento inteligente desde dron" ratio="1280/572" />
+
+### Monitor de seguridad en celda robótica: separación persona-robot
+
+![Monitor de seguridad en celda robótica: puntos clave del operario, máscara del robot, zonas de suelo y un cartel de parada de protección](/images/portfolio/yolo26-robot-cell-1.jpg)
+
+Los escáneres láser solo ven una franja a la altura del tobillo; este monitor añade conciencia a nivel de mano con una sola cámara. YOLO26-pose sigue a los operarios y YOLOE-26 segmenta los robots a partir de prompts de texto ("robot arm", "collaborative robot"), con prompts negativos para que nunca se etiquete a una persona como robot y sin ningún conjunto de datos de robots. Una transformada de distancia da la distancia en píxeles desde cualquiera de 12 puntos clave del cuerpo, muñecas incluidas, hasta la máscara del robot, convertida a metros usando el torso del propio operario como escala. Las zonas de suelo, una máquina de estados con histéresis (escala al instante, relaja tras un segundo) y un detector de persona caída fijan una velocidad recomendada del robot del 100, 30 o 0 % y un registro de eventos con marca de tiempo listo para un PLC, OPC UA o MQTT. Si un operario tapa la vista del robot, la última máscara se conserva seis segundos para que el robot nunca se olvide. Está pensado como capa de apoyo a la decisión y de analítica de cuasi-accidentes junto a dispositivos de seguridad certificados, no como función de seguridad por sí mismo.
+
+Celda UR10 pasando por SAFE → STOP → SLOW → STOP → SAFE, y después una línea de montaje con cobots (24 s):
+
+<Video src="/videos/yolo-robot-cell-safety.mp4" poster="/videos/yolo-robot-cell-safety.jpg" title="Demo del monitor de seguridad en celda robótica" ratio="1280/572" />
+
+## Cómo se entregó
+
+Los tres proyectos comparten un pequeño kit común (entrada y salida de vídeo, dibujo, registro, zonas y un script de entrenamiento), así que una demo nueva es sobre todo un script de ejecución y un archivo YAML. YOLO26 no necesita NMS de extremo a extremo, y eso es lo que deja los grafos exportados lo bastante limpios para las NPU: el modelo de aparcamiento se exportó y evaluó en ONNX, NCNN (Raspberry Pi 4/5) y OpenVINO (IPC Intel), se empaquetó para el Sony IMX500 de la Raspberry Pi AI Camera, y tiene una ruta TensorRT FP16 para Jetson. El monitor de entrenamiento se exporta a TFLite, CoreML y NCNN para apps móviles en el dispositivo, así que el vídeo nunca sale del teléfono. Las tasas de fotogramas se midieron en la CPU de un portátil i9 mientras dos entrenamientos compartían la misma CPU: unos 15 FPS para el monitor de entrenamiento a 1280×720, 5,5 FPS para el aparcamiento a 1024 px incluyendo estabilización y panel, y unos 9 FPS para el monitor de seguridad ejecutando dos modelos por fotograma.
+
+## Resultado
+
+Tres demos funcionales con vídeos anotados, informes JSON por sesión y rutas de exportación a edge, publicadas junto con el código en GitHub. Cada una está a un cambio de configuración de un caso de uso nuevo: otro ejercicio es una regla más, otro aparcamiento es un archivo de plazas y un fotograma de referencia, otra celda robótica es un YAML con prompts, umbrales y polígonos de suelo. Los clips de demostración son extractos breves de vídeos públicos de YouTube usados con fines de demostración técnica.

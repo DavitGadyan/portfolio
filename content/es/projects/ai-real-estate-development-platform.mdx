@@ -1,39 +1,54 @@
 ---
-title: "Plataforma de IA para análisis de promociones inmobiliarias"
-coverAlt: "Ilustración: robot con el logo de Chrome, chip de IA, tres casas y gráficos de crecimiento"
-summary: "Plataforma de IA para un promotor inmobiliario de EE. UU. que extrae 365 días de anuncios de la MLS con Selenium, los unifica con pandas y SQLAlchemy, valora las viviendas con un AVM en XGBoost y ejecuta un motor pro forma basado en reglas para clasificar cientos de escenarios de parcela y tipo de vivienda por beneficio, ROI y tiempo de venta dentro de las restricciones urbanísticas."
-description: "Plataforma de IA inmobiliaria: scraper de la MLS con Selenium, datos en pandas y SQLAlchemy, valoración con XGBoost y motor pro forma que clasifica parcelas por beneficio y ROI."
+title: "Plataforma de análisis de parcelas con IA para una constructora"
+coverAlt: "Portada con el titular Find the right lot, un mapa isométrico de parcelas y una tarjeta con las parcelas mejor clasificadas del día"
+summary: "Plataforma de análisis de parcelas con IA para una constructora residencial de EE. UU., más el rediseño completo de su web con SEO y GEO. Una canalización MLS automatizada carga todos los anuncios de suelo en la base de datos dos veces al día. Los estimadores filtran por ciudad, zonificación, superficie, precio, año de construcción, suministros, pendiente y más, ven qué se puede construir legalmente en cada parcela, comparan costes y ROI de cottage, dúplex, adosados y plurifamiliar con la mejor opción clasificada, y preguntan en lenguaje natural a un analista de IA que cita fuentes MLS y de zonificación."
+description: "Plataforma de análisis de parcelas con IA para una constructora: canalización MLS automática, búsqueda de 22 campos, ROI por tipo de vivienda y un analista de IA que cita sus fuentes."
 outcomes:
-  - Datos de 365 días de la MLS (activos, pendientes y vendidos) capturados automáticamente con un bot de Selenium.
-  - Modelo de valoración automática (AVM) en XGBoost que alimenta los KPI de beneficio y riesgo.
-  - Cientos de combinaciones de parcela y tipo de vivienda puntuadas por beneficio, ROI y tiempo de venta, con restricciones de zonificación y cupos aplicadas.
-  - Documentación completa y código reproducible entregados al equipo interno del cliente.
+  - Todos los anuncios de suelo del MLS entran en la base de datos automáticamente dos veces al día, con anuncios guardados, añadidos, retirados y cambios de precio visibles en una tarjeta de sincronización.
+  - Los estimadores filtran el feed con un catálogo de 22 campos y búsquedas guardadas que se vuelven a ejecutar tras cada sincronización.
+  - Cada parcela muestra qué se puede construir legalmente, con cottage, dúplex, adosados y plurifamiliar comparados por coste total, ROI, margen y meses, la mejor opción clasificada y avisos de "no por derecho" donde hace falta un permiso.
+  - Un analista de IA responde preguntas en lenguaje natural sobre la lista corta, la base de datos MLS en vivo, el código de zonificación y los documentos subidos solo para la sesión, devolviendo tablas comparativas y nombrando sus fuentes.
+  - Web rediseñada de principio a fin con SEO y GEO, con widgets del producto en vivo en la portada.
 metrics:
-  - label: Historial de la MLS extraído
-    value: "365 días"
-  - label: Escenarios puntuados
-    value: "cientos de combinaciones de parcela y tipo"
-  - label: KPI por escenario
-    value: "3 (beneficio, ROI, tiempo de venta)"
+  - label: Sincronización MLS
+    value: "automática, cada 12 h"
+  - label: Filtros de búsqueda
+    value: "catálogo de 22 campos"
+  - label: Tipos de vivienda comparados por parcela
+    value: "4 (cottage, dúplex, adosados, plurifamiliar)"
+clientNote: "Reseña del cliente en Upwork (5,0): “David hizo un trabajo excepcional diseñando un programa de IA para mí. Su pericia técnica fue evidente desde el primer día y captó enseguida los requisitos del proyecto.”"
 ---
 
 ## El problema
 
-Decidir qué construir en una parcela obliga a sopesar el tipo de vivienda, el tamaño, el garaje, el sótano, el precio y la ubicación frente a lo que el mercado local paga de verdad, y las herramientas habituales para ello son comparables manuales y hojas de cálculo. Jake Happe quería una plataforma que modelara y comparara escenarios de obra nueva para cada parcela y señalara la construcción más rentable que además estuviera permitida, usando los datos de la MLS a los que su equipo ya tenía acceso.
+Una constructora residencial de EE. UU. compra suelo, no casas: la pregunta ante cada anuncio es qué se puede construir legalmente y qué opción da dinero. Los estimadores revisaban a mano anuncios del MLS, tablas de zonificación y hojas de costes, parcela a parcela. El encargo empezó en 2024 con un scraper, un modelo de valoración y un motor de pro forma; la plataforma actual lo convierte en un producto que todo el equipo usa cada mañana, con un analista de IA encima y una web pública rediseñada.
 
 ## Qué construí
 
-- Un bot en Python con Selenium que inicia sesión en el portal de la MLS y extrae 365 días de viviendas activas, pendientes y vendidas: tipo, número de garajes, superficie, acabado del sótano, precio y geolocalización.
-- Una capa de ingesta con pandas y SQLAlchemy que unifica los anuncios en bruto en un único conjunto de datos de atributos de vivienda (ranch, dos plantas y planta y media, superficie sobre rasante, garajes adosados, características del sótano, precio de venta, ubicación).
-- Un motor pro forma basado en reglas que calcula costes de construcción, plazos y calendarios de venta para escenarios de promoción configurables.
-- Un modelo de valoración automática (AVM) en XGBoost entrenado con comparables históricos para predecir el valor futuro de las viviendas y alimentar los KPI de beneficio y riesgo.
-- Un motor de escenarios que puntúa beneficio previsto, ROI y tiempo de venta en cientos de combinaciones de parcela y tipo de vivienda bajo distintos supuestos de coste y mercado, con las normas de zonificación y los cupos del mercado estadounidense integrados para que solo aparezcan opciones conformes.
-- Dashboards dinámicos e informes exportables que clasifican cada parcela por el tipo y la configuración de vivienda de mayor rendimiento.
+![Portada: Find the right lot, con widgets de parcelas clasificadas en vivo dentro de la cabecera](/images/portfolio/real-estate-landing.jpg)
 
-## Datos e infraestructura
+**Portada.** Widgets del producto en vivo (parcelas clasificadas, mejores parcelas de hoy) dentro de la cabecera, para que la página venda lo que la herramienta hace de verdad. La web se rediseñó de principio a fin pensando en SEO y GEO.
 
-El scraper y el modelo de datos en SQLAlchemy son la base: cada KPI de los dashboards se remonta a un registro unificado de la MLS, de modo que un cambio en el mercado se refleja en las valoraciones y en la clasificación sin que nadie vuelva a teclear datos. Entregué documentación completa y código reproducible para que el equipo interno del cliente pueda volver a ejecutar el pipeline y ampliarlo por su cuenta.
+![Panel: inventario de suelo del condado por zonificación, parcelas puntuadas en el mapa, mejores opciones con ROI y lista corta del equipo](/images/portfolio/real-estate-dashboard.jpg)
+
+**Panel.** La vista de cada mañana: inventario de suelo del condado por zonificación, todas las parcelas puntuadas en el mapa, las dos mejores opciones de la IA con ROI y puntuación, la lista corta del equipo y el ROI proyectado de la cartera. El estado de la sincronización MLS siempre está a la vista.
+
+![Búsqueda: filtros de ciudad, zonificación, superficie, precio y año de construcción, catálogo de 22 campos y resultados en el mapa](/images/portfolio/real-estate-search.jpg)
+
+**Búsqueda.** El feed MLS almacenado con los campos que un estimador usa de verdad: ciudad, zonificación, superficie, precio, año de construcción o solar vacío, tipo de vivienda, días en el mercado, más un catálogo de 22 campos (suministros a pie de calle, alcantarillado o fosa séptica, zona inundable, pendiente, tipos permitidos, unidades máximas, edificabilidad). Orden por puntuación, ROI o precio; las búsquedas guardadas se vuelven a ejecutar tras cada sincronización.
+
+![Análisis de parcela: desglose de costes, escenarios de cottage, dúplex, adosados y plurifamiliar, tarjeta de zonificación y opción recomendada](/images/portfolio/real-estate-lot-analysis.jpg)
+
+**Análisis de parcela.** Una parcela modelada por completo: desglose de costes (suelo, obra, costes blandos, margen), cottage, dúplex, adosados ×4 y plurifamiliar ×6 comparados por coste total, ROI, margen y meses, con avisos de "no por derecho" donde hace falta un permiso. Una tarjeta de zonificación muestra usos por derecho, usos condicionados y límites, y la opción recomendada por la IA explica su razonamiento. Se pueden subir informes en PDF y Word solo para la sesión.
+
+![Asistente de IA: una pregunta en lenguaje natural respondida con una tabla comparativa y fuentes MLS y de zonificación citadas](/images/portfolio/real-estate-ai-analyst.jpg)
+
+**Asistente de IA.** Pregunta en lenguaje natural y recibe una respuesta con cifras y fuentes. El analista lee la lista corta, la base de datos MLS en vivo, el código de zonificación y cualquier informe subido, devuelve una tabla comparativa y nombra sus fuentes. Los documentos se descartan al terminar la sesión y nunca se usan para entrenar. La tarjeta de sincronización muestra la actualización MLS automática: anuncios guardados, añadidos, retirados y cambios de precio.
+
+## Cómo se entregó
+
+La primera fase (2024) fue de datos y modelado: un bot de Selenium capturó 365 días de histórico MLS (activos, pendientes y vendidos), pandas y SQLAlchemy lo armonizaron, un modelo de valoración automática con XGBoost tasó las viviendas y un motor de pro forma basado en reglas puntuó cientos de combinaciones de parcela y tipo de vivienda por beneficio, ROI y tiempo de venta dentro de las restricciones de zonificación y cupo, entregado con documentación y código reproducible. La plataforma actual sustituye el bucle manual por una canalización MLS automatizada que carga todos los anuncios de suelo en Postgres dos veces al día, una aplicación Next.js con las vistas de panel, búsqueda, análisis de parcela y asistente, y un analista LLM anclado en la lista corta, la base de datos MLS y el código de zonificación que cita lo que ha usado. La web pública se reconstruyó al mismo tiempo.
 
 ## Resultado
 
-Un año de datos de la MLS capturados automáticamente, un AVM que alimenta los KPI de beneficio y riesgo, y cientos de combinaciones de parcela y tipo de vivienda puntuadas dentro de las restricciones de zonificación y cupos. El equipo del cliente recibió documentación y código reproducible, así que la plataforma puede crecer internamente sin depender de mí.
+Los estimadores empiezan el día con una lista corta clasificada en lugar de una hoja de cálculo, ven para cualquier parcela qué se puede construir por derecho y qué tipo de vivienda compensa, y pueden pedir al analista una comparación con fuentes. La reseña del cliente en Upwork califica el resultado de trabajo excepcional que superó sus expectativas.

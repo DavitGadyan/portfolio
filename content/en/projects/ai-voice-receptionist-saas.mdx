@@ -1,0 +1,80 @@
+---
+title: "Receptra: AI Voice Receptionist SaaS for Small Businesses"
+date: 2026-10-23
+lastmod: 2026-10-31
+cover: /images/portfolio/ai-voice-receptionist-cover.jpg
+coverAlt: "Receptra: a smiling receptionist wearing a headset next to the tagline AI receptionist that never misses a call"
+summary: "Receptra is a multi-tenant AI voice receptionist for trades, clinics, med spas, salons, law firms, estate agents and event hire. It answers every call in a natural voice, books jobs against a live calendar, triages emergencies, hands over to a human when it should and texts both sides a summary. A new business is onboarded in about an hour from a form or a price-list PDF, with no new code."
+description: "Receptra: multi-tenant AI voice receptionist SaaS. Answers calls, books appointments, triages emergencies and texts summaries. FastAPI, Next.js 15, OpenAI, Vapi, Twilio."
+categories:
+  - ai-agents
+  - ai-erp-saas
+  - fullstack-uiux
+stack:
+  frontend:
+    - Next.js 15
+    - React
+    - Tailwind CSS v4 (liquid-glass UI)
+    - react-three-fiber 3D hero
+    - Recharts
+    - Vapi Web SDK
+  backend:
+    - FastAPI
+    - Python
+    - SQLAlchemy (SQLite dev, Postgres prod)
+    - Server-sent events
+    - Signed webhooks (Make, n8n, Zapier)
+  ai:
+    - OpenAI
+    - Vapi voice adapter (Retell and Pipecat stubs)
+    - 13 receptionist tools shared by phone, chat and simulator
+    - PDF knowledge import
+  data:
+    - Versioned business profiles
+    - Industry presets
+    - Cal.com and internal calendar
+  infra:
+    - Docker Compose
+    - Twilio SMS / WhatsApp
+    - Cloudflare Tunnel
+  security:
+    - Strict tenant isolation
+    - HMAC-SHA256 signed webhooks
+    - AI and call-recording disclosure
+links:
+  github: https://github.com/DavitGadyan/AIVoiceReceptionist
+outcomes:
+  - One codebase serves seven industries; each business is configuration, not code.
+  - Onboarding in about an hour from a form or a price-list PDF, approved field by field.
+  - The receptionist only says "confirmed" once the booking tool succeeds, and every call records the profile version it ran with.
+  - "After each call: transcript, two-sentence summary, extracted fields, SMS/WhatsApp/email summary, signed webhooks and 2/5/10-day follow-ups."
+  - Estimated running cost of about $30 a month at 200 voice minutes (blended estimate of Vapi, Deepgram, GPT-4o-mini, ElevenLabs and Twilio).
+metrics:
+  - label: Industries covered by presets
+    value: "7"
+  - label: Onboarding a new business
+    value: "about 1 hour"
+  - label: Receptionist tools (phone, chat, simulator)
+    value: "13"
+featured: false
+---
+
+## The problem
+
+Small businesses lose jobs every time a call hits voicemail: the plumber is under a sink, the clinic is with a patient, the agency has closed for the day. Dozens of "AI voice receptionist" briefs share the same shape, so instead of one bot per client I built a generic, multi-tenant product where each business is configuration, not code.
+
+## What I built
+
+- A receptionist that answers 24/7, as overflow or after hours, with an AI and recording disclosure, captures leads, triages emergencies with a per-business safety script and checks the service area.
+- Booking, rescheduling and cancelling against an internal calendar or Cal.com, or texting a booking link. It only says "confirmed" once the booking succeeds.
+- Warm transfer with a summary, or a callback task when nobody can take the call; missed-call text-back and 2/5/10-day follow-ups to unconverted leads; spam and sales-call screening with progressive blocking.
+- After each call: transcript, two-sentence summary, extracted fields, outcome, SMS/WhatsApp/email summary and HMAC-signed webhooks for Make, n8n or a CRM.
+- A dashboard covering activity, contacts, call flow, knowledge (PDF import), a test-call simulator, numbers, analytics, billing and settings, in a liquid-glass design with a 3D receptionist hero.
+
+## How it was delivered
+
+Caller → Twilio or Vapi number → Vapi (speech-to-text, LLM, text-to-speech, barge-in). The backend answers Vapi's assistant request with a per-call assistant built from the industry preset and the business profile, serves the tool calls (lookup, book, transfer, notify and nine more) and turns the end-of-call report into the summary, outcome, notifications, webhooks and follow-ups. Web chat, the simulator and phone calls all run through the same 13 tools, so a scenario that passes in the simulator behaves the same on the line. Onboarding uploads the price list or policy PDF the business already has; Receptra proposes services, prices, FAQs and policies for approval field by field, and every save creates a profile version that each call records. The voice layer is a pluggable adapter (Vapi first, Retell and Pipecat stubs), so the provider can change without touching business logic. Backend tests cover tenant isolation, PDF import, the Vapi webhook lifecycle and the booking, emergency, spam, out-of-area, transfer and running-late scenarios. Without API keys the receptionist falls back to a rule-based brain, so the simulator, tests and demo work offline.
+
+## Outcome
+
+A product rather than a one-off bot: seven demo tenants (plumbing, clinic, med spa, salon, law firm, estate agent, event hire) run on one deployment, a new business goes live in about an hour, and a real phone number is attached by pointing Vapi's server URL at the backend. The project's blended estimate puts the running cost at roughly $30 a month for 200 call minutes plus 300 SMS, with a self-hosted pipeline (Pipecat or LiveKit, Deepgram, Cartesia) as the path to roughly halve it. Code is on GitHub.

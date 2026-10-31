@@ -37,6 +37,12 @@ export function getFeaturedProjects(locale: Locale, n = 6): Project[] {
   return featured.slice(0, n);
 }
 
+/** Portfolio index order: featured projects by their hand-set order, then everything else newest first. */
+export function getProjectsShowcase(locale: Locale): Project[] {
+  const all = getProjects(locale);
+  return [...all.filter((p) => p.featured).sort((a, b) => (a.order ?? 99) - (b.order ?? 99)), ...all.filter((p) => !p.featured)];
+}
+
 export function getRelatedProjects(locale: Locale, project: Project, n = 3): Project[] {
   const primary = project.categories[0];
   return getProjects(locale)
