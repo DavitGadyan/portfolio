@@ -46,5 +46,9 @@ test.describe('project showcase', () => {
     await expect(page.locator('a[href="https://improvtalk.vip"]')).toBeVisible();
     await page.goto('/es/portfolio/ai-video-ads-improvtalk/');
     await expect(page.locator('h1')).toHaveText(/coach de IA en React Native/);
+    await page.goto('/portfolio/ai-trading-assistant-strategy-copilot/');
+    await expect(page.locator('.prose-dg video')).toHaveCount(5); // sanitised demo clips, poster-only until played
+    for (const v of await page.locator('.prose-dg video').all()) await expect(v).toHaveAttribute('preload', 'none');
+    await expect(page.locator('.prose-dg img:not(.facade img)')).toHaveCount(4);
   });
 });

@@ -4,7 +4,7 @@ date: 2026-10-12
 lastmod: 2026-11-01
 client: "Nemanja Jovic"
 cover: /images/portfolio/ai-trading-assistant-cover.jpg
-coverAlt: "Illustration: a trading-plan checklist with rule 3 highlighted, a rising price line, and an AI assistant message saying the confirmation has not printed yet, so this is not an entry"
+coverAlt: "The AI Trading Assistant session screen: step panel with checks on the left, the conversation with a reply's reasoning expanded on the right, running the demo placeholder plan"
 summary: "An AI trading copilot for a discretionary trader, built under NDA. The trader's own method is loaded as configurable steps, rules and reference documents, and the assistant reasons strictly inside them: every answer names the decision, the rules applied, the evidence and the uncertainty. The trader approves, challenges or corrects each reply, and reviewed feedback becomes the next version of the assistant only after an independent judge model passes it."
 description: "AI trading copilot built under NDA: the trader's own method lives in editable configuration and the assistant reasons inside it, cites evidence and learns from reviewed feedback."
 categories:
@@ -79,9 +79,31 @@ He also wanted the opposite of a generic trading chatbot. In his words, the assi
 - **Sessions with memory.** Live and backtest sessions keep their state, messages, observations and market snapshots; each turn sees the recent conversation, the session state and the documents most relevant to the current step. Live sessions read the chart from the trader's charting tool; backtests run on CSV files, a market-data library or synthetic series.
 - **Built to run anywhere.** FastAPI and Postgres with pgvector behind a Next.js front end with streaming replies and lightweight charts. Any OpenAI-compatible endpoint can serve the primary, critique and judge roles, so models can be swapped or self-hosted, with no-training and zero-retention settings where the provider offers them. A mock model and synthetic market data let the whole system run offline, and 52 backend and 29 frontend tests cover the step state machine, the API flow, the evaluation scorer and the data layer.
 
+## The product in use
+
+Five short, silent screen recordings of the product, made with the client's written approval. They run a placeholder strategy written for this demo, a textbook trend-pullback plan, in place of the client's method; none of his documents, rules, examples, evaluation data or sessions is loaded, and the session history shown was seeded for the demo.
+
+<Video src="/videos/aita-sessions-new.mp4" poster="/videos/aita-sessions-new.webp" ratio="16 / 10" title="Sessions list and a new backtest session" caption="Sessions: one in review, one closed, one active, each with its step, timeframes and feedback count. A new backtest session is started on BTC/USD with the daily chart for the bias and the hourly for timing." />
+
+<Video src="/videos/aita-strategy-config.mp4" poster="/videos/aita-strategy-config.webp" ratio="16 / 10" title="Strategy editor: reorder, edit, save and publish a version" caption="Strategy: the plan as ordered steps with their questions, checks and rules. A step is dragged to a new position, a description is edited, and the result is saved as v1.1 and published; live versions stay immutable." />
+
+<Video src="/videos/aita-conversation.mp4" poster="/videos/aita-conversation.webp" ratio="16 / 10" title="Conversation: structured reply, reasoning and approval" caption="Conversation: each reply carries the step, the decision and a reasoning panel with the why, the rules applied, the evidence used and the uncertainty. A reply is approved with a note; later in the thread the assistant answers 'can I buy?' with 'not yet' until the trigger candle closes." />
+
+<Video src="/videos/aita-feedback-learning.mp4" poster="/videos/aita-feedback-learning.webp" ratio="16 / 10" title="Feedback and the learning loop" caption="Feedback and learning loop: approvals, a correction and a challenge, each with its step and severity. A pending challenge is accepted and a new learning-state candidate is built from the accepted feedback; the live state stays until a candidate passes evaluation." />
+
+<Video src="/videos/aita-knowledge-upload.mp4" poster="/videos/aita-knowledge-upload.webp" ratio="16 / 10" title="Knowledge upload and reindex" caption="Knowledge: a markdown note is uploaded, chunked and embedded, scoped to a step, and the retrieval index is rebuilt so the assistant can cite it." />
+
+![Sessions screen: three seeded sessions on the placeholder plan with step, timeframes, zones, feedback and phase per card](/images/portfolio/aita-sessions.jpg)
+
+![A session: the step panel on the left with checks and open questions, the conversation on the right with a reply's reasoning expanded](/images/portfolio/aita-conversation.jpg)
+
+![Strategy editor: the six placeholder steps with toggles and drag handles, and the step editor with questions, checks and rules](/images/portfolio/aita-strategy.jpg)
+
+![Learning loop: signal captured, the six-stage loop around the live learning state, pending review and the immutable version list](/images/portfolio/aita-learning.jpg)
+
 ## Working under NDA
 
-The client's trading methodology, rules, documents, examples and evaluation cases are confidential, and so is anything derived from them. This page therefore shows the engineering and the client's own public review, and no screens. Recordings of the product running a placeholder strategy can be added with the client's written approval.
+The client's trading methodology, rules, documents, examples and evaluation cases are confidential, and so is anything derived from them. This page therefore shows the engineering, the client's own public review, and recordings that run a placeholder plan with his written approval; nothing from his method appears in them.
 
 ## What the client said
 

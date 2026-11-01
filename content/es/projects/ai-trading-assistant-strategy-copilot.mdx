@@ -1,6 +1,6 @@
 ---
 title: "AI Trading Assistant: un copiloto fiel a tu propia estrategia"
-coverAlt: "Ilustración: una lista de reglas del plan de trading con la regla 3 resaltada, una línea de precio ascendente y un mensaje del asistente de IA que dice que la confirmación aún no ha aparecido, así que esto no es una entrada"
+coverAlt: "La pantalla de sesión del AI Trading Assistant: panel de pasos con comprobaciones a la izquierda y la conversación con el razonamiento de una respuesta desplegado a la derecha, con el plan de ejemplo de la demo"
 summary: "Un copiloto de trading con IA para un trader discrecional, construido bajo NDA. El método del propio trader se carga como pasos, reglas y documentos de referencia configurables, y el asistente razona estrictamente dentro de ellos: cada respuesta indica la decisión, las reglas aplicadas, las evidencias y la incertidumbre. El trader aprueba, cuestiona o corrige cada respuesta, y el feedback revisado solo se convierte en la siguiente versión del asistente cuando un modelo juez independiente lo aprueba."
 description: "Copiloto de trading con IA bajo NDA: el método del trader vive en una configuración editable y el asistente razona dentro de él, cita evidencias y aprende del feedback revisado."
 outcomes:
@@ -38,9 +38,31 @@ También quería lo contrario de un chatbot de trading genérico. En sus palabra
 - **Sesiones con memoria.** Las sesiones en directo y de backtest conservan su estado, mensajes, observaciones e instantáneas de mercado; cada turno ve la conversación reciente, el estado de la sesión y los documentos más relevantes para el paso actual. Las sesiones en directo leen el gráfico desde la herramienta de gráficos del trader; los backtests usan archivos CSV, una librería de datos de mercado o series sintéticas.
 - **Hecho para ejecutarse en cualquier sitio.** FastAPI y Postgres con pgvector detrás de un frontend en Next.js con respuestas en streaming y gráficos ligeros. Cualquier endpoint compatible con OpenAI puede servir los roles principal, de crítica y de juez, así que los modelos se pueden cambiar o alojar en servidores propios, con ajustes de no entrenamiento y retención cero cuando el proveedor los ofrece. Un modelo simulado y datos de mercado sintéticos permiten ejecutar todo el sistema sin conexión, y 52 tests de backend y 29 de frontend cubren la máquina de estados de los pasos, el flujo de la API, el evaluador y la capa de datos.
 
+## El producto en uso
+
+Cinco grabaciones de pantalla breves y sin sonido del producto, hechas con la aprobación por escrito del cliente. Ejecutan una estrategia de ejemplo escrita para esta demo, un plan de libro de retroceso en tendencia, en lugar del método del cliente; no se carga ninguno de sus documentos, reglas, ejemplos, datos de evaluación ni sesiones, y el historial que se ve se sembró para la demo.
+
+<Video src="/videos/aita-sessions-new.mp4" poster="/videos/aita-sessions-new.webp" ratio="16 / 10" title="Lista de sesiones y nueva sesión de backtest" caption="Sesiones: una en revisión, una cerrada y una activa, cada una con su paso, marcos temporales y número de feedback. Se inicia una nueva sesión de backtest en BTC/USD con el gráfico diario para el sesgo y el horario para el timing." />
+
+<Video src="/videos/aita-strategy-config.mp4" poster="/videos/aita-strategy-config.webp" ratio="16 / 10" title="Editor de estrategia: reordenar, editar, guardar y publicar una versión" caption="Estrategia: el plan como pasos ordenados con sus preguntas, comprobaciones y reglas. Se arrastra un paso a otra posición, se edita una descripción y el resultado se guarda como v1.1 y se publica; las versiones en producción son inmutables." />
+
+<Video src="/videos/aita-conversation.mp4" poster="/videos/aita-conversation.webp" ratio="16 / 10" title="Conversación: respuesta estructurada, razonamiento y aprobación" caption="Conversación: cada respuesta lleva el paso, la decisión y un panel de razonamiento con el porqué, las reglas aplicadas, las evidencias usadas y la incertidumbre. Se aprueba una respuesta con una nota; más adelante el asistente responde a «¿puedo comprar?» con «todavía no» hasta que cierre la vela de disparo." />
+
+<Video src="/videos/aita-feedback-learning.mp4" poster="/videos/aita-feedback-learning.webp" ratio="16 / 10" title="Feedback y ciclo de aprendizaje" caption="Feedback y ciclo de aprendizaje: aprobaciones, una corrección y una objeción, cada una con su paso y severidad. Se acepta una objeción pendiente y se construye un nuevo candidato de estado de aprendizaje a partir del feedback aceptado; el estado en producción se mantiene hasta que un candidato supera la evaluación." />
+
+<Video src="/videos/aita-knowledge-upload.mp4" poster="/videos/aita-knowledge-upload.webp" ratio="16 / 10" title="Subida de conocimiento y reindexado" caption="Conocimiento: se sube una nota en markdown, se trocea y vectoriza, se asigna a un paso y se reconstruye el índice de recuperación para que el asistente pueda citarla." />
+
+![Pantalla de sesiones: tres sesiones sembradas sobre el plan de ejemplo con paso, marcos temporales, zonas, feedback y fase en cada tarjeta](/images/portfolio/aita-sessions.jpg)
+
+![Una sesión: el panel de pasos a la izquierda con comprobaciones y preguntas abiertas, y la conversación a la derecha con el razonamiento de una respuesta desplegado](/images/portfolio/aita-conversation.jpg)
+
+![Editor de estrategia: los seis pasos de ejemplo con interruptores y asas de arrastre, y el editor del paso con preguntas, comprobaciones y reglas](/images/portfolio/aita-strategy.jpg)
+
+![Ciclo de aprendizaje: señal capturada, el ciclo de seis etapas alrededor del estado de aprendizaje en producción, revisión pendiente y la lista inmutable de versiones](/images/portfolio/aita-learning.jpg)
+
 ## Trabajar bajo NDA
 
-La metodología de trading del cliente, sus reglas, documentos, ejemplos y casos de evaluación son confidenciales, y también lo es cualquier cosa derivada de ellos. Por eso esta página muestra la ingeniería y la reseña pública del propio cliente, y ninguna pantalla. Con la aprobación por escrito del cliente se podrán añadir grabaciones del producto funcionando con una estrategia de ejemplo.
+La metodología de trading del cliente, sus reglas, documentos, ejemplos y casos de evaluación son confidenciales, y también lo es cualquier cosa derivada de ellos. Por eso esta página muestra la ingeniería, la reseña pública del propio cliente y grabaciones que ejecutan un plan de ejemplo con su aprobación por escrito; en ellas no aparece nada de su método.
 
 ## Lo que dijo el cliente
 
