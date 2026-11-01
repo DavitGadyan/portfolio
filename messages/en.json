@@ -82,7 +82,7 @@
     "button": "Book a 15-min call"
   },
   "portfolio": {
-    "intro": "These 38 projects show how David Gadyan covers the full stack as one engineer: AI agents and RAG, Next.js and FastAPI products, Postgres and vector databases, Docker and Kubernetes on AWS and GCP, HIPAA-aware security, and GA4-based marketing measurement. Filter by capability or start with the featured builds.",
+    "intro": "These 39 projects show how David Gadyan covers the full stack as one engineer: AI agents and RAG, Next.js and FastAPI products, Postgres and vector databases, Docker and Kubernetes on AWS and GCP, HIPAA-aware security, and GA4-based marketing measurement. Filter by capability or start with the featured builds.",
     "filterAll": "All",
     "filterLabel": "Filter projects by capability",
     "seeMore": "See all projects",
@@ -198,8 +198,8 @@
   "meta": {
     "homeTitle": "David Gadyan | Full-Stack AI Engineer in Barcelona",
     "homeDescription": "Full-Stack AI Engineer in Barcelona. AI integration into websites and products, AI ERP/SaaS, databases, DevOps, security audits and AI marketing. 190+ projects, 8+ years.",
-    "portfolioTitle": "Portfolio: 38 AI, Full-Stack & Data Projects",
-    "portfolioDescription": "38 case studies by David Gadyan: AI agents and RAG, Next.js and FastAPI products, databases, Docker and Kubernetes deployments, security-aware builds and GA4 marketing measurement.",
+    "portfolioTitle": "Portfolio: 39 AI, Full-Stack & Data Projects",
+    "portfolioDescription": "39 case studies by David Gadyan: AI agents and RAG, Next.js and FastAPI products, databases, Docker and Kubernetes deployments, security-aware builds and GA4 marketing measurement.",
     "blogTitle": "Blog: AI, Data & Building Products",
     "blogDescription": "Articles by David Gadyan, Full-Stack AI Engineer in Barcelona: LLM and agent integration, data science, algorithmic trading and building AI products that reach production.",
     "cookiesTitle": "Cookie Policy",

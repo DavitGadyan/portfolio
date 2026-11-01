@@ -40,7 +40,7 @@ test.describe('language switcher and navigation', () => {
     await page.goto('/portfolio/');
     const cards = page.getByTestId('project-card');
     const all = await cards.count();
-    expect(all).toBe(38);
+    expect(all).toBe(39);
     await page.locator('label[for="f-security-compliance"]').click();
     await expect(cards.filter({ visible: true })).toHaveCount(2);
     await expect(page.locator('.pnote')).toBeVisible();

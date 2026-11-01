@@ -2,6 +2,12 @@ import type { Testimonial } from '@/lib/content/types';
 
 /** Quotes are excerpts of verbatim client reviews (EN), trimmed at sentence boundaries to fit the carousel cards. Spanish versions are translations and are labelled as such in the UI. */
 export const testimonials: Testimonial[] = [
+  { name: 'Nemanja Jovic', image: '/images/clients/nemanja-jovic.jpg', translated: true,
+    role: { en: 'Client, AI Trading Assistant (Upwork)', es: 'Cliente, AI Trading Assistant (Upwork)' },
+    quote: {
+      en: "It's rare to find someone who can bridge the gap between ambitious ideas and complex technical implementation so effectively. I would wholeheartedly recommend David to anyone looking for a capable, reliable, and highly skilled developer, particularly for sophisticated AI applications and custom software projects.",
+      es: 'Es raro encontrar a alguien capaz de tender un puente tan eficaz entre ideas ambiciosas y una implementación técnica compleja. Recomendaría a David sin reservas a cualquiera que busque un desarrollador capaz, fiable y altamente cualificado, en particular para aplicaciones de IA sofisticadas y proyectos de software a medida.',
+    } },
   { name: 'Reuben Vandeventer', image: '/images/clients/reuben.jpg', translated: true,
     role: { en: 'CEO & Founder, SecondSight', es: 'CEO y fundador, SecondSight' },
     quote: {

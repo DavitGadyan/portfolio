@@ -1,0 +1,106 @@
+---
+title: "AI Trading Assistant: a Copilot That Holds You to Your Own Strategy"
+date: 2026-10-12
+lastmod: 2026-11-01
+client: "Nemanja Jovic"
+cover: /images/portfolio/ai-trading-assistant-cover.jpg
+coverAlt: "Illustration: a trading-plan checklist with rule 3 highlighted, a rising price line, and an AI assistant message saying the confirmation has not printed yet, so this is not an entry"
+summary: "An AI trading copilot for a discretionary trader, built under NDA. The trader's own method is loaded as configurable steps, rules and reference documents, and the assistant reasons strictly inside them: every answer names the decision, the rules applied, the evidence and the uncertainty. The trader approves, challenges or corrects each reply, and reviewed feedback becomes the next version of the assistant only after an independent judge model passes it."
+description: "AI trading copilot built under NDA: the trader's own method lives in editable configuration and the assistant reasons inside it, cites evidence and learns from reviewed feedback."
+categories:
+  - ai-agents
+  - finance-quant
+  - fullstack-uiux
+stack:
+  frontend:
+    - Next.js 15 and React 19
+    - Tailwind CSS 4
+    - TanStack Query
+    - Lightweight Charts
+    - Streaming replies with a reasoning expander
+  backend:
+    - FastAPI
+    - Async SQLAlchemy and Alembic
+    - Postgres 16 with pgvector
+    - Server-Sent Events
+  ai:
+    - "Three model roles: primary, critique and judge"
+    - Any OpenAI-compatible endpoint, swappable or self-hosted
+    - Local embeddings and retrieval over the trader's own documents
+    - "Structured answers: decision, reasons, rules, evidence, uncertainty"
+    - Evidence check that strips unsupported claims
+    - Reviewed feedback to a few-shot learning state, judge-gated
+  data:
+    - Live sessions read the trader's charting tool
+    - "Backtests: CSV, a market-data library or synthetic series"
+    - Versioned method package (steps, rules, documents)
+  infra:
+    - Docker Compose, uv and a Makefile
+    - Offline mode with a mock model and synthetic data
+  security:
+    - Bearer-token API
+    - No-training and zero-retention provider settings
+    - Delivered under NDA; no client material on this page
+links: {}
+outcomes:
+  - Delivered in 25 hours between 21 September and 12 October 2026; rated 5.0 on Upwork and endorsed as Reliable, Committed to Quality, Solution Oriented, Clear Communicator and Accountable for Outcomes.
+  - The method is configuration, not code; steps, rules and reference documents are edited in the app and published as versions, so the strategy changes without a developer.
+  - Every reply carries the decision, the reasons, the rules applied, the evidence and the uncertainty; claims without evidence are removed before the trader sees them.
+  - Approve, challenge or correct any answer; reviewed feedback becomes a candidate learning state that an independent judge model must pass on a frozen holdout set before it goes live. 52 backend and 29 frontend automated tests.
+metrics:
+  - label: Delivered in
+    value: "25 h"
+  - label: Rate
+    value: "$80 / h"
+  - label: Contract value
+    value: "$2,000"
+  - label: Upwork rating
+    value: "5.0 / 5"
+  - label: Automated tests
+    value: "81"
+  - label: Model roles
+    value: "3 (primary, critique, judge)"
+clientNote: "Client review on Upwork (5.0): “It's rare to find someone who can bridge the gap between ambitious ideas and complex technical implementation so effectively.”"
+featured: true
+order: 6
+---
+
+## The problem
+
+Most discretionary traders do not lose because their plan is bad. They lose because, under pressure, they stop following it: an entry taken before the confirmation, a stop moved, a session that drifts away from the rules written down calmly the night before. The client trades a documented method of his own and wanted what a good independent consultant provides: someone who knows the plan cold, looks at the same chart, and says "this is not what your plan says", every time, without getting tired or emotional.
+
+He also wanted the opposite of a generic trading chatbot. In his words, the assistant had to understand a proprietary trading methodology, interpret complex market structures, integrate with external charting tools, keep contextual awareness across trading sessions and support nuanced, discretionary decision-making. All of that is covered by an NDA, so this page describes the engineering, not the method.
+
+## What I built
+
+- **Strategy-first configuration.** The method is not hard-coded. It is loaded as a versioned package: ordered steps, named rules with their checks, and the trader's own reference documents, chunked and embedded so the assistant can retrieve them. Steps can be reordered and rules edited in the app, and each change is published as a new version, so the strategy evolves without a developer.
+- **Answers that cannot drift.** Every reply is structured: the decision, the reasons, the rules applied, the evidence used, the uncertainty and the next step. The assistant works inside the current step only and cites only the evidence it was shown; the code strips any claim that is not backed by evidence before the trader sees it, and a second model critiques each answer first.
+- **A review loop with a gate.** The trader can approve, challenge or correct any reply, and a correction changes the session state immediately. Approved feedback is frozen into a dataset and turned into a candidate learning state: worked examples and guidance, not fine-tuning. An independent judge model scores the candidate on a frozen holdout set across ten dimensions, four of them hard gates. It is promoted only if it passes without regressing against the live version, and it can be rolled back.
+- **Sessions with memory.** Live and backtest sessions keep their state, messages, observations and market snapshots; each turn sees the recent conversation, the session state and the documents most relevant to the current step. Live sessions read the chart from the trader's charting tool; backtests run on CSV files, a market-data library or synthetic series.
+- **Built to run anywhere.** FastAPI and Postgres with pgvector behind a Next.js front end with streaming replies and lightweight charts. Any OpenAI-compatible endpoint can serve the primary, critique and judge roles, so models can be swapped or self-hosted, with no-training and zero-retention settings where the provider offers them. A mock model and synthetic market data let the whole system run offline, and 52 backend and 29 frontend tests cover the step state machine, the API flow, the evaluation scorer and the data layer.
+
+## Working under NDA
+
+The client's trading methodology, rules, documents, examples and evaluation cases are confidential, and so is anything derived from them. This page therefore shows the engineering and the client's own public review, and no screens. Recordings of the product running a placeholder strategy can be added with the client's written approval.
+
+## What the client said
+
+> Working with David on my AI Trading Assistant project has been an exceptional experience.
+>
+> This was far from a conventional software development project. It involved building a sophisticated AI-powered trading copilot capable of understanding proprietary trading methodologies, interpreting complex market structures, integrating with external charting tools, maintaining contextual awareness across trading sessions, and supporting nuanced, discretionary decision-making.
+>
+> What impressed me most about David was his ability to approach this level of complexity with technical competence, structured thinking, and genuine attention to the underlying vision. He understood that the objective wasn't simply to build another AI chatbot, but to create an intelligent, context-aware system capable of supporting a highly specialized trading workflow.
+>
+> David demonstrated professionalism, thoughtful problem-solving, and a strong commitment to getting the details right. His ability to translate intricate requirements into practical technical solutions made collaborating with him particularly valuable.
+>
+> Beyond his technical abilities, I genuinely appreciated his approach to collaboration, his receptiveness to feedback, and his dedication to the project.
+>
+> It's rare to find someone who can bridge the gap between ambitious ideas and complex technical implementation so effectively.
+>
+> I would wholeheartedly recommend David to anyone looking for a capable, reliable, and highly skilled developer, particularly for sophisticated AI applications and custom software projects. I would be delighted to work with him again.
+
+Upwork review, 5.0 out of 5, 12 October 2026. Endorsed: Reliable, Committed to Quality, Solution Oriented, Clear Communicator, Accountable for Outcomes.
+
+## Outcome
+
+Delivered in 25 hours between 21 September and 12 October 2026 at $80 per hour, $2,000 in total, and rated 5.0 on Upwork. The trader now has an assistant that is held to his own plan, answers with evidence, and improves only through feedback he has reviewed himself.

@@ -1,0 +1,67 @@
+---
+title: "AI Trading Assistant: un copiloto fiel a tu propia estrategia"
+coverAlt: "Ilustración: una lista de reglas del plan de trading con la regla 3 resaltada, una línea de precio ascendente y un mensaje del asistente de IA que dice que la confirmación aún no ha aparecido, así que esto no es una entrada"
+summary: "Un copiloto de trading con IA para un trader discrecional, construido bajo NDA. El método del propio trader se carga como pasos, reglas y documentos de referencia configurables, y el asistente razona estrictamente dentro de ellos: cada respuesta indica la decisión, las reglas aplicadas, las evidencias y la incertidumbre. El trader aprueba, cuestiona o corrige cada respuesta, y el feedback revisado solo se convierte en la siguiente versión del asistente cuando un modelo juez independiente lo aprueba."
+description: "Copiloto de trading con IA bajo NDA: el método del trader vive en una configuración editable y el asistente razona dentro de él, cita evidencias y aprende del feedback revisado."
+outcomes:
+  - Entregado en 25 horas entre el 21 de septiembre y el 12 de octubre de 2026; valorado con 5,0 en Upwork y con las insignias Reliable, Committed to Quality, Solution Oriented, Clear Communicator y Accountable for Outcomes.
+  - El método es configuración, no código; los pasos, las reglas y los documentos de referencia se editan en la app y se publican como versiones, de modo que la estrategia cambia sin un desarrollador.
+  - Cada respuesta lleva la decisión, los motivos, las reglas aplicadas, las evidencias y la incertidumbre; las afirmaciones sin evidencia se eliminan antes de que el trader las vea.
+  - Aprobar, cuestionar o corregir cualquier respuesta; el feedback revisado se convierte en un estado de aprendizaje candidato que un modelo juez independiente debe aprobar sobre un conjunto de validación congelado antes de entrar en producción. 52 tests automáticos de backend y 29 de frontend.
+metrics:
+  - label: Entregado en
+    value: "25 h"
+  - label: Tarifa
+    value: "80 $ / h"
+  - label: Valor del contrato
+    value: "2.000 $"
+  - label: Valoración en Upwork
+    value: "5,0 / 5"
+  - label: Tests automáticos
+    value: "81"
+  - label: Roles de modelo
+    value: "3 (principal, crítica, juez)"
+clientNote: "Reseña del cliente en Upwork (5,0): «Es raro encontrar a alguien capaz de tender un puente tan eficaz entre ideas ambiciosas y una implementación técnica compleja.»"
+---
+
+## El problema
+
+La mayoría de los traders discrecionales no pierden porque su plan sea malo. Pierden porque, bajo presión, dejan de seguirlo: una entrada antes de la confirmación, un stop que se mueve, una sesión que se aleja de las reglas escritas con calma la noche anterior. El cliente opera un método propio y documentado, y quería lo que ofrece un buen consultor independiente: alguien que se sabe el plan de memoria, mira el mismo gráfico y dice «esto no es lo que dice tu plan», cada vez, sin cansarse ni dejarse llevar por las emociones.
+
+También quería lo contrario de un chatbot de trading genérico. En sus palabras, el asistente debía entender una metodología de trading propietaria, interpretar estructuras de mercado complejas, integrarse con herramientas externas de gráficos, mantener el contexto a lo largo de las sesiones de trading y apoyar decisiones discrecionales y matizadas. Todo eso está cubierto por un NDA, así que esta página describe la ingeniería, no el método.
+
+## Qué construí
+
+- **Configuración con la estrategia en el centro.** El método no está escrito en el código. Se carga como un paquete versionado: pasos ordenados, reglas con nombre y sus comprobaciones, y los documentos de referencia del propio trader, troceados y vectorizados para que el asistente pueda recuperarlos. Los pasos se reordenan y las reglas se editan en la app, y cada cambio se publica como una nueva versión, de modo que la estrategia evoluciona sin un desarrollador.
+- **Respuestas que no se desvían.** Cada respuesta tiene estructura: la decisión, los motivos, las reglas aplicadas, las evidencias usadas, la incertidumbre y el siguiente paso. El asistente trabaja solo dentro del paso actual y cita únicamente las evidencias que se le han mostrado; el código elimina cualquier afirmación sin respaldo antes de que el trader la vea, y un segundo modelo critica cada respuesta primero.
+- **Un ciclo de revisión con una puerta de control.** El trader puede aprobar, cuestionar o corregir cualquier respuesta, y una corrección cambia el estado de la sesión al instante. El feedback aprobado se congela en un conjunto de datos y se convierte en un estado de aprendizaje candidato: ejemplos resueltos y pautas, no fine-tuning. Un modelo juez independiente puntúa el candidato sobre un conjunto de validación congelado en diez dimensiones, cuatro de ellas eliminatorias. Solo se promociona si aprueba sin empeorar respecto a la versión en producción, y se puede revertir.
+- **Sesiones con memoria.** Las sesiones en directo y de backtest conservan su estado, mensajes, observaciones e instantáneas de mercado; cada turno ve la conversación reciente, el estado de la sesión y los documentos más relevantes para el paso actual. Las sesiones en directo leen el gráfico desde la herramienta de gráficos del trader; los backtests usan archivos CSV, una librería de datos de mercado o series sintéticas.
+- **Hecho para ejecutarse en cualquier sitio.** FastAPI y Postgres con pgvector detrás de un frontend en Next.js con respuestas en streaming y gráficos ligeros. Cualquier endpoint compatible con OpenAI puede servir los roles principal, de crítica y de juez, así que los modelos se pueden cambiar o alojar en servidores propios, con ajustes de no entrenamiento y retención cero cuando el proveedor los ofrece. Un modelo simulado y datos de mercado sintéticos permiten ejecutar todo el sistema sin conexión, y 52 tests de backend y 29 de frontend cubren la máquina de estados de los pasos, el flujo de la API, el evaluador y la capa de datos.
+
+## Trabajar bajo NDA
+
+La metodología de trading del cliente, sus reglas, documentos, ejemplos y casos de evaluación son confidenciales, y también lo es cualquier cosa derivada de ellos. Por eso esta página muestra la ingeniería y la reseña pública del propio cliente, y ninguna pantalla. Con la aprobación por escrito del cliente se podrán añadir grabaciones del producto funcionando con una estrategia de ejemplo.
+
+## Lo que dijo el cliente
+
+Reseña original en inglés, traducida al español.
+
+> Trabajar con David en mi proyecto AI Trading Assistant ha sido una experiencia excepcional.
+>
+> Esto estaba muy lejos de ser un proyecto de desarrollo de software convencional. Consistía en construir un copiloto de trading sofisticado impulsado por IA, capaz de entender metodologías de trading propietarias, interpretar estructuras de mercado complejas, integrarse con herramientas externas de gráficos, mantener el contexto a lo largo de las sesiones de trading y apoyar una toma de decisiones discrecional y matizada.
+>
+> Lo que más me impresionó de David fue su capacidad para abordar este nivel de complejidad con competencia técnica, pensamiento estructurado y una atención genuina a la visión de fondo. Entendió que el objetivo no era simplemente construir otro chatbot de IA, sino crear un sistema inteligente y consciente del contexto capaz de apoyar un flujo de trabajo de trading altamente especializado.
+>
+> David demostró profesionalidad, una resolución de problemas reflexiva y un fuerte compromiso con hacer bien los detalles. Su capacidad para traducir requisitos intrincados en soluciones técnicas prácticas hizo que colaborar con él fuera especialmente valioso.
+>
+> Más allá de sus capacidades técnicas, aprecié de verdad su forma de colaborar, su receptividad al feedback y su dedicación al proyecto.
+>
+> Es raro encontrar a alguien capaz de tender un puente tan eficaz entre ideas ambiciosas y una implementación técnica compleja.
+>
+> Recomendaría a David sin reservas a cualquiera que busque un desarrollador capaz, fiable y altamente cualificado, en particular para aplicaciones de IA sofisticadas y proyectos de software a medida. Estaría encantado de volver a trabajar con él.
+
+Reseña en Upwork, 5,0 sobre 5, 12 de octubre de 2026. Insignias: Reliable, Committed to Quality, Solution Oriented, Clear Communicator, Accountable for Outcomes.
+
+## Resultado
+
+Entregado en 25 horas entre el 21 de septiembre y el 12 de octubre de 2026 a 80 $ por hora, 2.000 $ en total, y valorado con 5,0 en Upwork. El trader tiene ahora un asistente sujeto a su propio plan, que responde con evidencias y que solo mejora a través del feedback que él mismo ha revisado.

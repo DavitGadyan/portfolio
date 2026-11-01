@@ -82,7 +82,7 @@
     "button": "Reserva una llamada de 15 min"
   },
   "portfolio": {
-    "intro": "Estos 38 proyectos muestran cómo David Gadyan cubre todo el stack como un único ingeniero: agentes de IA y RAG, productos en Next.js y FastAPI, bases de datos Postgres y vectoriales, Docker y Kubernetes en AWS y GCP, seguridad conforme a HIPAA y medición de marketing con GA4. Filtra por capacidad o empieza por los proyectos destacados.",
+    "intro": "Estos 39 proyectos muestran cómo David Gadyan cubre todo el stack como un único ingeniero: agentes de IA y RAG, productos en Next.js y FastAPI, bases de datos Postgres y vectoriales, Docker y Kubernetes en AWS y GCP, seguridad conforme a HIPAA y medición de marketing con GA4. Filtra por capacidad o empieza por los proyectos destacados.",
     "filterAll": "Todos",
     "filterLabel": "Filtrar proyectos por capacidad",
     "seeMore": "Ver todos los proyectos",
@@ -198,8 +198,8 @@
   "meta": {
     "homeTitle": "David Gadyan | Ingeniero Full-Stack de IA en Barcelona",
     "homeDescription": "Ingeniero Full-Stack de IA en Barcelona. Integración de IA en webs y productos, ERP/SaaS con IA, bases de datos, DevOps, auditorías de seguridad y marketing con IA. Más de 190 proyectos.",
-    "portfolioTitle": "Portfolio: 38 proyectos de IA, full-stack y datos",
-    "portfolioDescription": "38 casos prácticos de David Gadyan: agentes de IA y RAG, productos en Next.js y FastAPI, bases de datos, despliegues con Docker y Kubernetes, seguridad y medición de marketing con GA4.",
+    "portfolioTitle": "Portfolio: 39 proyectos de IA, full-stack y datos",
+    "portfolioDescription": "39 casos prácticos de David Gadyan: agentes de IA y RAG, productos en Next.js y FastAPI, bases de datos, despliegues con Docker y Kubernetes, seguridad y medición de marketing con GA4.",
     "blogTitle": "Blog: IA, datos y creación de productos",
     "blogDescription": "Artículos de David Gadyan, Ingeniero Full-Stack de IA en Barcelona: integración de LLM y agentes, ciencia de datos, trading algorítmico y productos de IA que llegan a producción.",
     "cookiesTitle": "Política de cookies",

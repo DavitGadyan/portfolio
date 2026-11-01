@@ -64,16 +64,16 @@ test.describe('home-page motion', () => {
     await expect(pause).toHaveAttribute('aria-pressed', 'true');
     await page.waitForTimeout(600);
     const i0 = await current();
-    const at = (k: number) => dots.nth((((i0 + k) % 15) + 15) % 15);
+    const at = (k: number) => dots.nth((((i0 + k) % 16) + 16) % 16);
     // a gesture may travel more than one card depending on its speed: assert the direction and a sane distance
     const moved = async (from: number, forward: boolean) => {
-      await expect.poll(async () => { const d = (((await current()) - from) % 15 + 15) % 15; return forward ? d >= 1 && d <= 7 : d >= 8 && d <= 14; }, { timeout: 4000 }).toBe(true);
+      await expect.poll(async () => { const d = (((await current()) - from) % 16 + 16) % 16; return forward ? d >= 1 && d <= 7 : d >= 8 && d <= 15; }, { timeout: 4000 }).toBe(true);
       return current();
     };
 
     await at(1).click();
     await expect(at(1)).toHaveAttribute('aria-current', 'true');
-    expect(await front()).toBe(`${((i0 + 1) % 15) + 1} / 15`);
+    expect(await front()).toBe(`${((i0 + 1) % 16) + 1} / 16`);
 
     await region.focus();
     await page.keyboard.press('ArrowRight');
@@ -87,7 +87,7 @@ test.describe('home-page motion', () => {
     await page.mouse.down();
     for (let i = 1; i <= 10; i++) { await page.mouse.move(cx - i * step, cy); await page.waitForTimeout(16); }
     await page.mouse.up();
-    const afterDrag = await moved((i0 + 2) % 15, true);
+    const afterDrag = await moved((i0 + 2) % 16, true);
 
     // synthetic touch swipe to the right → previous card
     await stage.evaluate((el) => {
@@ -112,7 +112,7 @@ test.describe('home-page motion', () => {
     // hovering a side card pops it up (pointer devices only; phones have no hover)
     if (!isMobile) {
       await page.waitForTimeout(3200); // let the momentum decay and the nearest card settle under the hold
-      const side = region.locator('.ccard').nth(((await current()) + 1) % 15); // the neighbour of whatever is in front now
+      const side = region.locator('.ccard').nth(((await current()) + 1) % 16); // the neighbour of whatever is in front now
       await expect.poll(() => side.evaluate((el) => el.style.visibility), { timeout: 6000 }).toBe('visible');
       const sb = (await side.boundingBox())!;
       await page.mouse.move(Math.min(sb.x + sb.width / 2, page.viewportSize()!.width - 8), sb.y + sb.height / 2);
@@ -157,7 +157,7 @@ test.describe('home-page motion', () => {
     const stage = page.locator('.ccar__stage');
     expect(await stage.evaluate((el) => getComputedStyle(el).overflowX)).toBe('auto');
     const visible = await page.locator('.ccard').evaluateAll((els) => els.filter((e) => getComputedStyle(e).visibility === 'visible').length);
-    expect(visible).toBe(15);
+    expect(visible).toBe(16);
     await ctx.close();
   });
 });

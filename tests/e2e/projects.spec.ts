@@ -4,8 +4,9 @@ test.describe('project showcase', () => {
   test('portfolio index lists the six showcase projects first, in the hand-set order (two rows of three on desktop)', async ({ page }) => {
     await page.goto('/portfolio/');
     const titles = page.getByTestId('project-card').locator('h2');
-    const order = [/Virgil\.ai/, /Real Estate/, /ImprovTalk/, /YOLO26\/27/, /Crypto Trading Bots/, /Receptra/];
+    const order = [/Virgil\.ai/, /Real Estate/, /ImprovTalk/, /YOLO26\/27/, /Crypto Trading Bots/, /AI Trading Assistant/];
     for (const [i, re] of order.entries()) await expect(titles.nth(i)).toHaveText(re);
+    await expect(titles.nth(6)).toHaveText(/Receptra/); // first of the second tier
   });
 
   test('the YOLO26 page embeds three self-hosted demos that load no video bytes until played', async ({ page }) => {
