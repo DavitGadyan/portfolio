@@ -3,8 +3,8 @@ import sharp from 'sharp';
 
 const W = 1200, H = 630;
 const COPY = {
-  en: { file: 'public/share-card.jpg', title: 'Full-Stack AI Engineer  ·  Barcelona', line1: 'AI integration  ·  AI ERP & SaaS  ·  Databases', line2: 'DevOps & LLMOps  ·  Security  ·  AI marketing', stats: '190+ projects  ·  50+ long-term clients  ·  8+ years', url: 'davidgadyan.com' },
-  es: { file: 'public/share-card-es.jpg', title: 'Ingeniero Full-Stack de IA  ·  Barcelona', line1: 'Integración de IA  ·  ERP y SaaS con IA  ·  Bases de datos', line2: 'DevOps y LLMOps  ·  Seguridad  ·  Marketing con IA', stats: 'Más de 190 proyectos  ·  Más de 50 clientes  ·  Más de 8 años', url: 'davidgadyan.com/es' },
+  en: { file: 'public/share-card.jpg', title: 'Expert-Vetted AI Engineer  ·  Barcelona', line1: 'AI agents  ·  Generative AI  ·  Data science', line2: 'Full-stack SaaS  ·  DevOps  ·  Security  ·  Marketing', stats: '190+ projects  ·  50+ long-term clients  ·  8+ years', url: 'davidgadyan.com' },
+  es: { file: 'public/share-card-es.jpg', title: 'Ingeniero de IA Expert-Vetted  ·  Barcelona', line1: 'Agentes de IA  ·  IA generativa  ·  Ciencia de datos', line2: 'SaaS full-stack  ·  DevOps  ·  Seguridad  ·  Marketing', stats: 'Más de 190 proyectos  ·  Más de 50 clientes  ·  Más de 8 años', url: 'davidgadyan.com/es' },
 };
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
 const FONT = "'Rubik','Helvetica Neue',Helvetica,Arial,sans-serif";

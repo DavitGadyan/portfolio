@@ -25,14 +25,14 @@
   },
   "hero": {
     "greeting": "I'm David Gadyan",
-    "h1": "David Gadyan — Full-Stack AI Engineer",
+    "h1": "David Gadyan — Expert-Vetted AI Engineer, Data Scientist & SaaS Developer",
     "trust": [
       "Upwork Expert-Vetted · top 1%",
       "Toptal",
       "$500k+ earned",
       "190+ projects"
     ],
-    "slideAlt": "David Gadyan, Full-Stack AI Engineer in Barcelona"
+    "slideAlt": "David Gadyan, Expert-Vetted AI Engineer and Data Scientist in Barcelona"
   },
   "sections": {
     "about": "About me",
@@ -196,19 +196,19 @@
     "changePreferences": "Change cookie preferences"
   },
   "meta": {
-    "homeTitle": "David Gadyan | Full-Stack AI Engineer in Barcelona",
-    "homeDescription": "Full-Stack AI Engineer in Barcelona. AI integration into websites and products, AI ERP/SaaS, databases, DevOps, security audits and AI marketing. 190+ projects, 8+ years.",
+    "homeTitle": "EXPERT-VETTED AI Engineer | Data Scientist | AI Agent | Generative AI | SaaS",
+    "homeDescription": "David Gadyan, Upwork Expert-Vetted AI Engineer and Data Scientist in Barcelona: AI agents, generative AI, full-stack SaaS, DevOps, security. 190+ projects, 8+ years.",
     "portfolioTitle": "Portfolio: 39 AI, Full-Stack & Data Projects",
     "portfolioDescription": "39 case studies by David Gadyan: AI agents and RAG, Next.js and FastAPI products, databases, Docker and Kubernetes deployments, security-aware builds and GA4 marketing measurement.",
     "blogTitle": "Blog: AI, Data & Building Products",
-    "blogDescription": "Articles by David Gadyan, Full-Stack AI Engineer in Barcelona: LLM and agent integration, data science, algorithmic trading and building AI products that reach production.",
+    "blogDescription": "Articles by David Gadyan, Expert-Vetted AI Engineer and Data Scientist in Barcelona: LLM and agent integration, data science, algorithmic trading and building AI products that reach production.",
     "cookiesTitle": "Cookie Policy",
     "cookiesDescription": "Which cookies davidgadyan.com uses, why, and how to change your choice at any time.",
     "privacyTitle": "Privacy Policy",
     "privacyDescription": "How David Gadyan handles personal data submitted through this site, and your rights under the GDPR.",
     "thankYouTitle": "Thanks",
     "notFoundTitle": "Page not found",
-    "ogAlt": "David Gadyan — Full-Stack AI Engineer in Barcelona",
+    "ogAlt": "David Gadyan — Expert-Vetted AI Engineer and Data Scientist in Barcelona",
     "titleTemplate": "%s | David Gadyan",
     "materialsTitle": "Materials: Optimization Techniques by Tool",
     "materialsDescription": "Practical, tested techniques for the tools David Gadyan builds with, starting with Claude: how to cut Claude Code and API cost without losing quality. Interactive maps, one per tool."

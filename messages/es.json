@@ -25,14 +25,14 @@
   },
   "hero": {
     "greeting": "Soy David Gadyan",
-    "h1": "David Gadyan — Ingeniero Full-Stack de IA",
+    "h1": "David Gadyan — Ingeniero de IA Expert-Vetted, Científico de datos y Desarrollador SaaS",
     "trust": [
       "Expert-Vetted en Upwork · el 1 % mejor",
       "Toptal",
       "Más de 500.000 $ facturados",
       "Más de 190 proyectos"
     ],
-    "slideAlt": "David Gadyan, Ingeniero Full-Stack de IA en Barcelona"
+    "slideAlt": "David Gadyan, Ingeniero de IA y Científico de datos Expert-Vetted en Barcelona"
   },
   "sections": {
     "about": "Sobre mí",
@@ -196,19 +196,19 @@
     "changePreferences": "Cambiar las preferencias de cookies"
   },
   "meta": {
-    "homeTitle": "David Gadyan | Ingeniero Full-Stack de IA en Barcelona",
-    "homeDescription": "Ingeniero Full-Stack de IA en Barcelona. Integración de IA en webs y productos, ERP/SaaS con IA, bases de datos, DevOps, auditorías de seguridad y marketing con IA. Más de 190 proyectos.",
+    "homeTitle": "Ingeniero de IA EXPERT-VETTED | Científico de datos | Agentes de IA | IA generativa | SaaS",
+    "homeDescription": "David Gadyan, Ingeniero de IA y Científico de datos Expert-Vetted en Upwork, en Barcelona: agentes de IA, IA generativa, SaaS full-stack, DevOps y seguridad. Más de 190 proyectos.",
     "portfolioTitle": "Portfolio: 39 proyectos de IA, full-stack y datos",
     "portfolioDescription": "39 casos prácticos de David Gadyan: agentes de IA y RAG, productos en Next.js y FastAPI, bases de datos, despliegues con Docker y Kubernetes, seguridad y medición de marketing con GA4.",
     "blogTitle": "Blog: IA, datos y creación de productos",
-    "blogDescription": "Artículos de David Gadyan, Ingeniero Full-Stack de IA en Barcelona: integración de LLM y agentes, ciencia de datos, trading algorítmico y productos de IA que llegan a producción.",
+    "blogDescription": "Artículos de David Gadyan, Ingeniero de IA y Científico de datos Expert-Vetted en Barcelona: integración de LLM y agentes, ciencia de datos, trading algorítmico y productos de IA que llegan a producción.",
     "cookiesTitle": "Política de cookies",
     "cookiesDescription": "Qué cookies utiliza davidgadyan.com, por qué, y cómo cambiar tu elección en cualquier momento.",
     "privacyTitle": "Política de privacidad",
     "privacyDescription": "Cómo trata David Gadyan los datos personales enviados a través de este sitio y cuáles son tus derechos según el RGPD.",
     "thankYouTitle": "Gracias",
     "notFoundTitle": "Página no encontrada",
-    "ogAlt": "David Gadyan — Ingeniero Full-Stack de IA en Barcelona",
+    "ogAlt": "David Gadyan — Ingeniero de IA y Científico de datos Expert-Vetted en Barcelona",
     "titleTemplate": "%s | David Gadyan",
     "materialsTitle": "Materiales: técnicas de optimización por herramienta",
     "materialsDescription": "Técnicas prácticas y probadas para las herramientas con las que construye David Gadyan, empezando por Claude: cómo reducir el coste de Claude Code y de la API sin perder calidad. Mapas interactivos, uno por herramienta."
