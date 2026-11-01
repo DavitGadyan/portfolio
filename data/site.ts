@@ -4,7 +4,7 @@ export const site = {
   name: 'David Gadyan',
   firstName: 'David',
   lastName: 'Gadyan',
-  jobTitle: { en: 'Expert-Vetted AI Engineer, Data Scientist & SaaS Developer', es: 'Ingeniero de IA Expert-Vetted, Científico de datos y Desarrollador SaaS' } as Localized<string>,
+  jobTitle: { en: 'EXPERT-VETTED AI Engineer | Data Scientist | AI Agent | Generative AI | SaaS', es: 'Ingeniero de IA EXPERT-VETTED | Científico de datos | Agentes de IA | IA generativa | SaaS' } as Localized<string>,
   city: 'Barcelona',
   region: 'Catalonia',
   country: 'ES',

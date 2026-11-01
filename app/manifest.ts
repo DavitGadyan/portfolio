@@ -5,7 +5,7 @@ export const dynamic = 'force-static';
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'David Gadyan — Expert-Vetted AI Engineer',
+    name: 'David Gadyan — EXPERT-VETTED AI Engineer | Data Scientist | AI Agent | Generative AI | SaaS',
     short_name: 'David Gadyan',
     description: 'Expert-Vetted AI Engineer and Data Scientist in Barcelona: AI agents, generative AI, full-stack SaaS, DevOps, security and AI marketing.',
     start_url: withBasePath('/'),

@@ -54,7 +54,7 @@ export function serviceNode(locale: Locale) {
   return {
     '@type': 'ProfessionalService',
     '@id': SERVICE_ID,
-    name: locale === 'es' ? 'David Gadyan — Ingeniería Full-Stack de IA' : 'David Gadyan — Full-Stack AI Engineering',
+    name: locale === 'es' ? 'David Gadyan — Ingeniero de IA EXPERT-VETTED | Científico de datos | Agentes de IA | IA generativa | SaaS' : 'David Gadyan — EXPERT-VETTED AI Engineer | Data Scientist | AI Agent | Generative AI | SaaS',
     url: `${SITE_URL}/`,
     founder: { '@id': PERSON_ID },
     address: { '@type': 'PostalAddress', addressLocality: site.city, addressRegion: site.region, addressCountry: site.country },

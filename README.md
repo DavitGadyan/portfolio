@@ -1,6 +1,6 @@
 # davidgadyan.com
 
-Bilingual (EN at `/`, ES at `/es/`) static portfolio for **David Gadyan — Full-Stack AI Engineer**, built with
+Bilingual (EN at `/`, ES at `/es/`) static portfolio for **David Gadyan — EXPERT-VETTED AI Engineer | Data Scientist | AI Agent | Generative AI | SaaS**, built with
 Next.js 16 (App Router, static export), React 19, Tailwind CSS 4 and MDX content. Deployed to GitHub Pages.
 
 ## Commands
