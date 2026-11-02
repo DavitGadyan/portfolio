@@ -1,0 +1,104 @@
+---
+title: "HubAIOps: HubSpot AI-Readiness Audit App with Claude-Written Plans"
+date: 2026-11-02
+lastmod: 2026-11-02
+cover: /images/portfolio/hubaiops-cover.jpg
+coverAlt: "HubAIOps landing page: the headline about HubSpot AI agents quietly getting it wrong, next to a live readiness dashboard with scores per use case"
+summary: "A HubSpot optimization site and audit app. It scores a HubSpot portal across 7 AI use cases with 31 checks, 15 of them measured live through a read-only HubSpot OAuth scan, and Claude turns the findings into a Do Now / Do Next / Do Later plan on a shareable results page. Includes a filterable case-study library with before and after readiness scores, lead capture, an admin view and a static GitHub Pages build."
+description: "HubSpot AI-readiness audit app: 31 checks across 7 AI use cases, a read-only OAuth portal scan and a Claude-written, prioritized optimization plan. Next.js, TypeScript."
+categories:
+  - ai-agents
+  - ai-erp-saas
+  - fullstack-uiux
+stack:
+  frontend:
+    - Next.js 15 (App Router, server actions)
+    - TypeScript
+    - Tailwind CSS 4
+    - motion/react
+  backend:
+    - Next.js route handlers
+    - Chunked scan engine within serverless limits
+    - Resend e-mail notifications
+  ai:
+    - Anthropic Claude API with structured JSON output
+    - Prompt caching on a frozen system prompt
+    - Schema-validated plan with a deterministic fallback
+  data:
+    - HubSpot CRM and Automation APIs over OAuth 2.0
+    - Drizzle ORM on Postgres (Supabase)
+    - Local-file fallback store
+  infra:
+    - GitHub Actions CI
+    - GitHub Pages static build
+    - Playwright end-to-end recording
+  security:
+    - Read-only HubSpot scopes
+    - AES-256-GCM encrypted tokens, deleted after the scan
+    - Only counts and percentages stored; no contact records sent to the model
+links:
+  live: https://davitgadyan.github.io/HubSpot/
+outcomes:
+  - 7 AI use cases and 31 checks, 15 of them measured live against the HubSpot API, each with its own "why it matters" and "first step".
+  - Claude writes the plan as schema-validated JSON, with prompt caching and a deterministic rubric plan if the model is unavailable.
+  - Read-only by design; tokens are encrypted and destroyed after the scan, and no personal data reaches the model.
+  - One codebase ships the full app for a Node host and a static site for GitHub Pages; lint, typecheck, 24 tests and both builds run on every push.
+metrics:
+  - label: AI use cases scored
+    value: "7"
+  - label: Audit checks
+    value: "31"
+  - label: Measured live via HubSpot API
+    value: "15"
+  - label: Case studies
+    value: "25"
+  - label: Automated tests
+    value: "24"
+featured: true
+order: 8
+---
+
+## The problem
+
+HubSpot's Breeze AI agents don't fail loudly. They keep producing confident output from messy fields, duplicate records, stale lifecycle data and permission gaps. A HubSpot consultancy wanted a credible, AI-ready front door instead of a brochure, and an audit that measures a portal rather than asking about it, so the first strategy call starts from a diagnosis.
+
+## The product in use
+
+<Video src="/videos/hubaiops-demo.mp4" poster="/videos/hubaiops-demo.webp" ratio="16 / 10" title="HubAIOps walkthrough" caption="Two-minute walkthrough: the landing page, the case-study library, a use-case explainer, the 31-question audit and the Claude-written results page." />
+
+## What I built
+
+![Audit stepper: 31 questions across 7 sections, with "Not sure" counted as a gap](/images/portfolio/hubaiops-quiz.jpg)
+
+**Audit in two modes.** A 31-question self-assessment, or a read-only HubSpot connection that measures 15 checks directly: blank or deactivated owners, missing lifecycle stages, duplicate contacts and companies, association gaps between contacts, companies and deals, near-duplicate custom properties, free-text Industry fields, ICP field coverage, the cold-lead pool, ticket pipelines, blog sources, and workflow health and documentation. The scan runs one HubSpot object per request, so it stays inside serverless time limits.
+
+![Readiness by use case: severity-weighted scores from 17 to 90 across data foundation, permissions, knowledge, the three Breeze agents and governance](/images/portfolio/hubaiops-scores.jpg)
+
+**Severity-weighted scoring.** Each use case gets a 0 to 100 score: data foundation, permissions and seats, brand voice and knowledge, the Customer, Prospecting and Content agents, and governance. The readiness bands follow HubSpot's implementation playbook.
+
+![Results page: a Claude-written headline and summary next to the overall readiness score of 66](/images/portfolio/hubaiops-results-hero.jpg)
+
+![Optimization plan: Do now, Do next and Do later columns, each fix with its first step inside HubSpot, the risk if done wrong and the owner](/images/portfolio/hubaiops-plan.jpg)
+
+**A plan written by Claude.** The Anthropic API returns structured JSON: a verdict and top risks per use case, prioritized fixes with the first step inside HubSpot, the risk if it is done wrong, and whether the client or an expert should own it. It adds Golden Set test questions for the Customer Agent and ICP suggestions. The output is validated against a schema, and a deterministic rubric plan takes over if the model is unavailable. Each audit gets a private, shareable results page with its own Open Graph image.
+
+![Case-study library filterable by industry, company size, HubSpot product and AI use case, with before and after readiness scores](/images/portfolio/hubaiops-case-studies.jpg)
+
+![Engagement page: 8,412 duplicate records merged, a two-way NetSuite sync and readiness rising from 26 to 86](/images/portfolio/hubaiops-case-study-detail.jpg)
+
+**Case-study library.** 25 studies filterable four ways, each with the outcome metric and the AI-readiness score before and after. One is a real named project, Virgil HealthCare AI; the other 24 are representative write-ups of the standard HubSpot optimization playbook.
+
+![Use-case explainer for the Customer Agent: what breaks, what the audit checks and which checks the live scan measures](/images/portfolio/hubaiops-use-case.jpg)
+
+**Privacy by design.** Read-only scopes, AES-256-GCM encrypted tokens deleted the moment the scan finishes, only counts and percentages stored, and no contact records ever sent to the model.
+
+## Lessons encoded in the checks
+
+1. **AI amplifies the data it is given.** Fix the foundation first, then switch on one agent at a time.
+2. **Fields must mean one thing.** Write one definition per field and archive near-duplicate properties.
+3. **Associations tell the account story.** Merge companies by domain and require contacts on deals.
+4. **Permissions change the answer.** Align visibility before comparing AI outputs between teams.
+5. **Guardrails are the product.** Semi-autonomous mode, send caps, escalation rules, a Golden Set of 20 real questions and a silent launch.
+6. **Measure outcomes, not usage.** Name an AI owner and hold a weekly review.
+7. **Workflows are upstream of AI.** Audit, fix and document automation before adding more.
+8. **Migrations are the best time to fix meaning.** Reconcile and deduplicate on the way in.

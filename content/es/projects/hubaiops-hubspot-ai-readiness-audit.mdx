@@ -1,0 +1,67 @@
+---
+title: "HubAIOps: auditoría de preparación para IA en HubSpot con Claude"
+coverAlt: "Portada de HubAIOps: el titular sobre agentes de IA de HubSpot que se equivocan en silencio, junto a un panel de preparación con puntuaciones por caso de uso"
+summary: "Web de optimización de HubSpot y aplicación de auditoría. Puntúa un portal de HubSpot en 7 casos de uso de IA con 31 comprobaciones, 15 de ellas medidas en vivo con un escaneo OAuth de solo lectura, y Claude convierte los hallazgos en un plan Hacer ya / Después / Más adelante en una página de resultados para compartir. Incluye una biblioteca de casos filtrable con puntuaciones de preparación antes y después, captación de leads, panel de administración y una versión estática en GitHub Pages."
+description: "Auditoría de preparación para IA en HubSpot: 31 comprobaciones en 7 casos de uso, escaneo OAuth de solo lectura y un plan priorizado escrito por Claude. Next.js y TypeScript."
+outcomes:
+  - 7 casos de uso de IA y 31 comprobaciones, 15 de ellas medidas en vivo contra la API de HubSpot, cada una con su «por qué importa» y su «primer paso».
+  - Claude escribe el plan como JSON validado por esquema, con caché de prompts y un plan determinista de respaldo si el modelo no está disponible.
+  - Solo lectura por diseño; los tokens se cifran y se destruyen tras el escaneo, y ningún dato personal llega al modelo.
+  - Una sola base de código publica la aplicación completa para un servidor Node y una web estática en GitHub Pages; lint, comprobación de tipos, 24 tests y ambas builds en cada push.
+metrics:
+  - label: Casos de uso de IA puntuados
+    value: "7"
+  - label: Comprobaciones
+    value: "31"
+  - label: Medidas en vivo con la API de HubSpot
+    value: "15"
+  - label: Casos de estudio
+    value: "25"
+  - label: Tests automatizados
+    value: "24"
+---
+
+## El problema
+
+Los agentes de IA Breeze de HubSpot no fallan de forma visible. Siguen produciendo respuestas seguras a partir de campos desordenados, registros duplicados, etapas del ciclo de vida obsoletas y huecos de permisos. Una consultora de HubSpot quería una puerta de entrada creíble y preparada para la IA en lugar de un folleto, y una auditoría que mida el portal en vez de preguntar por él, para que la primera llamada de estrategia empiece con un diagnóstico.
+
+## El producto en uso
+
+<Video src="/videos/hubaiops-demo.mp4" poster="/videos/hubaiops-demo.webp" ratio="16 / 10" title="Recorrido por HubAIOps" caption="Recorrido de dos minutos: la portada, la biblioteca de casos, la explicación de un caso de uso, la auditoría de 31 preguntas y la página de resultados escrita por Claude." />
+
+## Qué construí
+
+![Auditoría paso a paso: 31 preguntas en 7 secciones, con «No estoy seguro» contado como carencia](/images/portfolio/hubaiops-quiz.jpg)
+
+**Auditoría en dos modos.** Una autoevaluación de 31 preguntas o una conexión de solo lectura con HubSpot que mide 15 comprobaciones directamente: propietarios vacíos o desactivados, etapas del ciclo de vida ausentes, contactos y empresas duplicados, huecos de asociación entre contactos, empresas y negocios, propiedades personalizadas casi duplicadas, campos de sector en texto libre, cobertura de los campos del ICP, la bolsa de leads fríos, pipelines de tickets, fuentes del blog, y el estado y la documentación de los workflows. El escaneo procesa un objeto de HubSpot por petición, así que respeta los límites de tiempo serverless.
+
+![Preparación por caso de uso: puntuaciones ponderadas por gravedad de 17 a 90 en base de datos, permisos, conocimiento, los tres agentes Breeze y gobernanza](/images/portfolio/hubaiops-scores.jpg)
+
+**Puntuación ponderada por gravedad.** Cada caso de uso recibe una nota de 0 a 100: base de datos, permisos y licencias, voz de marca y conocimiento, los agentes Customer, Prospecting y Content, y gobernanza. Las bandas de preparación siguen el manual de implementación de HubSpot.
+
+![Página de resultados: titular y resumen escritos por Claude junto a la puntuación global de 66](/images/portfolio/hubaiops-results-hero.jpg)
+
+![Plan de optimización: columnas Hacer ya, Después y Más adelante, cada mejora con su primer paso dentro de HubSpot, el riesgo si se hace mal y el responsable](/images/portfolio/hubaiops-plan.jpg)
+
+**Un plan escrito por Claude.** La API de Anthropic devuelve JSON estructurado: un veredicto y los principales riesgos por caso de uso, mejoras priorizadas con el primer paso dentro de HubSpot, el riesgo si se hacen mal y si debe encargarse el cliente o un experto. Añade preguntas de prueba Golden Set para el Customer Agent y sugerencias de ICP. La salida se valida contra un esquema y, si el modelo no está disponible, entra un plan determinista basado en la rúbrica. Cada auditoría tiene una página de resultados privada y para compartir, con su propia imagen Open Graph.
+
+![Biblioteca de casos filtrable por sector, tamaño de empresa, producto de HubSpot y caso de uso de IA, con puntuaciones antes y después](/images/portfolio/hubaiops-case-studies.jpg)
+
+![Página de un proyecto: 8.412 registros duplicados fusionados, sincronización bidireccional con NetSuite y preparación de 26 a 86](/images/portfolio/hubaiops-case-study-detail.jpg)
+
+**Biblioteca de casos.** 25 casos filtrables de cuatro formas, cada uno con la métrica de resultado y la puntuación de preparación para IA antes y después. Uno es un proyecto real con nombre, Virgil HealthCare AI; los otros 24 son descripciones representativas del manual estándar de optimización de HubSpot.
+
+![Explicación del caso de uso Customer Agent: qué falla, qué comprueba la auditoría y qué mide el escaneo en vivo](/images/portfolio/hubaiops-use-case.jpg)
+
+**Privacidad desde el diseño.** Permisos de solo lectura, tokens cifrados con AES-256-GCM que se borran en cuanto termina el escaneo, solo se guardan recuentos y porcentajes, y ningún registro de contacto se envía al modelo.
+
+## Lecciones incorporadas en las comprobaciones
+
+1. **La IA amplifica los datos que recibe.** Primero los cimientos; después, un agente cada vez.
+2. **Cada campo debe significar una sola cosa.** Una definición por campo y archivar las propiedades casi duplicadas.
+3. **Las asociaciones cuentan la historia de la cuenta.** Fusionar empresas por dominio y exigir contactos en los negocios.
+4. **Los permisos cambian la respuesta.** Alinear la visibilidad antes de comparar resultados de IA entre equipos.
+5. **Las salvaguardas son el producto.** Modo semiautónomo, límites de envío, reglas de escalado, un Golden Set de 20 preguntas reales y un lanzamiento silencioso.
+6. **Medir resultados, no uso.** Nombrar un responsable de IA y revisar cada semana.
+7. **Los workflows van antes que la IA.** Auditar, corregir y documentar la automatización antes de añadir más.
+8. **Las migraciones son el mejor momento para corregir el significado.** Conciliar y deduplicar al migrar.
