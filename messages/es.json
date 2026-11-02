@@ -210,8 +210,8 @@
     "notFoundTitle": "Página no encontrada",
     "ogAlt": "David Gadyan — Ingeniero de IA EXPERT-VETTED | Científico de datos | Agentes de IA | IA generativa | SaaS",
     "titleTemplate": "%s | David Gadyan",
-    "materialsTitle": "Materiales: técnicas de optimización por herramienta",
-    "materialsDescription": "Técnicas prácticas y probadas para las herramientas con las que construye David Gadyan, empezando por Claude: cómo reducir el coste de Claude Code y de la API sin perder calidad. Mapas interactivos, uno por herramienta."
+    "materialsTitle": "Materiales: mapas de técnicas para Claude, AEO y GEO",
+    "materialsDescription": "Mapas interactivos de técnicas de David Gadyan: cómo reducir el coste de Claude Code y de la API de Claude sin perder calidad, y cómo estructurar páginas para que los motores de respuesta y la IA generativa (ChatGPT, Perplexity, Gemini) las elijan como respuesta y las citen."
   },
   "a11y": {
     "quote": "Cita",
@@ -226,22 +226,17 @@
     "externalLink": "se abre en una pestaña nueva"
   },
   "materials": {
-    "intro": "Formas prácticas y probadas de sacar más partido a las herramientas con las que construyo: menos coste, mejores resultados. Elige una herramienta y después una técnica.",
-    "pick": "Elige una herramienta",
+    "intro": "Formas prácticas y probadas de sacar más partido a las herramientas con las que construyo y a los canales en los que publico: menos coste, mejores resultados, más citas de la IA. Elige un mapa y después una técnica.",
+    "pick": "Elige un mapa",
     "hint": "Elige una técnica en el mapa para ver cuándo ayuda, qué hacer y por qué funciona.",
     "when": "Cuándo ayuda",
     "action": "Qué hacer",
     "why": "Por qué funciona",
-    "saving": "Ahorro típico",
     "estimate": "estimación",
     "official": "cifra oficial",
+    "study": "estudio publicado",
     "close": "Cerrar detalles",
     "graphLabel": "Mapa de técnicas de {tool}",
-    "groups": {
-      "code": "Claude Code",
-      "api": "API de Claude"
-    },
-    "sources": "Cifras oficiales: precios y documentación de la API de Anthropic. Estimaciones: LOW/CODE Agency, \"Claude Code Cost Optimization\" (sep. 2026) y experiencia en proyectos; los rangos varían según el código base.",
     "count": "{n} técnicas",
     "open": "Abrir el mapa"
   }

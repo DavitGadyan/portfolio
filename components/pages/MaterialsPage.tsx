@@ -6,13 +6,14 @@ import { buildMetadata } from '@/lib/seo/metadata';
 import { breadcrumbNode, personNode, webPageNode, websiteNode } from '@/lib/seo/jsonld';
 import { homePath, pagePath } from '@/lib/locale-path';
 import { withBasePath } from '@/lib/site';
-import { materials, type Material } from '@/data/materials';
+import { materials, type ImpactKind, type Material } from '@/data/materials';
 import { logoScale, logoSrc } from '@/data/skillLogos';
 import { SiteFrame } from '@/components/layout/SiteFrame';
 import { SectionTitle } from '@/components/ui/SectionTitle';
 import { Breadcrumbs } from '@/components/content/Breadcrumbs';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { TechniqueGraph, type ToolView } from '@/components/materials/TechniqueGraph';
+import { TechIcon } from '@/components/materials/icons';
 
 const INDEX = '/materials/';
 const toolPath = (id: string) => `${INDEX}${id}/`;
@@ -70,12 +71,12 @@ export function materialMetadata(locale: Locale, id: string): Metadata {
   return buildMetadata({ locale, path: toolPath(id), title: mat.title[locale], description: mat.description[locale] });
 }
 
-function toolView(mat: Material, locale: Locale, groups: Record<string, string>): ToolView {
+function toolView(mat: Material, locale: Locale): ToolView {
   return {
     id: mat.id, name: mat.name, logo: withBasePath(logoSrc(mat.logo)), scale: logoScale(mat.logo),
     techniques: mat.techniques.map((k) => ({
-      id: k.id, group: groups[k.group], title: k.title[locale], sub: k.short[locale], when: k.when[locale], what: k.action[locale], why: k.why[locale],
-      ...(k.saving ? { saving: k.saving.label[locale], savingKind: k.saving.kind } : {}),
+      id: k.id, group: mat.groups[k.group][locale], icon: k.icon, title: k.title[locale], sub: k.short[locale], when: k.when[locale], what: k.action[locale], why: k.why[locale],
+      ...(k.impact ? { impact: k.impact.label[locale], impactKind: k.impact.kind } : {}),
     })),
   };
 }
@@ -89,7 +90,8 @@ export function MaterialPage({ locale, id }: { locale: Locale; id: string }) {
     { ...webPageNode({ locale, path, name: mat.title[locale], description: mat.description[locale], breadcrumbId: bc['@id'] }),
       mainEntity: { '@type': 'ItemList', itemListElement: mat.techniques.map((k, i) => ({ '@type': 'ListItem', position: i + 1, name: k.title[locale] })) } },
     bc] };
-  const t = { label: m.materials.graphLabel, close: m.materials.close, when: m.materials.when, what: m.materials.action, why: m.materials.why, saving: m.materials.saving, estimate: m.materials.estimate, official: m.materials.official, hint: m.materials.hint };
+  const t = { label: m.materials.graphLabel, close: m.materials.close, when: m.materials.when, what: m.materials.action, why: m.materials.why, impact: mat.impactLabel[locale], estimate: m.materials.estimate, official: m.materials.official, study: m.materials.study, hint: m.materials.hint };
+  const kindLabel = (kind: ImpactKind) => (kind === 'official' ? m.materials.official : kind === 'study' ? m.materials.study : m.materials.estimate);
   return (
     <SiteFrame locale={locale}>
       <JsonLd data={graph} />
@@ -115,21 +117,21 @@ export function MaterialPage({ locale, id }: { locale: Locale; id: string }) {
             <ol className="tglist" role="list">
               {mat.techniques.map((k) => (
                 <li key={k.id}>
-                  <p className="m-0 text-[0.68rem] uppercase tracking-[0.14em] text-ink-400">{m.materials.groups[k.group]}</p>
-                  <h3>{k.title[locale]}</h3>
+                  <p className="m-0 text-[0.68rem] uppercase tracking-[0.14em] text-ink-400">{mat.groups[k.group][locale]}</p>
+                  <h3><TechIcon id={k.icon} size={16} />{k.title[locale]}</h3>
                   <p className="tglist__sub">{k.short[locale]}</p>
                   <dl>
                     <dt>{m.materials.when}</dt><dd>{k.when[locale]}</dd>
                     <dt>{m.materials.action}</dt><dd>{k.action[locale]}</dd>
                     <dt>{m.materials.why}</dt><dd>{k.why[locale]}</dd>
-                    {k.saving && <><dt>{m.materials.saving}</dt><dd>{k.saving.label[locale]} ({k.saving.kind === 'official' ? m.materials.official : m.materials.estimate})</dd></>}
+                    {k.impact && <><dt>{mat.impactLabel[locale]}</dt><dd>{k.impact.label[locale]} ({kindLabel(k.impact.kind)})</dd></>}
                   </dl>
                 </li>
               ))}
             </ol>
-            <TechniqueGraph tool={toolView(mat, locale, m.materials.groups)} t={t} />
+            <TechniqueGraph tool={toolView(mat, locale)} t={t} />
           </div>
-          <p className="tg__sources mx-auto max-w-3xl text-center">{m.materials.sources}</p>
+          <p className="tg__sources mx-auto max-w-3xl text-center">{mat.sources[locale]}</p>
         </div>
       </section>
     </SiteFrame>

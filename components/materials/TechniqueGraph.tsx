@@ -1,10 +1,12 @@
 'use client';
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { X } from 'lucide-react';
+import type { IconId, ImpactKind } from '@/data/materials';
+import { TechIcon } from './icons';
 
-export type TechniqueView = { id: string; group: string; title: string; sub: string; when: string; what: string; why: string; saving?: string; savingKind?: 'official' | 'estimate' };
+export type TechniqueView = { id: string; group: string; title: string; sub: string; when: string; what: string; why: string; icon?: IconId; impact?: string; impactKind?: ImpactKind };
 export type ToolView = { id: string; name: string; logo: string; scale: number; techniques: TechniqueView[] };
-export type GraphStrings = { label: string; close: string; when: string; what: string; why: string; saving: string; estimate: string; official: string; hint: string };
+export type GraphStrings = { label: string; close: string; when: string; what: string; why: string; impact: string; estimate: string; official: string; study: string; hint: string };
 
 // ---- geometry in stage percentages, derived from the index only (server and client render the same strings) ----
 const PAD = 9;
@@ -84,13 +86,14 @@ export function TechniqueGraph({ tool, t }: { tool: ToolView; t: GraphStrings })
           </div>
           {tool.techniques.map((k, i) => (
             <button
-              key={k.id} type="button" className="tg__node" data-id={k.id}
+              key={k.id} type="button" className="tg__node" data-id={k.id} data-icon={k.icon ? '' : undefined}
               style={{ '--rx': `${f(spots[i].ring.x)}%`, '--ry': `${f(spots[i].ring.y)}%`, '--kx': `${f(spots[i].cols.x)}%`, '--ky': `${f(spots[i].cols.y)}%`, '--i': i } as CSSProperties}
               aria-expanded={open === k.id} aria-controls="tg-panel"
               onClick={(e) => toggle(k.id, e.currentTarget)}
               onPointerEnter={(e) => { if (e.pointerType !== 'touch') setHot(k.id); }} onPointerLeave={() => setHot(null)}
               onFocus={() => setHot(k.id)} onBlur={() => setHot(null)}
             >
+              <TechIcon id={k.icon} />
               <span className="tg__title">{k.title}</span>
               <span className="tg__sub">{k.sub}</span>
             </button>
@@ -100,16 +103,16 @@ export function TechniqueGraph({ tool, t }: { tool: ToolView; t: GraphStrings })
           {active ? (
             <>
               <p className="tg__group">{active.group}</p>
-              <h3 id="tg-panel-title" className="tg__ptitle">{active.title}</h3>
+              <h3 id="tg-panel-title" className="tg__ptitle"><TechIcon id={active.icon} size={16} />{active.title}</h3>
               <p className="tg__psub">{active.sub}</p>
               <dl className="tg__dl">
                 <dt>{t.when}</dt><dd>{active.when}</dd>
                 <dt>{t.what}</dt><dd>{active.what}</dd>
                 <dt>{t.why}</dt><dd>{active.why}</dd>
               </dl>
-              {active.saving && (
-                <p className="tg__chip" data-kind={active.savingKind}>
-                  <span>{t.saving}: </span>{active.saving} <em>({active.savingKind === 'official' ? t.official : t.estimate})</em>
+              {active.impact && (
+                <p className="tg__chip" data-kind={active.impactKind}>
+                  <span>{t.impact}: </span>{active.impact} <em>({active.impactKind === 'official' ? t.official : active.impactKind === 'study' ? t.study : t.estimate})</em>
                 </p>
               )}
               <button type="button" className="tg__close" aria-label={t.close} onClick={close}><X size={18} aria-hidden="true" /></button>

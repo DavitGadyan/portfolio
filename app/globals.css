@@ -460,6 +460,7 @@ body {
   .tg__tool:hover { border-color: var(--color-ink-400); }
   .tg__tool[aria-current="page"] { border-color: var(--color-accent); box-shadow: 0 0 0 3px rgba(31,170,85,.18); }
   .tg__tiles { margin: 2.5rem 0 0; padding: 0; list-style: none; display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); max-width: 56rem; margin-inline: auto; }
+  .tg__tiles > li { display: grid; } /* the tile fills the row, so the three cards share one height */
   .tg__tile { display: grid; grid-template-columns: auto 1fr; gap: .4rem 1rem; align-items: center; padding: 1.1rem 1.25rem; border-radius: 1rem; border: 1px solid var(--color-ink-200); background: var(--color-paper-0); color: var(--color-ink-700); text-decoration: none; transition: border-color .2s, box-shadow .2s, translate .2s; }
   .tg__tile:hover { border-color: var(--color-ink-400); box-shadow: 0 14px 30px -18px rgba(0,0,0,.35); translate: 0 -2px; }
   .tg__tile:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 3px; }
@@ -491,10 +492,16 @@ body {
   .tg__node[aria-expanded="true"] { border-color: var(--color-accent); box-shadow: 0 0 0 1px rgba(31,170,85,.5), 0 0 28px -4px rgba(31,170,85,.55); }
   .tg__title { display: block; font-size: .78rem; font-weight: 700; line-height: 1.2; }
   .tg__sub { display: block; margin-top: .15rem; font-size: .66rem; line-height: 1.25; color: var(--color-ink-300); }
+  /* technique icons (AEO / GEO maps): a small tinted square on the card, in the panel title and in the no-JS list */
+  .tg__icon { display: inline-grid; place-items: center; width: 1.5rem; height: 1.5rem; border-radius: .45rem; background: rgba(31,170,85,.16); border: 1px solid rgba(31,170,85,.45); color: var(--color-accent); flex: none; }
+  .tg__node[data-icon] { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: .5rem; align-items: start; }
+  .tg__node[data-icon] .tg__icon { grid-row: span 2; margin-top: .1rem; }
+  .tg__ptitle .tg__icon, .tglist h3 .tg__icon { vertical-align: -.35rem; margin-right: .5rem; }
   @media (max-width: 40rem) {
     .tg__stage { aspect-ratio: 3 / 5; }
     .tg__node { left: var(--kx); top: var(--ky); width: 36%; padding: .4rem .5rem; }
     .tg__title { font-size: .7rem; } .tg__sub { font-size: .6rem; }
+    .tg__node .tg__icon { width: 1.25rem; height: 1.25rem; }
     .tg__core { width: 84px; height: 84px; border-radius: 22px; } .tg__core img { width: 48px; height: 48px; } .tg__core::after { inset: -9px; border-radius: 28px; }
     .tg__wire--ring { display: none; }
     .tg__spark { --tx: var(--mx); --ty: var(--my); }
@@ -510,6 +517,7 @@ body {
   .tg__dl dd { margin: .25rem 0 0; font-size: .9rem; line-height: 1.5; color: var(--color-ink-100); }
   .tg__chip { display: inline-block; margin: 1rem 0 0; padding: .35rem .7rem; border-radius: 9999px; font-size: .78rem; line-height: 1.3; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.14); color: #fff; }
   .tg__chip[data-kind="official"] { background: rgba(31,170,85,.14); border-color: rgba(31,170,85,.5); }
+  .tg__chip[data-kind="study"] { background: rgba(255,214,0,.12); border-color: rgba(255,214,0,.45); }
   .tg__chip span, .tg__chip em { color: var(--color-ink-300); font-style: normal; }
   .tg__close { position: absolute; top: .75rem; right: .75rem; display: grid; place-items: center; width: 2.25rem; height: 2.25rem; border-radius: 9999px; border: 1px solid rgba(255,255,255,.2); background: transparent; color: #fff; cursor: pointer; }
   .tg__close:hover { background: rgba(255,255,255,.1); }

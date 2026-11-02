@@ -1,10 +1,21 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
+
+/** Opens a technique card. The cards are in the static HTML before React hydrates, so a single click can land too early; retry until the card reports itself expanded. */
+async function openNode(page: Page, id: string) {
+  const node = page.locator(`.tg__node[data-id="${id}"]`);
+  await expect(async () => {
+    await node.evaluate((el) => el.scrollIntoView({ block: 'center' })); // a minimal scroll can leave the card under the fixed header, where a forced click lands on the header
+    await node.click({ force: true });
+    await expect(node).toHaveAttribute('aria-expanded', 'true', { timeout: 400 });
+  }).toPass({ timeout: 10_000 });
+}
 
 test.describe('materials', () => {
   test('index lists the tools; the nav item sits right before the CV link', async ({ page, isMobile }) => {
     await page.goto('/materials/');
     await expect(page.locator('h1')).toHaveCount(1);
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', /\/materials\/$/);
+    await expect(page.locator('.tg__tile')).toHaveCount(3); // Claude, AEO, GEO
     const tile = page.locator('.tg__tile').first();
     await expect(tile).toContainText('Claude');
     if (!isMobile) {
@@ -52,6 +63,35 @@ test.describe('materials', () => {
     await expect(page.locator('.tg__node').first().locator('.tg__title')).not.toHaveText(title); // Spanish titles
   });
 
+  test('the AEO and GEO maps: an icon on every card, study figures in the panel, Spanish', async ({ page }) => {
+    await page.goto('/materials/aeo/');
+    await expect(page.locator('h1')).toHaveText(/AEO/);
+    await expect(page.locator('.tg__tool[aria-current="page"]')).toContainText('AEO');
+    const g = page.locator('.tg');
+    await expect(g.locator('.tg__node')).toHaveCount(10);
+    await expect(g.locator('.tg__node .tg__icon svg')).toHaveCount(10);
+    await expect(g.locator('.tg__core img')).toHaveAttribute('src', /\/logos\/aeo\.svg$/);
+    await openNode(page, 'comparison-tables');
+    const panel = page.locator('#tg-panel');
+    await expect(panel).toHaveAttribute('data-state', 'open');
+    await expect(panel.locator('#tg-panel-title')).toHaveText('Comparison tables');
+    await expect(panel.locator('#tg-panel-title .tg__icon svg')).toHaveCount(1);
+    await expect(panel.locator('.tg__chip[data-kind="study"]')).toContainText(/Reported lift: Cited 4\.2× more often .* \(published study\)/);
+    await expect(panel.locator('.tg__group')).toHaveText('Structure');
+    await page.goto('/materials/geo/');
+    await expect(page.locator('.tg__node')).toHaveCount(11);
+    await expect(page.locator('.tg__core img')).toHaveAttribute('src', /\/logos\/geo\.svg$/);
+    await openNode(page, 'cite-evidence');
+    await expect(panel.locator('.tg__chip[data-kind="study"]')).toContainText('+40 % visibility with citations');
+    await openNode(page, 'measure');
+    await expect(panel.locator('.tg__chip[data-kind="estimate"]')).toContainText(/30–45 days \(estimate\)/);
+    await expect(panel.locator('.tg__group')).toHaveText('Measurement');
+    await expect(page.locator('.tg__sources')).toContainText('Princeton');
+    await page.goto('/es/materials/geo/');
+    await expect(page.locator('h1')).toHaveText(/GEO: 11 técnicas/);
+    await expect(page.locator('.tg__node[data-id="measure"] .tg__title')).toHaveText('Mide las citas como una evaluación');
+  });
+
   test('reduced motion hides the travelling sparks', async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await page.goto('/materials/claude/');
@@ -63,6 +103,9 @@ test.describe('materials', () => {
     const page = await ctx.newPage();
     await page.goto('/materials/claude/');
     await expect(page.locator('.tglist li')).toHaveCount(12);
+    await page.goto('/materials/geo/');
+    await expect(page.locator('.tglist li')).toHaveCount(11);
+    await expect(page.locator('.tglist h3 .tg__icon svg')).toHaveCount(11);
     expect(await page.locator('.tglist').evaluate((el) => getComputedStyle(el).display)).not.toBe('none');
     expect(await page.locator('.tg').evaluate((el) => getComputedStyle(el).display)).toBe('none');
     await ctx.close();

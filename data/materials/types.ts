@@ -1,20 +1,27 @@
 import type { Localized } from '@/lib/content/types';
 import type { LogoId } from '@/data/skillLogos';
 
-export type TechniqueGroup = 'code' | 'api';
+/** Small line icon on a technique card; the drawings are mapped in components/materials/icons.tsx. */
+export type IconId =
+  | 'heading' | 'paragraph' | 'rows' | 'book' | 'chat' | 'ordered' | 'table' | 'code' | 'tags' | 'tree'
+  | 'clipboard' | 'at' | 'hash' | 'quote' | 'repeat' | 'bot' | 'calendar' | 'network' | 'megaphone' | 'chart' | 'checklist';
+
+/** `official` = documented by the vendor; `study` = a published analysis; `estimate` = a third-party or experience-based range. */
+export type ImpactKind = 'official' | 'estimate' | 'study';
 
 export interface Technique {
   id: string;
-  /** Where it applies: the Claude Code workflow or the API/platform. */
-  group: TechniqueGroup;
+  /** Key into the material's `groups` (the Claude Code workflow vs the API, a GEO layer…). */
+  group: string;
+  icon?: IconId;
   title: Localized<string>;
   /** 2–4 words shown under the title on the card. */
   short: Localized<string>;
   when: Localized<string>;
   action: Localized<string>;
   why: Localized<string>;
-  /** Typical saving. `official` = documented by the vendor; `estimate` = a third-party or experience-based range. */
-  saving?: { label: Localized<string>; kind: 'official' | 'estimate' };
+  /** The figure behind the technique (a saving, a citation multiplier…). */
+  impact?: { label: Localized<string>; kind: ImpactKind };
 }
 
 export interface Material {
@@ -22,8 +29,14 @@ export interface Material {
   logo: LogoId;
   name: string;
   tagline: Localized<string>;
-  /** <title> and meta description of the tool's own page (/materials/<id>/). */
+  /** <title> and meta description of the map's own page (/materials/<id>/). */
   title: Localized<string>;
   description: Localized<string>;
+  /** Group key → label shown above each technique. */
+  groups: Record<string, Localized<string>>;
+  /** Heading of the figure chip ("Typical saving", "Reported lift"). */
+  impactLabel: Localized<string>;
+  /** Where the figures come from; printed under the map. */
+  sources: Localized<string>;
   techniques: Technique[];
 }
