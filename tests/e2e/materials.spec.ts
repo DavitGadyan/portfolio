@@ -4,10 +4,12 @@ import { expect, test, type Page } from '@playwright/test';
 async function openNode(page: Page, id: string) {
   const node = page.locator(`.tg__node[data-id="${id}"]`);
   await expect(async () => {
-    await node.evaluate((el) => el.scrollIntoView({ block: 'center' })); // a minimal scroll can leave the card under the fixed header, where a forced click lands on the header
-    await node.click({ force: true });
-    await expect(node).toHaveAttribute('aria-expanded', 'true', { timeout: 400 });
-  }).toPass({ timeout: 10_000 });
+    if ((await node.getAttribute('aria-expanded')) !== 'true') { // never click an open card: a second click would close it again
+      await node.evaluate((el) => el.scrollIntoView({ block: 'center' })); // a minimal scroll can leave the card under the fixed header, where a forced click lands on the header
+      await node.click({ force: true });
+    }
+    await expect(node).toHaveAttribute('aria-expanded', 'true', { timeout: 1500 });
+  }).toPass({ timeout: 20_000 }); // generous: hydration and renders are slower when the machine is busy
 }
 
 test.describe('materials', () => {
@@ -15,7 +17,7 @@ test.describe('materials', () => {
     await page.goto('/materials/');
     await expect(page.locator('h1')).toHaveCount(1);
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', /\/materials\/$/);
-    await expect(page.locator('.tg__tile')).toHaveCount(4); // Claude, AEO, GEO, KPIs
+    await expect(page.locator('.tg__tile')).toHaveCount(5); // Claude, AEO, GEO, KPIs, SEO
     const tile = page.locator('.tg__tile').first();
     await expect(tile).toContainText('Claude');
     if (!isMobile) {
@@ -111,7 +113,7 @@ test.describe('materials', () => {
   test('the KPIs map: twelve cards in four groups and the tools table', async ({ page }) => {
     await page.goto('/materials/kpis/');
     await expect(page.locator('h1')).toHaveText(/AI Search KPIs/);
-    await expect(page.locator('.tg__tool')).toHaveCount(4);
+    await expect(page.locator('.tg__tool')).toHaveCount(5);
     await expect(page.locator('.tg__tool[aria-current="page"]')).toContainText('KPIs');
     await expect(page.locator('.tg__node')).toHaveCount(12);
     await expect(page.locator('.tg__node .tg__icon svg')).toHaveCount(12);
@@ -130,6 +132,28 @@ test.describe('materials', () => {
     await page.goto('/es/materials/kpis/');
     await expect(page.locator('h1')).toHaveText(/KPIs de búsqueda con IA/);
     await expect(page.locator('.cr h2')).toHaveText('¿Qué herramienta de visibilidad en IA y cuándo?');
+  });
+
+  test('the SEO map: twelve classic practices and the SEO vs AI search table', async ({ page }) => {
+    await page.goto('/materials/seo/');
+    await expect(page.locator('h1')).toHaveText(/SEO: 12 Content-Structure Practices/);
+    await expect(page.locator('.tg__tool[aria-current="page"]')).toContainText('SEO');
+    await expect(page.locator('.tg__node')).toHaveCount(12);
+    await expect(page.locator('.tg__node .tg__icon svg')).toHaveCount(12);
+    await openNode(page, 'readable-urls');
+    const panel = page.locator('#tg-panel');
+    await expect(panel.locator('.tg__group')).toHaveText('On-page');
+    await expect(panel.locator('.tg__ex')).toContainText('BreadcrumbList');
+    await expect(panel.locator('.tg__chip')).toHaveCount(0); // no figures claimed on this map
+    const cr = page.locator('.cr');
+    await expect(cr).toHaveCount(1);
+    await expect(cr.locator('h2')).toHaveText('Content structure for SEO vs AI search');
+    await expect(cr.locator('table thead th')).toHaveCount(3);
+    await expect(cr.locator('table tbody tr')).toHaveCount(4);
+    await expect(cr.locator('table tbody tr').last()).toContainText(/Structure job.*Hierarchy and keyword clarity.*Quotable, standalone sections/);
+    await page.goto('/es/materials/seo/');
+    await expect(page.locator('h1')).toHaveText(/SEO: 12 prácticas/);
+    await expect(page.locator('.cr h2')).toHaveText('Estructura de contenido para SEO frente a búsqueda con IA');
   });
 
   test('reduced motion hides the travelling sparks', async ({ page }) => {

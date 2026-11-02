@@ -5,7 +5,8 @@ import type { LogoId } from '@/data/skillLogos';
 export type IconId =
   | 'heading' | 'paragraph' | 'rows' | 'book' | 'chat' | 'ordered' | 'table' | 'code' | 'tags' | 'tree'
   | 'clipboard' | 'at' | 'hash' | 'quote' | 'repeat' | 'bot' | 'calendar' | 'network' | 'megaphone' | 'chart' | 'checklist'
-  | 'eye' | 'medal' | 'thumbs' | 'pie' | 'link' | 'route' | 'library' | 'globe' | 'calendar-check' | 'coins' | 'trending-down' | 'split';
+  | 'eye' | 'medal' | 'thumbs' | 'pie' | 'link' | 'route' | 'library' | 'globe' | 'calendar-check' | 'coins' | 'trending-down' | 'split'
+  | 'folder-tree' | 'key' | 'image' | 'external-link' | 'sitemap' | 'smartphone' | 'search' | 'target';
 
 /** `official` = documented by the vendor; `study` = a published analysis; `estimate` = a third-party or experience-based range. */
 export type ImpactKind = 'official' | 'estimate' | 'study';

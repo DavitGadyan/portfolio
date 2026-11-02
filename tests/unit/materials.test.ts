@@ -3,6 +3,7 @@ import { materials } from '@/data/materials';
 import { ICONS } from '@/components/materials/icons';
 import { citationRates } from '@/data/materials/citation-rates';
 import { visibilityTools } from '@/data/materials/visibility-tools';
+import { seoVsAi } from '@/data/materials/seo-vs-ai';
 
 describe('materials', () => {
   it('every technique is bilingual, uniquely identified, grouped and typed', () => {
@@ -34,7 +35,7 @@ describe('materials', () => {
     for (const t of [...aeo.techniques, ...geo.techniques]) expect(t.icon).toBeTruthy();
     expect(new Set([...aeo.techniques, ...geo.techniques].map((t) => t.icon)).size).toBe(21); // every card has its own icon
     expect(aeo.techniques.filter((t) => t.impact?.kind === 'study')).toHaveLength(3);
-    expect(materials.map((m) => m.id)).toEqual(['claude', 'aeo', 'geo', 'kpis']);
+    expect(materials.map((m) => m.id)).toEqual(['claude', 'aeo', 'geo', 'kpis', 'seo']);
   });
   it('the citation-rate table sits under AEO and GEO, sorted from the table (4.2×) down to the prose baseline (1.0×)', () => {
     expect(materials.filter((m) => m.tables?.some((t) => t.id === citationRates.id)).map((m) => m.id)).toEqual(['aeo', 'geo']);
@@ -60,5 +61,14 @@ describe('materials', () => {
     expect(visibilityTools.rows).toHaveLength(12);
     expect(visibilityTools.columns).toHaveLength(4);
     expect(visibilityTools.rows.some((r) => r.bar !== undefined)).toBe(false);
+  });
+  it('SEO has twelve techniques in four groups, no figures, and the SEO vs AI search table', () => {
+    const s = materials.find((m) => m.id === 'seo')!;
+    expect(s.techniques).toHaveLength(12);
+    expect(Object.keys(s.groups)).toEqual(['structure', 'onpage', 'architecture', 'technical']);
+    for (const t of s.techniques) { expect(t.icon && t.example).toBeTruthy(); expect(t.impact).toBeUndefined(); }
+    expect(s.tables).toEqual([seoVsAi]);
+    expect(seoVsAi.rows).toHaveLength(4);
+    expect(seoVsAi.columns).toHaveLength(3);
   });
 });
