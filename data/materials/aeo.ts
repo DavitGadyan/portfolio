@@ -1,4 +1,5 @@
 import type { Material } from './types';
+import { citationRates } from './citation-rates';
 
 /**
  * AEO (Answer Engine Optimization): how to make each section of a page the direct answer that featured snippets,
@@ -15,7 +16,7 @@ export const aeo: Material = {
   description: { en: 'Answer Engine Optimization in ten techniques: question headings, answer-first paragraphs of 40–75 words, one-idea paragraphs, definitions up front, FAQs that mirror real prompts, numbered steps, comparison tables, semantic HTML and matching metadata. Interactive map by David Gadyan.', es: 'Answer Engine Optimization en diez técnicas: títulos en forma de pregunta, párrafos que responden primero en 40–75 palabras, párrafos de una sola idea, definiciones al principio, FAQ que repiten las preguntas reales, pasos numerados, tablas comparativas, HTML semántico y metadatos coherentes. Mapa interactivo de David Gadyan.' },
   groups: { write: { en: 'Writing', es: 'Redacción' }, structure: { en: 'Structure', es: 'Estructura' }, markup: { en: 'Markup', es: 'Marcado' } },
   impactLabel: { en: 'Reported lift', es: 'Efecto reportado' },
-  citationTable: true,
+  tables: [citationRates],
   sources: { en: 'Sources: KIME, "How to Structure Content for LLM Extraction: A GEO Guide for 2026" (Apr 2026), which reports a 2025 analysis of 10,000 AI citations; Victoria Olsina, "Content Structure for SEO and LLMs (2026)" (updated Oct 2026). The citation multipliers are those studies\' figures, not measurements on this site.', es: 'Fuentes: KIME, «How to Structure Content for LLM Extraction: A GEO Guide for 2026» (abr. 2026), que recoge un análisis de 2025 sobre 10.000 citas de IA; Victoria Olsina, «Content Structure for SEO and LLMs (2026)» (act. oct. 2026). Los multiplicadores de citas son las cifras de esos estudios, no mediciones en este sitio.' },
   techniques: [
     { id: 'question-headings', group: 'structure', icon: 'heading',

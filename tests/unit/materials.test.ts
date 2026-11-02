@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { materials } from '@/data/materials';
 import { ICONS } from '@/components/materials/icons';
 import { citationRates } from '@/data/materials/citation-rates';
+import { visibilityTools } from '@/data/materials/visibility-tools';
 
 describe('materials', () => {
   it('every technique is bilingual, uniquely identified, grouped and typed', () => {
@@ -33,15 +34,31 @@ describe('materials', () => {
     for (const t of [...aeo.techniques, ...geo.techniques]) expect(t.icon).toBeTruthy();
     expect(new Set([...aeo.techniques, ...geo.techniques].map((t) => t.icon)).size).toBe(21); // every card has its own icon
     expect(aeo.techniques.filter((t) => t.impact?.kind === 'study')).toHaveLength(3);
-    expect(materials.map((m) => m.id)).toEqual(['claude', 'aeo', 'geo']);
+    expect(materials.map((m) => m.id)).toEqual(['claude', 'aeo', 'geo', 'kpis']);
   });
   it('the citation-rate table sits under AEO and GEO, sorted from the table (4.2×) down to the prose baseline (1.0×)', () => {
-    expect(materials.filter((m) => m.citationTable).map((m) => m.id)).toEqual(['aeo', 'geo']);
-    const rates = citationRates.rows.map((r) => r.rate);
+    expect(materials.filter((m) => m.tables?.some((t) => t.id === citationRates.id)).map((m) => m.id)).toEqual(['aeo', 'geo']);
+    const rates = citationRates.rows.map((r) => r.bar!);
     expect(rates).toEqual([...rates].sort((a, b) => b - a));
     expect(rates[0]).toBe(4.2);
     expect(rates.at(-1)).toBe(1);
-    for (const r of citationRates.rows) expect(r.format.en && r.format.es && r.bestFor.en && r.bestFor.es).toBeTruthy();
-    for (const f of [citationRates.heading, citationRates.intro, citationRates.caption]) expect(f.en && f.es).toBeTruthy();
+    expect(citationRates.rows.at(-1)!.muted).toBe(true);
+  });
+  it('every table is bilingual and rectangular', () => {
+    for (const t of materials.flatMap((m) => m.tables ?? [])) {
+      for (const f of [t.heading, t.intro, t.caption, ...t.columns]) expect(f.en && f.es).toBeTruthy();
+      for (const r of t.rows) { expect(r.cells).toHaveLength(t.columns.length); for (const c of r.cells) expect(c.en && c.es).toBeTruthy(); }
+    }
+  });
+  it('KPIs has twelve techniques in four groups and the twelve-tool table', () => {
+    const k = materials.find((m) => m.id === 'kpis')!;
+    expect(k.techniques).toHaveLength(12);
+    expect(Object.keys(k.groups)).toEqual(['metrics', 'setup', 'revenue', 'diagnose']);
+    expect(k.techniques.filter((t) => t.group === 'metrics')).toHaveLength(6);
+    for (const t of k.techniques) expect(t.icon && t.example).toBeTruthy();
+    expect(k.tables).toEqual([visibilityTools]);
+    expect(visibilityTools.rows).toHaveLength(12);
+    expect(visibilityTools.columns).toHaveLength(4);
+    expect(visibilityTools.rows.some((r) => r.bar !== undefined)).toBe(false);
   });
 });

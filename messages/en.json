@@ -210,8 +210,8 @@
     "notFoundTitle": "Page not found",
     "ogAlt": "David Gadyan — EXPERT-VETTED AI Engineer | Data Scientist | AI Agent | Generative AI | SaaS",
     "titleTemplate": "%s | David Gadyan",
-    "materialsTitle": "Materials: Technique Maps for Claude, AEO and GEO",
-    "materialsDescription": "Interactive technique maps by David Gadyan: how to cut Claude Code and Claude API cost without losing quality, and how to structure pages so answer engines and generative AI (ChatGPT, Perplexity, Gemini) pick them as the answer and cite them."
+    "materialsTitle": "Materials: Technique Maps for Claude, AEO, GEO and AI Search KPIs",
+    "materialsDescription": "Interactive technique maps by David Gadyan: how to cut Claude Code and Claude API cost without losing quality, how to structure pages so answer engines and generative AI (ChatGPT, Perplexity, Gemini) pick them as the answer and cite them, and how to measure it: visibility, share of voice, sentiment, attribution and the tools that track them."
   },
   "a11y": {
     "quote": "Quote",

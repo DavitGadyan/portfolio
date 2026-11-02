@@ -4,7 +4,8 @@ import type { LogoId } from '@/data/skillLogos';
 /** Small line icon on a technique card; the drawings are mapped in components/materials/icons.tsx. */
 export type IconId =
   | 'heading' | 'paragraph' | 'rows' | 'book' | 'chat' | 'ordered' | 'table' | 'code' | 'tags' | 'tree'
-  | 'clipboard' | 'at' | 'hash' | 'quote' | 'repeat' | 'bot' | 'calendar' | 'network' | 'megaphone' | 'chart' | 'checklist';
+  | 'clipboard' | 'at' | 'hash' | 'quote' | 'repeat' | 'bot' | 'calendar' | 'network' | 'megaphone' | 'chart' | 'checklist'
+  | 'eye' | 'medal' | 'thumbs' | 'pie' | 'link' | 'route' | 'library' | 'globe' | 'calendar-check' | 'coins' | 'trending-down' | 'split';
 
 /** `official` = documented by the vendor; `study` = a published analysis; `estimate` = a third-party or experience-based range. */
 export type ImpactKind = 'official' | 'estimate' | 'study';
@@ -26,6 +27,16 @@ export interface Technique {
   impact?: { label: Localized<string>; kind: ImpactKind };
 }
 
+/** A table shown under a map (a real <table>, the format LLMs cite most). A row with `bar` gets a bar in its second cell, sized relative to the largest `bar`. */
+export interface TableBlock {
+  id: string;
+  heading: Localized<string>;
+  intro: Localized<string>;
+  columns: Localized<string>[];
+  rows: { id: string; cells: Localized<string>[]; bar?: number; note?: Localized<string>; muted?: boolean }[];
+  caption: Localized<string>;
+}
+
 export interface Material {
   id: string;
   logo: LogoId;
@@ -40,7 +51,7 @@ export interface Material {
   impactLabel: Localized<string>;
   /** Where the figures come from; printed under the map. */
   sources: Localized<string>;
-  /** Show the "How do LLMs rank content?" citation-rate table under the map (AEO and GEO). */
-  citationTable?: boolean;
   techniques: Technique[];
+  /** Tables shown under the map and its sources line. */
+  tables?: TableBlock[];
 }

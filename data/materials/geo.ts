@@ -1,4 +1,5 @@
 import type { Material } from './types';
+import { citationRates } from './citation-rates';
 
 /**
  * GEO (Generative Engine Optimization): how to get cited by ChatGPT, Perplexity, Claude and Gemini, organised by the
@@ -15,7 +16,7 @@ export const geo: Material = {
   description: { en: 'Generative Engine Optimization in eleven techniques across the three GEO layers: standalone passages, explicit entity names, fact-dense sentences with sources, crawlable server-rendered content, freshness, one canonical page per topic, off-site authority, and weekly citation measurement run like an LLMOps eval. Interactive map by David Gadyan.', es: 'Generative Engine Optimization en once técnicas por las tres capas de GEO: pasajes autónomos, entidades con nombre, frases densas en datos con sus fuentes, contenido rastreable renderizado en el servidor, frescura, una página canónica por tema, autoridad externa y medición semanal de citas gestionada como una evaluación de LLMOps. Mapa interactivo de David Gadyan.' },
   groups: { foundation: { en: 'Foundation', es: 'Base' }, amplification: { en: 'Amplification', es: 'Amplificación' }, measurement: { en: 'Measurement', es: 'Medición' } },
   impactLabel: { en: 'Reported lift', es: 'Efecto reportado' },
-  citationTable: true,
+  tables: [citationRates],
   sources: { en: 'Sources: KIME, "How to Structure Content for LLM Extraction: A GEO Guide for 2026" (Apr 2026) for the three-layer framework, the 30–45-day window and the 12 % figure; Victoria Olsina, "Content Structure for SEO and LLMs (2026)" (updated Oct 2026) for the Princeton-led GEO study figures and the 8-step checklist. Running the measurement as an LLMOps eval is David Gadyan\'s own practice.', es: 'Fuentes: KIME, «How to Structure Content for LLM Extraction: A GEO Guide for 2026» (abr. 2026) para el marco de tres capas, la ventana de 30–45 días y la cifra del 12 %; Victoria Olsina, «Content Structure for SEO and LLMs (2026)» (act. oct. 2026) para las cifras del estudio de GEO liderado por Princeton y la lista de 8 pasos. Gestionar la medición como una evaluación de LLMOps es práctica propia de David Gadyan.' },
   techniques: [
     { id: 'standalone-sections', group: 'foundation', icon: 'clipboard',

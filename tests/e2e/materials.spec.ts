@@ -15,7 +15,7 @@ test.describe('materials', () => {
     await page.goto('/materials/');
     await expect(page.locator('h1')).toHaveCount(1);
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', /\/materials\/$/);
-    await expect(page.locator('.tg__tile')).toHaveCount(3); // Claude, AEO, GEO
+    await expect(page.locator('.tg__tile')).toHaveCount(4); // Claude, AEO, GEO, KPIs
     const tile = page.locator('.tg__tile').first();
     await expect(tile).toContainText('Claude');
     if (!isMobile) {
@@ -106,6 +106,30 @@ test.describe('materials', () => {
     await expect(page.locator('.tg__node[data-id="measure"] .tg__title')).toHaveText('Mide las citas como una evaluación');
     await expect(page.locator('.cr h2')).toHaveText('¿Cómo clasifican el contenido los LLM?');
     await expect(page.locator('.cr table tbody tr').first()).toContainText('4,2×');
+  });
+
+  test('the KPIs map: twelve cards in four groups and the tools table', async ({ page }) => {
+    await page.goto('/materials/kpis/');
+    await expect(page.locator('h1')).toHaveText(/AI Search KPIs/);
+    await expect(page.locator('.tg__tool')).toHaveCount(4);
+    await expect(page.locator('.tg__tool[aria-current="page"]')).toContainText('KPIs');
+    await expect(page.locator('.tg__node')).toHaveCount(12);
+    await expect(page.locator('.tg__node .tg__icon svg')).toHaveCount(12);
+    await openNode(page, 'llm-traffic');
+    const panel = page.locator('#tg-panel');
+    await expect(panel.locator('.tg__group')).toHaveText('Metrics');
+    await expect(panel.locator('.tg__chip[data-kind="study"]')).toContainText('37 %');
+    await expect(panel.locator('.tg__ex')).toContainText('GA4');
+    const cr = page.locator('.cr');
+    await expect(cr).toHaveCount(1);
+    await expect(cr.locator('h2')).toHaveText('Which AI visibility tool, when?');
+    await expect(cr.locator('table thead th')).toHaveCount(4);
+    await expect(cr.locator('table tbody tr')).toHaveCount(12);
+    await expect(cr.locator('table tbody tr').first()).toContainText('KIME');
+    await expect(cr.locator('.cr__fill')).toHaveCount(0); // no bars on this table
+    await page.goto('/es/materials/kpis/');
+    await expect(page.locator('h1')).toHaveText(/KPIs de búsqueda con IA/);
+    await expect(page.locator('.cr h2')).toHaveText('¿Qué herramienta de visibilidad en IA y cuándo?');
   });
 
   test('reduced motion hides the travelling sparks', async ({ page }) => {

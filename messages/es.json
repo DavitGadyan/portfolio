@@ -210,8 +210,8 @@
     "notFoundTitle": "Página no encontrada",
     "ogAlt": "David Gadyan — Ingeniero de IA EXPERT-VETTED | Científico de datos | Agentes de IA | IA generativa | SaaS",
     "titleTemplate": "%s | David Gadyan",
-    "materialsTitle": "Materiales: mapas de técnicas para Claude, AEO y GEO",
-    "materialsDescription": "Mapas interactivos de técnicas de David Gadyan: cómo reducir el coste de Claude Code y de la API de Claude sin perder calidad, y cómo estructurar páginas para que los motores de respuesta y la IA generativa (ChatGPT, Perplexity, Gemini) las elijan como respuesta y las citen."
+    "materialsTitle": "Materiales: mapas de técnicas para Claude, AEO, GEO y KPIs de búsqueda con IA",
+    "materialsDescription": "Mapas interactivos de técnicas de David Gadyan: cómo reducir el coste de Claude Code y de la API de Claude sin perder calidad, cómo estructurar páginas para que los motores de respuesta y la IA generativa (ChatGPT, Perplexity, Gemini) las elijan como respuesta y las citen, y cómo medirlo: visibilidad, cuota de voz, sentimiento, atribución y las herramientas que lo siguen."
   },
   "a11y": {
     "quote": "Cita",
