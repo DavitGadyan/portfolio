@@ -4,9 +4,9 @@ import { X } from 'lucide-react';
 import type { IconId, ImpactKind } from '@/data/materials';
 import { TechIcon } from './icons';
 
-export type TechniqueView = { id: string; group: string; title: string; sub: string; when: string; what: string; why: string; icon?: IconId; impact?: string; impactKind?: ImpactKind };
+export type TechniqueView = { id: string; group: string; title: string; sub: string; when: string; what: string; why: string; example?: string; icon?: IconId; impact?: string; impactKind?: ImpactKind };
 export type ToolView = { id: string; name: string; logo: string; scale: number; techniques: TechniqueView[] };
-export type GraphStrings = { label: string; close: string; when: string; what: string; why: string; impact: string; estimate: string; official: string; study: string; hint: string };
+export type GraphStrings = { label: string; close: string; when: string; what: string; why: string; example: string; impact: string; estimate: string; official: string; study: string; hint: string };
 
 // ---- geometry in stage percentages, derived from the index only (server and client render the same strings) ----
 const PAD = 9;
@@ -109,6 +109,7 @@ export function TechniqueGraph({ tool, t }: { tool: ToolView; t: GraphStrings })
                 <dt>{t.when}</dt><dd>{active.when}</dd>
                 <dt>{t.what}</dt><dd>{active.what}</dd>
                 <dt>{t.why}</dt><dd>{active.why}</dd>
+                {active.example && <><dt>{t.example}</dt><dd className="tg__ex">{active.example}</dd></>}
               </dl>
               {active.impact && (
                 <p className="tg__chip" data-kind={active.impactKind}>

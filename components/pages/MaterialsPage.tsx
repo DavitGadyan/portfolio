@@ -75,7 +75,7 @@ function toolView(mat: Material, locale: Locale): ToolView {
   return {
     id: mat.id, name: mat.name, logo: withBasePath(logoSrc(mat.logo)), scale: logoScale(mat.logo),
     techniques: mat.techniques.map((k) => ({
-      id: k.id, group: mat.groups[k.group][locale], icon: k.icon, title: k.title[locale], sub: k.short[locale], when: k.when[locale], what: k.action[locale], why: k.why[locale],
+      id: k.id, group: mat.groups[k.group][locale], icon: k.icon, title: k.title[locale], sub: k.short[locale], when: k.when[locale], what: k.action[locale], why: k.why[locale], example: k.example?.[locale],
       ...(k.impact ? { impact: k.impact.label[locale], impactKind: k.impact.kind } : {}),
     })),
   };
@@ -90,7 +90,7 @@ export function MaterialPage({ locale, id }: { locale: Locale; id: string }) {
     { ...webPageNode({ locale, path, name: mat.title[locale], description: mat.description[locale], breadcrumbId: bc['@id'] }),
       mainEntity: { '@type': 'ItemList', itemListElement: mat.techniques.map((k, i) => ({ '@type': 'ListItem', position: i + 1, name: k.title[locale] })) } },
     bc] };
-  const t = { label: m.materials.graphLabel, close: m.materials.close, when: m.materials.when, what: m.materials.action, why: m.materials.why, impact: mat.impactLabel[locale], estimate: m.materials.estimate, official: m.materials.official, study: m.materials.study, hint: m.materials.hint };
+  const t = { label: m.materials.graphLabel, close: m.materials.close, when: m.materials.when, what: m.materials.action, why: m.materials.why, example: m.materials.example, impact: mat.impactLabel[locale], estimate: m.materials.estimate, official: m.materials.official, study: m.materials.study, hint: m.materials.hint };
   const kindLabel = (kind: ImpactKind) => (kind === 'official' ? m.materials.official : kind === 'study' ? m.materials.study : m.materials.estimate);
   return (
     <SiteFrame locale={locale}>
@@ -124,6 +124,7 @@ export function MaterialPage({ locale, id }: { locale: Locale; id: string }) {
                     <dt>{m.materials.when}</dt><dd>{k.when[locale]}</dd>
                     <dt>{m.materials.action}</dt><dd>{k.action[locale]}</dd>
                     <dt>{m.materials.why}</dt><dd>{k.why[locale]}</dd>
+                    {k.example && <><dt>{m.materials.example}</dt><dd className="tg__ex">{k.example[locale]}</dd></>}
                     {k.impact && <><dt>{mat.impactLabel[locale]}</dt><dd>{k.impact.label[locale]} ({kindLabel(k.impact.kind)})</dd></>}
                   </dl>
                 </li>

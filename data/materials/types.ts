@@ -20,6 +20,8 @@ export interface Technique {
   when: Localized<string>;
   action: Localized<string>;
   why: Localized<string>;
+  /** A short concrete case: a before/after pair or a snippet; line breaks are kept when rendered. */
+  example?: Localized<string>;
   /** The figure behind the technique (a saving, a citation multiplier…). */
   impact?: { label: Localized<string>; kind: ImpactKind };
 }

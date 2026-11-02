@@ -12,6 +12,7 @@ describe('materials', () => {
       for (const t of m.techniques) {
         for (const field of [t.title, t.short, t.when, t.action, t.why]) { expect(field.en.trim()).not.toBe(''); expect(field.es.trim()).not.toBe(''); }
         expect(Object.keys(m.groups)).toContain(t.group);
+        expect(t.example?.en.trim() && t.example?.es.trim()).toBeTruthy(); // every technique shows a concrete case
         if (t.impact) { expect(['official', 'estimate', 'study']).toContain(t.impact.kind); expect(t.impact.label.en && t.impact.label.es).toBeTruthy(); }
         if (t.icon) expect(ICONS[t.icon]).toBeTypeOf('object');
       }

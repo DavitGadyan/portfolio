@@ -46,7 +46,7 @@ test.describe('materials', () => {
     await expect(first).toHaveAttribute('aria-expanded', 'true');
     await expect(panel).toHaveAttribute('data-state', 'open');
     await expect(panel.locator('#tg-panel-title')).toHaveText(title);
-    await expect(panel.locator('dd')).toHaveCount(3);
+    await expect(panel.locator('dd')).toHaveCount(4); // when, what, why, example
     await expect(g.locator('.tg__wires g[data-open]')).toHaveCount(1);
     if (isMobile) {
       // both boxes in one call: the panel is smooth-scrolling into view and two separate reads would land on different scroll offsets
@@ -78,6 +78,8 @@ test.describe('materials', () => {
     await expect(panel.locator('#tg-panel-title .tg__icon svg')).toHaveCount(1);
     await expect(panel.locator('.tg__chip[data-kind="study"]')).toContainText(/Reported lift: Cited 4\.2× more often .* \(published study\)/);
     await expect(panel.locator('.tg__group')).toHaveText('Structure');
+    await expect(panel.locator('.tg__ex')).toContainText('Starter costs €99/month'); // the example, with its line breaks kept
+    expect(await panel.locator('.tg__ex').evaluate((el) => getComputedStyle(el).whiteSpace)).toBe('pre-line');
     await page.goto('/materials/geo/');
     await expect(page.locator('.tg__node')).toHaveCount(11);
     await expect(page.locator('.tg__core img')).toHaveAttribute('src', /\/logos\/geo\.svg$/);
@@ -106,6 +108,7 @@ test.describe('materials', () => {
     await page.goto('/materials/geo/');
     await expect(page.locator('.tglist li')).toHaveCount(11);
     await expect(page.locator('.tglist h3 .tg__icon svg')).toHaveCount(11);
+    await expect(page.locator('.tglist .tg__ex')).toHaveCount(11);
     expect(await page.locator('.tglist').evaluate((el) => getComputedStyle(el).display)).not.toBe('none');
     expect(await page.locator('.tg').evaluate((el) => getComputedStyle(el).display)).toBe('none');
     await ctx.close();
