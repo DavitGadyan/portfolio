@@ -14,6 +14,7 @@ import { Breadcrumbs } from '@/components/content/Breadcrumbs';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { TechniqueGraph, type ToolView } from '@/components/materials/TechniqueGraph';
 import { TechIcon } from '@/components/materials/icons';
+import { CitationRates } from '@/components/materials/CitationRates';
 
 const INDEX = '/materials/';
 const toolPath = (id: string) => `${INDEX}${id}/`;
@@ -133,6 +134,7 @@ export function MaterialPage({ locale, id }: { locale: Locale; id: string }) {
             <TechniqueGraph tool={toolView(mat, locale)} t={t} />
           </div>
           <p className="tg__sources mx-auto max-w-3xl text-center">{mat.sources[locale]}</p>
+          {mat.citationTable && <CitationRates locale={locale} />}
         </div>
       </section>
     </SiteFrame>

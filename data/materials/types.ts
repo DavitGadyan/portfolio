@@ -40,5 +40,7 @@ export interface Material {
   impactLabel: Localized<string>;
   /** Where the figures come from; printed under the map. */
   sources: Localized<string>;
+  /** Show the "How do LLMs rank content?" citation-rate table under the map (AEO and GEO). */
+  citationTable?: boolean;
   techniques: Technique[];
 }

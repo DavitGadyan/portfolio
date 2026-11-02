@@ -1,5 +1,6 @@
 import { SITE_URL, SOCIAL, absUrl, CALENDLY_URL } from '@/lib/site';
 import { materials } from '@/data/materials';
+import { citationRates } from '@/data/materials/citation-rates';
 import type { Locale } from '@/lib/i18n/config';
 import { getMessages } from '@/lib/i18n/messages';
 import { localizePath } from '@/lib/locale-path';
@@ -52,6 +53,11 @@ export function buildLlms(locale: Locale, full: boolean): string {
   for (const mat of materials) {
     L.push(`### [${mat.title[locale]}](${url(`/materials/${mat.id}/`)})`, '');
     for (const k of mat.techniques) L.push(`- **${k.title[locale]}** — ${k.action[locale]}`);
+    if (mat.citationTable) {
+      const c = citationRates.columns;
+      L.push('', `**${citationRates.heading[locale]}** ${citationRates.intro[locale]}`, '', `| ${c.format[locale]} | ${c.rate[locale]} | ${c.bestFor[locale]} |`, '| --- | --- | --- |');
+      for (const r of citationRates.rows) L.push(`| ${r.format[locale]} | ${r.rate.toFixed(1)}× | ${r.bestFor[locale]} |`);
+    }
     L.push('');
   }
   L.push(`## ${es ? 'Proyectos destacados' : 'Featured projects'}`);

@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { materials } from '@/data/materials';
 import { ICONS } from '@/components/materials/icons';
+import { citationRates } from '@/data/materials/citation-rates';
 
 describe('materials', () => {
   it('every technique is bilingual, uniquely identified, grouped and typed', () => {
@@ -33,5 +34,14 @@ describe('materials', () => {
     expect(new Set([...aeo.techniques, ...geo.techniques].map((t) => t.icon)).size).toBe(21); // every card has its own icon
     expect(aeo.techniques.filter((t) => t.impact?.kind === 'study')).toHaveLength(3);
     expect(materials.map((m) => m.id)).toEqual(['claude', 'aeo', 'geo']);
+  });
+  it('the citation-rate table sits under AEO and GEO, sorted from the table (4.2×) down to the prose baseline (1.0×)', () => {
+    expect(materials.filter((m) => m.citationTable).map((m) => m.id)).toEqual(['aeo', 'geo']);
+    const rates = citationRates.rows.map((r) => r.rate);
+    expect(rates).toEqual([...rates].sort((a, b) => b - a));
+    expect(rates[0]).toBe(4.2);
+    expect(rates.at(-1)).toBe(1);
+    for (const r of citationRates.rows) expect(r.format.en && r.format.es && r.bestFor.en && r.bestFor.es).toBeTruthy();
+    for (const f of [citationRates.heading, citationRates.intro, citationRates.caption]) expect(f.en && f.es).toBeTruthy();
   });
 });

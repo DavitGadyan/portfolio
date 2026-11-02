@@ -89,15 +89,31 @@ test.describe('materials', () => {
     await expect(panel.locator('.tg__chip[data-kind="estimate"]')).toContainText(/30–45 days \(estimate\)/);
     await expect(panel.locator('.tg__group')).toHaveText('Measurement');
     await expect(page.locator('.tg__sources')).toContainText('Princeton');
+    // "How do LLMs rank content?": a real table, five rows from 4.2× down to the 1.0× baseline, bars grow once scrolled into view
+    const cr = page.locator('.cr');
+    await expect(cr.locator('h2')).toHaveText('How do LLMs rank content?');
+    await expect(cr.locator('table thead th')).toHaveCount(3);
+    const rows = cr.locator('table tbody tr');
+    await expect(rows).toHaveCount(5);
+    await expect(rows.first()).toContainText(/Table.*4\.2×/);
+    await expect(rows.last()).toContainText(/Prose paragraph.*1\.0× baseline/);
+    await cr.scrollIntoViewIfNeeded();
+    await expect(cr).toHaveAttribute('data-inview', '');
+    await expect.poll(async () => rows.first().locator('.cr__fill').evaluate((el) => getComputedStyle(el).transform), { timeout: 5000 }).toMatch(/^(none|matrix\(1, 0, 0, 1, 0, 0\))$/);
+    expect(await rows.nth(1).locator('.cr__fill').evaluate((el) => el.getBoundingClientRect().width / el.parentElement!.getBoundingClientRect().width)).toBeCloseTo(3.1 / 4.2, 1);
     await page.goto('/es/materials/geo/');
     await expect(page.locator('h1')).toHaveText(/GEO: 11 técnicas/);
     await expect(page.locator('.tg__node[data-id="measure"] .tg__title')).toHaveText('Mide las citas como una evaluación');
+    await expect(page.locator('.cr h2')).toHaveText('¿Cómo clasifican el contenido los LLM?');
+    await expect(page.locator('.cr table tbody tr').first()).toContainText('4,2×');
   });
 
   test('reduced motion hides the travelling sparks', async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await page.goto('/materials/claude/');
     expect(await page.locator('.tg__spark').first().evaluate((el) => getComputedStyle(el).display)).toBe('none');
+    await page.goto('/materials/aeo/');
+    expect(await page.locator('.cr__fill').first().evaluate((el) => getComputedStyle(el).transform)).toBe('none'); // bars are not collapsed when motion is off
   });
 
   test('without JavaScript the techniques are a readable list', async ({ browser }) => {
@@ -109,6 +125,8 @@ test.describe('materials', () => {
     await expect(page.locator('.tglist li')).toHaveCount(11);
     await expect(page.locator('.tglist h3 .tg__icon svg')).toHaveCount(11);
     await expect(page.locator('.tglist .tg__ex')).toHaveCount(11);
+    await expect(page.locator('.cr table tbody tr')).toHaveCount(5); // the table is plain HTML: present without JS, bars at their final size
+    expect(await page.locator('.cr__fill').first().evaluate((el) => getComputedStyle(el).transform)).toBe('none');
     expect(await page.locator('.tglist').evaluate((el) => getComputedStyle(el).display)).not.toBe('none');
     expect(await page.locator('.tg').evaluate((el) => getComputedStyle(el).display)).toBe('none');
     await ctx.close();

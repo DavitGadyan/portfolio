@@ -179,6 +179,11 @@ body {
     [data-reveal].reveal-lift[data-inview] { transition-duration: 1.5s; transition-timing-function: ease; }
     [data-reveal][data-reveal-replay], [data-reveal].section-title { opacity: 1; transform: none; transition: none; }
     [data-reveal][data-stagger] { transform: none; }
+    /* citation-rate table: each bar grows to its multiplier and the number slides in, row after row */
+    [data-reveal-group] .cr__fill { transform: scaleX(0); transition: none; }
+    [data-reveal-group][data-inview] .cr__fill { transform: scaleX(1); transition: transform 1.1s cubic-bezier(.2,.7,.2,1); transition-delay: calc(150ms + var(--i, 0) * 110ms); }
+    [data-reveal-group] .cr__num { opacity: 0; translate: -.5rem 0; transition: none; }
+    [data-reveal-group][data-inview] .cr__num { opacity: 1; translate: 0 0; transition: opacity .5s ease-out, translate .5s ease-out; transition-delay: calc(750ms + var(--i, 0) * 110ms); }
     /* skill bars on touch devices (no hover): instant reset when the group leaves, 2 s swing when it enters */
     @media (hover: none) {
       [data-reveal-group] .skillbar__fill { width: 0; transition: none; }
@@ -525,6 +530,33 @@ body {
   .tg__close:hover { background: rgba(255,255,255,.1); }
   .tg__close:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 2px; }
   .tg__sources { margin: 1.25rem 0 0; font-size: .8rem; line-height: 1.5; color: var(--color-ink-400); }
+  /* Materials: "How do LLMs rank content?" — a real table with a bar per citation multiplier (motion below, with the reveals) */
+  .cr { margin: 3.5rem auto 0; max-width: 56rem; }
+  .cr__title { margin: 0; font-size: 1.5rem; font-weight: 700; text-align: center; }
+  .cr__intro { margin: .75rem auto 0; max-width: 44rem; text-align: center; color: var(--color-ink-500); line-height: 1.55; }
+  .cr__scroll { margin-top: 1.5rem; overflow-x: auto; }
+  .cr__table { width: 100%; min-width: 38rem; border-collapse: collapse; font-size: .95rem; }
+  .cr__table th, .cr__table td { padding: .85rem .9rem; text-align: left; vertical-align: middle; border-bottom: 1px solid var(--color-ink-200); }
+  .cr__table thead th { font-size: .72rem; text-transform: uppercase; letter-spacing: .1em; color: var(--color-ink-400); border-bottom-color: var(--color-ink-300); }
+  .cr__table tbody th { font-weight: 600; }
+  .cr__table tbody tr { transition: background-color .2s; }
+  .cr__table tbody tr:hover { background: var(--color-paper-100); }
+  .cr__rate { width: 30%; min-width: 13rem; }
+  .cr__bar { display: block; height: .6rem; border-radius: 9999px; background: var(--color-ink-100); overflow: hidden; }
+  .cr__fill { display: block; height: 100%; width: calc(var(--w, 1) * 100%); border-radius: inherit; background: linear-gradient(90deg, #178f47, #1faa55 55%, #7be39a); transform-origin: left; }
+  tr[data-baseline] .cr__fill { background: var(--color-ink-300); }
+  .cr__num { display: inline-block; margin-top: .35rem; font-weight: 700; font-size: 1.2rem; line-height: 1; color: var(--color-ink-800); }
+  .cr__num small { margin-left: .2rem; font-weight: 500; font-size: .68rem; color: var(--color-ink-400); text-transform: uppercase; letter-spacing: .08em; }
+  .cr__caption { margin: .9rem 0 0; font-size: .8rem; color: var(--color-ink-400); text-align: center; line-height: 1.5; }
+  /* phones: each row stacks (format, bar + multiplier, "best for"); the header row is visually hidden, the markup stays a table */
+  @media (max-width: 40rem) {
+    .cr__table { min-width: 0; }
+    .cr__table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+    .cr__table tbody tr { display: grid; grid-template-columns: minmax(0, 1fr); gap: .3rem 0; padding: .85rem 0; border-bottom: 1px solid var(--color-ink-200); }
+    .cr__table tbody th, .cr__table tbody td { display: block; padding: 0; border: 0; }
+    .cr__rate { width: auto; min-width: 0; }
+    .cr__table tbody td:last-child { font-size: .88rem; color: var(--color-ink-500); }
+  }
   @media (prefers-reduced-motion: reduce) { .tg__spark { display: none; } .tg__node, .tg__core::after, .tg__stage { animation: none; } .tg__node, .tg__wire, .tg__tool, .tg__tile { transition: none; } }
 
   /* Certificate card: native modal dialog, page blurred behind, a card that tilts in 3D with the pointer */
