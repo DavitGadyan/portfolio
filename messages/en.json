@@ -211,7 +211,9 @@
     "ogAlt": "David Gadyan — EXPERT-VETTED AI Engineer | Data Scientist | AI Agent | Generative AI | SaaS",
     "titleTemplate": "%s | David Gadyan",
     "materialsTitle": "Materials: Technique Maps for Claude, AEO, GEO, KPIs and SEO",
-    "materialsDescription": "Interactive technique maps by David Gadyan: how to cut Claude Code and Claude API cost without losing quality, how to structure pages so answer engines and generative AI (ChatGPT, Perplexity, Gemini) pick them as the answer and cite them, and how to measure it: visibility, share of voice, sentiment, attribution and the tools that track them, plus the classic SEO structure practices that still rank."
+    "materialsDescription": "Interactive technique maps by David Gadyan: how to cut Claude Code and Claude API cost without losing quality, how to structure pages so answer engines and generative AI (ChatGPT, Perplexity, Gemini) pick them as the answer and cite them, and how to measure it: visibility, share of voice, sentiment, attribution and the tools that track them, plus the classic SEO structure practices that still rank.",
+    "videosTitle": "Videos: Five Short Introductions, One per Area",
+    "videosDescription": "Five short videos by David Gadyan, recorded for client proposals, one per area: data science and machine learning, generative AI, algorithmic trading, AI marketing and sales, and full-stack SaaS and AI systems built end to end."
   },
   "a11y": {
     "quote": "Quote",
@@ -240,5 +242,21 @@
     "graphLabel": "Technique map for {tool}",
     "count": "{n} techniques",
     "open": "Open the map"
+  },
+  "videos": {
+    "heading": "Videos",
+    "tagline": "Five short video introductions, one per area of work, recorded for client proposals.",
+    "open": "Open the folder",
+    "count": "{n} videos",
+    "intro": "Five short video introductions, one per area of work, recorded for client proposals. Pick one to watch it here.",
+    "lead": "A short video introduction ({duration} min) from David Gadyan, recorded for client proposals. Press play to watch it here, or open it on Loom.",
+    "pageTitle": "{title}: Video Introduction",
+    "play": "Play video",
+    "openLoom": "Watch on Loom",
+    "minutes": "{duration} min",
+    "shortLink": "Short link",
+    "covers": "What this area covers",
+    "projects": "Projects in this area",
+    "more": "More videos"
   }
 }

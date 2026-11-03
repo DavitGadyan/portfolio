@@ -211,7 +211,9 @@
     "ogAlt": "David Gadyan — Ingeniero de IA EXPERT-VETTED | Científico de datos | Agentes de IA | IA generativa | SaaS",
     "titleTemplate": "%s | David Gadyan",
     "materialsTitle": "Materiales: mapas de técnicas para Claude, AEO, GEO, KPIs y SEO",
-    "materialsDescription": "Mapas interactivos de técnicas de David Gadyan: cómo reducir el coste de Claude Code y de la API de Claude sin perder calidad, cómo estructurar páginas para que los motores de respuesta y la IA generativa (ChatGPT, Perplexity, Gemini) las elijan como respuesta y las citen, y cómo medirlo: visibilidad, cuota de voz, sentimiento, atribución y las herramientas que lo siguen, además de las prácticas de estructura de SEO clásico que siguen posicionando."
+    "materialsDescription": "Mapas interactivos de técnicas de David Gadyan: cómo reducir el coste de Claude Code y de la API de Claude sin perder calidad, cómo estructurar páginas para que los motores de respuesta y la IA generativa (ChatGPT, Perplexity, Gemini) las elijan como respuesta y las citen, y cómo medirlo: visibilidad, cuota de voz, sentimiento, atribución y las herramientas que lo siguen, además de las prácticas de estructura de SEO clásico que siguen posicionando.",
+    "videosTitle": "Vídeos: cinco presentaciones breves, una por área",
+    "videosDescription": "Cinco vídeos breves de David Gadyan, grabados para propuestas a clientes, uno por área: ciencia de datos y machine learning, IA generativa, trading algorítmico, marketing y ventas con IA, y SaaS y sistemas de IA full-stack construidos de principio a fin."
   },
   "a11y": {
     "quote": "Cita",
@@ -240,5 +242,21 @@
     "graphLabel": "Mapa de técnicas de {tool}",
     "count": "{n} técnicas",
     "open": "Abrir el mapa"
+  },
+  "videos": {
+    "heading": "Vídeos",
+    "tagline": "Cinco vídeos breves de presentación, uno por área de trabajo, grabados para propuestas a clientes.",
+    "open": "Abrir la carpeta",
+    "count": "{n} vídeos",
+    "intro": "Cinco vídeos breves de presentación, uno por área de trabajo, grabados para propuestas a clientes. Elige uno para verlo aquí.",
+    "lead": "Un vídeo breve de presentación ({duration} min) de David Gadyan, grabado para propuestas a clientes. Pulsa reproducir para verlo aquí o ábrelo en Loom.",
+    "pageTitle": "{title}: vídeo de presentación",
+    "play": "Reproducir el vídeo",
+    "openLoom": "Ver en Loom",
+    "minutes": "{duration} min",
+    "shortLink": "Enlace corto",
+    "covers": "Qué abarca esta área",
+    "projects": "Proyectos de esta área",
+    "more": "Más vídeos"
   }
 }

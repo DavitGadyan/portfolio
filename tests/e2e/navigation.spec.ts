@@ -40,7 +40,7 @@ test.describe('language switcher and navigation', () => {
     await page.goto('/portfolio/');
     const cards = page.getByTestId('project-card');
     const all = await cards.count();
-    expect(all).toBe(39);
+    expect(all).toBe(40);
     await page.locator('label[for="f-security-compliance"]').click();
     await expect(cards.filter({ visible: true })).toHaveCount(2);
     await expect(page.locator('.pnote')).toBeVisible();
@@ -51,7 +51,7 @@ test.describe('language switcher and navigation', () => {
   test('header offers the CV download instead of a booking link, and the logo is a plain home link', async ({ page }) => {
     await page.goto('/blog/');
     const cv = page.locator('header.hdr nav a[download]');
-    await expect(cv).toHaveAttribute('href', /David_Gadyan_Resume4\.pdf$/);
+    await expect(cv).toHaveAttribute('href', /David_Gadyan_Resume\.pdf$/);
     await expect(cv).toHaveText(/download my cv/i);
     await expect(page.locator('header.hdr nav a', { hasText: /book a call/i })).toHaveCount(0);
     expect(await page.locator('header.hdr .hdr__logo').evaluate((el) => el.tagName)).toBe('A');

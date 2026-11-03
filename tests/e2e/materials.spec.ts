@@ -17,7 +17,7 @@ test.describe('materials', () => {
     await page.goto('/materials/');
     await expect(page.locator('h1')).toHaveCount(1);
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', /\/materials\/$/);
-    await expect(page.locator('.tg__tile')).toHaveCount(5); // Claude, AEO, GEO, KPIs, SEO
+    await expect(page.locator('.tg__tile')).toHaveCount(6); // Claude, AEO, GEO, KPIs, SEO + the Videos folder
     const tile = page.locator('.tg__tile').first();
     await expect(tile).toContainText('Claude');
     if (!isMobile) {
@@ -154,6 +154,45 @@ test.describe('materials', () => {
     await page.goto('/es/materials/seo/');
     await expect(page.locator('h1')).toHaveText(/SEO: 12 prácticas/);
     await expect(page.locator('.cr h2')).toHaveText('Estructura de contenido para SEO frente a búsqueda con IA');
+  });
+
+  test('videos: a folder tile on the index, five cards inside, each page plays its Loom on click, the proposal short link redirects', async ({ page }) => {
+    await page.goto('/materials/');
+    const tile = page.locator('.tg__tile').last();
+    await expect(tile).toContainText('Videos');
+    await tile.click();
+    await page.waitForURL(/\/materials\/videos\/$/);
+    await expect(page.locator('h1')).toHaveText('Videos');
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', /\/materials\/videos\/$/);
+    const cards = page.locator('.vcard');
+    await expect(cards).toHaveCount(5);
+    await expect(cards.first()).toContainText('Data Science');
+    await expect(cards.first().locator('.vcard__time')).toHaveText('2:24');
+    await cards.nth(1).click();
+    await page.waitForURL(/\/materials\/videos\/genai\/$/);
+    await expect(page.locator('h1')).toHaveText('Generative AI');
+    await expect(page).toHaveTitle(/Generative AI: Video Introduction/);
+    await expect(page.locator('link[rel="alternate"][hreflang="es"]')).toHaveAttribute('href', /\/es\/materials\/videos\/genai\/$/);
+    const facade = page.locator('.vplayer .facade');
+    await expect(facade.locator('img')).toHaveAttribute('src', /genai/); // a still frame of the recording, not the generic Loom tile
+    await expect(facade.locator('iframe')).toHaveCount(0);
+    await facade.getByRole('button').click();
+    await expect(facade.locator('iframe')).toHaveAttribute('src', /loom\.com\/embed\/92cd7dca2c74443cad0aefc50876b5f6/);
+    await expect(page.locator('.vmeta a[href="https://www.loom.com/share/92cd7dca2c74443cad0aefc50876b5f6"]')).toBeVisible();
+    await expect(page.locator('.vmeta code')).toHaveText(/\/GenAI$/);
+    await expect(page.locator('.vcats a')).toHaveCount(2);
+    await expect(page.locator('.vcats a').first()).toHaveAttribute('href', /\/portfolio\/#f-ai-agents$/);
+    await expect(page.locator('.vprojects [data-testid="project-card"]')).toHaveCount(3);
+    await expect(page.locator('.vcards .vcard')).toHaveCount(4); // the other four videos
+    // the short link sent in proposals is a static redirect page to this video (GitHub Pages cannot 301)
+    const r = await page.request.get('/GenAI/');
+    expect(r.ok()).toBeTruthy();
+    const html = await r.text();
+    expect(html).toContain('content="0; url=/materials/videos/genai/"');
+    expect(html).toMatch(/<link rel="canonical" href="https?:\/\/[^"]+\/materials\/videos\/genai\/"/);
+    await page.goto('/es/materials/videos/genai/');
+    await expect(page.locator('h1')).toHaveText('IA generativa');
+    await expect(page.locator('.vcard').first()).toContainText('Ciencia de datos');
   });
 
   test('reduced motion hides the travelling sparks', async ({ page }) => {

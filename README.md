@@ -21,7 +21,7 @@ Next.js 16 (App Router, static export), React 19, Tailwind CSS 4 and MDX content
 
 ## Environment variables
 
-| Variable | On davidgadyan.com | While on github.io |
+| Variable | On davidgadyan.com (default) | Fallback: github.io |
 | --- | --- | --- |
 | `NEXT_PUBLIC_SITE_URL` | `https://davidgadyan.com` | `https://davitgadyan.github.io/portfolio` |
 | `NEXT_PUBLIC_BASE_PATH` | *(empty)* | `/portfolio` |
@@ -33,14 +33,17 @@ variables → Actions → Variables`): `SITE_URL`, `BASE_PATH`, `CUSTOM_DOMAIN`,
 
 ## Deploying
 
-1. `Settings → Pages → Source: GitHub Actions`. Every push to `main` runs `.github/workflows/pages.yml`.
-2. **Interim (github.io URL):** variables `BASE_PATH=/portfolio`, `SITE_URL=https://davitgadyan.github.io/portfolio`, `CUSTOM_DOMAIN` empty.
-3. **Cut-over to davidgadyan.com** (after the Namecheap transfer):
-   - DNS at Namecheap: `A` records for `@` → `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`
-     (and `AAAA` → `2606:50c0:8000::153`, `8001::153`, `8002::153`, `8003::153`); `CNAME` for `www` → `davitgadyan.github.io`.
-   - `Settings → Pages → Custom domain: davidgadyan.com`, wait for the DNS check, tick **Enforce HTTPS**.
-   - Set variables `BASE_PATH` = *(empty)*, `SITE_URL=https://davidgadyan.com`, `CUSTOM_DOMAIN=davidgadyan.com`; re-run the workflow.
-   - Optional: add meta-refresh/canonical stubs in the old `portfolio_app` repo pointing at the new domain.
+1. `Settings → Pages → Source: GitHub Actions`. Every push to `main` runs `.github/workflows/pages.yml`, which builds for
+   `https://davidgadyan.com` (the live custom domain: basePath empty, `out/CNAME` written) without any repository variable.
+2. **Fallback to the github.io URL:** set the repository variable `CUSTOM_DOMAIN=none` (the build then uses `BASE_PATH=/portfolio`
+   and `SITE_URL=https://davitgadyan.github.io/portfolio`). GitHub redirects the github.io URLs to the custom domain while it is set.
+3. **DNS for davidgadyan.com** (Namecheap): `A` records for `@` → `185.199.108.153`, `185.199.109.153`, `185.199.110.153`,
+   `185.199.111.153` (and `AAAA` → `2606:50c0:8000::153`, `8001::153`, `8002::153`, `8003::153`); `CNAME` for `www` →
+   `davitgadyan.github.io`; `Settings → Pages → Custom domain: davidgadyan.com` with **Enforce HTTPS**.
+   - Optional: `node scripts/legacy-redirects.mjs https://davidgadyan.com` writes meta-refresh/canonical stubs for the old
+     `portfolio_app` site, to deploy in that repo.
+4. **Short links for proposals** (`davidgadyan.com/GenAI` …): `data/short-links.json` maps each short path to the page that hosts the
+   video; `scripts/postbuild.mjs` writes a redirect page at each one. The paths are case-sensitive on GitHub Pages.
 
 ## Content
 
@@ -57,7 +60,8 @@ messages/{en,es}.json            UI strings
 Rules enforced at build time (`lib/content/validate.ts`): same slug in both locales; ES files never redeclare invariants;
 descriptions 100–185 chars (projects) / 80–230 (posts); 1–3 categories from `data/categories.ts`; all six `stack` layers
 present; ISO dates; bodies start at `##`; no raw `{`, `}` or `<` in prose (use `&lt;`). Embeds: `<YouTube id="…" />`,
-`<Loom id="…" />` (click-to-load facades). Cover images live in `public/images/portfolio/` and are optimised at build time.
+`<Loom id="…" />` (click-to-load facades). The five proposal videos live in `data/videos.ts` (Loom ids, durations and dates from
+Loom; still frames under `public/images/materials/videos/`) and are served at `/materials/videos/<id>/`. Cover images live in `public/images/portfolio/` and are optimised at build time.
 
 ## Architecture notes
 

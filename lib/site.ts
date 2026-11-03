@@ -8,7 +8,7 @@ export const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID ?? '';
 export const FORMSPREE_ID = 'xknkzpge';
 export const FORMSPREE_ENDPOINT = `https://formspree.io/f/${FORMSPREE_ID}`;
 export const CALENDLY_URL = 'https://calendly.com/davidgadyan/15min';
-export const CV_PATH = '/David_Gadyan_Resume4.pdf';
+export const CV_PATH = '/David_Gadyan_Resume.pdf';
 export const TWITTER_HANDLE = '@Dave18381384';
 
 export const SOCIAL = {

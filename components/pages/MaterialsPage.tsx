@@ -8,6 +8,8 @@ import { homePath, pagePath } from '@/lib/locale-path';
 import { withBasePath } from '@/lib/site';
 import { materials, type ImpactKind, type Material } from '@/data/materials';
 import { logoScale, logoSrc } from '@/data/skillLogos';
+import { VIDEOS_PATH, videos } from '@/data/videos';
+import { PlayIcon } from '@/components/materials/VideoCard';
 import { SiteFrame } from '@/components/layout/SiteFrame';
 import { SectionTitle } from '@/components/ui/SectionTitle';
 import { Breadcrumbs } from '@/components/content/Breadcrumbs';
@@ -57,6 +59,14 @@ export function MaterialsPage({ locale }: { locale: Locale }) {
                 </Link>
               </li>
             ))}
+            <li>
+              <Link href={pagePath(locale, VIDEOS_PATH)} className="tg__tile" prefetch={false}>
+                <span className="tg__tile-icon" aria-hidden="true"><PlayIcon /></span>
+                <strong>{m.videos.heading}</strong>
+                <p>{m.videos.tagline}</p>
+                <small>{fmt(m.videos.count, { n: videos.length })} · {m.videos.open} →</small>
+              </Link>
+            </li>
           </ul>
         </div>
       </section>

@@ -5,6 +5,7 @@ import { localizePath } from '@/lib/locale-path';
 import { getProjects } from '@/lib/content/projects';
 import { getPosts } from '@/lib/content/posts';
 import { materials } from '@/data/materials';
+import { videos } from '@/data/videos';
 
 export const dynamic = 'force-static';
 
@@ -23,6 +24,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...entry('/blog/', undefined, 0.8),
     ...entry('/materials/', undefined, 0.7),
     ...materials.flatMap((mat) => entry(`/materials/${mat.id}/`, undefined, 0.7)),
+    ...entry('/materials/videos/', undefined, 0.7),
+    ...videos.flatMap((v) => entry(`/materials/videos/${v.id}/`, v.uploadDate.slice(0, 10), 0.7)),
     ...getProjects('en').flatMap((p) => entry(`/portfolio/${p.slug}/`, p.lastmod ?? p.date)),
     ...getPosts('en').flatMap((p) => entry(`/blog/${p.slug}/`, p.lastmod ?? p.date, 0.6)),
     ...entry('/cookies/', undefined, 0.2),

@@ -1,0 +1,10 @@
+{
+  "_comment": "Short URLs used in proposals (davidgadyan.com/GenAI) → the page that hosts the video. scripts/postbuild.mjs writes a meta-refresh + canonical redirect page at each short path (GitHub Pages cannot 301). Paths are case-sensitive on GitHub Pages, so they are written exactly as sent to clients.",
+  "links": {
+    "/DataScienceMLDL/": "/materials/videos/data-science-ml-dl/",
+    "/GenAI/": "/materials/videos/genai/",
+    "/AlgoTrading/": "/materials/videos/algo-trading/",
+    "/AIMarketing/": "/materials/videos/ai-marketing/",
+    "/FullStackSaaS/": "/materials/videos/full-stack-saas/"
+  }
+}

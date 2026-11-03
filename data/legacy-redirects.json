@@ -1,5 +1,5 @@
 {
-  "_comment": "Old Hugo URLs (davitgadyan.github.io/portfolio_app) → new paths, both relative to the site root. scripts/postbuild.mjs writes a redirect page at each old path so rankings and bookmarks carry over.",
+  "_comment": "Old Hugo URLs (davitgadyan.github.io/portfolio_app) → new paths, both relative to the site root. scripts/legacy-redirects.mjs writes a redirect page at each old path (deployed as the old repo's site) so rankings and bookmarks carry over.",
   "redirects": {
     "/about/": "/#about",
     "/service/": "/#services",
