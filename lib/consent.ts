@@ -25,9 +25,20 @@ function readCookie(): string | null {
   const m = document.cookie.match(/(?:^|; )dg_consent=([^;]*)/);
   return m ? decodeURIComponent(m[1]) : null;
 }
+/**
+ * davidgadyan.com and upwork.davidgadyan.com share one consent cookie, so a visitor who chose on either site is not
+ * asked again on the other. Elsewhere (localhost, github.io) the cookie stays host-only.
+ */
+export function cookieDomain(hostname: string): string {
+  const h = hostname.toLowerCase();
+  return h === 'davidgadyan.com' || h.endsWith('.davidgadyan.com') ? '.davidgadyan.com' : '';
+}
 function writeCookie(value: string) {
   const secure = location.protocol === 'https:' ? '; Secure' : '';
-  document.cookie = `${CONSENT_KEY}=${encodeURIComponent(value)}; Path=/; Max-Age=${MAX_AGE}; SameSite=Lax${secure}`;
+  const domain = cookieDomain(location.hostname);
+  // drop an older host-only copy so it cannot shadow the shared one
+  if (domain) document.cookie = `${CONSENT_KEY}=; Path=/; Max-Age=0; SameSite=Lax`;
+  document.cookie = `${CONSENT_KEY}=${encodeURIComponent(value)}; Path=/; Max-Age=${MAX_AGE}; SameSite=Lax${domain ? `; Domain=${domain}` : ''}${secure}`;
 }
 function readLocal(): string | null {
   try { return localStorage.getItem(CONSENT_KEY); } catch { return null; }
@@ -36,11 +47,18 @@ function writeLocal(v: string) {
   try { localStorage.setItem(CONSENT_KEY, v); } catch { /* storage blocked */ }
 }
 
+let upgraded = false;
+
 /** Cookie first, localStorage second; whichever is found re-hydrates the other (Safari caps JS cookies at 7 days). */
 export function readConsent(): ConsentState | null {
   if (typeof document === 'undefined') return null;
   const fromCookie = parse(readCookie());
-  if (fromCookie) { writeLocal(serialize(fromCookie)); return fromCookie; }
+  if (fromCookie) {
+    writeLocal(serialize(fromCookie));
+    // once per page: move a choice saved before the cookie was shared onto the shared domain cookie
+    if (!upgraded && cookieDomain(location.hostname)) { upgraded = true; writeCookie(serialize(fromCookie)); }
+    return fromCookie;
+  }
   const fromLocal = parse(readLocal());
   if (fromLocal) { writeCookie(serialize(fromLocal)); return fromLocal; }
   return null;
@@ -56,6 +74,8 @@ export function writeConsent(choice: ConsentChoice): ConsentState {
 
 export function clearConsent() {
   document.cookie = `${CONSENT_KEY}=; Path=/; Max-Age=0; SameSite=Lax`;
+  const domain = cookieDomain(location.hostname);
+  if (domain) document.cookie = `${CONSENT_KEY}=; Path=/; Max-Age=0; SameSite=Lax; Domain=${domain}`;
   try { localStorage.removeItem(CONSENT_KEY); } catch { /* ignore */ }
 }
 
