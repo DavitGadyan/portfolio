@@ -47,21 +47,25 @@ function writeLocal(v: string) {
   try { localStorage.setItem(CONSENT_KEY, v); } catch { /* storage blocked */ }
 }
 
-let upgraded = false;
+/** The choice seen or made during this page load. Keeps a click working when the browser blocks cookies and storage. */
+let memo: ConsentState | null = null;
+/** Both stores are rewritten once per page load: the expiry slides (Safari caps script-written cookies at 7 days from the
+ *  last write), a host-only cookie saved before the domain was shared moves onto the shared one, and a lost copy is restored. */
+let refreshed = false;
 
-/** Cookie first, localStorage second; whichever is found re-hydrates the other (Safari caps JS cookies at 7 days). */
+/** Cookie first, localStorage second, then this page load's memory. */
 export function readConsent(): ConsentState | null {
   if (typeof document === 'undefined') return null;
-  const fromCookie = parse(readCookie());
-  if (fromCookie) {
-    writeLocal(serialize(fromCookie));
-    // once per page: move a choice saved before the cookie was shared onto the shared domain cookie
-    if (!upgraded && cookieDomain(location.hostname)) { upgraded = true; writeCookie(serialize(fromCookie)); }
-    return fromCookie;
+  const s = parse(readCookie()) ?? parse(readLocal()) ?? memo;
+  if (!s) return null;
+  memo = s;
+  if (!refreshed) {
+    refreshed = true;
+    const v = serialize(s);
+    writeCookie(v);
+    writeLocal(v);
   }
-  const fromLocal = parse(readLocal());
-  if (fromLocal) { writeCookie(serialize(fromLocal)); return fromLocal; }
-  return null;
+  return s;
 }
 
 export function writeConsent(choice: ConsentChoice): ConsentState {
@@ -69,10 +73,14 @@ export function writeConsent(choice: ConsentChoice): ConsentState {
   const v = serialize(s);
   writeCookie(v);
   writeLocal(v);
+  memo = s;
+  refreshed = true;
   return s;
 }
 
 export function clearConsent() {
+  memo = null;
+  refreshed = false;
   document.cookie = `${CONSENT_KEY}=; Path=/; Max-Age=0; SameSite=Lax`;
   const domain = cookieDomain(location.hostname);
   if (domain) document.cookie = `${CONSENT_KEY}=; Path=/; Max-Age=0; SameSite=Lax; Domain=${domain}`;

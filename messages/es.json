@@ -171,6 +171,7 @@
     "essentialOnly": "Aceptar solo las cookies esenciales",
     "settings": "Configuración de cookies",
     "change": "Cambiar preferencias",
+    "pill": "Cookies",
     "currentGranted": "Elección actual: todas las cookies",
     "currentDenied": "Elección actual: solo esenciales"
   },
