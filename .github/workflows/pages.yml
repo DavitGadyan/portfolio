@@ -29,14 +29,17 @@ jobs:
           enablement: true # creates the Pages site (source: GitHub Actions) on first run if the repo does not have one yet
       - run: npm ci
       - name: Resolve where the site is served from
-        # No variables needed while the site lives at https://davitgadyan.github.io/portfolio/. After the DNS cut-over, set the
-        # repository variable CUSTOM_DOMAIN=davidgadyan.com and the site builds for the root of that domain (basePath '').
-        # SITE_URL / BASE_PATH remain optional overrides.
+        # The site is served at https://davidgadyan.com (Pages custom domain), so it builds for the root of that domain
+        # (basePath ''). The repository variable CUSTOM_DOMAIN overrides the domain; SITE_URL / BASE_PATH remain optional
+        # overrides. Set CUSTOM_DOMAIN to "none" to build for https://davitgadyan.github.io/portfolio/ again.
+        env:
+          DOMAIN: ${{ vars.CUSTOM_DOMAIN || 'davidgadyan.com' }}
         run: |
-          if [ -n "${{ vars.CUSTOM_DOMAIN }}" ]; then
+          if [ -n "$DOMAIN" ] && [ "$DOMAIN" != "none" ]; then
             echo "NEXT_PUBLIC_BASE_PATH=${{ vars.BASE_PATH }}" >> "$GITHUB_ENV"
-            echo "NEXT_PUBLIC_SITE_URL=${{ vars.SITE_URL || format('https://{0}', vars.CUSTOM_DOMAIN) }}" >> "$GITHUB_ENV"
-            echo "CUSTOM_DOMAIN=${{ vars.CUSTOM_DOMAIN }}" >> "$GITHUB_ENV"
+            echo "NEXT_PUBLIC_SITE_URL=${{ vars.SITE_URL }}" >> "$GITHUB_ENV"
+            [ -n "${{ vars.SITE_URL }}" ] || echo "NEXT_PUBLIC_SITE_URL=https://$DOMAIN" >> "$GITHUB_ENV"
+            echo "CUSTOM_DOMAIN=$DOMAIN" >> "$GITHUB_ENV"
           else
             echo "NEXT_PUBLIC_BASE_PATH=${{ vars.BASE_PATH || '/portfolio' }}" >> "$GITHUB_ENV"
             echo "NEXT_PUBLIC_SITE_URL=${{ vars.SITE_URL || 'https://davitgadyan.github.io/portfolio' }}" >> "$GITHUB_ENV"
