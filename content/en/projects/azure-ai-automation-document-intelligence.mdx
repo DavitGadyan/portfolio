@@ -1,0 +1,114 @@
+---
+title: "Azure AI Automation: Document Intelligence, RAG & Governed Agents"
+date: 2026-11-04
+lastmod: 2026-11-04
+cover: /images/portfolio/azure-ai-automation-cover.jpg
+coverAlt: "Azure AI Automation cover: \"From messy PDFs to governed AI operations\" next to the dashboard, an approval waiting for a human and a German invoice with its extracted fields"
+summary: "An end-to-end Azure + LLM platform for construction and manufacturing back offices. It turns invoices, inspection reports, certificates and drawings (English and German) into validated records with a source quote for every field, answers staff questions only from company documents with citations and an explicit abstention, and runs a tool-calling agent whose every write action waits for human approval. Every call is an OpenTelemetry trace with its cost, and prompt versions are measured on golden sets. Runs locally with Docker Compose and deploys to Azure Container Apps with managed identity, Key Vault, Blob and Queue storage, PostgreSQL + pgvector and Application Insights."
+description: "Azure + LLM platform: PDFs to validated records with provenance, cited RAG answers that abstain, approval-gated agents, and traces, cost and evals. Python, React, pgvector, Bicep."
+categories:
+  - ai-agents
+  - cloud-devops-llmops
+  - security-compliance
+stack:
+  frontend:
+    - React 19 (Vite)
+    - TypeScript
+    - Tailwind CSS, shadcn/ui, motion
+  backend:
+    - Python 3.12, FastAPI
+    - SQLAlchemy, Pydantic
+    - Queue worker (Azure Queue, Azurite locally)
+  ai:
+    - Claude via the Anthropic SDK (opus-5-5, haiku-5-5)
+    - Ollama alternative (qwen2.5, bge-m3 / nomic-embed-text)
+    - Azure AI Document Intelligence (optional), PyMuPDF, Claude vision OCR
+    - MCP server over the same tool registry
+  data:
+    - PostgreSQL 16 + pgvector
+    - Full-text search fused with RRF, LLM reranking
+    - Azure Blob Storage
+  infra:
+    - Azure Container Apps, Bicep
+    - Key Vault, user-assigned managed identity
+    - OpenTelemetry to Postgres and Application Insights
+    - Docker Compose, GitHub Actions
+  security:
+    - Role-based tool permissions
+    - Human approval for every write action, also over MCP
+    - PII redaction before external LLM calls
+    - Audit log, right-to-erasure path, EU region by default
+links:
+  github: https://github.com/DavitGadyan/Azure
+outcomes:
+  - Retrieval recall@5 of 1.00 and MRR 1.00 on the bilingual site-handbook golden set.
+  - QA correctness and abstention accuracy rose from 0.875 to 1.00 after switching to the multilingual bge-m3 embedding model, a gap the eval view made visible.
+  - Extraction field accuracy of 0.97 across six English and German PDFs; all 30 provenance quotes of a certificate located on the page.
+  - Every write action of the agent waits for a human approver, also when called through MCP, and every run is a costed OpenTelemetry trace.
+metrics:
+  - label: Retrieval recall@5
+    value: "1.00"
+  - label: QA correctness after bge-m3
+    value: "1.00"
+  - label: Extraction field accuracy
+    value: "0.97"
+  - label: Provenance quotes located
+    value: "30/30"
+  - label: Document languages
+    value: "EN + DE"
+featured: true
+order: 7
+---
+
+## The problem
+
+Teams that connect Azure AI services to real operations hit the same walls: many services to orchestrate (Document Intelligence, Blob, queues, search, the model), state that must survive async steps and human approvals, tool calls that crash the agent loop, compliance requirements (GDPR, audit, identity), and no way to tell whether a prompt change made answers better or worse. This build answers each of those with one deployable application, demonstrated on the documents a construction or manufacturing back office handles every day: supplier invoices, site inspection reports, material certificates and drawing sheets, in English and German.
+
+## The product in use
+
+<Video src="/videos/azure-ai-automation-demo.mp4" poster="/videos/azure-ai-automation-demo.webp" ratio="16 / 10" title="Azure AI Automation walkthrough" caption="One-minute walkthrough: a flagged German invoice with field-level provenance, a bilingual cited answer, an agent request that waits for approval and resumes, the trace that ties it together, and an eval comparison between two prompt and embedding configurations." />
+
+## What I built
+
+![Dashboard: documents processed, agent runs, pending approvals and the LLM cost of the last 14 days, with cost per day by module and spend per model](/images/portfolio/azure-dashboard.jpg)
+
+**Document intelligence.** Upload a PDF and the pipeline extracts words with coordinates (PyMuPDF, Azure AI Document Intelligence, or Claude vision for scans), classifies the document, extracts a typed record with structured outputs and quotes the exact source text for every field, mapped back to page coordinates. Deterministic rules validate totals, dates and cross-field logic: a German invoice whose line items do not sum to the printed net amount is flagged for review instead of being booked. Prompt versions can be re-run on the same document and compared.
+
+![A German supplier invoice next to its extracted fields; every value carries the page it was found on and the subtotal is marked for review](/images/portfolio/azure-document-provenance.jpg)
+
+![Validation tab: the deterministic rules flag that the line items do not add up to the printed net amount](/images/portfolio/azure-validation.jpg)
+
+**Grounded knowledge base.** Handbooks and processed documents are indexed in PostgreSQL + pgvector. Questions are answered with hybrid retrieval (vector and keyword search fused with RRF, metadata filters, LLM reranking), numbered citations that open the source passage, and an explicit "insufficient context" abstention when the documents do not cover the question. A "Retrieval explained" panel shows the vector rank, keyword rank, fused score and reranker score of every candidate passage. Reports combine approved fixed wording with AI-drafted, cited sections and need approval before the Word export is produced.
+
+![Knowledge: a question about scaffold tie spacing being answered from the site handbook, with the retrieval-explained panel beside it](/images/portfolio/azure-grounded-answer.jpg)
+
+**Governed agent.** A tool-calling agent looks up projects, suppliers, purchase orders and tickets and searches the knowledge base. Read tools run immediately; creating a ticket, changing a purchase order or e-mailing a supplier is parked for a human approver, and the worker executes approved actions and resumes the run, hours or restarts later, inside the same trace. Role-based tool permissions, loop detection, token budgets, tool timeouts, prompt-injection hygiene, a kill switch and a complete audit log. The same tools are exposed over MCP, so Claude Desktop or Claude Code can use them with the same approvals.
+
+![Operations agent: asked to open a high-priority ticket for a failed concrete cube test, it lists the open tickets first and then calls create_ticket, which waits for approval](/images/portfolio/azure-agent-run.jpg)
+
+![Approvals queue: the pending write action with its arguments, ready to approve or reject with a reason that goes back to the agent](/images/portfolio/azure-approval-queue.jpg)
+
+**Observability and evaluation.** Every document run, answer and agent run is an OpenTelemetry trace with token counts and cost per model call, viewable in the app or in Application Insights. Prompts are versioned and switchable at runtime. Golden sets measure retrieval recall and MRR, answer correctness and faithfulness (LLM judges), abstention and extraction field accuracy, and two runs can be compared side by side, so changes are decided on numbers instead of impressions.
+
+![Trace waterfall of an agent run: SDK model spans with tokens and cost, tool spans and the approval execution continuing the same trace](/images/portfolio/azure-trace-waterfall.jpg)
+
+![Evals: golden-set runs for retrieval, QA and extraction with their metrics, and a compare-two-runs panel](/images/portfolio/azure-evals-compare.jpg)
+
+![Audit log of agent actions, approval decisions and executions](/images/portfolio/azure-audit-log.jpg)
+
+## What the evals found
+
+The English question "What rating triggers an improvement plan for a supplier?" is only answered by the German supplier-evaluation page. With an English-centric embedding model the vector search never surfaced it and the system correctly abstained; switching to the multilingual bge-m3 model took QA correctness and abstention accuracy from 0.875 to 1.00. That is the kind of decision (embedding model, chunking, rerank threshold) the eval view exists to make visible instead of assumed.
+
+## Architecture
+
+FastAPI API and queue worker, React UI, PostgreSQL + pgvector, Azure Blob and Queue storage (Azurite locally), Claude via the Anthropic SDK with a self-hosted Ollama alternative, Azure AI Document Intelligence as an option, OpenTelemetry to Postgres and Application Insights, and Bicep for Container Apps, Key Vault, Storage, PostgreSQL Flexible Server, Document Intelligence and Log Analytics. Everything Azure-specific sits behind a provider with a local default, so the whole stack runs on a laptop with one `docker compose up`, and the same code deploys to Azure Container Apps with a user-assigned managed identity.
+
+## How it answers the usual pain points
+
+1. **Many Azure services to stitch together.** One provider interface each for LLM, embeddings, Blob, Queue and Document Intelligence; the pipeline orchestrates them with retries, sha256 idempotency and a poison queue.
+2. **State across a distributed workflow.** Agent transcripts are persisted in the Anthropic content-block shape; a run pauses for approval and resumes with staged tool results in the same trace.
+3. **Tool-calling reliability.** Strict JSON schemas from Pydantic, server-side permission checks, timeouts, tool errors returned to the model instead of crashing the loop, a loop detector and a token budget.
+4. **Auth and compliance.** Roles and JWT locally; managed identity, Key Vault and RBAC in Bicep; PII redaction before external LLM calls; a right-to-erasure delete path; an EU region by default; an audit log of every action.
+5. **Hallucination control.** Answers only from numbered passages, a citation validity check, an abstention marker, LLM-judged faithfulness in the evals and provenance quotes for every extracted field.
+6. **Observability and prompt quality.** Span exporters to Postgres and Application Insights, cost from the gen_ai usage attributes, versioned prompts and golden sets compared run against run.

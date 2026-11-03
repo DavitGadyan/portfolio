@@ -1,0 +1,68 @@
+---
+title: "IA híbrida para Salesforce: Claude, ChatGPT y LLM privados, un router"
+coverAlt: "Portada de SF Ops Copilot: «IA sobre tus datos de Salesforce, con seguridad», un router de políticas que envía los datos de Salesforce a Claude o GPT con los datos personales enmascarados, a un LLM privado dentro de la red o de vuelta a Salesforce sin coste, sobre una traza de decisión con tres valores enmascarados"
+summary: "SF Ops Copilot permite a un equipo usar IA sobre los datos de Salesforce sin salir de Salesforce, sin pagar de más por un único modelo y sin filtrar datos de clientes. Un router de políticas envía cada petición al propio Salesforce, a Claude, a ChatGPT o a un LLM privado en la red de la empresa según la sensibilidad, lo que está en juego y el coste, y enmascara los datos personales antes de que nada salga. Encima: revisión de Apex y Flows que devuelve el código corregido y una clase de test masivo, un agente de ingresos que trabaja leads dormidos con borradores verificados contra el CRM, y un planificador de refresh de sandbox y de migración. Nada se escribe en Salesforce hasta que una persona lo aprueba, y cada decisión de la IA queda registrada con tokens y coste."
+description: "Un router envía cada petición a Salesforce, Claude, ChatGPT o un LLM privado con PII enmascarada; además, revisión de Apex, agente de ventas y planes de refresh, con aprobación."
+outcomes:
+  - Cada petición se enruta según sensibilidad, riesgo y coste; una pregunta sobre el pipeline la responde el propio Salesforce por 0 $, y la misma evaluación de riesgo de una oportunidad costó 0,007 $ en Claude Opus, 0,0001 $ en Claude Haiku y nada por llamada en el modelo privado.
+  - Los datos médicos y de tarjetas solo van a un modelo dentro de la red; nombres, correos y teléfonos se sustituyen por tokens antes de que un modelo externo los vea y se restauran en la respuesta.
+  - En una clase de pagos de ejemplo las reglas encontraron 8 problemas y Claude los confirmó y halló 4 más, incluido un callout después de DML, y devolvió el código corregido y una clase de test masivo.
+  - Los agentes solo proponen; cada actualización del CRM, correo y fusión espera a una persona, y cada ejecución, llamada al modelo, llamada a herramienta y decisión queda registrada con tokens y coste.
+metrics:
+  - label: Módulos
+    value: "5"
+  - label: Rutas de modelo
+    value: "5"
+  - label: Evaluación de riesgo en Claude Haiku
+    value: "0,0001 $"
+  - label: Hallazgos de Apex en una clase (reglas + Claude)
+    value: "8 + 4"
+  - label: Escrituras sin aprobación humana
+    value: "0"
+---
+
+## El problema
+
+Los equipos que contratan trabajo de Salesforce e IA describen los mismos cinco problemas: «queremos IA sobre los datos de nuestro CRM, pero no pueden filtrarse»; «la IA se está volviendo cara y dependemos de un solo proveedor»; «nuestro equipo publica Apex y Flows escritos con IA y se rompen en producción»; «tenemos miles de leads antiguos que nadie trabaja»; y «los refresh de sandbox y las migraciones de org se comen días de trabajo de administración». SF Ops Copilot responde a cada uno con algo que funciona, en una sola aplicación, con Salesforce como sistema de registro.
+
+## El producto en uso
+
+<Video src="/videos/sf-ops-copilot-walkthrough.mp4" poster="/videos/sf-ops-copilot-walkthrough.webp" ratio="4 / 3" title="Recorrido por SF Ops Copilot" caption="Recorrido de tres minutos por los cinco módulos sobre la org de demostración. Ejecuciones en tiempo real; las esperas del modelo se muestran a 8×." />
+
+## Qué construí
+
+![Vista general: la org de demostración Acme Corp conectada, los agentes de Claude, 35 acciones en espera de aprobación, las cuatro automatizaciones y la actividad reciente del router de IA](/images/portfolio/sf-ops-overview.jpg)
+
+**Router de IA.** Salesforce pasa a ser la fuente de datos de cualquier modelo. Cada petición se enruta por política al propio Salesforce (una respuesta SOQL, sin modelo, 0 $), a Claude Opus, a Claude Haiku, a ChatGPT o a un LLM privado en la red de la empresa (Ollama o vLLM), según la sensibilidad, lo que está en juego y el coste. La capa de confianza detecta PII, PHI y PCI en cada registro: los datos médicos y de tarjetas solo van al modelo dentro de la red; nombres, correos y teléfonos se sustituyen por tokens antes de que un modelo externo los vea y se restauran en la respuesta. Los proveedores caídos se saltan con una alternativa, y un modo de comparación ejecuta un mismo registro en todos los modelos conectados, para que la decisión de enrutado se apoye en los datos del propio equipo. Añadir o cambiar un proveedor es un ajuste, no una reconstrucción.
+
+<Video src="/videos/sf-ops-ai-router.mp4" poster="/videos/sf-ops-ai-router.webp" ratio="4 / 3" title="Módulo del router de IA" caption="El módulo del router de IA, un minuto." />
+
+![Los datos de pacientes se enrutan a un LLM privado y nunca salen de la red](/images/portfolio/sf-ops-router-private-llm.jpg)
+
+![Los datos personales se convierten en tokens antes de que Claude los vea y se restauran en la respuesta](/images/portfolio/sf-ops-router-masked-prompt.jpg)
+
+![El mismo registro de Salesforce en Claude Opus, Claude Haiku y un modelo privado, con el coste de cada uno](/images/portfolio/sf-ops-router-benchmark.jpg)
+
+**Revisión de código.** El código de Salesforce escrito con IA suele parecer correcto y falla a escala: consultas dentro de bucles, falta de sharing y de seguridad a nivel de campo, identificadores y claves escritos a mano. Cada clase Apex y cada Flow pasa primero por reglas deterministas (SOQL, DML y callouts en bucles, sharing, FLS, inyección, identificadores y secretos fijos, calidad de los tests); después Claude confirma cada hallazgo, añade los que las reglas no pueden ver y devuelve el código corregido más una clase de test masivo. En una clase de pagos de ejemplo las reglas encontraron 8 problemas y Claude halló 4 más, incluido un callout después de DML que detiene el trabajo tras el primer registro.
+
+<Video src="/videos/sf-ops-code-review.mp4" poster="/videos/sf-ops-code-review.webp" ratio="4 / 3" title="Módulo de revisión de código" caption="El módulo de revisión de código, medio minuto." />
+
+![Revisión de Apex: los hallazgos, después el código Queueable corregido y una clase de test masivo](/images/portfolio/sf-ops-code-review-corrected-diff.jpg)
+
+**Agente de ingresos.** Un agente de Claude con herramientas puntúa y clasifica cada lead dormido, elige la siguiente mejor acción y redacta un correo breve y concreto. Cada dato del borrador se comprueba contra el registro, y los borradores que citan algo que no está en el CRM vuelven al modelo para reescribirse. Un análisis de duplicados propone fusiones. No se envía ni se actualiza nada hasta que una persona lo aprueba.
+
+<Video src="/videos/sf-ops-revenue-agent.mp4" poster="/videos/sf-ops-revenue-agent.webp" ratio="4 / 3" title="Módulo del agente de ingresos" caption="El módulo del agente de ingresos, medio minuto." />
+
+**Refresh y migración.** Tras un refresh de sandbox, alguien tiene que enmascarar los datos personales, apuntar las integraciones a entornos de prueba, parar los trabajos programados y recargar los datos de prueba, normalmente de memoria. El planificador inventaría la org y construye esa lista a partir de sus propios metadatos, ordena la carga de datos para que las búsquedas resuelvan, mapea los campos para un traslado entre orgs y concilia los recuentos de registros; Claude revisa el plan como arquitecto y escribe el runbook ordenado.
+
+<Video src="/videos/sf-ops-refresh.mp4" poster="/videos/sf-ops-refresh.webp" ratio="4 / 3" title="Módulo de refresh y migración" caption="El módulo de refresh y migración, 40 segundos." />
+
+![Plan de refresh de sandbox con la revisión de arquitecto de Claude y el runbook](/images/portfolio/sf-ops-refresh-architect-review.jpg)
+
+**Aprobaciones y auditoría.** Los agentes no pueden escribir en Salesforce ni enviar nada. Cada acción propuesta espera en la cola de aprobaciones, editable, y cada ejecución, llamada al modelo, llamada a herramienta y decisión queda registrada con sus tokens y su coste. En modo demostración los envíos y las fusiones se simulan; en modo real, las actualizaciones aprobadas modifican el registro mediante la API REST.
+
+![Registro de auditoría de ejecuciones, llamadas al modelo, decisiones de enrutado y aprobaciones](/images/portfolio/sf-ops-audit-log.jpg)
+
+## Arquitectura
+
+Next.js 15 con Tailwind delante de un backend en FastAPI: agentes (refresh, el bucle de herramientas del agente de ingresos, revisión de código), el router (proveedores, capa de confianza, motor de políticas con alternativa y comparativa), el motor de reglas (comprobaciones de Apex, duplicados, puntuación, refresh), conectores (la org de demostración o una org real mediante las API REST y Tooling) y un núcleo con el cliente del SDK de Anthropic y un almacén SQLite para ejecuciones, auditoría y aprobaciones. Claude Opus 5.5 responde con salidas estructuradas (de Pydantic a un esquema JSON estricto) en un bucle de herramientas de solo anexado, con herramientas estrictas y prompts de sistema en caché; cada llamada se audita con el recuento de tokens y el coste. Funciona sin ninguna clave sobre la org de demostración, acepta una clave de Anthropic para los agentes, credenciales de Salesforce para una org real y cualquier endpoint compatible con OpenAI para el modelo privado.

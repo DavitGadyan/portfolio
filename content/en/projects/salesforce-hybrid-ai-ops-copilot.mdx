@@ -1,0 +1,103 @@
+---
+title: "Hybrid AI for Salesforce: Claude, ChatGPT & Private LLMs, One Router"
+date: 2026-11-03
+lastmod: 2026-11-04
+cover: /images/portfolio/sf-ops-copilot-cover.jpg
+coverAlt: "SF Ops Copilot cover: \"AI on your Salesforce data, safely\", a policy router sending Salesforce data to Claude or GPT with PII masked, to a private LLM in the network, or back to Salesforce at no cost, above a decision trace with three masked values"
+summary: "SF Ops Copilot lets a team use AI on Salesforce data without moving off Salesforce, overpaying for one model or leaking customer data. A policy router sends each request to Salesforce itself, Claude, ChatGPT or a private LLM in the company's network by sensitivity, stakes and cost, and masks PII before anything leaves. On top of it: Apex and Flow review that returns fixed code and a bulk test class, a revenue agent that works dormant leads with fact-checked drafts, and a sandbox refresh and migration planner. Nothing is written to Salesforce until a person approves it, and every AI decision is logged with tokens and cost."
+description: "SF Ops Copilot routes each Salesforce request to Salesforce, Claude, ChatGPT or a private LLM with PII masked, adds Apex review, a revenue agent and refresh plans, all approval-gated."
+categories:
+  - ai-agents
+  - ai-erp-saas
+  - security-compliance
+stack:
+  frontend:
+    - Next.js 15
+    - Tailwind CSS 4
+    - TypeScript
+  backend:
+    - Python 3.12, FastAPI
+    - Salesforce REST and Tooling APIs (httpx)
+    - Background runs polled by the UI
+  ai:
+    - Claude Opus 5.5 and Haiku 5.5 (structured outputs, tool-use loop, prompt caching)
+    - OpenAI SDK for ChatGPT and OpenAI-compatible private models (Ollama, vLLM)
+    - Deterministic rules engine under every agent
+  data:
+    - SQLite audit log (runs, model calls, approvals)
+    - Seeded demo org or a live Salesforce org
+  infra:
+    - Make-based local setup
+    - Runs with no API keys on the demo org
+  security:
+    - PII, PHI and PCI detection with masking before data leaves the network
+    - Private-LLM route for medical and card data
+    - Human approval for every write, send and merge
+    - Audit log with tokens and cost per call
+links:
+  github: https://github.com/DavitGadyan/Salesforce
+outcomes:
+  - Each request is routed by sensitivity, stakes and cost; a pipeline question is answered by Salesforce itself for $0, and the same deal-risk assessment cost $0.007 on Claude Opus, $0.0001 on Claude Haiku and nothing per call on the private model.
+  - Medical and card data goes only to a model inside the network; names, e-mails and phones are tokenised before an outside model sees them and restored in the answer.
+  - On a sample payment class the rules found 8 issues and Claude confirmed them and found 4 more, including a callout-after-DML error, then returned corrected code and a bulk test class.
+  - Agents only propose; every CRM update, e-mail and merge waits for a person, and every run, model call, tool call and decision is logged with tokens and cost.
+metrics:
+  - label: Modules
+    value: "5"
+  - label: Model routes
+    value: "5"
+  - label: Deal-risk assessment on Claude Haiku
+    value: "$0.0001"
+  - label: Apex findings on one class (rules + Claude)
+    value: "8 + 4"
+  - label: Writes without a human approval
+    value: "0"
+featured: true
+order: 9
+---
+
+## The problem
+
+Teams hiring for Salesforce and AI work describe the same five problems: "we want AI on our CRM data, but it can't leak"; "AI is getting expensive and we're locked into one vendor"; "our team ships Apex and Flows written with AI, and it breaks in production"; "we have thousands of old leads nobody works"; and "sandbox refreshes and org migrations eat days of admin time". SF Ops Copilot answers each one with something working, in one app, with Salesforce kept as the system of record.
+
+## The product in use
+
+<Video src="/videos/sf-ops-copilot-walkthrough.mp4" poster="/videos/sf-ops-copilot-walkthrough.webp" ratio="4 / 3" title="SF Ops Copilot walkthrough" caption="Three-minute walkthrough of the five modules on the seeded demo org. Real-time runs; the model waits are shown at 8× speed." />
+
+## What I built
+
+![Overview: the connected Acme Corp demo org, the Claude agents, 35 actions waiting for approval, the four automations and the recent activity of the AI router](/images/portfolio/sf-ops-overview.jpg)
+
+**AI router.** Salesforce becomes the data source for any model. Each request is routed by policy to Salesforce itself (a SOQL answer, no model, $0), Claude Opus, Claude Haiku, ChatGPT or a private LLM in the company's network (Ollama or vLLM), chosen by sensitivity, stakes and cost. The trust layer finds PII, PHI and PCI in every record: medical and card data goes only to the in-network model; names, e-mails and phones are replaced with tokens before any outside model sees them and restored in the answer. Providers that are down are skipped with a fallback, and a compare mode runs one record across every connected model, so the routing choice rests on the team's own data. Adding or swapping a provider is a setting, not a rebuild.
+
+<Video src="/videos/sf-ops-ai-router.mp4" poster="/videos/sf-ops-ai-router.webp" ratio="4 / 3" title="AI router module" caption="The AI router module, one minute." />
+
+![Patient data is routed to a private LLM and never leaves the network](/images/portfolio/sf-ops-router-private-llm.jpg)
+
+![PII is tokenised before Claude sees it, then restored in the answer](/images/portfolio/sf-ops-router-masked-prompt.jpg)
+
+![The same Salesforce record across Claude Opus, Claude Haiku and a private model, with the cost of each](/images/portfolio/sf-ops-router-benchmark.jpg)
+
+**Code review.** AI-written Salesforce code often looks fine and fails at scale: queries inside loops, missing sharing and field-level security, hard-coded IDs and keys. Every Apex class and Flow is checked by deterministic rules first (SOQL, DML and callouts in loops, sharing, FLS, injection, hard-coded IDs and secrets, test quality), then Claude confirms each finding, adds the ones rules cannot see and returns corrected code plus a bulk test class. On one sample payment class the rules found 8 issues and Claude found 4 more, including a callout-after-DML error that stops the job after the first record.
+
+<Video src="/videos/sf-ops-code-review.mp4" poster="/videos/sf-ops-code-review.webp" ratio="4 / 3" title="Code review module" caption="The code review module, half a minute." />
+
+![Apex review: the findings, then the corrected Queueable code and a bulk test class](/images/portfolio/sf-ops-code-review-corrected-diff.jpg)
+
+**Revenue agent.** A Claude tool-use agent scores and tiers each dormant lead, picks a next best action and drafts a short, specific e-mail. Every fact in a draft is checked against the record, and drafts citing anything that is not in the CRM go back to the model for a rewrite. A duplicate scan proposes merges. Nothing is sent or updated until a person approves it.
+
+<Video src="/videos/sf-ops-revenue-agent.mp4" poster="/videos/sf-ops-revenue-agent.webp" ratio="4 / 3" title="Revenue agent module" caption="The revenue agent module, half a minute." />
+
+**Refresh and migrate.** After a sandbox refresh someone has to mask personal data, point integrations at test endpoints, stop scheduled jobs and reload test data, usually from memory. The planner inventories the org and builds that checklist from its own metadata, orders the data seeding so lookups resolve, maps fields for an org-to-org move and reconciles record counts; Claude reviews the plan as an architect and writes the ordered runbook.
+
+<Video src="/videos/sf-ops-refresh.mp4" poster="/videos/sf-ops-refresh.webp" ratio="4 / 3" title="Refresh and migrate module" caption="The refresh and migrate module, 40 seconds." />
+
+![Sandbox refresh plan with Claude's architect review and runbook](/images/portfolio/sf-ops-refresh-architect-review.jpg)
+
+**Approvals and audit.** Agents cannot write to Salesforce or send anything. Each proposed action waits in the approvals queue, editable, and every run, model call, tool call and decision is logged with its tokens and cost. In demo mode sends and merges are simulated; in live mode approved updates PATCH the record over the REST API.
+
+![Audit log of runs, model calls, routing decisions and approvals](/images/portfolio/sf-ops-audit-log.jpg)
+
+## Architecture
+
+Next.js 15 with Tailwind in front of a FastAPI backend: agents (refresh, the revenue tool loop, code review), the router (providers, trust layer, policy engine with fallback and benchmark), the rules engine (Apex checks, dedupe, scoring, refresh), connectors (the seeded demo org or a live org over the REST and Tooling APIs) and a core with the Anthropic SDK client and a SQLite store for runs, audit and approvals. Claude Opus 5.5 answers with structured outputs (Pydantic to strict JSON schema) in an append-only tool loop with strict tools and prompt-cached system prompts; every call is audited with token counts and cost. It runs with no keys at all on the demo org, takes an Anthropic key for the agents, Salesforce credentials for a live org, and any OpenAI-compatible endpoint for the private model.

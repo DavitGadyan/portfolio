@@ -6,7 +6,7 @@ test.describe('project showcase', () => {
     const titles = page.getByTestId('project-card').locator('h2');
     const order = [/Virgil\.ai/, /Real Estate/, /ImprovTalk/, /YOLO26\/27/, /Crypto Trading Bots/, /AI Trading Assistant/];
     for (const [i, re] of order.entries()) await expect(titles.nth(i)).toHaveText(re);
-    await expect(titles.nth(6)).toHaveText(/Receptra/); // first of the second tier
+    for (const [i, re] of [/Azure AI Automation/, /HubAIOps/, /Salesforce/, /Receptra/, /AI Marketing/].entries()) await expect(titles.nth(6 + i)).toHaveText(re); // the second tier: Azure, HubAIOps, Salesforce on one desktop row, then Receptra and AI Marketing
   });
 
   test('the YOLO26 page embeds three self-hosted demos that load no video bytes until played', async ({ page }) => {

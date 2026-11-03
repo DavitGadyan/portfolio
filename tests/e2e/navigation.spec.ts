@@ -40,9 +40,9 @@ test.describe('language switcher and navigation', () => {
     await page.goto('/portfolio/');
     const cards = page.getByTestId('project-card');
     const all = await cards.count();
-    expect(all).toBe(40);
+    expect(all).toBe(42);
     await page.locator('label[for="f-security-compliance"]').click();
-    await expect(cards.filter({ visible: true })).toHaveCount(2);
+    await expect(cards.filter({ visible: true })).toHaveCount(4); // Security & Compliance: Virgil, AITA, Azure AI Automation, SF Ops Copilot
     await expect(page.locator('.pnote')).toBeVisible();
     await page.locator('label[for="f-all"]').click();
     await expect(cards.filter({ visible: true })).toHaveCount(all);
@@ -62,7 +62,7 @@ test.describe('language switcher and navigation', () => {
     await page.locator('label[for="f-security-compliance"]').click();
     const grid = page.locator('[data-testid="project-grid"]');
     const visible = grid.locator('> [data-cat]:visible');
-    await expect(visible).toHaveCount(2);
+    await expect(visible).toHaveCount(4);
     // layout position (unaffected by the reveal transform): the first visible card occupies the grid's first cell
     const pos = await visible.first().evaluate((el) => { const g = el.parentElement as HTMLElement; return [el.offsetLeft - g.offsetLeft, el.offsetTop - g.offsetTop]; });
     expect(Math.abs(pos[0])).toBeLessThan(2);
