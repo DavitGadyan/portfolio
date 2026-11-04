@@ -34,6 +34,7 @@ test.describe('code quizzes', () => {
   });
 
   test('the JavaScript lab: syntax map with code in the panel, then twenty questions graded at the end, with the review opening cards on the map', async ({ page }) => {
+    test.slow(); // twenty questions with assertions on every screen: triple the timeout for loaded machines
     await page.goto('/materials/quizzes/javascript/');
     await expect(page.locator('h1')).toHaveText(/JavaScript/);
     await expect(page.locator('link[rel="alternate"][hreflang="es"]')).toHaveAttribute('href', /\/es\/materials\/quizzes\/javascript\/$/);
