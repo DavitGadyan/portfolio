@@ -1,0 +1,66 @@
+---
+title: "Snowflake AI Data Copilot: cifras fiables, IA y menos coste"
+coverAlt: "Portada de Snowflake AI Data Copilot: el título con las etiquetas Snowflake, dbt tests, Claude AI y RevOps junto a un portátil que muestra el panel general de Northwind Provisions en Snowflake, con la pantalla del motor RevOps detrás"
+summary: "Una plataforma de datos Snowflake + IA, ejecutable, construida en torno a los cinco problemas por los que más se contrata a especialistas en Snowflake: un AI Analyst que escribe SQL gobernado a partir de métricas certificadas, una conciliación entre el almacén y NetSuite que explica cada dólar de diferencia, pipelines incrementales que se detienen con seguridad ante un cambio de esquema incompatible, un centro FinOps con ahorros ordenados y un simulador what-if, y un motor RevOps que une Salesforce, HubSpot y Stripe. FastAPI, DuckDB organizado como una cuenta de Snowflake, Next.js, el mismo diseño en DDL de Snowflake, 48 tests."
+description: "Plataforma de datos Snowflake + IA: texto a SQL gobernado desde métricas certificadas, conciliación con NetSuite, pipelines MERGE incrementales, ahorros FinOps y un motor RevOps."
+outcomes:
+  - El 100 % de la diferencia entre el libro mayor y el almacén atribuido a cuatro defectos sembrados (join duplicado, fuga de borrados lógicos, desplazamiento de periodo por zona horaria, cuenta sin mapear), cada uno detectado por un test al estilo dbt con arreglo en un clic.
+  - Cada consulta generada por la IA pasa seis comprobaciones antes de ejecutarse, así que el analista solo puede leer tablas certificadas, con los correos enmascarados y las filas filtradas según el rol activo.
+  - Recomendaciones FinOps ordenadas por ahorro mensual, unos 7.800 $ al mes en el conjunto de datos de demostración, y un simulador what-if para el tamaño del warehouse y el auto-suspend.
+  - Arranca sin credenciales ni cuenta de Snowflake en unos 20 segundos a partir de una semilla determinista; el mismo diseño se entrega como DDL real de Snowflake para el modo en vivo.
+metrics:
+  - label: Diferencia de conciliación explicada
+    value: "100 %"
+  - label: Comprobaciones antes de cada consulta de la IA
+    value: "6"
+  - label: Ahorros FinOps ordenados (demo)
+    value: "~7.800 $ / mes"
+  - label: Escenarios en un solo producto
+    value: "5"
+  - label: Tests de backend
+    value: "48"
+---
+
+## El problema
+
+Las mismas cinco peticiones dominan las ofertas de trabajo de Snowflake: «¿qué cifra es la correcta? El informe no cuadra con NetSuite», «nuestro asistente de IA consulta siempre la tabla equivocada», «el pipeline se rompió y nadie se dio cuenta en tres días», «¿por qué es tan alta la factura de Snowflake?» y «ventas, marketing y facturación muestran ingresos distintos». El estudio de mercado detrás de esa lista está en el repositorio. En lugar de cinco propuestas, construí un producto que responde a las cinco, para que un cliente vea el resultado antes de contratar: un SaaS de demostración con dos inquilinos (Northwind Provisions sobre NetSuite y datos operativos, Arcadia Cloud sobre Salesforce, HubSpot y Stripe), sembrado de forma determinista para que cada cifra de cada pantalla sea salida real de la aplicación en marcha.
+
+## El producto en uso
+
+<Video src="/videos/snowflake-data-copilot-demo.mp4" poster="/videos/snowflake-data-copilot-demo.webp" ratio="16 / 9" title="Recorrido por Snowflake AI Data Copilot" caption="Recorrido de dos minutos por los cinco escenarios, pulsando como lo haría un usuario: el panel general, una pregunta en lenguaje natural respondida con SQL gobernado, el cuadre con NetSuite y sus arreglos, los pipelines, los ahorros FinOps con el simulador what-if y el motor de ingresos RevOps." />
+
+## Qué construí
+
+![Panel general: ingresos netos, margen bruto, puntuación de confianza en los datos, frescura de los pipelines, créditos del mes con los ahorros encontrados y el ARR del segundo inquilino](/images/portfolio/snowflake-overview.jpg)
+
+**AI Analyst.** Cualquiera puede preguntar en lenguaje natural («¿Quiénes son nuestros 10 mejores clientes?») y obtener la respuesta, un gráfico y el SQL exacto que hay detrás. Claude escribe el SQL solo a partir de un modelo semántico de métricas certificadas y consultas verificadas (la misma idea que el repositorio de consultas verificadas de Cortex Analyst), así que «ingresos» significa lo mismo cada vez. Al cambiar de rol se ve la columna de correo enmascarada, las filas limitadas a una región y tablas bloqueadas, reflejo de las políticas MASK_EMAIL y RAP_REGION del DDL de Snowflake. Sin clave de API, el analista responde a las ocho preguntas de ejemplo verificadas; con ella acepta cualquier pregunta.
+
+![AI Analyst: una pregunta en lenguaje natural, el SQL gobernado que generó, el resultado y su gráfico, con el rol activo a la vista](/images/portfolio/snowflake-ai-analyst.jpg)
+
+**Confianza en los datos y conciliación.** Un cuadre mes a mes de la cuenta de resultados del almacén contra NetSuite con cuatro defectos sembrados: un join duplicado, una fuga de borrados lógicos, un desplazamiento de periodo por zona horaria y una cuenta sin mapear. El 100 % de la diferencia se atribuye a esos defectos, los tests al estilo dbt detectan cada uno y un arreglo en un clic reconstruye los modelos, de modo que finanzas puede firmar las cifras en vez de discutirlas.
+
+![Confianza en los datos: el almacén frente a NetSuite por mes, con cada dólar de diferencia atribuido a un defecto con nombre y su arreglo](/images/portfolio/snowflake-data-trust.jpg)
+
+**Pipeline Studio.** Bronce, plata y oro con cargas incrementales por marca de agua + MERGE, borrados lógicos, una carga de API idempotente, SLA de frescura e historial de ejecuciones. La deriva aditiva del esquema evoluciona el destino automáticamente; un cambio de tipo incompatible falla de forma visible y retiene la marca de agua en lugar de llenar los informes de datos malos sin avisar.
+
+![Pipeline Studio: el flujo medallion, la frescura de cada paso frente a su SLA y una ejecución detenida por un cambio de esquema incompatible](/images/portfolio/snowflake-pipelines.jpg)
+
+**Centro de mando FinOps.** Créditos por warehouse y equipo, consumo en reposo, los patrones de consulta más caros y recomendaciones ordenadas por ahorro mensual (unos 7.800 $ al mes en el conjunto de demostración). Un simulador what-if muestra el efecto de un warehouse más pequeño o de un auto-suspend más corto sobre el coste y la velocidad antes de tocar nada en producción. Las consultas equivalentes contra las vistas reales de ACCOUNT_USAGE se entregan con el repositorio.
+
+![FinOps: créditos por warehouse y equipo, consumo en reposo, los patrones de consulta más costosos y la lista de ahorros ordenada](/images/portfolio/snowflake-finops.jpg)
+
+![FinOps what-if: cambios de tamaño del warehouse y de auto-suspend simulados con su efecto en el coste mensual y el tiempo de consulta](/images/portfolio/snowflake-finops-what-if.jpg)
+
+**Motor de ingresos RevOps.** El segundo inquilino une Salesforce, HubSpot y Stripe en una cuenta maestra por dominio y alimenta el embudo de lead a ganado, la previsión y cobertura del trimestre, la atribución first-touch, last-touch, lineal y en W con ROAS, la cascada de ARR, NRR y GRR y el riesgo de abandono. Las comprobaciones CRM frente a facturación encuentran duplicados, fugas de ingresos (operaciones ganadas nunca facturadas), ARR sin seguimiento y descuadres de reservas, y un reverse ETL basado en diferencias escribe la puntuación de salud y el ARR facturado de vuelta en Salesforce.
+
+![RevOps: ARR, retención neta de ingresos, tasa de éxito, cobertura del pipeline, previsión y las cuentas con más riesgo de abandono](/images/portfolio/snowflake-revops.jpg)
+
+![Atribución y fugas en RevOps: cuatro modelos de atribución lado a lado con ROAS y las comprobaciones CRM frente a facturación que recuperan ingresos](/images/portfolio/snowflake-revops-attribution.jpg)
+
+## Barreras para el SQL generado por IA
+
+Cada consulta que produce el analista pasa por seis comprobaciones, en orden, antes de ejecutarse: el SQL se analiza con sqlglot y debe ser exactamente una sentencia de solo lectura; no hay DDL ni DML en ningún punto del árbol ni funciones de archivo o de tablas del sistema; cada tabla debe estar concedida al rol activo, con los nombres sin esquema resueltos a través del modelo semántico; las tablas gobernadas se reescriben como subconsultas de política que enmascaran la columna de correo y aplican el filtro de región; se añade un LIMIT 1000 y la consulta se transpila al dialecto del motor; y en modo demostración la propia conexión DuckDB tiene desactivado el acceso a archivos externos y a la red.
+
+## Arquitectura
+
+Un front end en Next.js 14 (TypeScript, Tailwind, Recharts) redirige las llamadas a la API a un backend FastAPI. Una interfaz de motor de almacén corre sobre DuckDB organizado como una cuenta de Snowflake (esquemas bronze, silver, gold y account_usage) en modo demostración, o sobre el conector de Snowflake en modo en vivo, donde las políticas nativas aplican el enmascarado. El módulo de semilla construye datos deterministas de NetSuite, operativos y de uso en unos 20 segundos en el primer arranque, sin credenciales; encima se apoyan el modelo semántico (tablas, métricas certificadas, consultas verificadas), el módulo de seguridad (roles, políticas de enmascarado y de acceso por fila), la barrera SQL y los cinco módulos de escenario. El mismo diseño se entrega como DDL real de Snowflake: base de datos y warehouses, roles de mínimo privilegio y un usuario de servicio con par de claves, políticas de enmascarado y de acceso por fila, la tarea MERGE incremental, la vista semántica, las consultas FinOps contra ACCOUNT_USAGE y el modelo RevOps. Respaldado por 48 tests de backend y una comprobación de TypeScript; un `make dev` o `docker compose up` lo arranca.

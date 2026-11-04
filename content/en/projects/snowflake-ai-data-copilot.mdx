@@ -1,0 +1,101 @@
+---
+title: "Snowflake AI Data Copilot: Trusted Numbers, AI Answers, Lower Costs"
+date: 2026-11-04
+lastmod: 2026-11-05
+cover: /images/portfolio/snowflake-copilot-cover.jpg
+coverAlt: "Snowflake AI Data Copilot cover: the title with the tags Snowflake, dbt tests, Claude AI and RevOps next to a laptop showing the overview dashboard of Northwind Provisions on Snowflake, with the RevOps Revenue Engine screen behind it"
+summary: "A runnable Snowflake + AI data platform built around the five problems Snowflake teams hire for most: an AI Analyst that writes governed SQL from certified metrics, a GL-to-warehouse reconciliation that explains every dollar of variance, incremental pipelines that stop safely on breaking schema changes, a FinOps command centre with ranked savings and a what-if simulator, and a RevOps engine that joins Salesforce, HubSpot and Stripe. FastAPI, DuckDB laid out like a Snowflake account, Next.js, the same design as Snowflake DDL, 48 tests."
+description: "Snowflake + AI data platform: governed text-to-SQL from certified metrics, NetSuite reconciliation, incremental MERGE pipelines, FinOps savings and a RevOps revenue engine."
+categories:
+  - databases-data-eng
+  - ai-agents
+  - cloud-devops-llmops
+stack:
+  frontend:
+    - Next.js 14, TypeScript
+    - Tailwind CSS, Recharts
+  backend:
+    - Python 3.11, FastAPI, uv
+    - sqlglot (parse, policy rewrite, transpile)
+  ai:
+    - Claude via the Anthropic SDK (opus-5-5)
+    - Semantic model: certified metrics and verified queries (Cortex Analyst-style)
+    - Six-step SQL guardrail before execution
+  data:
+    - Snowflake: roles, masking and row-access policies, streams and tasks, dynamic tables, semantic views
+    - DuckDB demo engine laid out like a Snowflake account (bronze, silver, gold, account_usage)
+    - dbt-style tests, watermark + MERGE incremental loads
+    - NetSuite, Salesforce, HubSpot and Stripe data models
+  infra:
+    - Docker Compose, Makefile
+    - 48 backend tests + TypeScript check
+  security:
+    - Least-privilege roles, key-pair service user
+    - Masking and row-access policies enforced in SQL
+    - Read-only guardrail: one SELECT, grant check, LIMIT
+    - DuckDB with file and network access disabled
+links:
+  github: https://github.com/DavitGadyan/Snowflake
+outcomes:
+  - 100 % of the GL-to-warehouse variance attributed to four seeded defects (duplicate join, soft-delete leak, timezone period shift, unmapped account), each caught by a dbt-style test with a one-click fix.
+  - Every AI-generated query passes six checks before it runs, so the analyst can only read certified tables, with e-mails masked and rows filtered by the active role.
+  - FinOps recommendations ranked by monthly savings, about $7,800 a month in the demo dataset, and a what-if simulator for warehouse size and auto-suspend.
+  - Runs with no credentials and no Snowflake account in about 20 seconds from a deterministic seed; the same design ships as real Snowflake DDL for the live mode.
+metrics:
+  - label: Reconciliation variance explained
+    value: "100 %"
+  - label: Guardrail checks before any AI query
+    value: "6"
+  - label: Ranked FinOps savings (demo)
+    value: "~$7,800 / month"
+  - label: Scenarios in one product
+    value: "5"
+  - label: Backend tests
+    value: "48"
+featured: true
+order: 11
+---
+
+## The problem
+
+The same five requests dominate Snowflake job posts: "which number is right, the report doesn't match NetSuite", "our AI assistant keeps querying the wrong table", "the pipeline broke and nobody noticed for three days", "why is the Snowflake bill so high" and "sales, marketing and billing all show different revenue". The market research behind that list is in the repository. Instead of five proposals, I built one working product that answers all five, so a client can see the result before hiring: a demo SaaS with two tenants (Northwind Provisions on NetSuite and operational data, Arcadia Cloud on Salesforce, HubSpot and Stripe), seeded deterministically so that every number on every screen is real output of the running app.
+
+## The product in use
+
+<Video src="/videos/snowflake-data-copilot-demo.mp4" poster="/videos/snowflake-data-copilot-demo.webp" ratio="16 / 9" title="Snowflake AI Data Copilot walkthrough" caption="Two-minute walkthrough of the five scenarios, clicked through the way a user would: the overview, a plain-English question answered with governed SQL, the NetSuite tie-out and its fixes, the pipelines, the FinOps savings and what-if simulator, and the RevOps revenue engine." />
+
+## What I built
+
+![Overview dashboard: net revenue, gross margin, data trust score, pipeline freshness, credits month to date with the savings found, and the ARR of the second tenant](/images/portfolio/snowflake-overview.jpg)
+
+**AI Analyst.** Anyone can ask a question in plain English ("Who are our top 10 customers?") and get the answer, a chart and the exact SQL behind it. Claude writes the SQL only from a semantic model of certified metrics and verified queries (the same idea as Cortex Analyst's verified query repository), so "revenue" means the same thing every time. Switching roles shows the e-mail column masked, rows limited to a region and tables blocked, mirroring the MASK_EMAIL and RAP_REGION policies of the Snowflake DDL. Without an API key the analyst answers the eight verified example questions; with one it accepts any question.
+
+![AI Analyst: a plain-English question, the governed SQL it produced, the result and its chart, with the active role shown](/images/portfolio/snowflake-ai-analyst.jpg)
+
+**Data Trust and reconciliation.** A month-by-month tie-out of the warehouse income statement against NetSuite with four seeded defects: a duplicate join, a soft-delete leak, a timezone period shift and an unmapped account. 100 % of the variance is attributed to those defects, dbt-style tests catch each one and a one-click fix rebuilds the models, so finance can sign off on the numbers instead of arguing about them.
+
+![Data Trust: the warehouse versus NetSuite by month, with every dollar of variance attributed to a named defect and its fix](/images/portfolio/snowflake-data-trust.jpg)
+
+**Pipeline Studio.** Bronze, silver and gold with watermark + MERGE incremental loads, soft deletes, an idempotent API load, freshness SLAs and run history. Additive schema drift evolves the target automatically; a breaking type change fails loudly and holds the watermark instead of quietly filling reports with bad data.
+
+![Pipeline Studio: the medallion flow, each step's freshness against its SLA, and a run that stopped on a breaking schema change](/images/portfolio/snowflake-pipelines.jpg)
+
+**FinOps Command Center.** Credits by warehouse and team, idle burn, the most expensive query patterns and recommendations ranked by monthly savings (about $7,800 a month in the demo dataset). A what-if simulator shows the effect of a smaller warehouse or a shorter auto-suspend on cost and speed before anything changes in production. The equivalent queries against the real ACCOUNT_USAGE views ship with the repository.
+
+![FinOps: credits by warehouse and team, idle burn, the costliest query patterns and the ranked savings list](/images/portfolio/snowflake-finops.jpg)
+
+![FinOps what-if: warehouse size and auto-suspend changes simulated with their effect on monthly cost and query time](/images/portfolio/snowflake-finops-what-if.jpg)
+
+**RevOps Revenue Engine.** The second tenant joins Salesforce, HubSpot and Stripe into one golden account per domain and feeds the lead-to-won funnel, the quarter forecast and coverage, first-touch, last-touch, linear and W-shaped attribution with ROAS, the ARR waterfall, NRR and GRR and churn risk. CRM-versus-billing checks find duplicates, revenue leakage (deals won but never billed), untracked ARR and booking mismatches, and a diff-based reverse ETL writes the health score and billed ARR back to Salesforce.
+
+![RevOps: ARR, net revenue retention, win rate, pipeline coverage, forecast and the accounts most likely to churn](/images/portfolio/snowflake-revops.jpg)
+
+![RevOps attribution and leakage: four attribution models side by side with ROAS, and the CRM-versus-billing checks that recover revenue](/images/portfolio/snowflake-revops-attribution.jpg)
+
+## Guardrails for AI-generated SQL
+
+Every query the analyst produces goes through six checks, in order, before it runs: the SQL is parsed with sqlglot and must be exactly one read-only statement; there is no DDL or DML anywhere in the tree and no file or system table functions; every table must be granted to the active role, with bare names resolved through the semantic model; governed tables are rewritten into policy subqueries that mask the e-mail column and apply the region filter; a LIMIT 1000 is added and the query is transpiled to the engine dialect; and in demo mode the DuckDB connection itself has external file and network access disabled.
+
+## Architecture
+
+A Next.js 14 front end (TypeScript, Tailwind, Recharts) proxies the API calls to a FastAPI backend. A warehouse engine interface runs on DuckDB laid out like a Snowflake account (bronze, silver, gold and account_usage schemas) in demo mode, or on the Snowflake connector in live mode, where the native policies enforce the masking. The seed module builds deterministic NetSuite, operational and usage data in about 20 seconds on first start, with no credentials; the semantic model (tables, certified metrics, verified queries), the security module (roles, masking and row-access policies), the SQL guard and the five scenario modules sit on top. The same design ships as real Snowflake DDL: database and warehouses, least-privilege roles and a key-pair service user, masking and row-access policies, the incremental MERGE task, the semantic view, the FinOps queries against ACCOUNT_USAGE and the RevOps model. Backed by 48 backend tests and a TypeScript check; one `make dev` or `docker compose up` runs it.

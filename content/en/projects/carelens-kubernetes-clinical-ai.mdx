@@ -1,0 +1,111 @@
+---
+title: "CareLens: Clinical Document AI on Kubernetes and Azure (HIPAA-ready)"
+date: 2026-11-04
+lastmod: 2026-11-05
+cover: /images/portfolio/carelens-cover.jpg
+coverAlt: "CareLens cover: \"Healthcare AI, safe on Kubernetes\", clinical PDFs to reviewed, structured data, with the tags Claude AI, Azure + Terraform and HIPAA, SOC 2, GDPR next to a glass document guarded by a shield"
+summary: "A HIPAA-aware product that turns clinical PDFs into FHIR-style records with Claude, built to exercise a production Kubernetes platform end to end. PHI is redacted before any AI call, a reviewer approves every result and every access lands in a hash-chained audit log. It ships with a Helm chart, canary and blue-green releases, Argo CD GitOps across dev, staging and prod, Prometheus and Loki, default-deny NetworkPolicies, signed images and validated Terraform for a private AKS, mapped to HIPAA, SOC 2 and GDPR controls."
+description: "Clinical PDFs to FHIR-style data with Claude on a production Kubernetes platform: PHI redaction, human review, hash-chained audit, canary releases, GitOps and Terraform for AKS."
+categories:
+  - cloud-devops-llmops
+  - security-compliance
+  - ai-agents
+stack:
+  frontend:
+    - Next.js, TypeScript (BFF proxy, review UI, audit viewer, Copilot chat)
+  backend:
+    - Python, FastAPI: API, queue worker, indexed batch Job, CronJobs and MCP ops server from one image
+    - RabbitMQ with a dead-letter queue
+  ai:
+    - Claude via the Anthropic SDK (opus-5-5, haiku-5-5); Claude in Microsoft Foundry for prod
+    - Structured outputs from Pydantic schemas, refusal handling, one retry
+    - PHI redaction gate before every model call
+    - Read-only MCP Ops Copilot over Prometheus, Loki, Kubernetes and Argo Rollouts
+    - Claude review of infrastructure PRs in CI
+  data:
+    - PostgreSQL 17 (StatefulSet locally, Flexible Server on Azure)
+    - SeaweedFS S3 locally, Azure Blob in prod
+    - SHA-256 hash-chained audit table, nightly verified pg_dump
+  infra:
+    - Kubernetes: kind locally, AKS on Azure; Helm chart
+    - Argo CD (ApplicationSet, GitOps) and Argo Rollouts (canary)
+    - HPA, Prometheus + Grafana, Loki + Fluent Bit, Kyverno, cert-manager
+    - Terraform: AKS, Firewall, WAF, Key Vault, ACR, PostgreSQL, Blob, Policy
+    - GitHub Actions: ci, cd, promote, security, ai-review, terraform
+  security:
+    - Default-deny NetworkPolicies, RBAC per ServiceAccount, Pod Security restricted
+    - Trivy, Checkov, Gitleaks, CodeQL, pip-audit, npm audit; cosign keyless signing + SBOM
+    - Workload identity and OIDC federation, no long-lived credentials; CMK encryption
+    - HIPAA, SOC 2 and GDPR control matrix
+links:
+  github: https://github.com/DavitGadyan/k8s
+outcomes:
+  - PHI is replaced with stable placeholders before any model call and the result is re-scanned; a residual identifier blocks the call and routes the document to a human.
+  - Every login (including failures), PHI view, upload, review, erasure and Copilot tool call lands in an append-only SHA-256 hash-chained audit table, verified every 30 minutes with an alert on tampering.
+  - Fifteen Kubernetes platform projects implemented as real features, from CI/CD with a Trivy gate and cosign signing to canary releases with automatic rollback, GitOps across three environments, CronJobs, StatefulSets and indexed batch Jobs.
+  - Gates at the time of writing, 23 backend tests, Helm renders 162/162 valid under kubeconform strict, Checkov 0 failed of 2,140 checks, Trivy 0 fixable HIGH/CRITICAL, Gitleaks clean and Terraform valid for dev, staging and prod.
+metrics:
+  - label: Checkov checks
+    value: "2,140 passed, 0 failed"
+  - label: Helm manifests valid (kubeconform strict)
+    value: "162/162"
+  - label: Fixable HIGH/CRITICAL findings (Trivy)
+    value: "0"
+  - label: Kubernetes platform projects
+    value: "15"
+  - label: Canary gate
+    value: "5xx < 2 %, p95 < 1 s"
+featured: true
+order: 12
+---
+
+## The problem
+
+Most AI demos stop at "it works on my laptop". Regulated work needs the rest: privacy before the model sees anything, an approval step, an audit trail, monitoring, backups and a safe way to ship updates. The Kubernetes and Azure job posts ask for the same things in platform terms: AKS with Key Vault and private networking, dev, test and prod set up with Terraform and approval gates, CI/CD with security scans, releases that roll back on their own, Prometheus, Grafana and Loki, and often "replace the external PDF service with in-cluster processing". CareLens is one codebase that shows all of it working together on a healthcare workload, so the first weeks of a project go into features instead of plumbing.
+
+## The product in use
+
+<Video src="/videos/carelens-demo.mp4" poster="/videos/carelens-demo.webp" ratio="16 / 9" title="CareLens walkthrough" caption="78-second walkthrough: sign-in, a discharge summary uploaded by patient ID, the extracted conditions, medications and labs with their source quotes, a reviewer's approval, and the audit-chain check." />
+
+## What I built
+
+**Document pipeline.** A clinician uploads a discharge summary, lab report or note by patient ID. The worker splits the PDF in-cluster, replaces Safe Harbor identifiers (names, record numbers, phone numbers) with stable placeholders and re-scans the result; any residual identifier blocks the call and routes the document to a human. Only then does Claude extract conditions, medications, labs, allergies and procedures as FHIR-style resources with standard codes and a source quote each, through structured outputs generated from Pydantic schemas, with one retry on invalid output and refusals surfaced as a distinct error.
+
+![Upload: a clinical PDF queued under a patient ID, with processing starting on its own](/images/portfolio/carelens-upload.jpg)
+
+![Results: conditions, medications and labs with their standard codes and the source quote behind each value](/images/portfolio/carelens-results.jpg)
+
+**Human review and audit.** A reviewer approves or rejects every result, and separation of duties means the uploader cannot approve their own work. Every login (including failures), PHI view, upload, review, erasure and Copilot tool call lands in an append-only, SHA-256 hash-chained audit table that a CronJob verifies every 30 minutes; a failed verification raises an alert as a possible tampering incident, and one click in the audit viewer proves nothing was changed.
+
+![Review: a reviewer approving the extracted record; the uploader cannot approve their own document](/images/portfolio/carelens-review.jpg)
+
+![Audit: the hash-chained trail of every access and action, with the one-click integrity check](/images/portfolio/carelens-audit.jpg)
+
+**Ops Copilot.** Operators ask Claude to investigate incidents through a read-only MCP server over Prometheus, Loki, the Kubernetes API and Argo Rollouts. The server has no write verbs and no Secret access, log lines are PHI-redacted before they reach the model and every tool call is audited. Claude also posts an advisory review of infrastructure and security diffs in CI, with the scanner context and secrets redacted.
+
+![Platform: the production platform behind the product, Kubernetes, Azure, CI/CD, monitoring and compliance](/images/portfolio/carelens-platform.jpg)
+
+![Sign-in: 15-minute sessions, role-based access and every login audited](/images/portfolio/carelens-sign-in.jpg)
+
+## The platform: fifteen Kubernetes projects as real features
+
+Each one lives in the Helm chart or the workflows and has its own demo script:
+
+1. **CI/CD.** Lint, tests, type check and build on every PR, then `helm lint` and `kubeconform --strict` on every environment render. On main: buildx images, a Trivy gate that blocks fixable HIGH and CRITICAL findings, push to GHCR, an SPDX SBOM and cosign keyless signing. CD writes the new digest into the dev values and Argo CD deploys it, so CI never holds cluster credentials.
+2. **Autoscaling.** HPA at 60 % CPU and 75 % memory targeting the Argo Rollout, demonstrated with an in-cluster k6 job.
+3. **Prometheus and Grafana.** ServiceMonitors, recording rules for error ratio and p95, alerts for error rate, latency, queue backlog, extraction failures, LLM errors and spend spikes, filling PVCs, maxed-out HPA and failed CronJobs, and two dashboards (application and capacity).
+4. **Centralised logs.** One JSON line per event with a scrub processor, Fluent Bit to Loki with low-cardinality labels, 30-day retention.
+5. **RBAC.** One ServiceAccount per workload with token automount off; the MCP server reads nine kinds and no Secrets, logs or exec; the CI deployer cannot read Secrets.
+6. **NetworkPolicies.** Default-deny ingress and egress with explicit tier-to-tier flows, verified by a demo that probes nine flows and expects the rest blocked.
+7. **Supply chain.** Gitleaks, Trivy, pip-audit, npm audit, Checkov and CodeQL in CI and nightly, with SARIF to code scanning; Kyverno enforces approved registries, no `:latest`, required resources and cosign signatures in prod.
+8. **Releases.** Rolling updates for the worker, blue-green for the web tier (a Service selector switch after a smoke test through the preview slot) and canary for the API: Argo Rollouts 10, 30, 60 and 100 % with Prometheus analysis, 5xx under 2 % and p95 under 1 s, automatic abort and rollback.
+9. **GitOps.** Argo CD ApplicationSet with auto-sync, prune and self-heal. Dev syncs on every merge, staging is promoted by PR, prod by PR inside a GitHub Environment with required reviewers, digest-pinned signed images, a manual sync and a business-hours sync window; rollback is a revert.
+10. **Scheduled, stateful and batch work.** CronJobs for retention, audit export, audit verification, a Claude-written ops digest and a checksummed `pg_dump`; StatefulSets with retained volumes and verified nightly backups; an indexed batch Job whose failure policy never retries bad input.
+
+## Azure and compliance
+
+Validated Terraform (modules, a shared stack and dev, staging and prod environments) describes a private AKS behind Azure Firewall and an Application Gateway WAF, with Key Vault, ACR, PostgreSQL Flexible Server and Blob reached over private endpoints, workload identity for pods and OIDC federation for GitHub Actions, so no long-lived cloud credential exists anywhere, and a customer-managed key in an HSM-backed Key Vault encrypting storage, Postgres and the AKS disks. A control matrix maps each HIPAA technical safeguard, SOC 2 criterion and GDPR article to the code or configuration that implements it. "HIPAA-ready" means those technical safeguards are mapped; it is not a certification.
+
+## Where it stands
+
+The quality gates at the time of writing: 23 backend tests (API lifecycle, RBAC matrix, PHI redaction, audit tamper detection, the Claude provider's structured output, fallback, refusal and retry paths), the web type check, tests and build, the Docker Compose end-to-end smoke, Helm renders 162/162 valid under kubeconform strict, Checkov 0 failed of 2,140 checks, Trivy 0 fixable HIGH/CRITICAL, a clean Gitleaks history and `terraform validate` for all three environments. The demo was recorded with the offline extractor because no API key was available at recording time, so the summary card reads "Mock extraction"; the pipeline, PHI removal, review and audit are real, and the sample patient data is synthetic. Running the kind cluster demos end to end and the first Terraform apply are the next step.

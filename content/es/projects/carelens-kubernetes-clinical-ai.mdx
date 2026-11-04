@@ -1,0 +1,73 @@
+---
+title: "CareLens: IA clínica en Kubernetes y Azure, lista para HIPAA"
+coverAlt: "Portada de CareLens: «Healthcare AI, safe on Kubernetes», de PDF clínicos a datos estructurados y revisados, con las etiquetas Claude AI, Azure + Terraform y HIPAA, SOC 2, GDPR junto a un documento de cristal protegido por un escudo"
+summary: "Un producto consciente de HIPAA que convierte PDF clínicos en registros al estilo FHIR con Claude, construido para ejercitar de principio a fin una plataforma Kubernetes de producción. La información sanitaria identificable se elimina antes de cualquier llamada a la IA, una persona revisora aprueba cada resultado y cada acceso queda en un registro de auditoría encadenado por hash. Se entrega con un chart de Helm, despliegues canary y blue-green, GitOps con Argo CD en dev, staging y prod, Prometheus y Loki, NetworkPolicies de denegación por defecto, imágenes firmadas y Terraform validado para un AKS privado, con un mapa de controles HIPAA, SOC 2 y RGPD."
+description: "De PDF clínicos a datos al estilo FHIR con Claude en una plataforma Kubernetes: redacción de PHI, revisión humana, auditoría encadenada, canary, GitOps y Terraform para AKS."
+outcomes:
+  - La información identificable se sustituye por marcadores estables antes de cualquier llamada al modelo y el resultado se vuelve a escanear; un identificador residual bloquea la llamada y envía el documento a una persona.
+  - Cada inicio de sesión (fallidos incluidos), consulta de PHI, subida, revisión, borrado y llamada a herramienta del Copilot queda en una tabla de auditoría de solo inserción encadenada con SHA-256, verificada cada 30 minutos con una alerta ante manipulación.
+  - Quince proyectos de plataforma Kubernetes implementados como funciones reales, desde CI/CD con puerta Trivy y firma cosign hasta despliegues canary con reversión automática, GitOps en tres entornos, CronJobs, StatefulSets y Jobs por lotes indexados.
+  - Puertas de calidad en el momento de escribir esto, 23 tests de backend, 162/162 manifiestos de Helm válidos con kubeconform estricto, Checkov 0 fallos de 2.140 comprobaciones, Trivy 0 hallazgos HIGH/CRITICAL corregibles, Gitleaks limpio y Terraform válido para dev, staging y prod.
+metrics:
+  - label: Comprobaciones de Checkov
+    value: "2.140 superadas, 0 fallos"
+  - label: Manifiestos de Helm válidos (kubeconform estricto)
+    value: "162/162"
+  - label: Hallazgos HIGH/CRITICAL corregibles (Trivy)
+    value: "0"
+  - label: Proyectos de plataforma Kubernetes
+    value: "15"
+  - label: Puerta del canary
+    value: "5xx < 2 %, p95 < 1 s"
+---
+
+## El problema
+
+La mayoría de las demostraciones de IA se quedan en «funciona en mi portátil». El trabajo regulado necesita el resto: privacidad antes de que el modelo vea nada, un paso de aprobación, un rastro de auditoría, monitorización, copias de seguridad y una forma segura de publicar cambios. Las ofertas de Kubernetes y Azure piden lo mismo en términos de plataforma: AKS con Key Vault y red privada, dev, test y prod configurados con Terraform y puertas de aprobación, CI/CD con análisis de seguridad, despliegues que se revierten solos, Prometheus, Grafana y Loki y, a menudo, «sustituir el servicio externo de PDF por procesamiento dentro del clúster». CareLens es una sola base de código que muestra todo eso funcionando junto sobre una carga sanitaria, para que las primeras semanas de un proyecto se dediquen a funciones y no a fontanería.
+
+## El producto en uso
+
+<Video src="/videos/carelens-demo.mp4" poster="/videos/carelens-demo.webp" ratio="16 / 9" title="Recorrido por CareLens" caption="Recorrido de 78 segundos: inicio de sesión, un informe de alta subido por identificador de paciente, las afecciones, medicamentos y analíticas extraídas con sus citas de origen, la aprobación de una persona revisora y la comprobación de la cadena de auditoría." />
+
+## Qué construí
+
+**Pipeline de documentos.** Un profesional clínico sube un informe de alta, un informe de laboratorio o una nota por identificador de paciente. El worker divide el PDF dentro del clúster, sustituye los identificadores Safe Harbor (nombres, números de historia, teléfonos) por marcadores estables y vuelve a escanear el resultado; cualquier identificador residual bloquea la llamada y envía el documento a una persona. Solo entonces Claude extrae afecciones, medicamentos, analíticas, alergias y procedimientos como recursos al estilo FHIR con códigos estándar y una cita de origen cada uno, mediante salidas estructuradas generadas a partir de esquemas Pydantic, con un reintento ante una salida inválida y los rechazos señalados como un error distinto.
+
+![Subida: un PDF clínico en cola bajo un identificador de paciente, con el procesamiento arrancando solo](/images/portfolio/carelens-upload.jpg)
+
+![Resultados: afecciones, medicamentos y analíticas con sus códigos estándar y la cita de origen detrás de cada valor](/images/portfolio/carelens-results.jpg)
+
+**Revisión humana y auditoría.** Una persona revisora aprueba o rechaza cada resultado, y la separación de funciones impide que quien sube un documento apruebe su propio trabajo. Cada inicio de sesión (fallidos incluidos), consulta de PHI, subida, revisión, borrado y llamada a herramienta del Copilot queda en una tabla de auditoría de solo inserción encadenada con SHA-256 que un CronJob verifica cada 30 minutos; una verificación fallida genera una alerta como posible incidente de manipulación, y un clic en el visor de auditoría demuestra que nada ha cambiado.
+
+![Revisión: una persona revisora aprueba el registro extraído; quien lo subió no puede aprobar su propio documento](/images/portfolio/carelens-review.jpg)
+
+![Auditoría: el rastro encadenado por hash de cada acceso y acción, con la comprobación de integridad en un clic](/images/portfolio/carelens-audit.jpg)
+
+**Copilot de operaciones.** Los operadores piden a Claude que investigue incidentes a través de un servidor MCP de solo lectura sobre Prometheus, Loki, la API de Kubernetes y Argo Rollouts. El servidor no tiene verbos de escritura ni acceso a Secrets, las líneas de log se limpian de PHI antes de llegar al modelo y cada llamada a herramienta queda auditada. Claude también publica en CI una revisión consultiva de los cambios de infraestructura y seguridad, con el contexto de los escáneres y los secretos redactados.
+
+![Plataforma: la plataforma de producción detrás del producto, Kubernetes, Azure, CI/CD, monitorización y cumplimiento](/images/portfolio/carelens-platform.jpg)
+
+![Inicio de sesión: sesiones de 15 minutos, acceso por roles y cada inicio de sesión auditado](/images/portfolio/carelens-sign-in.jpg)
+
+## La plataforma: quince proyectos de Kubernetes como funciones reales
+
+Cada uno vive en el chart de Helm o en los workflows y tiene su propio script de demostración:
+
+1. **CI/CD.** Lint, tests, comprobación de tipos y build en cada PR, después `helm lint` y `kubeconform --strict` sobre el render de cada entorno. En main: imágenes con buildx, una puerta Trivy que bloquea los hallazgos HIGH y CRITICAL corregibles, publicación en GHCR, SBOM en SPDX y firma cosign sin claves. El CD escribe el nuevo digest en los valores de dev y Argo CD lo despliega, así que el CI nunca tiene credenciales del clúster.
+2. **Autoescalado.** HPA al 60 % de CPU y 75 % de memoria apuntando al Rollout de Argo, demostrado con un job de k6 dentro del clúster.
+3. **Prometheus y Grafana.** ServiceMonitors, reglas de registro para la tasa de errores y el p95, alertas por tasa de errores, latencia, cola atascada, extracciones fallidas, errores y picos de gasto del LLM, volúmenes llenándose, HPA al máximo y CronJobs fallidos, y dos paneles (aplicación y capacidad).
+4. **Logs centralizados.** Una línea JSON por evento con un procesador de limpieza, Fluent Bit hacia Loki con etiquetas de baja cardinalidad, retención de 30 días.
+5. **RBAC.** Una ServiceAccount por carga con el montaje automático de token desactivado; el servidor MCP lee nueve tipos y ningún Secret, log ni exec; el desplegador del CI no puede leer Secrets.
+6. **NetworkPolicies.** Denegación por defecto de entrada y salida con flujos explícitos entre niveles, verificados por una demostración que prueba nueve flujos y espera el resto bloqueado.
+7. **Cadena de suministro.** Gitleaks, Trivy, pip-audit, npm audit, Checkov y CodeQL en CI y cada noche, con SARIF al escaneo de código; Kyverno exige registros aprobados, sin `:latest`, recursos obligatorios y firmas cosign en prod.
+8. **Despliegues.** Actualizaciones rolling para el worker, blue-green para la capa web (un cambio de selector del Service tras una prueba de humo a través del slot de vista previa) y canary para la API: Argo Rollouts al 10, 30, 60 y 100 % con análisis de Prometheus, 5xx por debajo del 2 % y p95 por debajo de 1 s, aborto y reversión automáticos.
+9. **GitOps.** ApplicationSet de Argo CD con sincronización automática, poda y autocuración. Dev se sincroniza en cada merge, staging se promociona por PR, prod por PR dentro de un GitHub Environment con revisores obligatorios, imágenes firmadas fijadas por digest, una sincronización manual y una ventana de sincronización en horario laboral; la reversión es un revert.
+10. **Trabajo programado, con estado y por lotes.** CronJobs para retención, exportación de auditoría, verificación de auditoría, un resumen de operaciones escrito por Claude y un `pg_dump` con suma de verificación; StatefulSets con volúmenes retenidos y copias nocturnas verificadas; un Job por lotes indexado cuya política de fallos nunca reintenta una entrada mala.
+
+## Azure y cumplimiento
+
+Terraform validado (módulos, una pila compartida y los entornos dev, staging y prod) describe un AKS privado detrás de Azure Firewall y un WAF de Application Gateway, con Key Vault, ACR, PostgreSQL Flexible Server y Blob accesibles por endpoints privados, identidad de carga para los pods y federación OIDC para GitHub Actions, de modo que no existe ninguna credencial cloud de larga duración, y una clave gestionada por el cliente en un Key Vault respaldado por HSM que cifra el almacenamiento, Postgres y los discos de AKS. Una matriz de controles asocia cada salvaguarda técnica de HIPAA, cada criterio de SOC 2 y cada artículo del RGPD al código o la configuración que lo implementa. «Lista para HIPAA» significa que esas salvaguardas técnicas están mapeadas; no es una certificación.
+
+## En qué punto está
+
+Las puertas de calidad en el momento de escribir esto: 23 tests de backend (ciclo de vida de la API, matriz RBAC, redacción de PHI, detección de manipulación de la auditoría y las rutas de salida estructurada, respaldo, rechazo y reintento del proveedor de Claude), la comprobación de tipos, los tests y el build de la web, la prueba de humo de extremo a extremo con Docker Compose, 162/162 manifiestos de Helm válidos con kubeconform estricto, Checkov 0 fallos de 2.140 comprobaciones, Trivy 0 hallazgos HIGH/CRITICAL corregibles, un historial limpio en Gitleaks y `terraform validate` en los tres entornos. La demostración se grabó con el extractor sin conexión porque no había clave de API en el momento de grabar, así que la tarjeta de resumen muestra «Mock extraction»; el pipeline, la eliminación de PHI, la revisión y la auditoría son reales, y los datos de pacientes de ejemplo son sintéticos. Ejecutar de principio a fin las demostraciones del clúster kind y el primer apply de Terraform son el siguiente paso.
