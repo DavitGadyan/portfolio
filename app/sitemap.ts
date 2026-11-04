@@ -6,6 +6,7 @@ import { getProjects } from '@/lib/content/projects';
 import { getPosts } from '@/lib/content/posts';
 import { materials } from '@/data/materials';
 import { videos } from '@/data/videos';
+import { tracks } from '@/data/quizzes';
 
 export const dynamic = 'force-static';
 
@@ -26,6 +27,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...materials.flatMap((mat) => entry(`/materials/${mat.id}/`, undefined, 0.7)),
     ...entry('/materials/videos/', undefined, 0.7),
     ...videos.flatMap((v) => entry(`/materials/videos/${v.id}/`, v.uploadDate.slice(0, 10), 0.7)),
+    ...entry('/materials/quizzes/', undefined, 0.7),
+    ...tracks.flatMap((t) => entry(`/materials/quizzes/${t.id}/`, undefined, 0.7)),
     ...getProjects('en').flatMap((p) => entry(`/portfolio/${p.slug}/`, p.lastmod ?? p.date)),
     ...getPosts('en').flatMap((p) => entry(`/blog/${p.slug}/`, p.lastmod ?? p.date, 0.6)),
     ...entry('/cookies/', undefined, 0.2),

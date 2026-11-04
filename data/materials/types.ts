@@ -6,7 +6,11 @@ export type IconId =
   | 'heading' | 'paragraph' | 'rows' | 'book' | 'chat' | 'ordered' | 'table' | 'code' | 'tags' | 'tree'
   | 'clipboard' | 'at' | 'hash' | 'quote' | 'repeat' | 'bot' | 'calendar' | 'network' | 'megaphone' | 'chart' | 'checklist'
   | 'eye' | 'medal' | 'thumbs' | 'pie' | 'link' | 'route' | 'library' | 'globe' | 'calendar-check' | 'coins' | 'trending-down' | 'split'
-  | 'folder-tree' | 'key' | 'image' | 'external-link' | 'sitemap' | 'smartphone' | 'search' | 'target';
+  | 'folder-tree' | 'key' | 'image' | 'external-link' | 'sitemap' | 'smartphone' | 'search' | 'target'
+  // code quizzes (data/quizzes/*)
+  | 'variable' | 'equal' | 'brackets' | 'braces' | 'search-check' | 'shield' | 'properties' | 'boxes' | 'lock' | 'hourglass' | 'orbit' | 'workflow'
+  | 'component' | 'toggle' | 'copy' | 'refresh' | 'server' | 'text-cursor' | 'layers' | 'gauge' | 'pointer' | 'blocks' | 'panels'
+  | 'sigma' | 'group' | 'columns' | 'git-merge' | 'trophy' | 'file-json' | 'merge';
 
 /** `official` = documented by the vendor; `study` = a published analysis; `estimate` = a third-party or experience-based range. */
 export type ImpactKind = 'official' | 'estimate' | 'study';

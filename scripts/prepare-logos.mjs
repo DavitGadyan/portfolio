@@ -27,7 +27,7 @@ console.log(`${n} PNG logos → ${DST} (${Math.round(bytes / 1024)} KB)`);
 const svgs = { 'kali-linux': 'kalilinux/557C94', owasp: 'owasp/000000', 'burp-suite': 'burpsuite/FF6633', wireshark: 'wireshark/1679A7', metasploit: 'metasploit/2A6478',
   ga4: 'googleanalytics/E37400', gtm: 'googletagmanager/246FDB', 'search-console': 'googlesearchconsole/458CF5', n8n: 'n8n/EA4B71', supabase: 'supabase/3FCF8E',
   vercel: 'vercel/000000', mcp: 'modelcontextprotocol/000000', typescript: 'typescript/3178C6', tailwind: 'tailwindcss/06B6D4', nodejs: 'nodedotjs/5FA04E', stripe: 'stripe/635BFF', langchain: 'langchain/1C3C3C',
-  drawio: 'diagramsdotnet/F08705', plotly: 'plotly/7A76FF', d3: 'd3/F9A03C' };
+  drawio: 'diagramsdotnet/F08705', plotly: 'plotly/7A76FF', d3: 'd3/F9A03C', javascript: 'javascript/F7DF1E', snowflake: 'snowflake/29B5E8' };
 // official marks served by the brands themselves (no Simple Icons entry): name → URL
 const direct = { grok: 'https://svgl.app/library/grok-dark.svg', base44: 'https://base44.com/logo_v2.svg', 'react-native': 'https://reactnative.dev/img/header_logo.svg' };
 let fetched = 0;

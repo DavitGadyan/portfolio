@@ -9,6 +9,8 @@ import { withBasePath } from '@/lib/site';
 import { materials, type ImpactKind, type Material } from '@/data/materials';
 import { logoScale, logoSrc } from '@/data/skillLogos';
 import { VIDEOS_PATH, videos } from '@/data/videos';
+import { QUIZZES_PATH, tracks } from '@/data/quizzes';
+import { ListChecks } from 'lucide-react';
 import { PlayIcon } from '@/components/materials/VideoCard';
 import { SiteFrame } from '@/components/layout/SiteFrame';
 import { SectionTitle } from '@/components/ui/SectionTitle';
@@ -65,6 +67,14 @@ export function MaterialsPage({ locale }: { locale: Locale }) {
                 <strong>{m.videos.heading}</strong>
                 <p>{m.videos.tagline}</p>
                 <small>{fmt(m.videos.count, { n: videos.length })} · {m.videos.open} →</small>
+              </Link>
+            </li>
+            <li>
+              <Link href={pagePath(locale, QUIZZES_PATH)} className="tg__tile" prefetch={false}>
+                <span className="tg__tile-icon" aria-hidden="true"><ListChecks size={28} strokeWidth={2} /></span>
+                <strong>{m.quizzes.heading}</strong>
+                <p>{m.quizzes.tagline}</p>
+                <small>{fmt(m.quizzes.count, { n: tracks.length })} · {m.quizzes.open} →</small>
               </Link>
             </li>
           </ul>

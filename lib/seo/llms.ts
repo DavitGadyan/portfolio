@@ -1,6 +1,7 @@
 import { SITE_URL, SOCIAL, absUrl, CALENDLY_URL } from '@/lib/site';
 import { materials } from '@/data/materials';
 import { fmtDuration, loomShareUrl, videos } from '@/data/videos';
+import { tracks } from '@/data/quizzes';
 import type { Locale } from '@/lib/i18n/config';
 import { getMessages } from '@/lib/i18n/messages';
 import { localizePath } from '@/lib/locale-path';
@@ -62,6 +63,12 @@ export function buildLlms(locale: Locale, full: boolean): string {
   L.push(`### ${m.videos.heading}`, '', `${m.videos.intro} ${url('/materials/videos/')}`, '');
   for (const v of videos) L.push(`- [${v.title[locale]}](${url(`/materials/videos/${v.id}/`)}) — ${fmtDuration(v.duration)} min · Loom: ${loomShareUrl(v)}`);
   L.push('');
+  L.push(`### ${m.quizzes.heading}`, '', `${m.quizzes.intro} ${url('/materials/quizzes/')}`, '');
+  for (const t of tracks) {
+    L.push(`#### [${t.title[locale]}](${url(`/materials/quizzes/${t.id}/`)})`, '');
+    for (const n of t.nodes) L.push(`- **${n.title[locale]}** — ${n.what[locale]}`);
+    L.push('');
+  }
   L.push(`## ${es ? 'Proyectos destacados' : 'Featured projects'}`);
   L.push('');
   for (const p of projects.filter((x) => x.featured).sort((a, b) => (a.order ?? 99) - (b.order ?? 99))) L.push(`- [${p.title}](${url(`/portfolio/${p.slug}/`)}) — ${p.summary}`);

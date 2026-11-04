@@ -22,6 +22,7 @@ export const logos = {
   binance: ['binance.png', 'Binance', 1.3], bybit: ['bybit.png', 'Bybit', 1.3], ibkr: ['ibkr.png', 'Interactive Brokers', 1.6], quantconnect: ['quantconnect.png', 'QuantConnect'],
   tradingview: ['tradingview.png', 'TradingView'], bitcoin: ['bitcoin.png', 'Bitcoin'], metamask: ['metamask.png', 'MetaMask'],
   aeo: ['aeo.svg', 'AEO'], geo: ['geo.svg', 'GEO'], kpis: ['kpis.svg', 'KPIs'], seo: ['seo.svg', 'SEO'],
+  javascript: ['javascript.svg', 'JavaScript'], snowflake: ['snowflake.svg', 'Snowflake'],
 } as const;
 export type LogoId = keyof typeof logos;
 export const logoSrc = (id: LogoId) => '/logos/' + logos[id][0];

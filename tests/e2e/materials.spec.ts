@@ -17,7 +17,7 @@ test.describe('materials', () => {
     await page.goto('/materials/');
     await expect(page.locator('h1')).toHaveCount(1);
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', /\/materials\/$/);
-    await expect(page.locator('.tg__tile')).toHaveCount(6); // Claude, AEO, GEO, KPIs, SEO + the Videos folder
+    await expect(page.locator('.tg__tile')).toHaveCount(7); // Claude, AEO, GEO, KPIs, SEO + the Videos and Code Quizzes folders
     const tile = page.locator('.tg__tile').first();
     await expect(tile).toContainText('Claude');
     if (!isMobile) {
@@ -158,8 +158,7 @@ test.describe('materials', () => {
 
   test('videos: a folder tile on the index, five cards inside, each page plays its Loom on click, the proposal short link redirects', async ({ page }) => {
     await page.goto('/materials/');
-    const tile = page.locator('.tg__tile').last();
-    await expect(tile).toContainText('Videos');
+    const tile = page.locator('.tg__tile', { hasText: 'Videos' });
     await tile.click();
     await page.waitForURL(/\/materials\/videos\/$/);
     await expect(page.locator('h1')).toHaveText('Videos');
