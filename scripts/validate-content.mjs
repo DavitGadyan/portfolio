@@ -56,6 +56,7 @@ for (const slug of slugs) {
     if (!Array.isArray(d.categories) || d.categories.length < 1 || d.categories.length > max) err(enF, `categories must have 1–${max} entries`);
     else for (const c of d.categories) if (!CATS.includes(c)) err(enF, `unknown category ${c}`);
     for (const l of LAYERS) if (!Array.isArray(d.stack?.[l])) err(enF, `stack.${l} must be an array ([] allowed)`);
+    else for (const l of LAYERS) for (const e of d.stack[l]) if (typeof e !== 'string') err(enF, `stack.${l} entry ${JSON.stringify(e)} is not a string: YAML reads "Name: details" as a map, write "Name (details)" or quote it`);
     if (!Array.isArray(d.outcomes) || d.outcomes.length < 2 || d.outcomes.length > 5) warn(enF, 'outcomes should have 2–5 entries');
     if (d.links && typeof d.links !== 'object') err(enF, 'links must be an object');
     if (es) for (const k of P_INV) if (es.data[k] !== undefined) err(esF, `ES must not declare invariant "${k}"`);

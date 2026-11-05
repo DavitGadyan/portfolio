@@ -14,7 +14,7 @@ stack:
   frontend:
     - Next.js, TypeScript (BFF proxy, review UI, audit viewer, Copilot chat)
   backend:
-    - Python, FastAPI: API, queue worker, indexed batch Job, CronJobs and MCP ops server from one image
+    - Python, FastAPI (API, queue worker, indexed batch Job, CronJobs and MCP ops server from one image)
     - RabbitMQ with a dead-letter queue
   ai:
     - Claude via the Anthropic SDK (opus-5-5, haiku-5-5); Claude in Microsoft Foundry for prod
@@ -27,11 +27,11 @@ stack:
     - SeaweedFS S3 locally, Azure Blob in prod
     - SHA-256 hash-chained audit table, nightly verified pg_dump
   infra:
-    - Kubernetes: kind locally, AKS on Azure; Helm chart
+    - Kubernetes (kind locally, AKS on Azure), Helm chart
     - Argo CD (ApplicationSet, GitOps) and Argo Rollouts (canary)
     - HPA, Prometheus + Grafana, Loki + Fluent Bit, Kyverno, cert-manager
-    - Terraform: AKS, Firewall, WAF, Key Vault, ACR, PostgreSQL, Blob, Policy
-    - GitHub Actions: ci, cd, promote, security, ai-review, terraform
+    - Terraform (AKS, Firewall, WAF, Key Vault, ACR, PostgreSQL, Blob, Policy)
+    - GitHub Actions (ci, cd, promote, security, ai-review, terraform)
   security:
     - Default-deny NetworkPolicies, RBAC per ServiceAccount, Pod Security restricted
     - Trivy, Checkov, Gitleaks, CodeQL, pip-audit, npm audit; cosign keyless signing + SBOM

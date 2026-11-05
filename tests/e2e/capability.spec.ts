@@ -29,6 +29,12 @@ test.describe('skills map', () => {
     await expect(icons).toHaveCount(0);
     await expect(ai).toHaveAttribute('aria-expanded', 'false');
 
+    await b.locator('.brain__node[data-id="data"]').click({ force: true }); // the busiest node: nineteen tools, two rings
+    await expect(icons).toHaveCount(19);
+    await expect(b.locator('.brain__icon[aria-label="Snowflake"]')).toBeVisible();
+    await expect(b.locator('.brain__icon[aria-label="Databricks"]')).toBeVisible();
+    await page.keyboard.press('Escape'); // collapse before the next click: a forced click on a node still gliding can miss it on phones
+    await expect(icons).toHaveCount(0);
     await b.locator('.brain__node[data-id="security"]').click({ force: true });
     await expect(b.locator('.brain__icon[aria-label="Kali Linux"]')).toBeVisible();
     await ai.click({ force: true }); // switching straight to another node

@@ -24,7 +24,7 @@ export const capabilityStages: GraphStage[] = [
     title: { en: 'Data & Databases', es: 'Datos y bases de datos' }, short: { en: 'Data Science', es: 'Ciencia de datos' },
     line: { en: 'Schema design, Postgres, MySQL, MongoDB or Supabase, vector stores, pipelines and scraping that keep the data clean.',
             es: 'Diseño de esquemas, Postgres, MySQL, MongoDB o Supabase, bases vectoriales, pipelines y scraping que mantienen los datos limpios.' },
-    skills: ['python', 'postgresql', 'mysql', 'mongodb', 'supabase', 'redis', 'neo4j', 'bigquery', 'azuresql', 'mssql', 'pandas', 'numpy', 'scipy', 'sklearn', 'xgboost', 'r', 'textract'] },
+    skills: ['python', 'postgresql', 'mysql', 'mongodb', 'supabase', 'redis', 'neo4j', 'bigquery', 'snowflake', 'databricks', 'azuresql', 'mssql', 'pandas', 'numpy', 'scipy', 'sklearn', 'xgboost', 'r', 'textract'] },
   { id: 'deploy', order: 5, categoryIds: ['cloud-devops-llmops'],
     title: { en: 'Deployment, DevOps & LLMOps', es: 'Despliegue, DevOps y LLMOps' }, short: { en: 'DevOps', es: 'DevOps' },
     line: { en: 'Docker, Kubernetes, AWS, GCP or Vercel, CI/CD, monitoring, evals and cost control for models in production.',
