@@ -102,7 +102,7 @@ function ListNode({ node, all, locale, s }: { node: MindNode; all: MindNode[]; l
         <dt>{s.what}</dt><dd>{node.what[locale]}</dd>
         {node.useCase && <><dt>{s.useCase}</dt><dd>{node.useCase[locale]}</dd></>}
         {node.ai && <><dt>{s.ai}</dt><dd>{node.ai[locale]}</dd></>}
-        {node.commands && <><dt>{s.commands}</dt><dd><pre className="tglist__code"><code>{node.commands.join('\n')}</code></pre></dd></>}
+        {node.commands && <><dt>{s.commands}</dt><dd><pre className="tglist__code"><code>{node.commands.map((c, i) => <span key={i}>{i ? '\n' : ''}{c}</span>)}</code></pre></dd></>}
         {node.facts && <><dt>{s.facts}</dt><dd><ul className="mm__facts">{node.facts.map((f, i) => <li key={i}>{f.text[locale]}<small>{s.source}: {f.at}</small></li>)}</ul></dd></>}
       </dl>
       {kids.length > 0 && <ol role="list">{kids.map((k) => <ListNode key={k.id} node={k} all={all} locale={locale} s={s} />)}</ol>}
