@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 360" width="100%" role="img" aria-label="Dos círculos solapados. Snowflake se inclina: analítica SQL primero, almacenes multiclúster, compartición sin copia, IA de Cortex en SELECT, Streamlit y Native Apps. Ambos: almacenamiento aparte del cómputo, tablas ACID y viaje en el tiempo, SQL y Python, capas de crudo a curado, un catálogo de gobernanza, funciones LLM integradas, AWS, Azure y GCP. Databricks se inclina: código Spark y notebooks, Delta Lake en tus buckets, MLflow y Mosaic AI, pipelines de streaming en código, práctica local gratuita" style="height:auto;display:block">
+  <title>Qué se comparte y qué no</title>
+  <circle cx="290" cy="190" r="175" fill="#29B5E8" fill-opacity="0.12" stroke="#29B5E8" stroke-width="1.5" />
+  <circle cx="470" cy="190" r="175" fill="#FF3621" fill-opacity="0.10" stroke="#FF3621" stroke-width="1.5" />
+  <text x="200" y="88" text-anchor="middle" font-size="14" font-weight="700" fill="#29B5E8">Snowflake se inclina</text>
+  <text x="380" y="88" text-anchor="middle" font-size="14" font-weight="700" fill="#313131">Ambos</text>
+  <text x="560" y="88" text-anchor="middle" font-size="14" font-weight="700" fill="#FF3621">Databricks se inclina</text>
+  <text x="200" y="140" text-anchor="middle" font-size="12" fill="#313131">Analítica SQL primero</text>
+  <text x="200" y="166" text-anchor="middle" font-size="12" fill="#313131">Almacenes multiclúster</text>
+  <text x="200" y="192" text-anchor="middle" font-size="12" fill="#313131">Compartición sin copia</text>
+  <text x="200" y="218" text-anchor="middle" font-size="12" fill="#313131">IA de Cortex en SELECT</text>
+  <text x="200" y="244" text-anchor="middle" font-size="12" fill="#313131">Streamlit, Native Apps</text>
+  <text x="380" y="122" text-anchor="middle" font-size="12" fill="#313131">Almacenamiento ≠ cómputo</text>
+  <text x="380" y="148" text-anchor="middle" font-size="12" fill="#313131">Tablas ACID, Time Travel</text>
+  <text x="380" y="174" text-anchor="middle" font-size="12" fill="#313131">SQL y Python</text>
+  <text x="380" y="200" text-anchor="middle" font-size="12" fill="#313131">Capas de crudo a curado</text>
+  <text x="380" y="226" text-anchor="middle" font-size="12" fill="#313131">Un catálogo de gobernanza</text>
+  <text x="380" y="252" text-anchor="middle" font-size="12" fill="#313131">Funciones LLM integradas</text>
+  <text x="380" y="278" text-anchor="middle" font-size="12" fill="#313131">AWS, Azure, GCP</text>
+  <text x="560" y="140" text-anchor="middle" font-size="12" fill="#313131">Código Spark y notebooks</text>
+  <text x="560" y="166" text-anchor="middle" font-size="12" fill="#313131">Delta Lake en tus buckets</text>
+  <text x="560" y="192" text-anchor="middle" font-size="12" fill="#313131">MLflow, Mosaic AI</text>
+  <text x="560" y="218" text-anchor="middle" font-size="12" fill="#313131">Streaming en código</text>
+  <text x="560" y="244" text-anchor="middle" font-size="12" fill="#313131">Práctica local gratuita</text>
+</svg>

@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 330" width="100%" role="img" aria-label="Snowflake's four layers next to the Databricks stack: Snowgrid, cloud services, elastic compute and optimized storage on the left; workspace, Unity Catalog, Spark compute and Delta Lake on your object storage on the right" style="height:auto;display:block">
+  <title>The layers of each platform</title>
+  <text x="190" y="26" text-anchor="middle" font-size="16" font-weight="700" fill="#29B5E8">Snowflake</text>
+  <text x="570" y="26" text-anchor="middle" font-size="16" font-weight="700" fill="#FF3621">Databricks</text>
+  <rect x="20" y="44" width="340" height="56" rx="8" fill="#e9f7fd" stroke="#29B5E8" />
+  <text x="190" y="67" text-anchor="middle" font-size="13" font-weight="600" fill="#313131">Snowgrid</text>
+  <text x="190" y="87" text-anchor="middle" font-size="12" fill="#6f6f6f">regions and clouds, replication, sharing</text>
+  <rect x="20" y="110" width="340" height="56" rx="8" fill="#e9f7fd" stroke="#29B5E8" />
+  <text x="190" y="133" text-anchor="middle" font-size="13" font-weight="600" fill="#313131">Cloud services</text>
+  <text x="190" y="153" text-anchor="middle" font-size="12" fill="#6f6f6f">metadata, ACID, result cache, Time Travel, RBAC</text>
+  <rect x="20" y="176" width="340" height="56" rx="8" fill="#e9f7fd" stroke="#29B5E8" />
+  <text x="190" y="199" text-anchor="middle" font-size="13" font-weight="600" fill="#313131">Elastic multi-cluster compute</text>
+  <text x="190" y="219" text-anchor="middle" font-size="12" fill="#6f6f6f">virtual warehouses XS to 6XL, scale up and out</text>
+  <rect x="20" y="242" width="340" height="56" rx="8" fill="#e9f7fd" stroke="#29B5E8" />
+  <text x="190" y="265" text-anchor="middle" font-size="13" font-weight="600" fill="#313131">Optimized storage</text>
+  <text x="190" y="285" text-anchor="middle" font-size="12" fill="#6f6f6f">micro-partitions, managed by Snowflake, Iceberg</text>
+  <rect x="400" y="44" width="340" height="56" rx="8" fill="#fff1ee" stroke="#FF3621" />
+  <text x="570" y="67" text-anchor="middle" font-size="13" font-weight="600" fill="#313131">Workspace</text>
+  <text x="570" y="87" text-anchor="middle" font-size="12" fill="#6f6f6f">notebooks, SQL warehouses, dashboards, Lakeflow</text>
+  <rect x="400" y="110" width="340" height="56" rx="8" fill="#fff1ee" stroke="#FF3621" />
+  <text x="570" y="133" text-anchor="middle" font-size="13" font-weight="600" fill="#313131">Unity Catalog</text>
+  <text x="570" y="153" text-anchor="middle" font-size="12" fill="#6f6f6f">permissions, metadata, lineage</text>
+  <rect x="400" y="176" width="340" height="56" rx="8" fill="#fff1ee" stroke="#FF3621" />
+  <text x="570" y="199" text-anchor="middle" font-size="13" font-weight="600" fill="#313131">Apache Spark compute</text>
+  <text x="570" y="219" text-anchor="middle" font-size="12" fill="#6f6f6f">clusters and SQL warehouses, Photon engine</text>
+  <rect x="400" y="242" width="340" height="56" rx="8" fill="#fff1ee" stroke="#FF3621" />
+  <text x="570" y="265" text-anchor="middle" font-size="13" font-weight="600" fill="#313131">Delta Lake on your object storage</text>
+  <text x="570" y="285" text-anchor="middle" font-size="12" fill="#6f6f6f">Parquet files plus _delta_log in S3, ADLS or GCS</text>
+  <text x="380" y="320" text-anchor="middle" font-size="12" fill="#6f6f6f">Both run on AWS, Azure and Google Cloud. Snowflake manages the files; Databricks reads and writes them in your account.</text>
+</svg>

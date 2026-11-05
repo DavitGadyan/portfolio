@@ -6,6 +6,7 @@ import { VideoFacade } from '@/components/embeds/VideoFacade';
 import { Video } from '@/components/embeds/Video';
 import { Screen } from '@/components/embeds/Screen';
 import { MdImage } from './MdImage';
+import { Figure } from './Figure';
 import { withBasePath } from '@/lib/site';
 
 function MdLink(props: AnchorHTMLAttributes<HTMLAnchorElement>) {
@@ -21,6 +22,7 @@ export function Markdown({ source, playLabel = 'Play video' }: { source: string;
     Loom: (p: { id: string; title?: string }) => <VideoFacade provider="loom" {...p} playLabel={playLabel} />,
     Video: (p: { src: string; poster?: string; title?: string; ratio?: string; caption?: string }) => <Video {...p} />,
     Screen: (p: { src: string; poster?: string; title: string; ratio?: string; children?: ReactNode }) => <Screen {...p} />,
+    Figure: (p: { src: string; caption?: string }) => <Figure {...p} />,
     img: (p: ImgHTMLAttributes<HTMLImageElement>) => <MdImage src={String(p.src ?? '')} alt={String(p.alt ?? '')} />,
     a: MdLink,
   };

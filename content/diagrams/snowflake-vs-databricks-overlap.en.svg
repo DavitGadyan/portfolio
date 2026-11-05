@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 360" width="100%" role="img" aria-label="Two overlapping circles. Snowflake leans: SQL-first analytics, multi-cluster warehouses, zero-copy data sharing, Cortex AI in SELECT, Streamlit and Native Apps. Both: storage and compute apart, ACID tables and time travel, SQL and Python, raw to curated layers, one governance catalog, LLM features built in, AWS, Azure and GCP. Databricks leans: Spark code and notebooks, Delta Lake in your buckets, MLflow and Mosaic AI, streaming pipelines in code, free local practice" style="height:auto;display:block">
+  <title>What is shared and what is not</title>
+  <circle cx="290" cy="190" r="175" fill="#29B5E8" fill-opacity="0.12" stroke="#29B5E8" stroke-width="1.5" />
+  <circle cx="470" cy="190" r="175" fill="#FF3621" fill-opacity="0.10" stroke="#FF3621" stroke-width="1.5" />
+  <text x="200" y="88" text-anchor="middle" font-size="14" font-weight="700" fill="#29B5E8">Snowflake leans</text>
+  <text x="380" y="88" text-anchor="middle" font-size="14" font-weight="700" fill="#313131">Both</text>
+  <text x="560" y="88" text-anchor="middle" font-size="14" font-weight="700" fill="#FF3621">Databricks leans</text>
+  <text x="200" y="140" text-anchor="middle" font-size="12" fill="#313131">SQL-first analytics</text>
+  <text x="200" y="166" text-anchor="middle" font-size="12" fill="#313131">Multi-cluster warehouses</text>
+  <text x="200" y="192" text-anchor="middle" font-size="12" fill="#313131">Zero-copy data sharing</text>
+  <text x="200" y="218" text-anchor="middle" font-size="12" fill="#313131">Cortex AI inside SELECT</text>
+  <text x="200" y="244" text-anchor="middle" font-size="12" fill="#313131">Streamlit, Native Apps</text>
+  <text x="380" y="122" text-anchor="middle" font-size="12" fill="#313131">Storage ≠ compute</text>
+  <text x="380" y="148" text-anchor="middle" font-size="12" fill="#313131">ACID tables, time travel</text>
+  <text x="380" y="174" text-anchor="middle" font-size="12" fill="#313131">SQL and Python</text>
+  <text x="380" y="200" text-anchor="middle" font-size="12" fill="#313131">Raw to curated layers</text>
+  <text x="380" y="226" text-anchor="middle" font-size="12" fill="#313131">One governance catalog</text>
+  <text x="380" y="252" text-anchor="middle" font-size="12" fill="#313131">LLM features built in</text>
+  <text x="380" y="278" text-anchor="middle" font-size="12" fill="#313131">AWS, Azure, GCP</text>
+  <text x="560" y="140" text-anchor="middle" font-size="12" fill="#313131">Spark code and notebooks</text>
+  <text x="560" y="166" text-anchor="middle" font-size="12" fill="#313131">Delta Lake in your buckets</text>
+  <text x="560" y="192" text-anchor="middle" font-size="12" fill="#313131">MLflow, Mosaic AI</text>
+  <text x="560" y="218" text-anchor="middle" font-size="12" fill="#313131">Streaming pipelines in code</text>
+  <text x="560" y="244" text-anchor="middle" font-size="12" fill="#313131">Free local practice</text>
+</svg>

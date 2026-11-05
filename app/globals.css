@@ -117,6 +117,10 @@ body {
   .prose-dg th, .prose-dg td { border: 1px solid var(--color-ink-100); padding: 0.5rem 0.75rem; text-align: left; vertical-align: top; }
   .prose-dg th { background: var(--color-paper-100); color: var(--color-ink-700); font-weight: 600; }
   .prose-dg img { max-width: 100%; height: auto; }
+  .prose-dg .fig { margin: 1.6em 0; }
+  .prose-dg .fig__svg { overflow-x: auto; } /* narrow screens scroll the diagram sideways instead of shrinking its text, like .cr__table */
+  .prose-dg .fig__svg svg { display: block; width: 100%; min-width: 40rem; height: auto; }
+  .prose-dg figcaption { margin-top: 0.6em; font-size: 0.875rem; line-height: 1.5; color: var(--color-ink-400); }
   .prose-dg hr { border: 0; border-top: 1px solid var(--color-ink-100); }
   .prose-dg--on-dark { color: #d9d9d9; }
   .prose-dg--on-dark a { color: #fff; }
