@@ -13,19 +13,19 @@ async function openNode(page: Page, id: string) {
 }
 
 test.describe('materials', () => {
-  test('index lists the tools; the nav item sits right before the CV link', async ({ page, isMobile }) => {
+  test('index lists the tools; the folder is reached by URL only, no menu lists it', async ({ page }) => {
     await page.goto('/materials/');
     await expect(page.locator('h1')).toHaveCount(1);
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', /\/materials\/$/);
     await expect(page.locator('.tg__tile')).toHaveCount(8); // Claude, AEO, GEO, KPIs, SEO + the Videos, Code Quizzes and Mind Maps folders
     const tile = page.locator('.tg__tile').first();
     await expect(tile).toContainText('Claude');
-    if (!isMobile) {
-      const links = page.locator('header.hdr nav').first().locator('a');
-      const labels = (await links.allInnerTexts()).map((s) => s.trim().toLowerCase());
-      expect(labels.indexOf('materials')).toBe(labels.indexOf('download my cv') - 1);
-      await expect(page.locator('header.hdr nav a[href$="/materials/"]').first()).toHaveAttribute('aria-current', 'page');
-    }
+    // hidden on purpose (lib/nav.ts): neither the header menu, the fullscreen menu nor the footer menu links to /materials/; only the breadcrumb and the language switcher (same page in Spanish) mention it
+    await expect(page.locator('header.hdr nav.hdr__nav a[href$="/materials/"], #fullscreen-nav .fsnav__links a[href$="/materials/"], footer nav a[href$="/materials/"]')).toHaveCount(0);
+    const labels = (await page.locator('#fullscreen-nav .fsnav__links a').allInnerTexts()).map((s) => s.trim().toLowerCase());
+    expect(labels).not.toContain('materials');
+    expect(labels.at(-1)).toBe('download my cv'); // the CV link now follows Blog directly
+    await expect(page.locator('header.hdr nav a[aria-current="page"]')).toHaveCount(0);
     await tile.click();
     await page.waitForURL(/\/materials\/claude\/$/);
   });
