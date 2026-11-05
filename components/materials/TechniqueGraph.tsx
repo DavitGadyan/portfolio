@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { X } from 'lucide-react';
 import type { IconId, ImpactKind } from '@/data/materials';
+import { useHashId } from '@/lib/useHashId';
 import { TechIcon } from './icons';
 
 export type TechniqueView = {
@@ -42,16 +43,21 @@ function place(i: number, n: number): { ring: Pt; cols: Pt } {
  * ordinary elements moved with `translate` in container units, so the animation stays on the compositor (the SVG
  * itself is static; animating strokes repainted it every frame and halved the frame rate).
  * The open card is local state unless the parent passes `open` + `onOpenChange` (the quiz review opens cards this way).
+ * Until someone picks or closes a card, a `#c-<id>` in the URL (the Materials search links this way) opens that card.
  */
 export function TechniqueGraph({ tool, t, open: controlled, onOpenChange }: { tool: ToolView; t: GraphStrings; open?: string | null; onOpenChange?: (id: string | null) => void }) {
-  const [inner, setInner] = useState<string | null>(null);
-  const open = controlled === undefined ? inner : controlled;
+  const [inner, setInner] = useState<string | null | undefined>(undefined); // undefined = untouched
+  const hashId = useHashId();
+  const hashOpen = tool.techniques.some((x) => x.id === hashId) ? hashId : null;
+  const picked = controlled === undefined ? inner : controlled;
+  const open = picked === undefined ? hashOpen : picked;
   const [hot, setHot] = useState<string | null>(null);
   const opener = useRef<HTMLButtonElement | null>(null);
   const panel = useRef<HTMLDivElement>(null);
   const n = tool.techniques.length;
   const active = open ? tool.techniques.find((x) => x.id === open) : undefined;
 
+  useEffect(() => { if (picked === undefined && hashOpen) panel.current?.scrollIntoView({ block: 'center' }); }, [picked, hashOpen]); // arrived through a search result: show the details
   useEffect(() => {
     if (!open) return;
     const onKey = (e: globalThis.KeyboardEvent) => { if (e.key === 'Escape') { setInner(null); onOpenChange?.(null); opener.current?.focus(); } };

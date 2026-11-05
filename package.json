@@ -21,6 +21,7 @@
     "migrate:hugo": "node scripts/migrate-hugo.mjs /Users/dyada/Desktop/portfolio/david_portfolio"
   },
   "dependencies": {
+    "@xyflow/react": "^12.12.1",
     "gray-matter": "^4.0.3",
     "lucide-react": "^1.63.0",
     "next": "16.4.3",

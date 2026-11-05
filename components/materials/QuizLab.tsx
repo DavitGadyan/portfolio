@@ -6,7 +6,7 @@ import { Quiz, type QuestionView, type QuizStrings } from './Quiz';
 
 /** The syntax map and the quiz of one track share the open card, so a reviewed answer can open its pattern on the map. */
 export function QuizLab({ tool, t, questions, size, s, headings }: { tool: ToolView; t: GraphStrings; questions: QuestionView[]; size: number; s: QuizStrings; headings: { quiz: string; quizIntro: string } }) {
-  const [open, setOpen] = useState<string | null>(null);
+  const [open, setOpen] = useState<string | null | undefined>(undefined); // undefined until the first pick, so a #c-<id> link can open its card
   const review = (id: string) => {
     setOpen(id);
     document.getElementById('tg-panel')?.scrollIntoView({ block: 'center', behavior: 'smooth' });

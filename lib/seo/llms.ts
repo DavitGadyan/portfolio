@@ -2,6 +2,7 @@ import { SITE_URL, SOCIAL, absUrl, CALENDLY_URL } from '@/lib/site';
 import { materials } from '@/data/materials';
 import { fmtDuration, loomShareUrl, videos } from '@/data/videos';
 import { tracks } from '@/data/quizzes';
+import { mindmaps } from '@/data/mindmaps';
 import type { Locale } from '@/lib/i18n/config';
 import { getMessages } from '@/lib/i18n/messages';
 import { localizePath } from '@/lib/locale-path';
@@ -67,6 +68,15 @@ export function buildLlms(locale: Locale, full: boolean): string {
   for (const t of tracks) {
     L.push(`#### [${t.title[locale]}](${url(`/materials/quizzes/${t.id}/`)})`, '');
     for (const n of t.nodes) L.push(`- **${n.title[locale]}** — ${n.what[locale]}`);
+    L.push('');
+  }
+  L.push(`### ${m.mindmaps.heading}`, '', `${m.mindmaps.intro} ${url('/materials/mindmaps/')}`, '');
+  for (const x of mindmaps) {
+    L.push(`#### [${x.title[locale]}](${url(`/materials/mindmaps/${x.id}/`)})`, '');
+    const walk = (parent: string | undefined, depth: number) => {
+      for (const n of x.nodes.filter((k) => k.parent === parent)) { L.push(`${'  '.repeat(depth)}- **${n.title[locale]}** — ${n.what[locale]}`); walk(n.id, depth + 1); }
+    };
+    walk(undefined, 0);
     L.push('');
   }
   L.push(`## ${es ? 'Proyectos destacados' : 'Featured projects'}`);

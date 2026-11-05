@@ -17,7 +17,7 @@ test.describe('materials', () => {
     await page.goto('/materials/');
     await expect(page.locator('h1')).toHaveCount(1);
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', /\/materials\/$/);
-    await expect(page.locator('.tg__tile')).toHaveCount(7); // Claude, AEO, GEO, KPIs, SEO + the Videos and Code Quizzes folders
+    await expect(page.locator('.tg__tile')).toHaveCount(8); // Claude, AEO, GEO, KPIs, SEO + the Videos, Code Quizzes and Mind Maps folders
     const tile = page.locator('.tg__tile').first();
     await expect(tile).toContainText('Claude');
     if (!isMobile) {
@@ -192,6 +192,44 @@ test.describe('materials', () => {
     await page.goto('/es/materials/videos/genai/');
     await expect(page.locator('h1')).toHaveText('IA generativa');
     await expect(page.locator('.vcard').first()).toContainText('Ciencia de datos');
+  });
+
+  test('search: one box over every topic, results deep-link to the card on its page, Spanish', async ({ page }) => {
+    await page.goto('/materials/');
+    await expect(page.locator('.msrch[data-ready]')).toBeAttached({ timeout: 20_000 }); // hydrated
+    const box = page.locator('#msrch-q');
+    await expect(page.locator('.msrch__state')).toContainText('Searches every technique');
+    await box.fill('time travel');
+    const items = page.locator('.msrch__item');
+    await expect(items.first()).toContainText('Time Travel');
+    await expect(items.first().locator('.msrch__kind')).toHaveText('Mind map · Snowflake');
+    await expect(items.first().locator('strong mark').first()).toHaveText(/time/i);
+    await expect(page.locator('.msrch__state')).toContainText(/results for “time travel”/);
+    await box.fill('cachíng'); // accents and case are ignored
+    await expect(items.first()).toContainText(/caching/i);
+    await expect(items.first().locator('.msrch__kind')).toContainText('Technique map · Claude');
+    await items.first().click();
+    await page.waitForURL(/\/materials\/claude\/#c-[a-z-]+$/);
+    const panel = page.locator('#tg-panel');
+    await expect(panel).toHaveAttribute('data-state', 'open');
+    await expect(panel.locator('#tg-panel-title')).toHaveText(/caching/i);
+    await page.keyboard.press('Escape');
+    await expect(panel).toHaveAttribute('data-state', 'empty'); // closing wins over the fragment
+    // a mind-map link opens the concept and unfolds its branch; a quiz link opens the pattern
+    await page.goto('/materials/mindmaps/snowflake/#c-feat-time-travel');
+    await expect(page.locator('.react-flow__node[data-id="feat-time-travel"]')).toBeVisible({ timeout: 20_000 });
+    await expect(panel.locator('#tg-panel-title')).toHaveText('Time Travel');
+    await page.goto('/materials/quizzes/sql/#c-window-over');
+    await expect(panel).toHaveAttribute('data-state', 'open');
+    await expect(page.locator('.tg__node[data-id="window-over"]')).toHaveAttribute('aria-expanded', 'true');
+    await page.goto('/es/materials/');
+    await expect(page.locator('.msrch[data-ready]')).toBeAttached({ timeout: 20_000 });
+    await page.locator('#msrch-q').fill('ventana');
+    await expect(page.locator('.msrch__item').first()).toContainText(/ventana/i);
+    await expect(page.locator('.msrch__state')).toContainText('resultados para «ventana»');
+    await page.locator('#msrch-q').fill('zzzzzz');
+    await expect(page.locator('.msrch__state')).toContainText('Ningún tema coincide');
+    await expect(page.locator('.msrch__item')).toHaveCount(0);
   });
 
   test('reduced motion hides the travelling sparks', async ({ page }) => {

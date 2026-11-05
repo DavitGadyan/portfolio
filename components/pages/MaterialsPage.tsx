@@ -10,7 +10,8 @@ import { materials, type ImpactKind, type Material } from '@/data/materials';
 import { logoScale, logoSrc } from '@/data/skillLogos';
 import { VIDEOS_PATH, videos } from '@/data/videos';
 import { QUIZZES_PATH, tracks } from '@/data/quizzes';
-import { ListChecks } from 'lucide-react';
+import { MINDMAPS_PATH, mindmaps } from '@/data/mindmaps';
+import { ListChecks, Waypoints } from 'lucide-react';
 import { PlayIcon } from '@/components/materials/VideoCard';
 import { SiteFrame } from '@/components/layout/SiteFrame';
 import { SectionTitle } from '@/components/ui/SectionTitle';
@@ -19,6 +20,8 @@ import { JsonLd } from '@/components/seo/JsonLd';
 import { TechniqueGraph, type ToolView } from '@/components/materials/TechniqueGraph';
 import { TechIcon } from '@/components/materials/icons';
 import { DataTable } from '@/components/materials/DataTable';
+import { MaterialsSearch } from '@/components/materials/MaterialsSearch';
+import { buildSearchIndex } from '@/lib/materials-search';
 
 const INDEX = '/materials/';
 const toolPath = (id: string) => `${INDEX}${id}/`;
@@ -49,6 +52,11 @@ export function MaterialsPage({ locale }: { locale: Locale }) {
             <SectionTitle as="h1" align="center">{m.sections.materials}</SectionTitle>
             <p className="mt-6 text-[1.02rem] leading-relaxed">{m.materials.intro}</p>
           </div>
+          <MaterialsSearch
+            entries={buildSearchIndex(locale)}
+            s={{ label: m.materials.searchLabel, placeholder: m.materials.searchPlaceholder, hint: m.materials.searchHint, results: m.materials.searchResults, none: m.materials.searchNone, clear: m.materials.searchClear,
+              kinds: { map: m.materials.kindMap, quiz: m.materials.kindQuiz, video: m.materials.kindVideo, mindmap: m.materials.kindMindmap } }}
+          />
           <ul className="tg__tiles" role="list">
             {materials.map((mat) => (
               <li key={mat.id}>
@@ -75,6 +83,14 @@ export function MaterialsPage({ locale }: { locale: Locale }) {
                 <strong>{m.quizzes.heading}</strong>
                 <p>{m.quizzes.tagline}</p>
                 <small>{fmt(m.quizzes.count, { n: tracks.length })} · {m.quizzes.open} →</small>
+              </Link>
+            </li>
+            <li>
+              <Link href={pagePath(locale, MINDMAPS_PATH)} className="tg__tile" prefetch={false}>
+                <span className="tg__tile-icon" aria-hidden="true"><Waypoints size={28} strokeWidth={2} /></span>
+                <strong>{m.mindmaps.heading}</strong>
+                <p>{m.mindmaps.tagline}</p>
+                <small>{mindmaps.length === 1 ? m.mindmaps.countOne : fmt(m.mindmaps.count, { n: mindmaps.length })} · {m.mindmaps.open} →</small>
               </Link>
             </li>
           </ul>
@@ -137,7 +153,7 @@ export function MaterialPage({ locale, id }: { locale: Locale; id: string }) {
           <div className="tgwrap">
             <ol className="tglist" role="list">
               {mat.techniques.map((k) => (
-                <li key={k.id}>
+                <li key={k.id} id={`c-${k.id}`}>
                   <p className="m-0 text-[0.68rem] uppercase tracking-[0.14em] text-ink-400">{mat.groups[k.group][locale]}</p>
                   <h3><TechIcon id={k.icon} size={16} />{k.title[locale]}</h3>
                   <p className="tglist__sub">{k.short[locale]}</p>

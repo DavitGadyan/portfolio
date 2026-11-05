@@ -10,7 +10,10 @@ export type IconId =
   // code quizzes (data/quizzes/*)
   | 'variable' | 'equal' | 'brackets' | 'braces' | 'search-check' | 'shield' | 'properties' | 'boxes' | 'lock' | 'hourglass' | 'orbit' | 'workflow'
   | 'component' | 'toggle' | 'copy' | 'refresh' | 'server' | 'text-cursor' | 'layers' | 'gauge' | 'pointer' | 'blocks' | 'panels'
-  | 'sigma' | 'group' | 'columns' | 'git-merge' | 'trophy' | 'file-json' | 'merge';
+  | 'sigma' | 'group' | 'columns' | 'git-merge' | 'trophy' | 'file-json' | 'merge'
+  // mind maps (data/mindmaps/*)
+  | 'warehouse' | 'database' | 'cloud' | 'cpu' | 'sparkles' | 'brain' | 'file-text' | 'terminal' | 'git-branch' | 'share' | 'bell' | 'activity'
+  | 'history' | 'languages' | 'file-search' | 'container' | 'store' | 'users' | 'zap' | 'timer' | 'package' | 'function' | 'plug' | 'download' | 'layout';
 
 /** `official` = documented by the vendor; `study` = a published analysis; `estimate` = a third-party or experience-based range. */
 export type ImpactKind = 'official' | 'estimate' | 'study';

@@ -129,7 +129,7 @@ export function QuizPage({ locale, id }: { locale: Locale; id: string }) {
           <div className="tgwrap tgwrap--code">
             <ol className="tglist" role="list">
               {t.nodes.map((n) => (
-                <li key={n.id}>
+                <li key={n.id} id={`c-${n.id}`}>
                   <p className="m-0 text-[0.68rem] uppercase tracking-[0.14em] text-ink-400">{t.groups[n.group][locale]}</p>
                   <h3><TechIcon id={n.icon} size={16} />{n.title[locale]}</h3>
                   <p className="tglist__sub">{n.short[locale]}</p>

@@ -22,7 +22,10 @@ export const logos = {
   binance: ['binance.png', 'Binance', 1.3], bybit: ['bybit.png', 'Bybit', 1.3], ibkr: ['ibkr.png', 'Interactive Brokers', 1.6], quantconnect: ['quantconnect.png', 'QuantConnect'],
   tradingview: ['tradingview.png', 'TradingView'], bitcoin: ['bitcoin.png', 'Bitcoin'], metamask: ['metamask.png', 'MetaMask'],
   aeo: ['aeo.svg', 'AEO'], geo: ['geo.svg', 'GEO'], kpis: ['kpis.svg', 'KPIs'], seo: ['seo.svg', 'SEO'],
-  javascript: ['javascript.svg', 'JavaScript'], snowflake: ['snowflake.svg', 'Snowflake'],
+  javascript: ['javascript.svg', 'JavaScript'], snowflake: ['snowflake.svg', 'Snowflake'], databricks: ['databricks.svg', 'Databricks'],
+  // tools named around Snowflake in the mind map (data/mindmaps/snowflake.ts)
+  streamlit: ['streamlit.svg', 'Streamlit'], kafka: ['kafka.svg', 'Apache Kafka'], airflow: ['airflow.svg', 'Apache Airflow'], django: ['django.svg', 'Django'],
+  mistral: ['mistral.svg', 'Mistral AI'], gitlab: ['gitlab.svg', 'GitLab'], bitbucket: ['bitbucket.svg', 'Bitbucket'], go: ['go.svg', 'Go'], php: ['php.svg', 'PHP'], prefect: ['prefect.svg', 'Prefect'],
 } as const;
 export type LogoId = keyof typeof logos;
 export const logoSrc = (id: LogoId) => '/logos/' + logos[id][0];
