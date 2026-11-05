@@ -217,8 +217,8 @@
     "videosDescription": "Five short videos by David Gadyan, recorded for client proposals, one per area: data science and machine learning, generative AI, algorithmic trading, AI marketing and sales, and full-stack SaaS and AI systems built end to end.",
     "quizzesTitle": "Code Quizzes: JavaScript, React and SQL Cheatsheets with Practice Quizzes",
     "quizzesDescription": "Three interactive syntax maps by David Gadyan for timed coding assessments: JavaScript, React and Snowflake SQL. Each map explains the patterns tests ask about most and comes with a 20-question multiple-choice quiz, drawn at random and graded at the end.",
-    "mindmapsTitle": "Mind Maps: Snowflake Key Concepts as an Interactive Map",
-    "mindmapsDescription": "Interactive mind maps by David Gadyan built from course notes. First map: Snowflake for developers, data scientists and data engineers: architecture, core objects, platform features, data engineering, AI with Cortex, machine learning and apps, each concept with its use case and the SQL or Python behind it."
+    "mindmapsTitle": "Mind Maps: Snowflake and Databricks Key Concepts as Interactive Maps",
+    "mindmapsDescription": "Interactive mind maps by David Gadyan built from course notes. Snowflake for developers, data scientists and data engineers (architecture, core objects, platform features, data engineering, AI with Cortex, machine learning and apps) and Databricks for data engineers (Medallion architecture, Apache Spark, the platform, the workspace, clusters, notebooks and DBFS), each concept with its use case and the code behind it."
   },
   "a11y": {
     "quote": "Quote",
@@ -359,7 +359,7 @@
     "kindConcept": "Concept",
     "kindFeature": "Platform feature",
     "kindData": "Data engineering",
-    "kindAi": "AI with Cortex",
+    "kindAi": "AI capabilities",
     "kindMl": "Machine learning",
     "kindApp": "Applications",
     "kindTool": "Developer tooling",

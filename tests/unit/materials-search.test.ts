@@ -20,10 +20,12 @@ describe('materials search index', () => {
         if (e.kind !== 'video') expect(e.href).toMatch(/#c-[a-z0-9-]+$/);
       }
       expect(idx.filter((e) => e.kind === 'video')).toHaveLength(5);
-      expect(idx.filter((e) => e.kind === 'mindmap')).toHaveLength(73);
+      expect(idx.filter((e) => e.kind === 'mindmap')).toHaveLength(73 + 88); // Snowflake + Databricks concepts
     }
     const en = buildSearchIndex('en');
     expect(en.find((e) => e.id === 'snowflake:feat-time-travel')?.href).toBe('/materials/mindmaps/snowflake/#c-feat-time-travel');
+    expect(en.find((e) => e.id === 'databricks:plat-photon')?.href).toBe('/materials/mindmaps/databricks/#c-plat-photon');
+    expect(en.find((e) => e.id === 'databricks:nb-dbutils-notebook')?.title).toBe('dbutils.notebook'); // the text is clipped to 220 chars, so the title carries the search hit
     expect(en.find((e) => e.id === 'claude:compact')?.title).toBe('/compact at checkpoints');
     expect(buildSearchIndex('es').find((e) => e.id === 'snowflake:feat-time-travel')?.href).toBe('/es/materials/mindmaps/snowflake/#c-feat-time-travel');
   });

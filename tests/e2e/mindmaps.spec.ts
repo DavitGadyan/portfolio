@@ -8,23 +8,69 @@ async function tap(page: Page, id: string, times: 1 | 2 = 1) {
   if (times === 2) await c.dblclick({ force: true }); else await c.click({ force: true });
 }
 const START = 21; // the root, eight branches and the twelve Cortex concepts open at start
+const DBX_START = 19; // the root, eight branches and the ten platform capabilities open at start
 
 test.describe('mind maps', () => {
-  test('a folder tile on the Materials index, the Snowflake tile inside', async ({ page }) => {
+  test('a folder tile on the Materials index, the Snowflake and Databricks tiles inside', async ({ page }) => {
     await page.goto('/materials/');
     const tile = page.locator('.tg__tile', { hasText: 'Mind Maps' });
-    await expect(tile).toContainText('1 map');
+    await expect(tile).toContainText('2 maps');
     await tile.click();
     await page.waitForURL(/\/materials\/mindmaps\/$/);
     await expect(page.locator('h1')).toHaveText('Mind Maps');
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', /\/materials\/mindmaps\/$/);
     const tiles = page.locator('.tg__tile');
-    await expect(tiles).toHaveCount(1);
+    await expect(tiles).toHaveCount(2);
     await expect(tiles.first()).toContainText('Snowflake');
     await expect(tiles.first()).toContainText('8 branches · 73 concepts');
     await expect(tiles.first().locator('img')).toHaveAttribute('src', /\/logos\/snowflake\.svg$/);
+    await expect(tiles.nth(1)).toContainText('Databricks');
+    await expect(tiles.nth(1)).toContainText('8 branches · 88 concepts');
+    await expect(tiles.nth(1).locator('img')).toHaveAttribute('src', /\/logos\/databricks\.svg$/);
     await tiles.first().click();
     await page.waitForURL(/\/materials\/mindmaps\/snowflake\/$/);
+  });
+
+  test('the Databricks map: the platform branch open at start, a figure with its lesson, nested folds, Spanish, no JavaScript', async ({ page, browser }) => {
+    await page.goto('/materials/mindmaps/databricks/');
+    await expect(page.locator('h1')).toHaveText(/Databricks Mind Map/);
+    await expect(page.locator('link[rel="alternate"][hreflang="es"]')).toHaveAttribute('href', /\/es\/materials\/mindmaps\/databricks\/$/);
+    await expect(page.locator('.tg__tool')).toHaveCount(2); // the switcher lists both maps
+    await expect(page.locator('.tg__tool[aria-current="page"]')).toContainText('Databricks');
+    const nodes = page.locator('.react-flow__node');
+    await expect(nodes).toHaveCount(DBX_START, { timeout: 20_000 });
+    await expect(page.locator('.react-flow__node-root img')).toHaveAttribute('src', /\/logos\/databricks\.svg$/);
+    await expect(card(page, 'plat-roadmap').locator('.mm__badge')).toHaveText('5'); // the toolset stays folded inside the open branch
+    const panel = page.locator('#tg-panel');
+    await tap(page, 'plat-photon');
+    await expect(panel).toHaveAttribute('data-state', 'open');
+    await expect(panel.locator('#tg-panel-title')).toHaveText('Photon');
+    await expect(panel.locator('.tg__group')).toHaveText('Databricks platform');
+    await expect(panel.locator('.mm__facts li').first()).toContainText('Lesson: How to create Spark Cluster');
+    await card(page, 'nb').locator('.mm__badge').click();
+    await expect(nodes).toHaveCount(DBX_START + 6); // six direct children; magic commands and dbutils keep theirs folded
+    await expect(card(page, 'nb-magic').locator('.mm__badge')).toHaveText('5');
+    await tap(page, 'nb-dbutils');
+    await expect(panel.locator('#tg-panel-title')).toHaveText('Databricks Utilities (dbutils)');
+    await expect(panel.locator('.tg__code')).toContainText('dbutils.fs.help()');
+    await page.keyboard.press('Escape');
+    await expect(panel).toHaveAttribute('data-state', 'empty');
+    await expect(page.locator('.tg__sources')).toContainText('Packt');
+
+    await page.goto('/es/materials/mindmaps/databricks/');
+    await expect(page.locator('h1')).toHaveText(/Mapa mental de Databricks/);
+    await expect(page.locator('.react-flow__node')).toHaveCount(DBX_START, { timeout: 20_000 });
+    await tap(page, 'plat-unity');
+    await expect(page.locator('#tg-panel .tg__group')).toHaveText('Plataforma Databricks');
+    await expect(page.locator('#tg-panel-title')).toHaveText('Unity Catalog');
+
+    const ctx = await browser.newContext({ javaScriptEnabled: false });
+    const p = await ctx.newPage();
+    await p.goto('/materials/mindmaps/databricks/');
+    await expect(p.locator('.mmlist h3')).toHaveCount(88);
+    await expect(p.locator('.mmlist > li')).toHaveCount(8);
+    await expect(p.locator('.mmlist .tglist__code', { hasText: 'dbutils.fs.mount' })).toHaveCount(1);
+    await ctx.close();
   });
 
   test('the Snowflake map: the Cortex branch open at start, details panel, fold and unfold, Escape', async ({ page }) => {

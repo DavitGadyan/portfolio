@@ -43,13 +43,30 @@ describe('mind maps', () => {
     expect(s.nodes.filter((n) => n.logo).length).toBeGreaterThanOrEqual(10); // the brand marks the course names
   });
 
-  it('the layout never overlaps two visible cards and keeps the root clear, folded or not', () => {
-    const s = mindmaps.find((m) => m.id === 'snowflake')!;
+  it('Databricks: eight branches, 88 concepts, the platform branch open at start, every figure tied to a lesson', () => {
+    const d = mindmaps.find((m) => m.id === 'databricks')!;
+    expect(d.nodes).toHaveLength(88);
+    expect(d.nodes.filter((n) => !n.parent).map((b) => b.id)).toEqual(['de', 'spark', 'plat', 'ws', 'arch', 'cluster', 'nb', 'dbfs']);
+    expect(d.openAtStart).toEqual(['plat']);
+    expect(d.nodes.filter((n) => n.parent === 'plat')).toHaveLength(10);
+    expect(d.nodes.filter((n) => n.parent === 'plat-roadmap')).toHaveLength(5); // Autoloader, DLT, Workflows, Repos, capstone
+    expect(d.nodes.filter((n) => n.parent === 'nb-magic')).toHaveLength(5);
+    expect(d.nodes.filter((n) => n.parent === 'nb-dbutils')).toHaveLength(4);
+    expect(d.nodes.filter((n) => n.parent === 'dbfs-mount')).toHaveLength(5); // the five mount steps
+    expect(d.nodes.filter((n) => n.kind === 'ml').map((n) => n.id)).toEqual(['spark-ml', 'ws-ml']); // the course only names ML
+    expect(d.nodes.filter((n) => n.commands).length).toBeGreaterThanOrEqual(12);
+    for (const n of d.nodes) for (const f of n.facts ?? []) expect(f.at).toMatch(/^[A-Z]/); // every figure names the lesson it comes from
+    expect(d.nodes.filter((n) => n.logo).map((n) => n.logo)).toEqual(['databricks', 'azure', 'github', 'azure', 'azure']);
+  });
+
+  /** Places every card of a map under several fold states and checks that no two visible cards overlap and none sits over the root. */
+  function expectCleanLayout(id: string, total: number, branches: number, keepOpen: string) {
+    const s = mindmaps.find((m) => m.id === id)!;
     const parents = new Set(s.nodes.flatMap((n) => (n.parent ? [n.parent] : [])));
-    expect(childrenOf(s.nodes).get(undefined)).toHaveLength(8);
-    for (const folded of [new Set<string>(), new Set(['ai', 'core']), new Set([...parents].filter((id) => id !== 'ai'))]) {
+    expect(childrenOf(s.nodes).get(undefined)).toHaveLength(branches);
+    for (const folded of [new Set<string>(), new Set([keepOpen, s.nodes.find((n) => !n.parent)!.id]), new Set([...parents].filter((p) => p !== keepOpen))]) {
       const placed = layoutTree(s.nodes, folded);
-      expect(placed).toHaveLength(73); // hidden cards are still placed, just flagged
+      expect(placed).toHaveLength(total); // hidden cards are still placed, just flagged
       const visible = placed.filter((p) => !p.hidden);
       for (const p of visible) {
         expect(Number.isFinite(p.x) && Number.isFinite(p.y)).toBe(true);
@@ -57,11 +74,18 @@ describe('mind maps', () => {
       }
       for (let i = 0; i < visible.length; i++) for (let j = i + 1; j < visible.length; j++) {
         const a = visible[i], b = visible[j];
-        expect(Math.abs(a.x - b.x) < NODE_W && Math.abs(a.y - b.y) < NODE_H, `${a.id} overlaps ${b.id}`).toBe(false);
+        expect(Math.abs(a.x - b.x) < NODE_W && Math.abs(a.y - b.y) < NODE_H, `${id}: ${a.id} overlaps ${b.id}`).toBe(false);
       }
     }
-    const open = layoutTree(s.nodes, new Set([...parents].filter((id) => id !== 'ai'))).filter((p) => !p.hidden);
-    expect(open).toHaveLength(8 + 12);
-    expect(open.filter((p) => p.side === 'right').map((p) => p.id).filter((id) => !id.includes('-'))).toEqual(['arch', 'feat', 'de', 'ml']);
+    return layoutTree(s.nodes, new Set([...parents].filter((p) => p !== keepOpen))).filter((p) => !p.hidden);
+  }
+
+  it('the layout never overlaps two visible cards and keeps the root clear, folded or not', () => {
+    const snow = expectCleanLayout('snowflake', 73, 8, 'ai');
+    expect(snow).toHaveLength(8 + 12);
+    expect(snow.filter((p) => p.side === 'right').map((p) => p.id).filter((id) => !id.includes('-'))).toEqual(['arch', 'feat', 'de', 'ml']);
+    const dbx = expectCleanLayout('databricks', 88, 8, 'plat');
+    expect(dbx).toHaveLength(8 + 10); // the platform branch and its ten direct children; the toolset keeps its five folded
+    expect(dbx.filter((p) => p.side === 'right').map((p) => p.id).filter((id) => !id.includes('-'))).toEqual(['de', 'plat', 'arch', 'nb']);
   });
 });
