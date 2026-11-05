@@ -20,6 +20,7 @@ test.describe('blog figures', () => {
       const box = await figs.first().locator('svg').boundingBox();
       expect(box !== null && box.width > 240 && box.height > 90).toBe(true); // the SVG scales with the column instead of collapsing
       await expect(page.locator('.prose-dg pre')).toHaveCount(2); // the two local-setup command blocks
+      await expect(page.locator('.prose-dg img[src*="snowflake-cortex-ml-functions"]')).toHaveCount(1); // the course slide in the ML-exploration section
     });
   }
 });

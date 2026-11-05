@@ -45,6 +45,12 @@ takeaways:
     Delta Lake tables stored as Parquet files in your own object storage, Unity
     Catalog, MLflow and Mosaic AI for model work.
   - >-
+    **Snowflake is not where you explore ML.** Its SQL toolbox is four
+    functions with a fixed gradient-boosting model behind them, and every AI
+    call is a billed query: good for scoring governed data in production, not
+    for the look, try, plot and compare loop of data science. Databricks starts
+    from the notebook.
+  - >-
     **Pick by the dominant workload,** not by brand. Mostly SQL, BI and shared
     data points to Snowflake; mostly Spark code, custom ML and files you want
     to keep in your own lake points to Databricks; both is a valid answer if
@@ -82,6 +88,15 @@ faq:
       questions over a semantic model, all under the same role-based access
       control as the tables. Databricks offers Mosaic AI and model serving on
       top of MLflow for teams that build and host their own models in code.
+  - q: Is Snowflake a good platform for machine-learning exploration?
+    a: >-
+      Not in my view. The SQL-side toolbox is four Cortex ML functions
+      (FORECAST, ANOMALY_DETECTION, TOP_INSIGHTS, CLASSIFICATION) that train a
+      fixed gradient-boosting model from a view and return an answer: no choice
+      of algorithm, no feature engineering outside SQL, no experiment history,
+      and every AI call is a billed query. Snowpark ML adds scikit-learn-style
+      APIs inside Snowflake, which helps for training at scale, but a notebook
+      on Databricks with MLflow is built for the exploration loop.
   - q: Can I practise either one without paying for cloud compute?
     a: >-
       Yes. For the Databricks side, pip install pyspark and delta-spark and run
@@ -150,6 +165,7 @@ Strip the branding and the two platforms agree on the architecture that won the 
 | Pipelines that already run on Airflow, Prefect or dbt | Either | Both accept an external scheduler; the course names all three as alternatives to streams and tasks |
 | Streaming ingestion | Either | Snowpipe loads files in under a minute and Snowpipe Streaming plus the Kafka connector load rows in seconds; Databricks runs streaming pipelines in Spark code |
 | Classical ML with scikit-learn or XGBoost habits | Either | Snowpark ML keeps the scikit-learn, XGBoost and LightGBM APIs and trains inside Snowflake; Databricks pairs notebooks with MLflow tracking |
+| Exploratory data science: look, try, plot, compare runs | Databricks | Snowflake's SQL ML functions are four fixed-model statements and every experiment is a billed query; a notebook on a Spark cluster with MLflow is built for the loop |
 | Custom models, GPUs, your own containers | Either | Snowpark Container Services hosts your own model or a partner LLM on Snowflake-managed GPUs; Databricks is a Spark cluster you configure, with Mosaic AI for serving |
 | LLM calls over governed rows from SQL | Snowflake | AI_SENTIMENT, AI_TRANSLATE, AI_CLASSIFY, AI_EXTRACT and AI_COMPLETE run row by row inside a SELECT under the same RBAC as the table |
 | Chat over your own documents (RAG) | Snowflake, or code on Databricks | Cortex Search is a managed retrieval service over a text column, paired with COMPLETE for the answer; on Databricks you assemble the pieces in code |
@@ -174,6 +190,20 @@ Both vendors put models next to the data, but the shape of the offer is differen
 | Governance | Same roles as the tables; data never leaves | Unity Catalog |
 
 The course puts Cortex on a spectrum from **seconds** (AI/ML Studio, no code) through **minutes** (a SQL function) to **hours** (a container with your own model). Databricks starts at the hours end and works back: you have the whole Spark cluster and MLflow, and you build upward. Which is better depends on who is asking: an analyst who writes SQL gets further on Snowflake; a team that already ships models from notebooks gets further on Databricks.
+
+## Where Snowflake stops being an ML and AI exploration tool
+
+One slide from the course sums up my main reservation, and it is the reason I would not put a data-science team's exploration work on Snowflake:
+
+![Course slide titled "Snowflake Cortex ML Functions": four black boxes, FORECAST (make time series forecasts), ANOMALY_DETECTION (identify outliers), TOP_INSIGHTS, also called Contribution Explorer (identify changes for metrics across time intervals) and CLASSIFICATION (sort data into different classes), each pointing at the SQL that creates the model from a view with a timestamp column and a target column and then calls it](/images/blog/snowflake-cortex-ml-functions.png)
+
+**What the slide shows.** The entire machine-learning toolbox on the SQL side is four functions. Each one is created the same way: a view reference as INPUT_DATA, a TIMESTAMP_COLNAME, a TARGET_COLNAME, and then a call such as `model1!FORECAST(FORECASTING_PERIODS => 3)` or `model_binary!PREDICT(INPUT_DATA => object_construct(*))`. That is the whole training loop. The course adds that FORECAST, ANOMALY_DETECTION and CLASSIFICATION all run a gradient-boosting machine underneath, and that is the only model you get.
+
+**Why that is a problem for exploration.** Data science is a loop: look at the data, try a transformation, train, plot, compare, go back. From this interface you cannot choose the algorithm, tune it beyond the named parameters, engineer features anywhere except in the SQL of the input view, inspect a learning curve, compare two runs side by side or keep an experiment history. The statement returns an answer, which is exactly right when the question is settled and no help while it is not. Even the course's showcase for real modelling, the Snowpark ML XGBoost demo, reports 730 out of 730 test predictions correct on 7,300 synthetic rows: a demonstration of the API, not a modelling workflow.
+
+**The generative side has the same shape.** AI_SENTIMENT or AI_COMPLETE return one answer per row with the model as a parameter. The course's row-by-row demo limits itself to 5 rows while the prompt is tuned, because every call is a billed query on a running warehouse and a larger model costs more per token, and Cortex Search would not even run on the trial account because embeddings need a paid one. That is acceptable for scoring governed data in production. It is a poor place to explore: no cheap local iteration, no experiment tracker, and every attempt shows up on the bill.
+
+**What Snowflake offers instead, and why it does not change the verdict.** Snowpark ML brings scikit-learn, XGBoost and LightGBM-style APIs, a Model Registry and a Feature Store into Snowflake's compute, and the course is right that it beats the stored procedures and UDFs that came before. But it ports the scikit-learn habits into Snowflake's notebooks and warehouses; it does not turn the platform into an exploration environment. Databricks starts from the other end: a notebook on a Spark cluster, MLflow recording every run, the SQL added later. If a team's day is exploration rather than scoring, that difference decides the choice on its own.
 
 ## A simple decision graph
 
@@ -215,7 +245,7 @@ When I needed a Snowflake-shaped environment that starts in seconds with no cred
 
 If the people asking the questions write SQL and the answers go into dashboards, reports and shared datasets, I start with **Snowflake**: warehouses that size themselves to the job, dynamic tables instead of a scheduler, and Cortex for sentiment, translation, classification and natural-language questions without exporting a row.
 
-If the people doing the work write Python against large files, train their own models and want the tables to stay in their own buckets as open files, I start with **Databricks**: Spark is the native language, Delta Lake is the native format, and MLflow and Mosaic AI are the native model tooling.
+If the people doing the work write Python against large files, train their own models and want the tables to stay in their own buckets as open files, I start with **Databricks**: Spark is the native language, Delta Lake is the native format, and MLflow and Mosaic AI are the native model tooling. And if the work is exploration rather than scoring, Databricks wins before any other criterion is weighed.
 
 If a company already has both, the useful conversation is not *which one* but *which workload goes where*, and the one rule that keeps the two from fighting is open table formats: Iceberg on the Snowflake side, Delta and Parquet on the Databricks side, so that neither platform becomes the only thing that can read the data.
 
