@@ -25,9 +25,9 @@ function mdxSafety(f, body) {
     if (i % 2 === 1) return;
     const unescaped = p.match(/(?<!\\)[{}]/g);
     if (unescaped) err(f, `${unescaped.length} unescaped { or } in body (write \\{ and \\})`);
-    const badLt = p.match(/<(?!\/?(YouTube|Loom|Video|Screen|Figure)\b)(?![A-Za-z][A-Za-z0-9-]*(\s|>|\/))/g);
-    if (badLt) err(f, `${badLt.length} raw "<" in body (use &lt; or a <YouTube/>, <Loom/>, <Video/>, <Screen> or <Figure/> component)`);
-    const htmlTags = p.match(/<\/?(?!YouTube|Loom|Video|Screen|Figure)[a-z][a-z0-9-]*[\s>]/g);
+    const badLt = p.match(/<(?!\/?(YouTube|Loom|Video|Screen|Figure|Stacks)\b)(?![A-Za-z][A-Za-z0-9-]*(\s|>|\/))/g);
+    if (badLt) err(f, `${badLt.length} raw "<" in body (use &lt; or a <YouTube/>, <Loom/>, <Video/>, <Screen>, <Figure/> or <Stacks/> component)`);
+    const htmlTags = p.match(/<\/?(?!YouTube|Loom|Video|Screen|Figure|Stacks)[a-z][a-z0-9-]*[\s>]/g);
     if (htmlTags) warn(f, `HTML tags in body: ${[...new Set(htmlTags)].join(' ')}`);
   });
   if (/^\s*#\s/m.test(body)) err(f, 'body must not contain an H1 (# ...); start at ## ');

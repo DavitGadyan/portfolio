@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 400" width="100%" role="img" aria-label="Three bands: Microsoft Foundry alone in the AI applications band at the top; Microsoft Fabric and Azure Databricks side by side in the data platforms band, with Azure AI Search and Azure Machine Learning under them; Microsoft Azure across the whole cloud infrastructure band at the bottom" style="height:auto;display:block">
+  <title>One job each: Foundry, Fabric, Databricks, Azure</title>
+  <text x="20" y="32" font-size="11" font-weight="700" letter-spacing="1.5" fill="#6f6f6f">AI APPLICATIONS AND AGENTS</text>
+  <rect x="20" y="42" width="720" height="58" rx="8" fill="#f1ebfc" stroke="#7B3FE4" />
+  <text x="380" y="66" text-anchor="middle" font-size="13" font-weight="600" fill="#313131">Microsoft Foundry</text>
+  <text x="380" y="86" text-anchor="middle" font-size="12" fill="#6f6f6f">Foundry Models · Agent Service · Foundry Tools · Foundry IQ · evaluations · control plane</text>
+  <text x="20" y="132" font-size="11" font-weight="700" letter-spacing="1.5" fill="#6f6f6f">DATA PLATFORMS</text>
+  <rect x="20" y="142" width="352" height="58" rx="8" fill="#e9f6f0" stroke="#1E7F5C" />
+  <text x="196" y="166" text-anchor="middle" font-size="13" font-weight="600" fill="#313131">Microsoft Fabric</text>
+  <text x="196" y="186" text-anchor="middle" font-size="12" fill="#6f6f6f">SaaS: OneLake, Data Factory, Spark, Warehouse, Power BI</text>
+  <rect x="388" y="142" width="352" height="58" rx="8" fill="#fff1ee" stroke="#FF3621" />
+  <text x="564" y="166" text-anchor="middle" font-size="13" font-weight="600" fill="#313131">Azure Databricks</text>
+  <text x="564" y="186" text-anchor="middle" font-size="12" fill="#6f6f6f">Spark, Delta Lake, Unity Catalog, MLflow, Mosaic AI</text>
+  <rect x="20" y="210" width="352" height="46" rx="8" fill="#e8f2fb" stroke="#0078D4" />
+  <text x="196" y="229" text-anchor="middle" font-size="13" font-weight="600" fill="#313131">Azure AI Search</text>
+  <text x="196" y="247" text-anchor="middle" font-size="12" fill="#6f6f6f">hybrid and vector retrieval for RAG</text>
+  <rect x="388" y="210" width="352" height="46" rx="8" fill="#e8f2fb" stroke="#0078D4" />
+  <text x="564" y="229" text-anchor="middle" font-size="13" font-weight="600" fill="#313131">Azure Machine Learning</text>
+  <text x="564" y="247" text-anchor="middle" font-size="12" fill="#6f6f6f">classic ML lifecycle: train, register, deploy</text>
+  <text x="20" y="288" font-size="11" font-weight="700" letter-spacing="1.5" fill="#6f6f6f">CLOUD INFRASTRUCTURE</text>
+  <rect x="20" y="298" width="720" height="58" rx="8" fill="#e8f2fb" stroke="#0078D4" />
+  <text x="380" y="322" text-anchor="middle" font-size="13" font-weight="600" fill="#313131">Microsoft Azure</text>
+  <text x="380" y="342" text-anchor="middle" font-size="12" fill="#6f6f6f">VMs, AKS, Container Apps, Blob and ADLS Gen2, Virtual Network, Entra ID, Key Vault, Monitor</text>
+  <text x="380" y="386" text-anchor="middle" font-size="12" fill="#6f6f6f">Foundry is one layer inside Azure, not a replacement. Fabric and Databricks are the data layer; AI Search and Azure ML sit beside them.</text>
+</svg>

@@ -71,7 +71,7 @@ test.describe('language switcher and navigation', () => {
   });
 
   test('every page has one h1, canonical and hreflang pairs', async ({ page }) => {
-    for (const p of ['/', '/es/', '/portfolio/', '/es/blog/', '/materials/', '/es/materials/claude/', '/es/materials/quizzes/sql/', '/es/materials/mindmaps/snowflake/', '/es/materials/mindmaps/databricks/', '/cookies/']) {
+    for (const p of ['/', '/es/', '/portfolio/', '/es/blog/', '/materials/', '/es/materials/claude/', '/es/materials/quizzes/sql/', '/es/materials/mindmaps/snowflake/', '/es/materials/mindmaps/databricks/', '/es/blog/azure-fabric-databricks-foundry-which-to-choose/', '/cookies/']) {
       await page.goto(p);
       expect(await page.locator('h1').count()).toBe(1);
       await expect(page.locator('link[rel="canonical"]')).toHaveCount(1);

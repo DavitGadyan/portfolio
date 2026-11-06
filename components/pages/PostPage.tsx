@@ -56,7 +56,7 @@ export function PostPage({ locale, slug }: { locale: Locale; slug: string }) {
               </aside>
             )}
             <div className="prose-dg mt-10">
-              <Markdown source={p.body} playLabel={fmt(m.a11y.playVideo, { title: p.title })} />
+              <Markdown source={p.body} playLabel={fmt(m.a11y.playVideo, { title: p.title })} locale={locale} />
             </div>
             {p.faq.length > 0 && (
               <section className="faq mt-14" aria-labelledby="post-faq">

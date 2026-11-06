@@ -26,6 +26,8 @@ export const logos = {
   // tools named around Snowflake in the mind map (data/mindmaps/snowflake.ts)
   streamlit: ['streamlit.svg', 'Streamlit'], kafka: ['kafka.svg', 'Apache Kafka'], airflow: ['airflow.svg', 'Apache Airflow'], django: ['django.svg', 'Django'],
   mistral: ['mistral.svg', 'Mistral AI'], gitlab: ['gitlab.svg', 'GitLab'], bitbucket: ['bitbucket.svg', 'Bitbucket'], go: ['go.svg', 'Go'], php: ['php.svg', 'PHP'], prefect: ['prefect.svg', 'Prefect'],
+  // the Azure / Fabric / Databricks / Foundry post's stack diagrams (data/blog/azure-stacks.ts)
+  spark: ['apachespark.svg', 'Apache Spark'], mlflow: ['mlflow.svg', 'MLflow'], powerbi: ['powerbi.svg', 'Power BI'], sharepoint: ['sharepoint.svg', 'SharePoint'], microsoft: ['microsoft.svg', 'Microsoft'],
 } as const;
 export type LogoId = keyof typeof logos;
 export const logoSrc = (id: LogoId) => '/logos/' + logos[id][0];

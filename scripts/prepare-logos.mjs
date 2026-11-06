@@ -30,7 +30,11 @@ const svgs = { 'kali-linux': 'kalilinux/557C94', owasp: 'owasp/000000', 'burp-su
   drawio: 'diagramsdotnet/F08705', plotly: 'plotly/7A76FF', d3: 'd3/F9A03C', javascript: 'javascript/F7DF1E', snowflake: 'snowflake/29B5E8', databricks: 'databricks/FF3621',
   // Snowflake mind map (data/mindmaps/snowflake.ts): the tools the course names around Snowflake
   streamlit: 'streamlit/FF4B4B', kafka: 'apachekafka/231F20', airflow: 'apacheairflow/017CEE', django: 'django/092E20', mistral: 'mistralai/FA520F', // no dbt mark on Simple Icons: the card uses a line icon
-  gitlab: 'gitlab/FC6D26', bitbucket: 'bitbucket/0052CC', go: 'go/00ADD8', php: 'php/777BB4', prefect: 'prefect/070E10' };
+  gitlab: 'gitlab/FC6D26', bitbucket: 'bitbucket/0052CC', go: 'go/00ADD8', php: 'php/777BB4', prefect: 'prefect/070E10',
+  // Azure / Fabric / Databricks / Foundry post (data/blog/azure-stacks.ts): no Simple Icons mark exists for Microsoft Fabric, OneLake, Delta Lake or Vertex AI; those cards use the Microsoft mark or a line icon
+  apachespark: 'apachespark/E25A1C', mlflow: 'mlflow/0194E2' };
+// marks the simpleicons.org CDN no longer serves but the npm package still ships (pinned version): fetched from jsDelivr and tinted with the brand colour
+const jsd = { powerbi: ['powerbi', 'F2C811'], sharepoint: ['microsoftsharepoint', '0078D4'] };
 // official marks served by the brands themselves (no Simple Icons entry): name → URL
 const direct = { grok: 'https://svgl.app/library/grok-dark.svg', base44: 'https://base44.com/logo_v2.svg', 'react-native': 'https://reactnative.dev/img/header_logo.svg' };
 let fetched = 0;
@@ -43,7 +47,21 @@ for (const [name, url] of all) {
   if (!res.ok || !text.trimStart().startsWith('<svg')) { console.error('svg fetch failed for', url, res.status); continue; }
   fs.writeFileSync(out, text); fetched++;
 }
-console.log(`${fetched}/${all.length} SVG logos present`);
+for (const [name, [slug, hex]] of Object.entries(jsd)) {
+  const out = path.join(DST, name + '.svg');
+  if (fs.existsSync(out)) { fetched++; continue; }
+  const res = await fetch(`https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/${slug}.svg`);
+  const text = await res.text();
+  if (!res.ok || !text.trimStart().startsWith('<svg')) { console.error('svg fetch failed for', slug, res.status); continue; }
+  fs.writeFileSync(out, text.replace('<svg ', `<svg fill="#${hex}" `)); fetched++;
+}
+// the Microsoft mark (four squares) is not on Simple Icons any more: drawn here with the official colours
+const ms = path.join(DST, 'microsoft.svg');
+if (!fs.existsSync(ms)) {
+  fs.writeFileSync(ms, '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 23 23" role="img" aria-label="Microsoft"><rect x="1" y="1" width="10" height="10" fill="#F25022"/><rect x="12" y="1" width="10" height="10" fill="#7FBA00"/><rect x="1" y="12" width="10" height="10" fill="#00A4EF"/><rect x="12" y="12" width="10" height="10" fill="#FFB900"/></svg>\n');
+  fetched++;
+}
+console.log(`${fetched}/${all.length + Object.keys(jsd).length + 1} SVG logos present`);
 
 // React Native shares React's atom; show it the way reactnative.dev does, on its navy tile, so the two marks read apart.
 const rn = path.join(DST, 'react-native.svg');

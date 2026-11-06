@@ -128,7 +128,13 @@
     "readMore": "Read article",
     "tags": "Tags",
     "related": "Related projects",
-    "servicesHint": "Need something like this built? See my"
+    "servicesHint": "Need something like this built? See my",
+    "stackPick": "Choose a stack",
+    "stackHint": "Tap a layer to read what that technology does in this stack.",
+    "stackUse": "Typical use",
+    "stackLayer": "Layer",
+    "stackTech": "Technology",
+    "stackRole": "What it does"
   },
   "book": {
     "heading": "Book a call",

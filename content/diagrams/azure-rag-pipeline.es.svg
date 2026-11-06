@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 400" width="100%" role="img" aria-label="Un asistente RAG en Azure como flujo de ocho cajas: Blob Storage, Document Intelligence, Azure Databricks y Foundry Models para los embeddings en la primera fila; Azure AI Search, Foundry Models para la respuesta, Foundry Agent Service y Container Apps en la segunda; una banda con Entra ID, Key Vault y Azure Monitor abajo, y los equivalentes en AWS y Google Cloud listados debajo" style="height:auto;display:block">
+  <title>Un asistente RAG empresarial en Azure</title>
+  <defs><marker id="ar-rag-es" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#6f6f6f" /></marker></defs>
+  <rect x="20" y="40" width="160" height="60" rx="8" fill="#e8f2fb" stroke="#0078D4" />
+  <text x="100" y="64" text-anchor="middle" font-size="12" font-weight="600" fill="#313131">Blob Storage</text>
+  <text x="100" y="84" text-anchor="middle" font-size="11" fill="#6f6f6f">guarda los PDF</text>
+  <rect x="200" y="40" width="160" height="60" rx="8" fill="#e8f2fb" stroke="#0078D4" />
+  <text x="280" y="64" text-anchor="middle" font-size="12" font-weight="600" fill="#313131">Document Intelligence</text>
+  <text x="280" y="84" text-anchor="middle" font-size="11" fill="#6f6f6f">extrae texto y tablas</text>
+  <rect x="380" y="40" width="160" height="60" rx="8" fill="#fff1ee" stroke="#FF3621" />
+  <text x="460" y="64" text-anchor="middle" font-size="12" font-weight="600" fill="#313131">Azure Databricks</text>
+  <text x="460" y="84" text-anchor="middle" font-size="11" fill="#6f6f6f">limpia, transforma, trocea</text>
+  <rect x="560" y="40" width="160" height="60" rx="8" fill="#f1ebfc" stroke="#7B3FE4" />
+  <text x="640" y="64" text-anchor="middle" font-size="12" font-weight="600" fill="#313131">Foundry Models</text>
+  <text x="640" y="84" text-anchor="middle" font-size="11" fill="#6f6f6f">embeddings</text>
+  <line x1="180" y1="70" x2="200" y2="70" stroke="#6f6f6f" stroke-width="1.5" marker-end="url(#ar-rag-es)" />
+  <line x1="360" y1="70" x2="380" y2="70" stroke="#6f6f6f" stroke-width="1.5" marker-end="url(#ar-rag-es)" />
+  <line x1="540" y1="70" x2="560" y2="70" stroke="#6f6f6f" stroke-width="1.5" marker-end="url(#ar-rag-es)" />
+  <path d="M640 100 L640 125 L100 125 L100 150" fill="none" stroke="#6f6f6f" stroke-width="1.5" marker-end="url(#ar-rag-es)" />
+  <rect x="20" y="150" width="160" height="60" rx="8" fill="#e8f2fb" stroke="#0078D4" />
+  <text x="100" y="174" text-anchor="middle" font-size="12" font-weight="600" fill="#313131">Azure AI Search</text>
+  <text x="100" y="194" text-anchor="middle" font-size="11" fill="#6f6f6f">guarda y recupera vectores</text>
+  <rect x="200" y="150" width="160" height="60" rx="8" fill="#f1ebfc" stroke="#7B3FE4" />
+  <text x="280" y="174" text-anchor="middle" font-size="12" font-weight="600" fill="#313131">Foundry Models</text>
+  <text x="280" y="194" text-anchor="middle" font-size="11" fill="#6f6f6f">genera la respuesta</text>
+  <rect x="380" y="150" width="160" height="60" rx="8" fill="#f1ebfc" stroke="#7B3FE4" />
+  <text x="460" y="174" text-anchor="middle" font-size="12" font-weight="600" fill="#313131">Foundry Agent Service</text>
+  <text x="460" y="194" text-anchor="middle" font-size="11" fill="#6f6f6f">herramientas y ejecución</text>
+  <rect x="560" y="150" width="160" height="60" rx="8" fill="#e8f2fb" stroke="#0078D4" />
+  <text x="640" y="174" text-anchor="middle" font-size="12" font-weight="600" fill="#313131">Container Apps</text>
+  <text x="640" y="194" text-anchor="middle" font-size="11" fill="#6f6f6f">backend FastAPI</text>
+  <line x1="180" y1="180" x2="200" y2="180" stroke="#6f6f6f" stroke-width="1.5" marker-end="url(#ar-rag-es)" />
+  <line x1="360" y1="180" x2="380" y2="180" stroke="#6f6f6f" stroke-width="1.5" marker-end="url(#ar-rag-es)" />
+  <line x1="540" y1="180" x2="560" y2="180" stroke="#6f6f6f" stroke-width="1.5" marker-end="url(#ar-rag-es)" />
+  <rect x="20" y="240" width="700" height="46" rx="8" fill="#f6f6f6" stroke="#cfcfcf" />
+  <text x="370" y="259" text-anchor="middle" font-size="12" font-weight="600" fill="#313131">Transversal</text>
+  <text x="370" y="277" text-anchor="middle" font-size="11" fill="#6f6f6f">Entra ID (autenticación) · Key Vault (secretos) · Azure Monitor (rendimiento y coste)</text>
+  <text x="20" y="320" font-size="12" fill="#6f6f6f">AWS: S3 · Textract · Glue · Bedrock · OpenSearch · ECS sobre Fargate</text>
+  <text x="20" y="342" font-size="12" fill="#6f6f6f">Google Cloud: Cloud Storage · Document AI · Dataflow o Dataproc · Gemini Enterprise Agent Platform · BigQuery · Cloud Run</text>
+  <text x="20" y="378" font-size="12" fill="#6f6f6f">Foundry pone el modelo, el agente y la evaluación; el resto sigue en otros servicios de Azure.</text>
+</svg>

@@ -121,6 +121,37 @@ body {
   .prose-dg .fig__svg { overflow-x: auto; } /* narrow screens scroll the diagram sideways instead of shrinking its text, like .cr__table */
   .prose-dg .fig__svg svg { display: block; width: 100%; min-width: 40rem; height: auto; }
   .prose-dg figcaption { margin-top: 0.6em; font-size: 0.875rem; line-height: 1.5; color: var(--color-ink-400); }
+  /* Interactive stack diagrams in posts (components/content/Stacks.tsx): a tab per cloud or reference stack, one bar per layer, tap a bar for its role; the plain tables (.stk-nojs) show without JavaScript */
+  .stk { display: none; }
+  .stk-nojs table + table { margin-top: 1.25rem; }
+  .stk-nojs caption { caption-side: top; text-align: left; padding: 0 0 .5rem; font-size: .9rem; line-height: 1.5; color: var(--color-ink-700); }
+  @media (scripting: enabled) { .stk { display: block; } .stk-nojs { display: none; } }
+  .stk__tabs { display: flex; flex-wrap: wrap; gap: .5rem; margin: 0 0 .9rem; }
+  .stk__tab { display: inline-flex; align-items: center; gap: .5rem; padding: .4rem .85rem .4rem .55rem; border-radius: 9999px; border: 1px solid var(--color-ink-200); background: var(--color-paper-0); color: var(--color-ink-700); font: inherit; font-size: .88rem; font-weight: 600; line-height: 1.2; cursor: pointer; transition: border-color .2s, box-shadow .2s; }
+  .stk__tab img { width: 22px; height: 22px; object-fit: contain; scale: var(--k, 1); }
+  .stk__tab:hover { border-color: var(--color-ink-400); }
+  .stk__tab[aria-selected="true"] { border-color: var(--color-accent); box-shadow: 0 0 0 3px rgba(31,170,85,.18); }
+  .stk__tab:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 3px; }
+  .stk__panel { border-radius: 1rem; border: 1px solid rgba(255,255,255,.1); background: radial-gradient(ellipse at 50% 0%, #26272a, #141416 70%); color: #fff; padding: 1rem 1rem .9rem; }
+  .stk__sum { margin: 0 0 .8rem; font-size: .9rem; line-height: 1.5; color: var(--color-ink-200); }
+  .stk ol.stk__layers { list-style: none; margin: 0; padding: 0; display: grid; gap: .4rem; }
+  .stk li.stk__row { margin: 0; border-radius: .7rem; border: 1px solid rgba(255,255,255,.12); background: linear-gradient(160deg, rgba(255,255,255,.07), rgba(255,255,255,.02)); transition: border-color .2s, box-shadow .2s; }
+  .stk li.stk__row[data-open] { border-color: var(--color-accent); box-shadow: 0 0 0 1px rgba(31,170,85,.45); }
+  .stk__layer { display: grid; grid-template-columns: 9.5rem minmax(0, 1fr); gap: .4rem .9rem; align-items: center; width: 100%; padding: .5rem .75rem; border: 0; border-radius: inherit; background: transparent; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+  .stk__layer:hover { background: rgba(255,255,255,.05); }
+  .stk__layer:focus-visible { outline: 3px solid var(--color-focus); outline-offset: -3px; }
+  .stk__lname { font-size: .66rem; font-weight: 600; text-transform: uppercase; letter-spacing: .12em; color: var(--color-ink-300); }
+  .stk__items { display: flex; flex-wrap: wrap; gap: .35rem; }
+  .stk__chip { display: inline-flex; align-items: center; gap: .4rem; padding: .22rem .6rem .22rem .35rem; border-radius: 9999px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.14); font-size: .78rem; font-weight: 600; line-height: 1.2; }
+  .stk__chip img { width: 18px; height: 18px; object-fit: contain; scale: var(--k, 1); background: #fff; border-radius: 4px; padding: 1px; }
+  .stk__chip svg { width: 16px; height: 16px; color: var(--color-accent); }
+  .stk__note { padding: 0 .75rem .7rem; }
+  .stk__note p { margin: 0; padding: .5rem .75rem; border-left: 2px solid rgba(31,170,85,.7); border-radius: 0 .5rem .5rem 0; background: rgba(255,255,255,.05); font-size: .86rem; line-height: 1.5; color: var(--color-ink-100); }
+  .stk__use { margin: .9rem 0 0; font-size: .88rem; line-height: 1.5; color: var(--color-ink-200); }
+  .stk p.stk__use strong { color: #fff; font-weight: 600; } /* outranks .prose-dg p strong */
+  .stk__hint { margin: .45rem 0 0; font-size: .76rem; color: var(--color-ink-300); }
+  @media (max-width: 40rem) { .stk__layer { grid-template-columns: 1fr; gap: .3rem; padding: .5rem .65rem; } }
+  @media (scripting: enabled) and (prefers-reduced-motion: no-preference) { .stk__panel { animation: tgin .3s ease-out both; } .stk__note p { animation: tgin .25s ease-out both; } }
   .prose-dg hr { border: 0; border-top: 1px solid var(--color-ink-100); }
   .prose-dg--on-dark { color: #d9d9d9; }
   .prose-dg--on-dark a { color: #fff; }

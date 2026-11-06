@@ -128,7 +128,13 @@
     "readMore": "Leer artículo",
     "tags": "Etiquetas",
     "related": "Proyectos relacionados",
-    "servicesHint": "¿Necesitas construir algo así? Mira mis"
+    "servicesHint": "¿Necesitas construir algo así? Mira mis",
+    "stackPick": "Elige una pila",
+    "stackHint": "Toca una capa para leer qué hace esa tecnología en esta pila.",
+    "stackUse": "Uso típico",
+    "stackLayer": "Capa",
+    "stackTech": "Tecnología",
+    "stackRole": "Qué hace"
   },
   "book": {
     "heading": "Reserva una llamada",

@@ -1,0 +1,483 @@
+---
+title: 'Azure, Fabric, Databricks o Foundry: ¿qué servicio de Microsoft elegir?'
+description: >-
+  Azure frente a AWS y Google Cloud, y después Fabric frente a Azure Databricks
+  y Microsoft Foundry: para qué sirve cada uno, sus equivalentes en AWS y
+  Google, cinco pilas con diagramas interactivos y una guía de decisión.
+summary: >-
+  Un cliente que trabaja con Microsoft 365 pregunta qué servicio de Azure usar
+  para datos e IA. La respuesta son cuatro productos con un trabajo cada uno:
+  Azure es la nube, Microsoft Fabric la plataforma de analítica, Azure
+  Databricks el lakehouse de Spark y ML, Microsoft Foundry la plataforma para
+  apps LLM y agentes. Este artículo los compara en tablas, los mapea a AWS y
+  Google Cloud y termina con una guía de decisión.
+coverAlt: >-
+  Cuatro fichas con logos, Azure, Microsoft Fabric, Azure Databricks y Microsoft
+  Foundry, sobre una cuadrícula oscura con el título "Azure, Fabric, Databricks
+  or Foundry? Which Microsoft service to choose, and when"
+about:
+  - Microsoft Azure
+  - Microsoft Fabric
+  - Azure Databricks
+  - Microsoft Foundry
+  - Amazon Bedrock
+  - Gemini Enterprise Agent Platform
+  - Arquitectura en la nube
+takeaways:
+  - >-
+    **Cuatro productos, un trabajo cada uno.** Azure es la nube; Microsoft
+    Fabric es la plataforma SaaS de datos y analítica con OneLake y Power BI;
+    Azure Databricks es el lakehouse de Spark, Delta Lake y ML; Microsoft
+    Foundry es donde se construyen, evalúan y gobiernan las aplicaciones LLM y
+    los agentes.
+  - >-
+    **Las empresas eligen Azure por el patrimonio que ya tienen:** Entra ID,
+    Microsoft 365, SharePoint, Teams y Power BI. Servicio a servicio, Azure,
+    AWS y Google Cloud hacen trabajos comparables con precios, límites e
+    integraciones distintos.
+  - >-
+    **Fabric y Databricks ejecutan Spark distribuido los dos.** La diferencia
+    está en el control y el público: Fabric es capacidad gestionada con Power
+    BI incorporado, para analistas y BI; Databricks expone la configuración de
+    clústeres, MLflow y Mosaic AI, para ingenieros y científicos de datos.
+  - >-
+    **Foundry es una capa, no un sustituto.** En un asistente RAG se ocupa de
+    los modelos, el agente y la evaluación; Blob Storage, Document
+    Intelligence, Databricks, Azure AI Search, Container Apps y Entra ID hacen
+    el resto.
+  - >-
+    **El mapa entre nubes:** Microsoft Foundry equivale a Amazon Bedrock y a
+    Gemini Enterprise Agent Platform, la plataforma de la que Vertex AI pasó a
+    formar parte en abril de 2026; Fabric equivale a Redshift con Glue y a
+    BigQuery; Azure Machine Learning a SageMaker AI; Azure AI Search a
+    OpenSearch y a Agent Search.
+  - >-
+    **Saber cuándo no combinar.** Si Fabric Spark basta, añadir Databricks
+    añade coste; si una app LangGraph ya funciona, Foundry puede alojarla en
+    vez de sustituirla; si PostgreSQL con pgvector cumple el requisito, una
+    base de datos vectorial aparte es un gasto.
+faq:
+  - q: ¿Microsoft Foundry es lo mismo que Azure AI Foundry?
+    a: >-
+      Sí. Microsoft renombró Azure AI Studio y después Azure AI Foundry como
+      Microsoft Foundry, y Azure AI Services pasó a llamarse Foundry Tools; la
+      página de Microsoft Learn "What is Microsoft Foundry?" lista los nombres
+      antiguos y los nuevos uno junto al otro. Es la plataforma para modelos,
+      agentes, herramientas, evaluación y gobernanza, y corre sobre Azure.
+  - q: ¿Microsoft Fabric sustituye a Azure Databricks?
+    a: >-
+      No. Microsoft Fabric es una plataforma de analítica SaaS (OneLake, Data
+      Factory, Spark, Data Warehouse, Real-Time Intelligence, Power BI) hecha
+      para ingeniería de datos y BI. Azure Databricks es una plataforma
+      lakehouse para Spark a gran escala, Delta Lake, Unity Catalog y
+      aprendizaje automático. Microsoft documenta la integración en ambos
+      sentidos: tablas de Unity Catalog reflejadas en OneLake y Databricks
+      consultando OneLake mediante federación de catálogos.
+  - q: ¿Necesito Microsoft Fabric si ya uso Databricks?
+    a: >-
+      Normalmente solo para la capa de negocio: Power BI con Direct Lake,
+      OneLake para los usuarios de Microsoft 365 y las tablas de Unity Catalog
+      reflejadas que los analistas leen sin copias. Si Fabric Spark duplicara
+      lo que Databricks ya hace, añadirlo trae coste y complejidad sin
+      capacidad nueva.
+  - q: ¿Microsoft Fabric ejecuta procesamiento distribuido como Databricks?
+    a: >-
+      Sí. Fabric Data Engineering ejecuta Apache Spark con PySpark, ejecutores
+      y autoescalado, así que reparte el trabajo entre workers igual que
+      Databricks. La diferencia es el control: el cómputo de Fabric lo
+      gobierna la capacidad de Fabric y está más gestionado, mientras que
+      Databricks te deja elegir tipos de nodo, tamaños de clúster, clústeres
+      con GPU y ajustes de Spark.
+  - q: ¿Cuáles son los equivalentes de Microsoft Foundry en AWS y Google Cloud?
+    a: >-
+      Amazon Bedrock en AWS (modelos fundacionales, Knowledge Bases,
+      Guardrails, Bedrock Agents y el runtime AgentCore) y Gemini Enterprise
+      Agent Platform en Google Cloud (Model Garden, modelos Gemini, RAG
+      Engine, Vector Search, Agent Runtime). Son equivalentes funcionales, no
+      sustitutos uno a uno.
+  - q: ¿Qué pasó con Vertex AI?
+    a: >-
+      Google anunció el 22 de abril de 2026 que Vertex AI forma parte ahora de
+      Gemini Enterprise Agent Platform. Las notas de la versión listan los
+      cambios de nombre: Agent Engine es ahora Agent Runtime, Vertex AI Search
+      es Agent Search, y RAG Engine, Vector Search y Model Garden conservan su
+      nombre sin el prefijo Vertex AI.
+  - q: ¿Qué servicio de Azure uso para RAG?
+    a: >-
+      Azure AI Search para la recuperación (palabras clave, vectores y ranking
+      semántico con seguridad a nivel de documento), Foundry Models para los
+      embeddings y la respuesta, Foundry Agent Service si el asistente
+      necesita herramientas, y Document Intelligence más Blob Storage para los
+      documentos. Databricks Vector Search es la alternativa cuando el índice
+      debe vivir junto a las tablas Delta.
+  - q: ¿Dónde encaja Azure Machine Learning junto a Microsoft Foundry?
+    a: >-
+      Azure Machine Learning cubre el ciclo de vida de ML clásico:
+      entrenamiento, seguimiento de experimentos, registro de modelos y
+      despliegue de tus propios modelos. Microsoft Foundry cubre LLM, agentes
+      y aplicaciones de IA generativa. Fabric Data Science se integra con
+      Azure Machine Learning para el seguimiento de experimentos y el registro
+      de modelos.
+  - q: ¿Puede Microsoft Foundry ejecutar un agente de LangGraph?
+    a: >-
+      Sí. Además de los agentes de prompt declarativos, Foundry Agent Service
+      ejecuta agentes alojados: empaquetas tu propio código o framework, como
+      LangGraph, Semantic Kernel o Microsoft Agent Framework, en un contenedor
+      y Foundry aporta el endpoint gestionado, el escalado, la identidad y la
+      observabilidad.
+---
+
+En las dos últimas semanas comparé [Snowflake con Databricks](/es/blog/snowflake-vs-databricks-use-cases/), convertí un curso de Databricks en un [mapa mental interactivo](/es/materials/mindmaps/databricks/) y entregué una [automatización documental con IA en Azure](/es/portfolio/azure-ai-automation-document-intelligence/). La pregunta que llegó después cada vez vino de empresas que ya trabajan con Microsoft: **¿qué servicio de Azure necesitamos de verdad: Fabric, Databricks o Foundry?**
+
+Este artículo la responde en tres pasos: por qué una empresa elige Azure frente a AWS o Google Cloud, para qué sirve cada plataforma de Microsoft y qué combinaciones funcionan en proyectos de IA reales. Cada nombre de producto se comprobó en Microsoft Learn, la documentación de AWS y las notas de versión de Google Cloud el 6 de noviembre de 2026. Los nombres cambian a menudo, así que las fuentes del final llevan el estado actual.
+
+**La respuesta corta.** Azure es la nube. Microsoft Fabric es la plataforma SaaS para ingeniería de datos, analítica y BI. Azure Databricks es el lakehouse para Spark a gran escala, Delta Lake y aprendizaje automático. Microsoft Foundry es la plataforma para aplicaciones LLM y agentes de IA. Azure AI Search es la capa de recuperación y Azure Machine Learning el ciclo de vida de ML clásico. Se complementan, y ninguno sustituye a Azure.
+
+## ¿Por qué una empresa elegiría Azure en vez de AWS o Google Cloud?
+
+Una empresa elige Azure cuando su identidad, sus documentos y sus informes ya viven con Microsoft. Microsoft Entra ID gestiona los inicios de sesión, Microsoft 365 y SharePoint guardan los documentos, Teams es donde trabaja la gente y Power BI es donde se leen los números. Un proyecto de IA en Azure se conecta a ese patrimonio con identidades gestionadas y un solo modelo de gobernanza en vez de federar tres nubes.
+
+Servicio a servicio, las tres nubes hacen trabajos comparables. Esta tabla mapea los servicios básicos de Azure con sus equivalentes en AWS y Google Cloud.
+
+| Categoría | Azure | AWS | Google Cloud |
+| --- | --- | --- | --- |
+| Máquinas virtuales | Azure Virtual Machines | EC2 | Compute Engine |
+| Almacenamiento de objetos | Blob Storage, ADLS Gen2 | S3 | Cloud Storage |
+| Almacén de datos | Fabric Warehouse (antes Synapse) | Redshift | BigQuery |
+| Kubernetes | AKS | EKS | GKE |
+| Funciones serverless | Azure Functions | Lambda | Cloud Functions |
+| Contenedores serverless | Container Apps | ECS sobre Fargate | Cloud Run |
+| SQL gestionado | Azure SQL | RDS | Cloud SQL |
+| Red | Virtual Network | VPC | VPC |
+| Identidad | Entra ID | IAM | IAM |
+| Secretos | Key Vault | Secrets Manager | Secret Manager |
+| Monitorización | Azure Monitor | CloudWatch | Cloud Monitoring |
+| OCR de documentos | Document Intelligence | Textract | Document AI |
+
+Los trabajos coinciden; el precio, la arquitectura, las integraciones y los límites, no. Elige la nube por el patrimonio que tienes y las habilidades de tu equipo, y después mapea los servicios con una tabla como esta.
+
+Qué atrae a una empresa hacia Azure, y qué aporta cada atractivo a un proyecto de IA:
+
+| Atractivo de Azure | Qué aporta a un proyecto de IA |
+| --- | --- |
+| Microsoft Entra ID | Usuarios, grupos, identidades gestionadas y RBAC reutilizados por Foundry, Fabric, Databricks y AI Search |
+| Microsoft 365, SharePoint, Teams | Los documentos y conversaciones que la mayoría de asistentes empresariales necesitan leer |
+| Power BI | La capa de informes que los usuarios de negocio ya abren; Fabric la alimenta mediante Direct Lake |
+| Microsoft Foundry | Más de 10.000 modelos de Microsoft, OpenAI, Anthropic, Meta y otros en un catálogo bajo la gobernanza de Azure |
+| Un acuerdo empresarial existente | Una factura, un contrato de soporte, una revisión de cumplimiento |
+
+## ¿Cuál es la diferencia entre Azure, Microsoft Fabric, Azure Databricks y Microsoft Foundry?
+
+Están en niveles distintos. Azure es la infraestructura: cómputo, almacenamiento, red e identidad. Microsoft Fabric y Azure Databricks son plataformas de datos que corren sobre esa infraestructura. Microsoft Foundry es una plataforma de aplicaciones de IA que también corre sobre ella. Azure AI Search y Azure Machine Learning son servicios especializados a su lado. Todos son complementarios; el error es tratar Foundry como sustituto de Databricks o de Fabric.
+
+<Figure src="azure-ms-products.es.svg" caption="Figura 1. Un trabajo para cada uno: Microsoft Foundry para las aplicaciones de IA, Microsoft Fabric y Azure Databricks para los datos, Azure AI Search y Azure Machine Learning al lado, Azure debajo." />
+
+| Plataforma | Responsabilidad principal | Pensada para | Equivalente en AWS | Equivalente en Google Cloud |
+| --- | --- | --- | --- | --- |
+| Microsoft Azure | Infraestructura en la nube: cómputo, almacenamiento, red, identidad, seguridad | Todos | AWS | Google Cloud |
+| Microsoft Fabric | Ingeniería de datos, analítica, lakehouse y BI como un solo SaaS | Analistas, desarrolladores de BI, ingenieros de datos | Redshift con el ecosistema Glue | BigQuery |
+| Azure Databricks | Ingeniería de datos a gran escala, Spark, Delta Lake, ML, lakehouse | Ingenieros de datos, ingenieros de ML, científicos de datos | Databricks en AWS, EMR | Databricks en Google Cloud, Dataproc |
+| Microsoft Foundry | Aplicaciones de IA, LLM, agentes, evaluación, gobernanza | Ingenieros de IA, equipos de aplicaciones | Amazon Bedrock | Gemini Enterprise Agent Platform |
+| Azure Machine Learning | Ciclo de vida de ML clásico: entrenamiento, registro, despliegue | Científicos de datos, MLOps | SageMaker AI | Gemini Enterprise Agent Platform (antes Vertex AI) |
+| Azure AI Search | Búsqueda empresarial, recuperación híbrida y vectorial | Aplicaciones RAG y de búsqueda | OpenSearch | Agent Search (antes Vertex AI Search) |
+
+## ¿Qué es Microsoft Foundry?
+
+Microsoft Foundry es la plataforma de Microsoft para construir, desplegar, gestionar y monitorizar aplicaciones y agentes de IA, construida sobre Azure. Se llamó Azure AI Studio y después Azure AI Foundry; Azure AI Services pasó a ser Foundry Tools. Foundry unifica agentes, modelos y herramientas en un solo recurso de Azure con trazas, evaluaciones, control de acceso por roles, red y políticas.
+
+Qué se hace en Microsoft Foundry:
+
+- **Modelos.** Explorar y desplegar más de 10.000 modelos de Microsoft, OpenAI, Anthropic, Meta y otros desde el catálogo Foundry Models, con ajuste fino donde el modelo lo admite.
+- **Agentes.** Construir agentes de prompt declarativos en el portal o el SDK, o agentes alojados que ejecutan tu propio código (Microsoft Agent Framework, LangGraph, Semantic Kernel) en un contenedor con endpoint gestionado, todo en Foundry Agent Service.
+- **Herramientas y conocimiento.** Ampliar los agentes con herramientas integradas, memoria y recuperación mediante el Foundry Toolbox; Foundry IQ (vista previa) es la capa de conocimiento que conecta las fuentes de la empresa.
+- **Evaluación y observabilidad.** Trazar y evaluar agentes y modelos, y monitorizarlos en paneles integrados.
+- **Gobernanza.** Identidad de Entra, RBAC, filtros de contenido, aislamiento de red y Azure Policy mediante el plano de control de Foundry.
+
+Un ejemplo trabajado: un chatbot RAG empresarial sobre los PDF de la compañía.
+
+1. Subir los PDF a Blob Storage.
+2. Extraer el texto y las tablas con Document Intelligence.
+3. Limpiar, transformar y trocear los documentos en Azure Databricks.
+4. Generar embeddings con un modelo de Foundry.
+5. Guardar los vectores en Azure AI Search.
+6. Recuperar los fragmentos relevantes para cada pregunta.
+7. Enviar el contexto a un LLM en Foundry y generar una respuesta con citas.
+
+Foundry gestiona las partes de modelo, agente, evaluación y despliegue de este flujo. El almacenamiento, la extracción, el procesamiento de datos, la red y la identidad siguen en otros servicios de Azure. Foundry no sustituye a Azure; es una capa dentro de la arquitectura de Azure.
+
+### ¿Cómo se compara Microsoft Foundry con Amazon Bedrock y Gemini Enterprise Agent Platform?
+
+Son los equivalentes más cercanos en las tres nubes: coincidencias funcionales, no sustitutos uno a uno. Amazon Bedrock es la plataforma gestionada de IA generativa de AWS; Gemini Enterprise Agent Platform es la plataforma de IA y agentes de Google Cloud de la que Vertex AI pasó a formar parte el 22 de abril de 2026.
+
+| Capacidad | Microsoft Foundry | Amazon Bedrock | Gemini Enterprise Agent Platform |
+| --- | --- | --- | --- |
+| Catálogo de modelos | Foundry Models | Modelos de Bedrock | Model Garden |
+| Inferencia LLM | Foundry Models | Bedrock Runtime | Modelos Gemini |
+| Agentes de IA | Foundry Agent Service: agentes de prompt y alojados | Bedrock Agents, runtime AgentCore | Agent Runtime (antes Agent Engine) |
+| RAG | Foundry IQ y herramientas de recuperación, Azure AI Search | Knowledge Bases | RAG Engine, Vector Search, Agent Search |
+| Ajuste fino | Foundry Models | Personalización de modelos de Bedrock | Ajuste de modelos |
+| Evaluación | Evaluaciones y trazas de Foundry | Evaluaciones de Bedrock | Servicio de evaluación |
+| Gobernanza | Plano de control de Foundry, Entra ID | Guardrails e IAM | Model Armor e IAM |
+| Tu propio código de agente | Agentes alojados en contenedores | Runtime AgentCore | Agent Runtime con el ADK o LangGraph |
+
+### ¿Qué nombres de producto cambiaron en 2025 y 2026?
+
+Varios de los nombres de estas tablas tienen menos de un año, y los antiguos siguen apareciendo en la documentación, las ofertas de empleo y los tutoriales. Este glosario mapea el nombre anterior con el actual para que el resto del artículo se lea igual que las páginas de los proveedores.
+
+| Nombre anterior | Nombre actual | Proveedor |
+| --- | --- | --- |
+| Azure AI Studio, Azure AI Foundry | Microsoft Foundry | Microsoft |
+| Azure AI Services | Foundry Tools | Microsoft |
+| Assistants API (Agents v1) | Responses API (Agents v2) | Microsoft |
+| Azure Synapse Analytics | Microsoft Fabric: Data Warehouse y Data Engineering | Microsoft |
+| Azure Data Factory | Data Factory en Fabric; el servicio de Azure sigue existiendo | Microsoft |
+| Vertex AI | Parte de Gemini Enterprise Agent Platform desde el 22 de abril de 2026 | Google Cloud |
+| Vertex AI Agent Engine | Agent Runtime | Google Cloud |
+| Vertex AI Search | Agent Search | Google Cloud |
+| Vertex AI RAG Engine, Vector Search, Model Garden | RAG Engine, Vector Search, Model Garden | Google Cloud |
+| Amazon SageMaker | SageMaker AI para el servicio de ML; SageMaker es ahora la plataforma unificada de datos e IA | AWS |
+| Bedrock Agents | Bedrock Agents, con el runtime AgentCore para los agentes nuevos; Bedrock Guardrails se aplica a las políticas de AgentCore desde junio de 2026 | AWS |
+
+## ¿Qué es Microsoft Fabric?
+
+Microsoft Fabric es la plataforma SaaS unificada de Microsoft para recoger, almacenar, procesar, analizar y visualizar datos. En vez de configurar por separado un lago de datos, un almacén, pipelines ETL, clústeres Spark y una herramienta de BI, Fabric los entrega como cargas de trabajo sobre un solo lago lógico, OneLake, con Power BI como capa de informes. Microsoft Learn añade un detalle que sorprende a los ingenieros de Azure: no hace falta una cuenta de Azure para usar Fabric.
+
+| Carga de trabajo de Fabric | Qué hace | Tecnología parecida |
+| --- | --- | --- |
+| OneLake | El lago de datos lógico de todo el tenant que todas las cargas leen y escriben | ADLS Gen2, S3, Cloud Storage |
+| Data Factory | Ingesta, pipelines y Dataflow Gen2 con más de 200 conectores | Azure Data Factory, AWS Glue |
+| Data Engineering | Notebooks y trabajos de Apache Spark, lakehouses | Databricks, EMR, Dataproc |
+| Data Warehouse | Analítica SQL sobre tablas Delta, cómputo separado del almacenamiento | Snowflake, Redshift, BigQuery |
+| Data Science | Experimentos y modelos de ML, integrado con Azure Machine Learning | Databricks ML, SageMaker AI |
+| Real-Time Intelligence | Ingesta en streaming, bases de datos KQL y el Real-Time hub | Kinesis, Pub/Sub, Event Hubs |
+| Databases | Base de datos SQL en Fabric, más el reflejo de Azure SQL, Cosmos DB, Azure Databricks y Snowflake en OneLake | Azure SQL, RDS |
+| Power BI | Informes y cuadros de mando, Direct Lake sobre OneLake | Tableau, Looker |
+| Fabric IQ (vista previa) | Ontología, Fabric Graph, agente de datos, agente de operaciones, modelos semánticos | Capas semánticas |
+| OneLake Catalog y Purview | Descubrimiento, permisos, etiquetas de confidencialidad, auditoría | Unity Catalog, Dataplex |
+
+### ¿Qué es OneLake?
+
+OneLake es el único lago de datos lógico que recibe cada tenant de Fabric, construido sobre Azure Data Lake Storage Gen2. Piensa en un OneDrive para los datos analíticos de la empresa: un solo espacio de nombres que abarca usuarios, regiones y nubes, organizado en workspaces, lakehouses y almacenes, leído por todas las cargas de Fabric sin copias. Las tablas se guardan como Delta Parquet, y OneLake expone metadatos Iceberg de las tablas Delta para que los lectores Iceberg las vean sin copiar datos.
+
+```text
+Tenant de Microsoft Fabric
+└── OneLake
+    ├── Workspace: Finanzas
+    │   ├── Lakehouse
+    │   └── Warehouse
+    ├── Workspace: Marketing
+    │   └── Lakehouse
+    └── Workspace: Proyectos de IA
+        └── Lakehouse
+```
+
+Dos funciones de OneLake importan para la arquitectura. Los atajos montan almacenamiento existente, incluidos ADLS Gen2, Amazon S3 y Google Cloud Storage, como referencias sin copia dentro del lago. El reflejo replica Azure SQL, Cosmos DB, Unity Catalog de Azure Databricks y Snowflake en OneLake, de modo que Fabric los lee sin un pipeline.
+
+### ¿Cómo se construiría un pipeline de datos en Fabric?
+
+Toma una empresa de comercio electrónico que recibe datos de una API de Shopify, PostgreSQL, Salesforce, SharePoint y archivos CSV, y quiere una sola plataforma analítica.
+
+1. Crear un workspace de Fabric y un lakehouse dentro.
+2. Ingerir las fuentes con los conectores de Data Factory de forma programada.
+3. Depositar los datos crudos como tablas **bronce** en el lakehouse.
+4. Limpiar y deduplicar en tablas **plata** con notebooks de PySpark.
+5. Agregar en tablas **oro** listas para el negocio y consultarlas en SQL desde el endpoint del almacén.
+6. Construir el cuadro de mando de Power BI sobre las tablas oro, y conectar esas mismas tablas a un agente de Microsoft Foundry para preguntas en lenguaje natural.
+
+Es la arquitectura medallón que Databricks popularizó. Fabric admite el mismo patrón bronce, plata y oro sobre el mismo formato Delta.
+
+## Microsoft Fabric frente a Azure Databricks: ¿cuál es la diferencia real?
+
+Los dos ejecutan Apache Spark distribuido sobre tablas Delta Lake. La diferencia está en para quién están hechos y cuánto control dan. Microsoft Fabric es un SaaS gestionado con Power BI dentro, hecho para analistas de negocio, analistas de datos, ingenieros de datos y desarrolladores de BI. Azure Databricks es una plataforma de ingeniería e IA con cómputo configurable, MLflow y Mosaic AI, hecha para ingenieros de datos, ingenieros de ML, científicos de datos e ingenieros de IA.
+
+| Área | Microsoft Fabric | Azure Databricks |
+| --- | --- | --- |
+| Infraestructura | SaaS gestionado, gobernado por la capacidad de Fabric | Plataforma gestionada dentro de tu suscripción de Azure |
+| Spark | Fabric Spark sobre cómputo gestionado | Databricks Runtime sobre clústeres que configuras |
+| SQL | Fabric Warehouse y endpoints SQL | SQL warehouses de Databricks |
+| Almacenamiento | OneLake | Tu propio ADLS Gen2 (o S3, Cloud Storage) |
+| Formato de tabla | Delta Lake | Delta Lake |
+| ETL y orquestación | Pipelines de Data Factory | Trabajos y pipelines de Lakeflow |
+| Aprendizaje automático | Carga Data Science, integrada con Azure Machine Learning | MLflow, Mosaic AI, servicio de modelos |
+| BI | Power BI nativo, con Direct Lake | AI/BI Dashboards; Power BI mediante conector |
+| Aplicaciones | Integraciones con Power BI y Microsoft 365 | Databricks Apps |
+| Gobernanza | OneLake Catalog y Microsoft Purview | Unity Catalog |
+| Control del cómputo | Capacidad, autoescalado de Spark, entornos | Tipos de nodo, tamaños de clúster, clústeres con GPU, ajustes de Spark |
+| Nubes | Azure, con atajos de OneLake a S3 y Cloud Storage | Azure, AWS y Google Cloud |
+
+La misma comparación en preguntas de sí o no, que es como suele llegar la pregunta:
+
+| ¿Puede...? | Microsoft Fabric | Azure Databricks |
+| --- | --- | --- |
+| ¿Procesar conjuntos de datos enormes con Spark distribuido? | Sí | Sí |
+| ¿Ejecutar PySpark con varios workers y autoescalado? | Sí, gestionado por la capacidad | Sí, configurable |
+| ¿Construir modelos de ML? | Sí | Sí |
+| ¿Construir aplicaciones de IA? | Sí, con Microsoft Foundry | Sí, con Mosaic AI |
+| ¿Construir aplicaciones web? | Mediante integraciones | Sí, Databricks Apps |
+| ¿Servir cuadros de mando de negocio nativos? | Power BI | AI/BI Dashboards |
+| ¿Integrarse con la BI de la empresa? | Muy fuerte | Normalmente una herramienta de BI externa |
+| ¿Afinar Spark y el cómputo con GPU al detalle? | Más gestionado, restricciones de capacidad | Más flexible |
+
+**Elige Microsoft Fabric cuando** la empresa usa Microsoft 365, Power BI y SharePoint; las cargas son sobre todo analítica SQL e informes de negocio; quieres ingeniería de datos y BI en un solo entorno gestionado; y nadie en el equipo quiere dimensionar un clúster Spark.
+
+**Elige Azure Databricks cuando** el trabajo es procesamiento Spark a gran escala o ingeniería distribuida compleja; el equipo construye cargas avanzadas de ML e IA; necesitas control sobre el cómputo, los tipos de nodo y las GPU; o la arquitectura abarca streaming y más de una nube.
+
+También trabajan juntos. Microsoft documenta el reflejo de las tablas de Unity Catalog de Azure Databricks en OneLake como catálogo de solo lectura sin mover datos, disponible de forma general desde 2025, y el camino inverso, la federación de catálogos de OneLake, que permite a Unity Catalog consultar datos guardados en OneLake desde el cómputo de Databricks y estaba en Beta cuando lo comprobé.
+
+### ¿Fabric es Databricks sin multiprocesamiento?
+
+No. Fabric y Databricks reparten el trabajo entre ejecutores de Spark los dos; ninguno depende del multiprocesamiento de Python. La confusión viene de mezclar dos tipos de paralelismo.
+
+| Tecnología | Cómo paraleliza | Dónde corre |
+| --- | --- | --- |
+| multiprocessing de Python | Varios procesos locales del sistema operativo | Una máquina |
+| threading de Python | Varios hilos en un proceso | Una máquina |
+| PySpark | Tareas repartidas entre ejecutores de Spark | Un clúster |
+| Azure Databricks | Cargas Spark distribuidas en clústeres que configuras | Tu suscripción de Azure |
+| Microsoft Fabric | Cargas Spark distribuidas sobre capacidad gestionada | El SaaS de Fabric |
+
+Un `Pool(4)` en Python arranca cuatro procesos locales y nunca toca un clúster:
+
+```python
+from multiprocessing import Pool
+
+def process(x):
+    return x * 2
+
+with Pool(4) as pool:
+    results = pool.map(process, range(100_000))
+```
+
+En Fabric o Databricks la misma intención es una operación sobre un DataFrame, y Spark decide qué ejecutor procesa cada partición:
+
+```python
+df = spark.read.parquet("/path/to/data")
+result = df.repartition(8).groupBy("category").count()
+result.show()
+```
+
+Fabric no es un Databricks menos potente por estar más gestionado. Databricks ofrece más flexibilidad para la ingeniería de cómputo avanzada; Fabric cambia esa flexibilidad por integración y sencillez dentro del ecosistema Microsoft.
+
+## ¿Cómo se ven las capas en Azure, AWS y Google Cloud?
+
+Toda arquitectura de IA empresarial tiene las mismas cuatro capas: aplicaciones y agentes de IA arriba, ingeniería de datos debajo, almacenamiento de datos bajo esa y la infraestructura en la nube en la base. Elige una nube en el diagrama y toca una capa para ver qué servicios la ocupan.
+
+<Stacks id="clouds" caption="Figura 2. Las mismas cuatro capas en cada nube. Microsoft Foundry, Amazon Bedrock y Gemini Enterprise Agent Platform ocupan la capa superior; Fabric, Databricks, Glue, EMR, Dataflow y Dataproc, la capa de ingeniería de datos." />
+
+## ¿Cómo encajan los servicios en un proyecto de IA real?
+
+Toma un asistente de IA empresarial que procesa miles de documentos PDF. En Azure, cada componente tiene un servicio, y solo tres de los diez pertenecen a Foundry.
+
+| Componente | Servicio de Azure | Propósito |
+| --- | --- | --- |
+| Almacenamiento de documentos | Azure Blob Storage | Guardar los PDF |
+| Extracción de documentos | Document Intelligence | Extraer texto y tablas |
+| Procesamiento de datos | Azure Databricks | Limpiar, transformar y trocear los documentos |
+| Embeddings | Foundry Models | Convertir texto en vectores |
+| Base de datos vectorial | Azure AI Search | Guardar y recuperar vectores, búsqueda híbrida |
+| LLM | Foundry Models | Generar las respuestas |
+| Orquestación de agentes | Foundry Agent Service | Gestionar herramientas y la ejecución del agente |
+| Backend | Azure Container Apps | Alojar la aplicación Python y FastAPI |
+| Autenticación | Microsoft Entra ID | Asegurar el acceso |
+| Monitorización | Azure Monitor | Seguir el rendimiento y el coste de la aplicación |
+
+<Figure src="azure-rag-pipeline.es.svg" caption="Figura 3. El asistente RAG como flujo. Foundry se ocupa de los embeddings, la respuesta y el agente; las otras siete cajas son servicios corrientes de Azure." />
+
+La arquitectura equivalente en AWS usa S3, Textract, Glue, Bedrock, OpenSearch y ECS sobre Fargate. En Google Cloud usa Cloud Storage, Document AI, Dataflow o Dataproc, Gemini Enterprise Agent Platform, BigQuery y Cloud Run. La forma es la misma; cambian los nombres.
+
+## ¿Qué pilas tecnológicas combinan las empresas?
+
+Las empresas rara vez usan una sola plataforma. Combinan servicios especializados, y cinco combinaciones cubren la mayoría de proyectos de IA empresarial: la pila empresarial de Microsoft, Azure Databricks con Foundry, Fabric con Databricks y Foundry, AWS con Databricks y Bedrock, y Google Cloud con Databricks y Gemini Enterprise Agent Platform. Son patrones prácticos, no paquetes de proveedor.
+
+<Stacks id="stacks" caption="Figura 4. Cinco pilas de referencia. La segunda, Azure Databricks más Microsoft Foundry, es la que recomiendo entender primero: cada plataforma tiene una responsabilidad clara." />
+
+La pila Azure Databricks más Foundry funciona como un relevo. Databricks ingiere millones de registros, PySpark los limpia y transforma, Delta Lake guarda las tablas bronce, plata y oro y Unity Catalog gestiona los permisos. Los documentos procesados se indexan en Azure AI Search, Foundry aporta el LLM, un agente recupera la información relevante y responde a los usuarios, y FastAPI expone la aplicación. Databricks se encarga de la carga intensiva en datos; Foundry aporta las capacidades de IA gestionadas.
+
+Qué combinación encaja con cada proyecto:
+
+| Proyecto | Combinación recomendada |
+| --- | --- |
+| Chatbot RAG empresarial | Azure AI Search, Microsoft Foundry, FastAPI |
+| Asistente de IA sobre SharePoint | SharePoint, Fabric Data Factory, Microsoft Foundry |
+| Analítica financiera con IA | Azure Databricks, Delta Lake, Microsoft Foundry |
+| Plataforma de ML a gran escala | Azure Databricks, MLflow, Azure Machine Learning |
+| Procesamiento documental con IA | Document Intelligence, Blob Storage, Microsoft Foundry |
+| Agentes de IA con herramientas de negocio | Microsoft Foundry, FastAPI, API Management |
+| BI empresarial con IA | Microsoft Fabric, Power BI, Microsoft Foundry |
+| Analítica de trading en tiempo real | Azure Databricks, Kafka, Delta Lake, servicio de modelos |
+
+Una advertencia sobre la pila híbrida: no introduzcas Fabric y Databricks juntos por defecto. Si Fabric Spark es suficiente, añadir Databricks añade coste y complejidad; si Databricks ya es la plataforma de datos, Fabric se gana su sitio solo para los usuarios de Power BI y Microsoft 365.
+
+## ¿Qué prácticas de arquitectura mantienen estas pilas mantenibles?
+
+Siete prácticas separan una demo de un sistema en producción en cualquiera de las pilas anteriores.
+
+1. **Separa la ingeniería de datos de la orquestación de IA.** Databricks o Fabric hacen la ingesta, las transformaciones y las agregaciones; Foundry hace la inferencia de modelos y los flujos de agentes; FastAPI guarda la lógica de la aplicación. Un agente nunca debería ser responsable de procesar millones de registros.
+2. **No uses una sola base de datos vectorial para todo.** Elige por requisito de recuperación, como en la tabla de abajo.
+3. **Usa RAG híbrido, no RAG solo vectorial.** Combina búsqueda por palabras clave (BM25), similitud vectorial, filtrado por metadatos y reordenación. Los documentos legales, los informes financieros y la documentación técnica necesitan los cuatro.
+4. **Implementa seguridad basada en identidad.** Entra ID, identidades gestionadas, Key Vault, RBAC y seguridad a nivel de documento. Nunca expongas el índice de búsqueda ni la base de datos directamente a todos los agentes.
+5. **Procesa los documentos de forma asíncrona.** Colas y workers en segundo plano, no usuarios esperando al OCR.
+6. **Evalúa la calidad de la IA antes de desplegar.** Precisión y exhaustividad de la recuperación, fundamentación de las respuestas, tasa de alucinaciones, latencia, consumo de tokens y coste por petición.
+7. **Evita el bloqueo de proveedor donde sea práctico.** Lógica de negocio en Python, API estándar, proveedores de modelos detrás de interfaces, datos en formatos abiertos como Parquet y Delta Lake.
+
+| Requisito de recuperación | Almacén vectorial recomendado |
+| --- | --- |
+| Búsqueda empresarial con recuperación híbrida y seguridad a nivel de documento | Azure AI Search |
+| Vectores junto a las tablas Delta en Databricks | Databricks Vector Search |
+| Un ecosistema AWS existente | OpenSearch |
+| Un ecosistema Google Cloud existente | Vector Search en Gemini Enterprise Agent Platform |
+| Un corpus pequeño que ya está en PostgreSQL | pgvector, antes de comprar nada |
+
+El camino de ingesta asíncrona, que es el mismo en todas las nubes:
+
+```text
+subida del documento
+   → cola de mensajes
+   → workers de procesamiento de documentos
+   → OCR y extracción
+   → troceado y embeddings
+   → base de datos vectorial
+```
+
+## ¿Qué servicio de Microsoft deberías elegir?
+
+Elige por la carga de trabajo dominante. Las aplicaciones LLM, el RAG y los agentes van a Microsoft Foundry con Azure AI Search. La analítica SQL, la BI y los usuarios de Microsoft 365 van a Microsoft Fabric con Power BI. El Spark pesado, el ML a medida y el cómputo que quieres configurar van a Azure Databricks. Un ciclo de vida de ML clásico sin Spark va a Azure Machine Learning. Todo lo demás son servicios de Azure sin más y tu propio código.
+
+<Figure src="azure-decision.es.svg" caption="Figura 5. Cuatro preguntas cubren la mayoría de casos. La nota al pie importa tanto como las cajas: los mejores arquitectos también saben cuándo no añadir una plataforma." />
+
+Las preguntas que un arquitecto de soluciones de IA debería hacerse antes de añadir una plataforma:
+
+- Si la empresa ya tiene Databricks, ¿por qué introducir Fabric? Solo para los usuarios de negocio.
+- Si una aplicación LangGraph ya funciona, ¿por qué sustituirla por Foundry Agent Service? Ejecútala como agente alojado de Foundry y gana el endpoint, la identidad y las trazas.
+- Si PostgreSQL con pgvector cumple el requisito de recuperación, ¿por qué pagar una base de datos vectorial aparte?
+- Si toda la carga es SQL e informes, ¿por qué correr un clúster Spark siquiera?
+
+Saber qué herramientas combinar es ingeniería de IA. Saber cuándo no combinarlas es arquitectura.
+
+## ¿Qué debería aprender primero un ingeniero de IA en el ecosistema Microsoft?
+
+Aprende cómo se integran las plataformas en vez de cada servicio individual, y mapea Azure sobre lo que ya sabes de AWS y Google Cloud. Mi orden de prioridades para alguien con experiencia en Python, LangChain, LangGraph, RAG y Databricks:
+
+| Prioridad | Tecnología | Qué dominar |
+| --- | --- | --- |
+| 1 | Fundamentos de Azure | Cómputo, almacenamiento, red, identidad |
+| 2 | Microsoft Foundry | Modelos, agentes, evaluación, despliegue |
+| 3 | Azure AI Search | Búsqueda híbrida, búsqueda vectorial, RAG |
+| 4 | Microsoft Fabric | Lakehouse, OneLake, arquitectura medallón, Direct Lake |
+| 5 | Azure Databricks | Spark, Delta Lake, Unity Catalog, pipelines de ML |
+| 6 | Seguridad en Azure | Entra ID, Key Vault, RBAC, red privada |
+| 7 | Despliegue en Azure | Container Apps, AKS, CI/CD, monitorización |
+
+Y el orden en que aprender las combinaciones: primero Azure con Databricks y Foundry, para la arquitectura de IA empresarial; segundo Fabric con Power BI y Foundry, para la analítica integrada de Microsoft; tercero AWS con Bedrock y Databricks; cuarto Google Cloud con BigQuery y Gemini Enterprise Agent Platform. Nadie necesita las cuatro a la vez.
+
+Si ya conoces Spark, Delta Lake y Databricks, no vuelvas a aprender los conceptos en Fabric. Dedica el tiempo a lo específico de Fabric: OneLake, el lakehouse de Fabric, Data Factory, el Warehouse, Direct Lake y la integración con Power BI. Eso es lo que distingue a un ingeniero de Fabric de un ingeniero de Databricks generalista.
+
+## Fuentes
+
+- Microsoft Learn, [What is Microsoft Foundry?](https://learn.microsoft.com/azure/foundry/what-is-foundry): el cambio de nombre de Azure AI Studio y Azure AI Foundry a Microsoft Foundry, Foundry Models, Foundry Agent Service con agentes de prompt y alojados, el Foundry Toolbox, la observabilidad y el plano de control. Página fechada en agosto de 2026, leída el 6 de noviembre de 2026.
+- Microsoft Learn, [What is Microsoft Fabric?](https://learn.microsoft.com/fabric/fundamentals/microsoft-fabric-overview): las cargas de trabajo, OneLake sobre ADLS Gen2, los atajos, el reflejo, Fabric IQ (vista previa) y las integraciones con Microsoft Foundry y Azure Machine Learning. Leída el 6 de noviembre de 2026.
+- Microsoft Learn, [documentación de Azure Databricks](https://learn.microsoft.com/azure/databricks/) y [Connect to Microsoft Fabric](https://learn.microsoft.com/azure/databricks/partners/bi/fabric): el catálogo de Unity Catalog reflejado en OneLake y la federación de catálogos de OneLake (Beta).
+- Blog de Microsoft Fabric, [How OneLake provides Apache Iceberg support](https://blog.fabric.microsoft.com/): metadatos Iceberg generados para las tablas Delta sin copiar datos.
+- Google Cloud, [notas de versión de Gemini Enterprise Agent Platform](https://docs.cloud.google.com/gemini-enterprise-agent-platform/release-notes), entrada del 22 de abril de 2026: "Vertex AI is now part of Gemini Enterprise Agent Platform", Agent Engine renombrado Agent Runtime, Vertex AI Search renombrado Agent Search.
+- AWS, [documentación de Amazon Bedrock](https://docs.aws.amazon.com/bedrock/) y la nota What's New de junio de 2026 sobre Bedrock Guardrails en las políticas de AgentCore.
+- Mis propias notas de estudio de noviembre de 2026 sobre las cinco pilas de referencia, la tabla de proyecto a pila y las siete prácticas, escritas a partir de los proyectos anteriores y comprobadas contra la documentación listada aquí. Los precios, las cuotas y el estado de vista previa cambian cada mes; las páginas de los proveedores son la fuente de verdad.
