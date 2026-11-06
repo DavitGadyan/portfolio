@@ -50,8 +50,11 @@ test.describe('mind maps', () => {
     await card(page, 'nb').locator('.mm__badge').click();
     await expect(nodes).toHaveCount(DBX_START + 6); // six direct children; magic commands and dbutils keep theirs folded
     await expect(card(page, 'nb-magic').locator('.mm__badge')).toHaveText('5');
-    await tap(page, 'nb-dbutils');
-    await expect(panel.locator('#tg-panel-title')).toHaveText('Databricks Utilities (dbutils)');
+    // the unfold is still animating the layout, so a forced click at the card's old position can miss: retry until it lands
+    await expect(async () => {
+      await tap(page, 'nb-dbutils');
+      await expect(panel.locator('#tg-panel-title')).toHaveText('Databricks Utilities (dbutils)', { timeout: 1_000 });
+    }).toPass({ timeout: 15_000 });
     await expect(panel.locator('.tg__code')).toContainText('dbutils.fs.help()');
     await page.keyboard.press('Escape');
     await expect(panel).toHaveAttribute('data-state', 'empty');
@@ -101,8 +104,11 @@ test.describe('mind maps', () => {
     await card(page, 'core').locator('.mm__badge').click();
     await expect(nodes).toHaveCount(19); // ten direct children; the warehouse keeps its three folded
     await expect(card(page, 'core-warehouse').locator('.mm__badge')).toHaveText('3');
-    await tap(page, 'core-warehouse');
-    await expect(panel.locator('#tg-panel-title')).toHaveText('Virtual warehouse');
+    // the unfold is still animating the layout, so a forced click at the card's old position can miss: retry until it lands
+    await expect(async () => {
+      await tap(page, 'core-warehouse');
+      await expect(panel.locator('#tg-panel-title')).toHaveText('Virtual warehouse', { timeout: 1_000 });
+    }).toPass({ timeout: 15_000 });
     await expect(panel.locator('.tg__group')).toHaveText('Core objects');
     await expect(panel.locator('.mm__facts li')).toHaveCount(3);
     await expect(panel.locator('.mm__facts li').first()).toContainText('Lesson: Virtual Warehouses');
