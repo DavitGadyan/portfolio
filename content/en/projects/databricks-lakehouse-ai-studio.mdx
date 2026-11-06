@@ -1,0 +1,112 @@
+---
+title: "Lakehouse AI Studio for Databricks: Pipelines, RAG and AI Agents"
+date: 2026-11-06
+lastmod: 2026-11-06
+cover: /images/portfolio/databricks-lakehouse-cover.jpg
+coverAlt: "Lakehouse AI Studio cover: three stacked metal slabs, bronze, silver and gold, with a glowing orange sphere above them on a navy background, next to the title Lakehouse AI Studio and the line From raw data to trusted AI answers, with people in control"
+summary: "A full-stack accelerator for Databricks AI integration projects: public, cloud and local data flows through bronze, silver and gold with quality checks, quarantine and reconciliation, then feeds plain-English questions answered with their SQL, document search, fraud agents whose risky actions wait for a person, and an ops copilot that diagnoses a real out-of-memory failure from Spark logs. Each AI task runs on a local model or a hosted one. Tested on 2.96M real NYC taxi trips and synthetic fraud data; React, FastAPI, PySpark and Delta, pgvector, MLflow, LangGraph, 88 backend tests. Not an official Databricks product."
+description: "Databricks accelerator: medallion pipelines with quality checks, guarded text-to-SQL and RAG, fraud agents with human approval, Spark failure diagnosis, local or hosted models."
+categories:
+  - databases-data-eng
+  - ai-agents
+  - cloud-devops-llmops
+stack:
+  frontend:
+    - React 18, TypeScript, Vite
+    - TanStack Query
+  backend:
+    - Python 3.11, FastAPI
+    - Job runner as a separate process (pipelines/lakehouse_jobs)
+    - SQL guard (read-only, approved tables, no personal data, forced row limit)
+  ai:
+    - Ollama (qwen2.5:7b, nomic-embed-text) as the local option
+    - Databricks Model Serving and Microsoft Foundry as hosted options
+    - LangGraph risk agent (code sets the risk, the model explains)
+    - Text-to-SQL and document RAG over pgvector
+    - MLflow for the fraud model
+  data:
+    - PySpark and Delta Lake, bronze, silver and gold from YAML and Spark SQL packs
+    - DuckDB for local queries, PostgreSQL 16 with pgvector
+    - Databricks tables, Delta Shares, cloud files, HTTP, REST, JDBC, local files and PDFs as sources
+    - NYC TLC trips and Open-Meteo weather (real), fintech-risk (synthetic), ops-demo (generated)
+  infra:
+    - Databricks Asset Bundle (databricks.yml) for the workspace deployment
+    - Docker Compose, Makefile, GitHub Actions CI with a pgvector service
+    - 88 backend tests in 11 files, AI evals per pack
+  security:
+    - High-risk actions, reruns, backfills and KPI promotions wait for an approver
+    - Append-only audit log (updates and deletes rejected by the database)
+    - Full card numbers blocked at ingestion; personal-data columns refused by the SQL guard and masked in samples
+    - Sending a task's data to a hosted model needs an approver's explicit confirmation
+links:
+  github: https://github.com/DavitGadyan/Databricks
+outcomes:
+  - 2.96M real NYC taxi trips through bronze, silver and gold, with about 35,000 bad rows sent to quarantine instead of into the numbers, and a reconciliation that accounts for every row and every dollar.
+  - Every AI answer shows its SQL or its sources; rules, scores and risk levels come from code, the model only explains, and high-risk actions wait for a person and land in an append-only audit log.
+  - A job that really runs out of memory is diagnosed from Spark's event logs, gets a drafted runbook, and reruns only after an approver says so.
+  - Each AI task is routed to a local model or a hosted one from Settings, with tokens and time logged per call, so a client controls API costs and data exposure per task.
+  - A new client setup is a new folder in packs/ (sources, SQL models, checks, KPIs, rules), not new platform code; three packs ship, and 88 backend tests cover the platform.
+metrics:
+  - label: Real taxi trips processed
+    value: "2.96M"
+  - label: Bad rows quarantined (demo)
+    value: "~35,000"
+  - label: Model options per AI task
+    value: "3"
+  - label: Client packs included
+    value: "3"
+  - label: Backend tests
+    value: "88"
+featured: true
+order: 12
+---
+
+## The problem
+
+Databricks job posts and the published customer projects ask for the same things over and over: get data from many sources into a governed lakehouse, prove the numbers, then put AI on top without letting it make things up or take actions nobody approved. The scope of this accelerator comes from an analysis of 12 Upwork posts and 172 published Databricks customer projects, kept in the repository. Instead of a proposal, I built the product those posts describe and ran it on real public data, so a client can see the result before hiring. It is a personal project, not client work, and not an official Databricks product.
+
+## The product in use
+
+<Video src="/videos/databricks-lakehouse-demo.mp4" poster="/videos/databricks-lakehouse-demo.webp" ratio="16 / 10" title="Lakehouse AI Studio walkthrough" caption="A seventy-second walkthrough, no audio: the NYC mobility pipeline down to gold, the quality checks and quarantine, a plain-English question answered with its SQL, the fintech enrichment with a blocked card number, a fraud case approved by a person, the diagnosed out-of-memory job, and the model options in Settings." />
+
+## What I built
+
+**Pipelines.** Real public data from three kinds of source (cloud files, HTTP APIs and local files, among the eight source types supported) flows through bronze, silver and gold with PySpark and Delta, defined in YAML and Spark SQL inside a pack. The job runner is its own process, so a crashing job cannot take the API down. The same pipelines run locally or on a Databricks workspace through the included Asset Bundle.
+
+![Pipelines: the NYC mobility pack, three sources flowing through bronze, silver and gold, with run status and freshness per step](/images/portfolio/databricks-lakehouse-pipeline.jpg)
+
+**Data quality.** Checks run between layers; about 35,000 bad rows of the 2.96M trips went to quarantine instead of into the numbers, and each quarantined row shows why it was held. Reconciliation accounts for every row and every dollar between layers, and lineage is recorded per table from the pack declarations.
+
+![Data quality: checks per layer, the quarantine with the reason each row was held, and the reconciliation that accounts for every row and dollar](/images/portfolio/databricks-lakehouse-quality.jpg)
+
+**Ask.** A plain-English question such as "which borough had the most revenue?" is answered with the real result and the SQL behind it, generated only over gold tables and passed through the SQL guard: read-only, approved tables only, personal-data columns refused, a forced row limit. Questions about documents ("what does payment type 3 mean?") run as RAG over PDFs indexed in pgvector, and the answer opens its source.
+
+![Ask: a plain-English question, the SQL the model generated, and the result it was answered from](/images/portfolio/databricks-lakehouse-ask.jpg)
+
+**Hybrid enrichment.** The fintech pack joins local transactions with card and location reference data pulled from Databricks tables as versioned snapshots, shows match rates per source, and blocks full card numbers at ingestion so blocked rows are never stored. The transactions are synthetic and the reference tables are simulated until a workspace is connected, and the interface says so.
+
+![Enrichment: local transactions joined with card and location reference data, match rates per source, and a blocked card number](/images/portfolio/databricks-lakehouse-enrichment.jpg)
+
+**AI agents with human approval.** A LangGraph flow investigates each fraud case: code computes the rules, the scores and the risk level, the model only explains them, and trust checks flag any disagreement between the two. High-risk actions go to an approvals inbox; a person approves or rejects, and the decision lands in an audit log that rejects updates and deletes at the database level.
+
+![AI agent: a fraud case with the rules and scores computed by code, the model's explanation, the trust checks, and the approval waiting for a person](/images/portfolio/databricks-lakehouse-agent.jpg)
+
+**Failure diagnosis.** The ops pack runs a job that really runs out of memory. The ops copilot finds the cause in Spark's event logs, drafts a runbook, and requests a rerun; the rerun waits for an approver and then succeeds.
+
+![Failure diagnosis: the failed run, the cause found in the Spark event logs, the drafted runbook and the rerun request](/images/portfolio/databricks-lakehouse-diagnosis.jpg)
+
+**Model options.** Settings shows one column per model option, local Ollama, Databricks Model Serving or Microsoft Foundry, with usage per task. An approver assigns a model to each task, and sending a task's data to a hosted model needs explicit confirmation, so API costs and data exposure are decided per task rather than once for the whole platform.
+
+![Settings: one column per model option with its usage, and the model assigned to each AI task](/images/portfolio/databricks-lakehouse-models.jpg)
+
+## Safety rules the code enforces
+
+Code computes rules, scores and risk, and the model cannot lower a risk level. High-risk actions, reruns, backfills and KPI promotions wait for an approver. The audit log rejects updates and deletes at the database level. Full card numbers are blocked at ingestion, which reduces exposure but is not PCI compliance on its own. Columns tagged as personal data are refused by the SQL guard and masked in samples. Local DuckDB queries can read the lake and nothing else on the machine. Every AI answer shows its SQL or its sources, and simulated, unverified and stale states are always visible in the interface.
+
+## Architecture
+
+Sources (cloud files, HTTP, REST, JDBC, local files, Databricks tables, Delta Shares, PDFs) feed bronze, silver and gold built with PySpark and Delta from a pack's YAML and Spark SQL, with checks, quarantine, reconciliation, lineage and card-number blocking between the layers. Gold tables feed the guarded text-to-SQL, gold features feed the ML model tracked in MLflow, and documents feed pgvector search; all three feed the agents, which hand consequential actions to human approval and the audit log. A model router picks a provider per task, local Ollama, Databricks Model Serving or Foundry, and logs every call with its tokens and time. A React and TypeScript front end on Vite talks to a FastAPI backend; Postgres with pgvector holds the application state and the document index; the job runner is a separate process. One `make setup` creates the environment and secrets, `make api` and `make web` run it, and `make demo` checks the whole demo path against a running API.
+
+## What is and is not verified
+
+Local mode is tested end to end, with 88 backend tests and AI evals per pack. The Databricks adapters, Microsoft Foundry and Delta Sharing are built and tested only against fakes until they are connected to real services; the Databricks Asset Bundle is included but has not been run on a live workspace yet, and the interface labels the adapter as unverified until it is. Streaming means micro-batches over a folder, there is no Kafka or Event Hubs source, and lineage is table-level from the pack declarations rather than read from Unity Catalog. The companies in the use-case catalog are market references from Databricks' published summit post, never customers of this product.
