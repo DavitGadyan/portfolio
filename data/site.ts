@@ -10,7 +10,7 @@ export const site = {
   country: 'ES',
   countryName: { en: 'Spain', es: 'España' } as Localized<string>,
   // Contact e-mail shown in the policy pages (GDPR controller contact). Change here only.
-  email: 'david.gadyan@bse.eu',
+  email: 'ai@davidgadyan.com',
   languagesSpoken: ['en', 'es', 'ru', 'hy'],
   since: 2018,
   stats: { projects: 190, clients: 50, hours: 8700, years: 8 },
