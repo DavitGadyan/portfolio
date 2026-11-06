@@ -30,10 +30,11 @@ export function SkillsBrain({ nodes, locale, t }: { nodes: BrainNode[]; locale: 
 
   const angle = (i: number, count: number) => -Math.PI / 2 + (i / count) * Math.PI * 2;
   const icons = active?.skills ?? [];
+  const dense = icons.length > 19; // twenty or more marks: alternate between an inner and an outer ring so they never touch
   return (
-    <div className="brain" data-open={open ?? undefined} data-many={icons.length > 11 ? '' : undefined} role="group" aria-label={t.label}>
+    <div className="brain" data-open={open ?? undefined} data-many={icons.length > 11 ? '' : undefined} data-dense={dense ? '' : undefined} role="group" aria-label={t.label}>
       <span className="brain__ring" aria-hidden="true" />
-      {nodes.map((n, i) => <span key={n.id} className="brain__spoke" aria-hidden="true" style={{ transform: `rotate(${((angle(i, N) * 180) / Math.PI).toFixed(2)}deg)`, '--i': i } as CSSProperties} />)}
+      {nodes.map((n, i) => <span key={n.id} className="brain__spoke" data-active={open === n.id ? '' : undefined} aria-hidden="true" style={{ transform: `rotate(${((angle(i, N) * 180) / Math.PI).toFixed(2)}deg)`, '--i': i } as CSSProperties} />)}
       <span className="brain__orbit" aria-hidden="true"><span /></span>
       <span className="brain__orbit brain__orbit--2" aria-hidden="true"><span /></span>
       <div className="brain__core" aria-hidden="true">
@@ -57,15 +58,17 @@ export function SkillsBrain({ nodes, locale, t }: { nodes: BrainNode[]; locale: 
         /* eslint-disable-next-line @next/next/no-img-element -- crisp brand marks mounted on demand; kept out of the optimizer on purpose */
         const img = <img src={k.src} alt="" width={48} height={48} decoding="async" draggable={false} />;
         const tip = <span className="brain__tip" aria-hidden="true">{k.label}</span>;
+        // alternate inner/outer; with an odd count the last mark would land next to the first on the inner ring, so it goes outside too
+        const ring = dense && (j % 2 === 1 || (icons.length % 2 === 1 && j === icons.length - 1)) ? 'out' : undefined;
         return k.cert ? (
           <button
-            key={k.id} type="button" className="brain__icon brain__icon--cert" aria-haspopup="dialog" aria-label={`${k.label}. ${t.certHint}`} title={k.label} style={style}
+            key={k.id} type="button" className="brain__icon brain__icon--cert" data-ring={ring} aria-haspopup="dialog" aria-label={`${k.label}. ${t.certHint}`} title={k.label} style={style}
             onClick={(e) => { opener.current = e.currentTarget; setCert(k); }}
           >
             {img}{tip}
           </button>
         ) : (
-          <span key={k.id} className="brain__icon" role="img" aria-label={k.label} title={k.label} style={style}>{img}{tip}</span>
+          <span key={k.id} className="brain__icon" data-ring={ring} role="img" aria-label={k.label} title={k.label} style={style}>{img}{tip}</span>
         );
       })}
       <p className="brain__hint" aria-live="polite">

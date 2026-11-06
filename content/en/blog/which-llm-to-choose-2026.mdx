@@ -1,0 +1,403 @@
+---
+title: 'Which LLM Should You Use? GPT, Claude, Gemini, Grok, Qwen, DeepSeek'
+date: '2026-11-06'
+lastmod: '2026-11-06'
+author: David Gadyan
+cover: /images/blog/which-llm-to-choose.png
+coverAlt: 'Eight logo tiles, OpenAI, Claude, Gemini, Grok, Mistral, Meta, Qwen and DeepSeek, on a dark grid with the title "Which LLM should you use? Nine model families, one job each"'
+tags:
+  - llm
+  - openai
+  - claude
+  - gemini
+  - grok
+  - qwen
+  - deepseek
+  - llama
+  - mistral
+  - microsoft decision-1
+  - ai agents
+  - model routing
+articleSection: AI Engineering
+description: >-
+  GPT, Claude, Gemini, Grok, Meta, Mistral, Qwen, DeepSeek and Microsoft
+  Decision-1 compared: current flagships, prices, context windows, open
+  weights, what each family is best at, API or self-hosting, and how to route.
+summary: >-
+  There is no best LLM, only the right model for each workload. This post
+  compares the nine model families that matter in November 2026, OpenAI,
+  Anthropic, Google, xAI, Meta, Mistral, Alibaba Qwen, DeepSeek and Microsoft
+  Decision-1, in thirteen tables: flagships and cheaper tiers, prices, context
+  windows, open weights, the use cases each one fits, proprietary API against
+  self-hosted weights, dense, mixture-of-experts, reasoning and decision
+  architectures, and a router that sends every task to the cheapest model that
+  does it well.
+about:
+  - OpenAI GPT
+  - Anthropic Claude
+  - Google Gemini
+  - xAI Grok
+  - Meta Llama
+  - Mistral AI
+  - Alibaba Qwen
+  - DeepSeek
+  - Microsoft Decision-1
+  - Model routing
+takeaways:
+  - >-
+    **No single best model.** OpenAI, Anthropic, Google and xAI sell the
+    strongest proprietary flagships; Qwen, DeepSeek, Meta and Mistral publish
+    weights you can run yourself; Microsoft Decision-1 is a different animal
+    that scores fixed options instead of writing text.
+  - >-
+    **Flagships cost 5 to 10 times the mid tier.** GPT-6 Astra and Claude
+    Fable 5.1 list at $10 per million input tokens; Claude Sonnet 5.5 and
+    GPT-6.1 Terra at $1 to $2; DeepSeek-V4-Pro at $1.32 with MIT weights.
+    Evaluate the cheaper tier on your own documents before paying for the
+    flagship.
+  - >-
+    **Open weights are not open source.** Qwen3.8-27B (Apache-2.0),
+    DeepSeek-V4 (MIT) and Muse Glimmer 30B (Apache-2.0) are permissive;
+    Mistral Medium 3.5 carries a modified MIT licence and Qwen3.8-Max a custom
+    one. Read the licence before the model card.
+  - >-
+    **Four architectures, one axis each:** dense models activate every
+    parameter, mixture-of-experts models a few experts per token, reasoning
+    models think before answering, decision models return a calibrated
+    probability per option. The categories overlap.
+  - >-
+    **Route, do not standardise.** A production router picks the model per
+    task from expected quality, price, latency, context, data sensitivity and
+    your own evaluation results, with a fallback when a provider is down or a
+    model retires.
+  - >-
+    **Retirements are the real risk.** OpenAI shut down GPT-4, o1 and o4-mini
+    on 23 October 2026; Claude Sonnet 4.5 retires on 30 November; GPT-5 on 11
+    December. Keep a list of every model name your code calls.
+faq:
+  - q: Which LLM is the best in 2026?
+    a: >-
+      None is best for everything. As of 6 November 2026 the flagships are
+      GPT-6 Astra (OpenAI), Claude Fable 5.1 (Anthropic), Gemini 4 Argon
+      (Google), Grok 4.7 (xAI), Muse Wonder (Meta), DeepSeek-V4-Pro, Mistral
+      Medium 3.5 and Qwen3.8-Max. The right one depends on the task, the data
+      residency rule, the budget and your own evaluation on your own documents.
+  - q: What is the difference between an open-weight and an open-source model?
+    a: >-
+      An open-weight model publishes the trained weights so you can download
+      and run it; the training data and code usually stay closed, and the
+      licence may limit commercial use. Qwen3.8-27B and Muse Glimmer 30B are
+      Apache-2.0, DeepSeek-V4 is MIT, Mistral Medium 3.5 uses a modified MIT
+      licence with revenue exceptions, Qwen3.8-Max a custom licence.
+  - q: Which model is best for coding agents?
+    a: >-
+      Claude is the family most teams start with for agentic software work
+      (Claude Opus 5.5 and Sonnet 5.5), with GPT-6 Sol and GPT-6.1
+      Terra as the usual second candidate and DeepSeek or Qwen3-Coder when the
+      code must stay on your own GPUs.
+  - q: Which model should I use for RAG?
+    a: >-
+      Any current mid-tier model answers well over retrieved passages: Claude
+      Sonnet 5.5, GPT-6.1 Terra, Gemini 3.8 Flash or Qwen3.8-Flash. The
+      retrieval quality matters more than the model, so build the golden test
+      set first and compare two candidates on it.
+  - q: Can I run an LLM on a laptop with a 16 GB GPU?
+    a: >-
+      Models up to about 8 billion parameters run comfortably; 14 billion
+      works with 4-bit quantisation and a modest context; 32 billion needs
+      heavy quantisation or CPU offloading; 70 billion does not fit in GPU
+      memory. Production inference belongs on dedicated GPU servers with vLLM
+      or SGLang.
+  - q: What is Microsoft Decision-1 and is it an LLM?
+    a: >-
+      It is a decision-scoring model Microsoft announced on 9 October 2026,
+      post-trained from Qwen3.5-9B. It does not generate text: you give it a
+      text and a fixed set of options and it returns a calibrated probability
+      per option, at $0.042 per million input tokens with free output. Use it
+      for classification, routing, prioritisation and grading, not for
+      writing.
+  - q: Should I use a proprietary API or self-host open weights?
+    a: >-
+      Start with an API unless a rule forbids it: no GPUs to run, the strongest
+      models, easy switching behind an abstraction layer. Self-host when the
+      data must stay on hardware you control, when you fine-tune, or when
+      volume is high and predictable enough that renting GPUs beats the token
+      bill. Many systems do both.
+  - q: How do I avoid being broken by a model retirement?
+    a: >-
+      Keep a list of every model name your code calls with an owner per name,
+      subscribe those owners to the deprecation pages of OpenAI, Anthropic and
+      Google Cloud, rerun your evaluation set on the successor before the
+      shutdown date, and route through one abstraction so a model name is
+      changed in one place.
+  - q: Why did Meta replace Llama with Muse?
+    a: >-
+      In spring 2026 Meta shipped Muse Spark as its first frontier model
+      without open weights, then Muse Wonder on 12 October 2026 and, on 15
+      October, Muse Spark Open with open weights. Llama 4 weights remain
+      downloadable under the Llama 4 community licence; the Llama line is still
+      the one most self-hosted deployments run.
+---
+
+A client asked me last month which model their new assistant should call: GPT, Claude, Gemini, or "one of the open ones". The honest answer is a table, not a name. Every family on the market is optimised for a different workload, and the cheapest way to build a good system is to understand which model to use for which job, how to combine them, and when self-hosting beats an API.
+
+This post is the comparison I wish I had on that call. It covers the nine families that matter in November 2026: OpenAI GPT, Anthropic Claude, Google Gemini, xAI Grok, Meta (Llama and now Muse), Mistral, Alibaba Qwen, DeepSeek, and Microsoft Decision-1, a new kind of model that deserves [its own post](/blog/microsoft-decision-1-decision-model-use-cases/). It continues the series that started with [Snowflake vs Databricks](/blog/snowflake-vs-databricks-use-cases/) and [Azure, Fabric, Databricks or Foundry](/blog/azure-fabric-databricks-foundry-which-to-choose/), and it ends with the routing code I actually use.
+
+## The short answer
+
+Pick by job, not by brand. For general agents and tool calling, start with GPT or Claude. For software engineering agents, Claude first. For images, video and very large document sets, Gemini. For real-time social and market signals, Grok. For anything that must stay on your own hardware, Qwen, DeepSeek, Llama or Mistral on vLLM. For classification, routing and grading at volume, Microsoft Decision-1. Then benchmark two candidates on your own data, because every claim below is a vendor's claim until your evaluation set says otherwise.
+
+Everything here was checked on 6 November 2026 against the vendors' model pages and the AI Board research report of 26 October 2026, which lists a vendor source per line. Prices are public list prices per million tokens, input then output, excluding volume discounts and batch rates.
+
+## Why is there no single best LLM?
+
+Because the families are optimised for different things. Some lead at complex reasoning and mathematics; some at reading and editing large codebases; some at video, audio and million-token documents; some at being cheap and fast for high-volume production work; and some publish their weights so you can run them on a GPU you control. A model that tops one of those lists is rarely first on the others, and the price spread between the top and the mid tier is five to ten times.
+
+There are three kinds of provider, and the distinction matters more than any benchmark:
+
+| Category | Providers | What you get |
+| --- | --- | --- |
+| Proprietary, commercial API | OpenAI, Google, Anthropic, xAI, Microsoft | Managed inference, the strongest models, tool calling, no hardware to run |
+| Open-weight | Alibaba Qwen, DeepSeek, Meta, Mistral, OpenAI gpt-oss, NVIDIA Nemotron | Weights you download and serve yourself; customisation and data control |
+| Enterprise platforms | Microsoft Foundry, Amazon Bedrock, Gemini Enterprise Agent Platform | One contract and one identity system for several vendors' models, plus evaluation and governance |
+
+Open-weight does not mean open-source. Qwen and DeepSeek publish weights, but the licence, the training data and the commercial-use conditions differ per release, and some families publish only their smaller models.
+
+## Which flagship models are current in November 2026?
+
+One flagship per lab, as the labs describe them. The EU column says whether the vendor documents a route to processing inside the European Union, which decides the question for many of my clients before quality does.
+
+| Lab | Flagship | Released | Context window | Open weights | List price (in / out, per 1M) | EU route |
+| --- | --- | --- | --- | --- | --- | --- |
+| OpenAI | GPT-6 Astra | 3 Sep 2026 | 1,050,000 | No | $10 / $50 | Yes, OpenAI EU processing with MAM or ZDR approved |
+| Anthropic | Claude Fable 5.1 | 1 Sep 2026 | 1,000,000 | No | $10 / $50 | Yes, Google Cloud eu multi-region |
+| Google | Gemini 4 Argon | 13 Oct 2026 | 1,048,576 | No | $2 / $10 (introductory) | Yes, Google Cloud eu multi-region |
+| xAI | Grok 4.7 | 21 Sep 2026 | 500,000 | No | $2 / $6 | No documented EU endpoint |
+| Meta | Muse Wonder | 12 Oct 2026 | 1,000,000 | No | $4 / $20 | No documented EU residency |
+| DeepSeek | DeepSeek-V4-Pro | 13 Aug 2026 | 1,000,000 | Yes, MIT | $1.32 / $3.96 (peak; half off-peak) | Self-hosted or EU GPU rental |
+| Mistral AI | Mistral Medium 3.5 | 28 Apr 2026 | 256,000 | Yes, modified MIT | $1.50 / $7.50 | Yes, Mistral Regional Endpoints in Europe |
+| Alibaba | Qwen3.8-Max | 3 Aug 2026 | 1,000,000 | Open build under a custom licence | $2 / $6 | Alibaba Cloud Model Studio, Frankfurt |
+| Microsoft | Microsoft Decision-1 (decision model, not an LLM) | 9 Oct 2026 | 32,768 input | No | $0.042 / free | Through Microsoft Foundry; check the deployment regions |
+
+Three things to read off that table. The million-token window is now the norm at the top: six of the eight language-model flagships publish one million tokens or more. The price gap between the two most expensive flagships and DeepSeek is about eight times. And the newest OpenAI flagship reached a documented EU route only in late October, with conditions, while its previous generation had been in nine European Azure regions for months: the residency rule narrows your model choice, so check the specific model, not the vendor.
+
+### Which cheaper tiers sit under each flagship?
+
+Most production traffic should not run on a flagship. These are the tiers I evaluate first, with their published prices.
+
+| Family | Mid tier | Small and fast | Notes |
+| --- | --- | --- | --- |
+| OpenAI | GPT-6.1 Terra, $1 / $5, 1,050,000 tokens (26 Oct 2026); GPT-6 Sol | GPT-5.6 Luna, $0.20 / $1.20 | Terra is priced at half of GPT-5.6 Terra; Luna is the fast tier for drafting and summarising |
+| Anthropic | Claude Opus 5.5, $4 / $20 (22 Sep); Claude Sonnet 5.5, $2 / $10 (28 Sep) | Claude Haiku 5.5 (7 Oct) | Anthropic names Opus 5.5 the starting point for most workloads and Sonnet 5.5 the successor to Sonnet 4.5 |
+| Google | Gemini 3.8 Flash, $0.75 / $3.75 introductory until 31 Dec 2026, then $1.50 / $7.50 | Gemini 3.5 Flash-Lite, $0.30 / $2.50 | Budget for the post-January price |
+| xAI | Grok 4.6, $2 / $6 | Grok 4.3, $1.25 / $2.50 | Above 200K tokens the Grok rate doubles |
+| Meta | Muse Spark 1.3, $1.25 / $4.25 | Muse Glimmer 30B, open weights, Apache-2.0 | Muse Spark Open (15 Oct 2026) adds open weights to the Spark line; Llama 4 stays downloadable |
+| DeepSeek | DeepSeek-V4-Flash, $0.44 / $1.32; V4.1-Flash (10 Sep 2026) | Same model, off-peak at half price | MIT weights for both V4 sizes |
+| Mistral AI | Mistral Large 3, $0.50 / $1.50, Apache-2.0; Mistral Large 4 in public preview since 6 Oct 2026 | Mistral Small 4, $0.15 / $0.60, Apache-2.0 | Large 3 is cheaper than Medium 3.5 despite the name |
+| Alibaba | Qwen3.8-Flash, $0.15 / $0.47 | Qwen3.8-27B, open weights, Apache-2.0, 262,144 tokens native | The 27B is the most practical open model for a single data-centre GPU |
+
+## What is each model family best at?
+
+This is positioning from my own projects and reading, not a measured ranking. Treat every row as the first candidate to evaluate, not the winner.
+
+| Family | Strongest at | Typical use cases |
+| --- | --- | --- |
+| OpenAI GPT | General-purpose reasoning, tool calling, multimodal input, the broadest ecosystem | AI agents, RAG, coding assistants, financial analysis, document processing, workflow automation |
+| Anthropic Claude | Software engineering on large codebases, following long instructions, document analysis | Coding agents, code review, architecture analysis, legal documents, complex business workflows |
+| Google Gemini | Video, audio and image understanding, million-token documents, Google Cloud and BigQuery integration | Video analysis, OCR pipelines, document intelligence, multimodal RAG, large-scale data analysis |
+| xAI Grok | Real-time information from the X ecosystem, current discussions and trends | Social sentiment, cryptocurrency and market monitoring, breaking-news analysis, trend detection |
+| Alibaba Qwen | The widest open-weight line: sizes from 0.6B to 2.4T, coder, vision, omni, embedding and reranker variants | Private RAG, custom chatbots, local inference, document extraction, fine-tuned domain models |
+| DeepSeek | Cost-efficient reasoning and coding; mixture-of-experts at frontier scale with MIT weights | Code generation, mathematical reasoning, data analysis, autonomous agents, private inference |
+| Meta Llama and Muse | Self-hosting and fine-tuning (Llama 4, Muse Glimmer 30B, Muse Spark Open); Muse Wonder through the Meta Model API | Private deployments, internal chatbots, fine-tuned enterprise models |
+| Mistral AI | Efficient European models with EU endpoints; Codestral and Devstral for code, Pixtral for vision, Mistral OCR for documents | European enterprise AI, coding agents, document extraction, sovereignty-first deployments |
+| Microsoft Decision-1 | Fast, calibrated decisions over fixed options; not a chatbot | Agent routing, classification, prioritisation, grading AI answers, workflow control |
+
+Other families worth knowing: Moonshot Kimi K3 (reasoning and agents, 1,048,576-token window), Zhipu GLM-5.3 (reasoning and coding, MIT weights on GLM-5.2), Cohere Command A+ (Apache-2.0 weights, strong embeddings and rerankers for enterprise RAG), NVIDIA Nemotron 3 Ultra (open weights for enterprise inference) and Amazon Nova (the AWS native line, the only models in the AWS European Sovereign Cloud at the September 2026 check).
+
+## Proprietary API or self-hosted open weights?
+
+This is the biggest architectural decision, bigger than the choice of model. Figure 1 shows both routes and the multi-model stack that combines them; tap a layer to read what it does.
+
+<Stacks id="llm-routes" caption="Figure 1. Three ways to put a model behind an application: a proprietary API, self-hosted open weights, and the multi-model routing stack that uses both. The application and the orchestration layers are identical; only the base URL changes." />
+
+| Question | Proprietary API | Self-hosted open weights |
+| --- | --- | --- |
+| Hardware | None of yours; the vendor runs the GPUs | NVIDIA GPUs you rent or own, sized by you |
+| Cost model | Per token; flagships $2 to $10 per million input | GPU hours plus operations; no per-token bill from a vendor |
+| Model quality | The strongest models | A generation behind at the top, equal in the mid tier (Qwen3.8-27B, DeepSeek-V4-Flash, Mistral Medium 3.5) |
+| Data path | Leaves your network under a data processing agreement; zero retention and regional processing are contract settings | Never leaves your VPC; embeddings run locally too |
+| Customisation | Prompting, structured outputs, limited fine-tuning | Full fine-tuning (LoRA, QLoRA), custom serving, quantisation |
+| Operations | Rate limits and provider availability are theirs | Scaling, batching, monitoring, patching and upgrades are yours |
+| Switching cost | Low behind an abstraction layer | Low too: vLLM and SGLang expose OpenAI-compatible endpoints |
+
+### What can you run on a 16 GB GPU?
+
+A rule of thumb for a laptop with 16 GB of GPU memory, before production sizing. Memory depends on quantisation, context length, KV cache and architecture, so treat these as orders of magnitude.
+
+| Model size | On a 16 GB GPU |
+| --- | --- |
+| 1B to 3B | Very comfortable, full precision |
+| 7B to 8B | Practical at 16-bit, roomy at 8-bit |
+| 14B | Practical with 4-bit quantisation and a modest context |
+| 32B | Significant quantisation or CPU offloading compromises |
+| 70B and above | Not practical in GPU memory; use a server or an API |
+
+For production you would not use a laptop anyway: vLLM or SGLang on dedicated GPU instances, with batching and the KV cache tuned for your context lengths.
+
+## Dense, mixture of experts, reasoning or decision model?
+
+Not every model works the same way, and the architecture decides memory, latency and what the model is good for. Figure 2 puts the four kinds side by side.
+
+<Figure src="llm-model-types.en.svg" caption="Figure 2. Four kinds of model. A dense model activates every parameter per token; a mixture of experts routes each token to a few experts; a reasoning model works through the problem before answering; a decision model scores fixed options with calibrated probabilities and writes no text." />
+
+| Architecture | What happens per token | Memory and latency | Best application |
+| --- | --- | --- | --- |
+| Dense | Every parameter participates; a 27B model computes 27B weights per token | Memory equals the parameter count; latency grows with size | General inference, simple serving, fine-tuning (Qwen3.8-27B, Mistral Medium 3.5) |
+| Mixture of experts (MoE) | A router activates a few experts; DeepSeek-V4-Pro has 1.6T parameters in total and 49B active per token | All experts must still be loaded, so memory stays large while compute per token stays small | Efficient frontier-scale models (DeepSeek V4, Qwen3.8-Max, Mistral Large 3) |
+| Reasoning | The model spends extra computation working through the problem before the answer | Higher latency and cost per answer; effort is adjustable on the 2026 flagships | Mathematics, complex coding, planning, multi-step analysis, agent workflows |
+| Decision | The model scores a fixed set of options in one pass and returns a probability per option | Milliseconds, no output tokens | Classification, routing, prioritisation, grading (Microsoft Decision-1) |
+
+The categories overlap: DeepSeek-V4-Pro is a mixture of experts and a reasoning model, and Decision-1 is post-trained from a dense 9B Qwen model.
+
+## Which model should you evaluate first for each project?
+
+Starting candidates, not guaranteed winners. The right-hand column is the reason the candidate is on the list.
+
+| Project | First models to evaluate | Why |
+| --- | --- | --- |
+| Advanced AI agents | GPT-6 Sol, Claude Opus 5.5 | Reasoning, tool calling, multi-step execution |
+| Software development agents | Claude Sonnet 5.5 or Opus 5.5, GPT-6.1 Terra, Qwen3-Coder | Codebase understanding, editing and refactoring |
+| RAG applications | Claude Sonnet 5.5, GPT-6.1 Terra, Gemini 3.8 Flash, Qwen3.8-Flash | Grounded answers over retrieved passages at mid-tier prices |
+| Video understanding | Gemini 4 Argon | Native multimodal video processing |
+| Financial analysis | GPT-6, Claude Opus 5.5, DeepSeek-V4-Pro | Reasoning and numerical analysis |
+| Cryptocurrency and market intelligence | Grok 4.7, GPT-6, DeepSeek | Current information plus analytical reasoning |
+| Document processing | Gemini, GPT-6, Claude, plus Azure AI Document Intelligence or Mistral OCR | Multimodal extraction with a document service in front |
+| Private enterprise AI | Qwen3.8-27B, DeepSeek-V4-Flash, Llama 4, Mistral Medium 3.5 | Self-hosting and customisation |
+| Customer support | GPT-6.1 Terra, Gemini 3.8 Flash, Qwen | Classification, response generation, automation |
+| High-volume classification | Microsoft Decision-1, a small Qwen | Low-cost structured decisions |
+| Multilingual chatbot | GPT, Gemini, Qwen | Multilingual understanding and generation |
+| Computer-use agents | GPT-6.1 Terra, Claude | Interacting with software interfaces |
+
+## How do you route between models in production?
+
+Do not hard-code one model into every feature. A routing layer selects the model per task, and the task type is only the first signal. Mine looks like this in its simplest form:
+
+```python
+class ModelRouter:
+    """Picks the model per task; the strings are deployment names in Foundry or vLLM."""
+
+    def select_model(self, task: str) -> str:
+        if task == "classification":
+            return "microsoft-decision-1"
+        if task == "complex_reasoning":
+            return "gpt-6-sol"
+        if task == "coding":
+            return "claude-sonnet-5-5"
+        if task == "multimodal":
+            return "gemini-4-argon"
+        if task == "private_inference":
+            return "qwen3.8-27b"
+        if task == "social_intelligence":
+            return "grok-4.7"
+        if task == "cost_efficient_reasoning":
+            return "deepseek-v4-flash"
+        return "gpt-6.1-terra"
+```
+
+In production the router weighs more than the task type:
+
+1. **Expected quality** on that task, from your own evaluation set, not a leaderboard.
+2. **Price** per million tokens, input and output, including cached-input rates where the vendor publishes one.
+3. **Token counts** of the request: a 300K-token prompt rules out Grok's standard rate and Decision-1's 32K input limit.
+4. **Latency** requirements: a decision model answers in milliseconds, a flagship reasoning model in seconds.
+5. **Context window** and whether the usable window is as long as the advertised one.
+6. **Data sensitivity**: private fields go to the self-hosted route; the rest may use an API under the agreed terms.
+7. **Availability** of each provider, with a fallback model and a retry policy.
+8. **Retirement dates** of each model name, so a shutdown becomes a one-line change.
+
+## Example: a multi-model invoice pipeline
+
+An accounting application that receives 10,000 invoices a month does not need a flagship for every step. The benefit of a multi-model design is that expensive tokens go only where they earn their keep, and arithmetic goes to Python.
+
+| Stage | Model or tool | Responsibility |
+| --- | --- | --- |
+| Document ingestion | Azure AI Document Intelligence or Google Document AI | OCR and structured extraction |
+| Document understanding | Gemini 4 Argon or GPT-6.1 Terra | Unusual invoice layouts the extraction service missed |
+| Data validation | Python and SQL | Amounts, VAT and invoice numbers, deterministically |
+| Classification and prioritisation | Microsoft Decision-1 | Which exceptions need a person, in what order |
+| Complex financial reasoning | Claude Opus 5.5 or GPT-6 Sol | Investigating unusual transactions |
+| Private processing | Qwen3.8-27B or DeepSeek-V4-Flash on vLLM | Sensitive fields that must not leave the network |
+| Final approval | A person, or a controlled workflow | Any financial decision that matters |
+
+## What changed in September and October 2026?
+
+New models arrive every week, and every so often an old one is switched off. These are the releases of the eight language-model labs plus Microsoft between 10 September and 26 October 2026, as listed by the AI Board report of 26 October with a vendor source per line.
+
+| Date | Lab | Model | What it is |
+| --- | --- | --- | --- |
+| 26 Oct 2026 | OpenAI | GPT-6.1 Terra | Fast, efficient model for visual reasoning, computer use and writing; $1 / $5 |
+| 15 Oct 2026 | Meta | Muse Spark Open | Open weights, downloadable from Hugging Face, Google Cloud and Microsoft Foundry |
+| 13 Oct 2026 | Google | Gemini 4 Argon | Flagship reasoning model, generally available |
+| 12 Oct 2026 | Meta | Muse Wonder | Meta's most capable Muse model on the Meta Model API |
+| 9 Oct 2026 | Microsoft | Microsoft-Decision-1 | Decision-scoring model, generally available in Foundry |
+| 7 Oct 2026 | Anthropic | Claude Haiku 5.5 | The fastest Claude tier |
+| 6 Oct 2026 | Mistral | Mistral Large 4 | Public preview; open weights announced to follow |
+| 29 Sep 2026 | OpenAI | GPT-6.1 Sol | Complex coding and professional work at a lower cost than GPT-6 Astra |
+| 28 Sep 2026 | Anthropic | Claude Sonnet 5.5 | Successor to Sonnet 4.5; $2 / $10 |
+| 22 Sep 2026 | Anthropic | Claude Opus 5.5 | Long-running coding and knowledge work; $4 / $20 |
+| 21 Sep 2026 | xAI | Grok 4.7 | Flagship for coding, agents and knowledge work; 500,000 tokens |
+| 10 Sep 2026 | DeepSeek | DeepSeek-V4.1-Flash | Smallest model of the new generation, reads images; updated 17 Oct |
+
+### Which models are retiring, and when?
+
+A model is deprecated when the vendor announces an end date and still answers; it is retired on the day every call fails. The notice period is the only window in which a migration is cheap: OpenAI promises at least six months for generally available models, Anthropic at least 60 days, Google Cloud at least 45 days for short-lived models.
+
+| Date | Lab | Models | Replacement named by the vendor |
+| --- | --- | --- | --- |
+| 23 Oct 2026 (done) | OpenAI | GPT-4, GPT-4 Turbo, GPT-3.5 Turbo, o1, o1-pro, o3-mini, o4-mini, GPT-4.1 nano | GPT-5.6 Sol, Terra or Luna, per model |
+| 30 Nov 2026 | Anthropic | Claude Sonnet 4.5 on Anthropic's own platforms | Claude Sonnet 5.5 |
+| 11 Dec 2026 | OpenAI | gpt-5, gpt-5-mini, gpt-5-nano, gpt-5-pro, o3, o3-pro | GPT-5.6 Sol, Terra or Luna, per model |
+| 14 Jan 2027 | OpenAI | GPT-4o, GPT-4o mini, GPT-4.1, GPT-4.1 mini | GPT-6 Luna |
+| 1 Apr 2027 | OpenAI | gpt-5.1, gpt-5.3-codex, gpt-5.4-nano | GPT-6 Sol and GPT-6 Luna |
+
+Named production models have run twelve to twenty-two months before shutdown. Plan for six to eighteen months of useful life per model version, and keep the evaluation set that chose the model so you can rerun it on the successor.
+
+## Which model should you choose?
+
+Figure 3 is the decision flow I walk through with clients. Four questions cover most cases; the footnote covers the rest.
+
+<Figure src="llm-decision.en.svg" caption="Figure 3. Which model first. Fixed answers go to a decision model; data that cannot leave your hardware goes to open weights; images, video and huge document sets go to Gemini; long agentic coding and hard reasoning go to a flagship; everything else starts on the mid tier." />
+
+When not to switch:
+
+- **A new model is rarely a reason to switch.** The successor gives different answers on your documents even when it is better; rerun the evaluation set before moving.
+- **Do not write "always the latest model" into a policy.** The flagship of September 2026 costs eight times more per million input tokens than the flagship of a year earlier.
+- **Do not pay for reasoning on grounded summarising.** Reasoning helps on open problems and can hurt on tasks where the answer is in the retrieved passage; only your own test tells you which case you are in.
+- **Do not send a fixed-option decision to a flagship.** A decision model or a small open model does it in milliseconds for cents.
+
+## What should an AI architect learn?
+
+The skill is combining models, not calling one API. This is the order I would study in.
+
+| Skill | What to understand |
+| --- | --- |
+| LLM APIs | The OpenAI, Anthropic, Gemini, xAI and DeepSeek APIs, and the Decisions API in Microsoft Foundry |
+| Model serving | vLLM, SGLang, Ollama; batching, KV cache, quantisation |
+| Model routing | Choosing per task from quality, cost, latency, context, sensitivity and availability |
+| Fine-tuning | LoRA, QLoRA, supervised fine-tuning, and when not to bother |
+| RAG | Embeddings, hybrid search, reranking, vector databases, golden test sets |
+| AI agents | LangGraph, tool calling, MCP, human approval gates |
+| Evaluation | Accuracy, hallucination, latency and cost per task, tracked per model version |
+| GPU infrastructure | CUDA, batching, quantisation, memory planning |
+| Enterprise security | Data isolation, access control, governance, residency |
+| Cloud AI platforms | Microsoft Foundry, Amazon Bedrock, Gemini Enterprise Agent Platform |
+
+The practical project that teaches all of it: a multi-model enterprise platform with Microsoft Foundry as the model management layer, GPT, Claude and Gemini as external providers, Qwen and DeepSeek on vLLM, Microsoft Decision-1 for routing and classification, LangGraph for orchestration, PostgreSQL with pgvector for retrieval, Redis for caching, FastAPI for the API, Docker and Kubernetes for deployment, and MLflow for evaluation. That is an enterprise architecture, not another chatbot.
+
+## Sources
+
+- AI Board, [AI Models for Executives 2026](https://ai-board.studio/), research report published 8 September 2026 and updated 26 October 2026: the flagship table, the release and retirement lists, prices, context windows and EU routes, each line with the vendor's own source. Read on 6 November 2026.
+- Microsoft Learn, [Foundry Models sold by Azure](https://learn.microsoft.com/azure/foundry/foundry-models/concepts/models-sold-directly-by-azure) (page dated 21 September 2026, updated 29 October 2026): the Microsoft-Decision-1 entry, and [Use the Azure OpenAI Decisions API](https://learn.microsoft.com/azure/foundry/openai/how-to/decisions) (21 October 2026).
+- Microsoft, [Microsoft-Decision-1: Our model for fast decision-making](https://commandline.microsoft.com/microsoft-decision-1-model-foundry/), announcement of 9 October 2026: base model, price, latency and accuracy claims.
+- Vendor model pages read on 6 November 2026 for the September and October releases: OpenAI (GPT-6.1 Terra), Anthropic (Claude Opus 5.5, Sonnet 5.5, Haiku 5.5), Google (Gemini 4 Argon), xAI (Grok 4.7), Meta (Muse Wonder, Muse Spark Open), DeepSeek (V4.1-Flash), Mistral (Large 4 preview), Alibaba (Qwen3.8-Max, Qwen3.8-27B), with the model cards on Hugging Face for the open-weight sizes and licences.
+- My own study notes of November 2026 on use-case positioning, the routing signals, the invoice pipeline and the learning path, written from the projects on this site. Positioning is my reading, not a measurement; prices and availability change monthly and the vendors' pages are the source of truth.

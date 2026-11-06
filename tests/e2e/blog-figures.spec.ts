@@ -28,7 +28,7 @@ test.describe('blog stack diagrams', () => {
       await expect(clouds.locator('[role="tab"][aria-selected="true"]')).toHaveText('Azure');
       await expect(clouds.locator('.stk__row')).toHaveCount(4);
       await expect(clouds.locator('.stk__chip').first()).toHaveText('Microsoft Foundry');
-      await expect(clouds.locator('.stk__chip img').first()).toHaveAttribute('src', /azureai\.png$/);
+      await expect(clouds.locator('.stk__chip img').first()).toHaveAttribute('src', /foundry\.svg$/);
       await expect(clouds.locator('.stk__use')).toContainText(use);
       // tap a layer: its note opens; tap another: the first closes
       const infraRow = clouds.locator('.stk__row[data-layer="infra"]');

@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 500" width="100%" role="img" aria-label="A decision flow with four questions down the left and an answer to the right of each: a fixed set of answers such as classify, route or grade leads to Microsoft Decision-1; data that must stay on hardware you control leads to open weights on vLLM such as Qwen3.8-27B, DeepSeek-V4, Llama 4 and Mistral; images, video or very large documents lead to Gemini 4 Argon; long agentic coding or hard reasoning leads to Claude Opus 5.5, Claude Fable 5.1 or GPT-6 Astra; otherwise a mid tier such as Claude Sonnet 5.5, GPT-6.1 Terra, Gemini 3.8 Flash or Qwen3.8-Flash, benchmarked on your own documents" style="height:auto;display:block">
+  <title>Which model first: a decision flow</title>
+  <defs><marker id="ar-llm" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#6f6f6f" /></marker></defs>
+  <rect x="20" y="20" width="380" height="56" rx="8" fill="#f6f6f6" stroke="#999999" />
+  <text x="210" y="53" text-anchor="middle" font-size="13" font-weight="600" fill="#313131">A fixed set of answers: classify, route, grade?</text>
+  <rect x="430" y="20" width="310" height="56" rx="8" fill="#fff1ee" stroke="#FF3621" />
+  <text x="585" y="43" text-anchor="middle" font-size="13" font-weight="600" fill="#313131">Microsoft Decision-1</text>
+  <text x="585" y="63" text-anchor="middle" font-size="11" fill="#6f6f6f">a probability per option, cents per million</text>
+  <line x1="400" y1="48" x2="430" y2="48" stroke="#6f6f6f" stroke-width="1.5" marker-end="url(#ar-llm)" />
+  <text x="415" y="42" text-anchor="middle" font-size="10" fill="#6f6f6f">yes</text>
+  <line x1="210" y1="76" x2="210" y2="110" stroke="#6f6f6f" stroke-width="1.5" marker-end="url(#ar-llm)" />
+  <text x="222" y="97" font-size="10" fill="#6f6f6f">no</text>
+  <rect x="20" y="110" width="380" height="56" rx="8" fill="#f6f6f6" stroke="#999999" />
+  <text x="210" y="143" text-anchor="middle" font-size="13" font-weight="600" fill="#313131">Must the data stay on hardware you control?</text>
+  <rect x="430" y="110" width="310" height="56" rx="8" fill="#e9f6f0" stroke="#1E7F5C" />
+  <text x="585" y="133" text-anchor="middle" font-size="13" font-weight="600" fill="#313131">Open weights on vLLM or Ollama</text>
+  <text x="585" y="153" text-anchor="middle" font-size="11" fill="#6f6f6f">Qwen3.8-27B, DeepSeek-V4, Llama 4, Mistral</text>
+  <line x1="400" y1="138" x2="430" y2="138" stroke="#6f6f6f" stroke-width="1.5" marker-end="url(#ar-llm)" />
+  <text x="415" y="132" text-anchor="middle" font-size="10" fill="#6f6f6f">yes</text>
+  <line x1="210" y1="166" x2="210" y2="200" stroke="#6f6f6f" stroke-width="1.5" marker-end="url(#ar-llm)" />
+  <text x="222" y="187" font-size="10" fill="#6f6f6f">no</text>
+  <rect x="20" y="200" width="380" height="56" rx="8" fill="#f6f6f6" stroke="#999999" />
+  <text x="210" y="233" text-anchor="middle" font-size="13" font-weight="600" fill="#313131">Images, video or very large document sets?</text>
+  <rect x="430" y="200" width="310" height="56" rx="8" fill="#e8f2fb" stroke="#0078D4" />
+  <text x="585" y="223" text-anchor="middle" font-size="13" font-weight="600" fill="#313131">Gemini 4 Argon</text>
+  <text x="585" y="243" text-anchor="middle" font-size="11" fill="#6f6f6f">multimodal; 1,048,576-token window</text>
+  <line x1="400" y1="228" x2="430" y2="228" stroke="#6f6f6f" stroke-width="1.5" marker-end="url(#ar-llm)" />
+  <text x="415" y="222" text-anchor="middle" font-size="10" fill="#6f6f6f">yes</text>
+  <line x1="210" y1="256" x2="210" y2="290" stroke="#6f6f6f" stroke-width="1.5" marker-end="url(#ar-llm)" />
+  <text x="222" y="277" font-size="10" fill="#6f6f6f">no</text>
+  <rect x="20" y="290" width="380" height="56" rx="8" fill="#f6f6f6" stroke="#999999" />
+  <text x="210" y="323" text-anchor="middle" font-size="13" font-weight="600" fill="#313131">Long agentic coding or hard multi-step reasoning?</text>
+  <rect x="430" y="290" width="310" height="56" rx="8" fill="#f1ebfc" stroke="#7B3FE4" />
+  <text x="585" y="313" text-anchor="middle" font-size="13" font-weight="600" fill="#313131">Claude Opus 5.5 or Fable 5.1, GPT-6 Astra</text>
+  <text x="585" y="333" text-anchor="middle" font-size="11" fill="#6f6f6f">flagship reasoning; try the mid tier first</text>
+  <line x1="400" y1="318" x2="430" y2="318" stroke="#6f6f6f" stroke-width="1.5" marker-end="url(#ar-llm)" />
+  <text x="415" y="312" text-anchor="middle" font-size="10" fill="#6f6f6f">yes</text>
+  <line x1="210" y1="346" x2="210" y2="380" stroke="#6f6f6f" stroke-width="1.5" marker-end="url(#ar-llm)" />
+  <text x="222" y="367" font-size="10" fill="#6f6f6f">no</text>
+  <rect x="20" y="380" width="720" height="46" rx="8" fill="#e8f2fb" stroke="#0078D4" />
+  <text x="380" y="399" text-anchor="middle" font-size="12" font-weight="600" fill="#313131">Otherwise: a mid tier. Claude Sonnet 5.5, GPT-6.1 Terra, Gemini 3.8 Flash or Qwen3.8-Flash</text>
+  <text x="380" y="417" text-anchor="middle" font-size="11" fill="#6f6f6f">a fifth of the flagship price or less; the same window as the flagships in most cases</text>
+  <text x="380" y="458" text-anchor="middle" font-size="12" fill="#6f6f6f">Real-time social and market signals: Grok 4.7. Whatever the branch, run one golden set on two candidates first.</text>
+  <text x="380" y="480" text-anchor="middle" font-size="12" fill="#6f6f6f">Model names and prices as published by the vendors on 6 November 2026; they change monthly.</text>
+</svg>

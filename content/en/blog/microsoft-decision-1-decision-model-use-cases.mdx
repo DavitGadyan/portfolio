@@ -1,0 +1,331 @@
+---
+title: 'Microsoft Decision-1: What a Decision Model Is and When to Use It'
+date: '2026-11-06'
+lastmod: '2026-11-06'
+author: David Gadyan
+cover: /images/blog/microsoft-decision-1.png
+coverAlt: 'A Microsoft tile, a Microsoft Foundry tile and a tile showing a choice answer with a probability per option, billing 0.95, on a dark grid with the title "Microsoft Decision-1: a model that answers with a probability, not a paragraph"'
+tags:
+  - microsoft decision-1
+  - microsoft foundry
+  - decision model
+  - llm
+  - ai agents
+  - classification
+  - model routing
+  - llm evaluation
+articleSection: AI Engineering
+description: >-
+  Microsoft Decision-1 explained: a decision-scoring model that returns a
+  calibrated probability per option instead of text, how it differs from an
+  LLM, the question types, prices, limits and the use cases where it fits.
+summary: >-
+  Microsoft announced Decision-1 on 9 October 2026: a model post-trained from
+  Qwen3.5-9B that does not generate text. You give it a text and a fixed set of
+  options and it returns a calibrated probability for each option, in one
+  pass, at $0.042 per million input tokens with free output. This post
+  explains the difference from a language model, the three question types,
+  what Microsoft claims and what is verified, the use cases where it replaces
+  an LLM call, where it sits in an agent loop, what it costs at scale and its
+  limits.
+about:
+  - Microsoft Decision-1
+  - Microsoft Foundry
+  - Decision models
+  - LLM evaluation
+  - AI agents
+  - Model routing
+takeaways:
+  - >-
+    **A decision model answers with a number.** Decision-1 takes a text and a
+    fixed set of options and returns a calibrated probability per option; it
+    writes no text and no rationale. An LLM generates tokens you then have to
+    parse.
+  - >-
+    **Three question types:** yes/no (predicate), choice from unordered
+    options, and score against ordered levels, plus rubric-based grading. Up
+    to 32,768 input tokens, text only, one pass.
+  - >-
+    **Cents, not dollars.** $0.042 per million input tokens and free output.
+    Scoring 10,000 tickets a day at 1,500 tokens each costs about $0.63 a day
+    at list price; the same tokens on GPT-6.1 Terra cost $15 before output.
+  - >-
+    **Use it where the answers are known in advance:** routing, classification,
+    prioritisation, agent gates, grading AI answers, content filtering. Use an
+    LLM where the answer has to be written.
+  - >-
+    **Vendor figures only, for now.** The 35 times lower median latency than
+    GPT-6 Sol, the 36-benchmark accuracy and the calibration are Microsoft's
+    own measurements; no independent evaluation had been published on 6
+    November 2026. Test on your labelled examples.
+  - >-
+    **Never the sole basis for decisions about people.** The model card rules
+    it out for credit, employment, housing, insurance, education, healthcare
+    and legal rights; low confidence and refusals go to a person.
+faq:
+  - q: What is Microsoft Decision-1?
+    a: >-
+      A decision-scoring model Microsoft announced on 9 October 2026 and lists
+      in Microsoft Foundry as generally available. It is post-trained from
+      Qwen3.5-9B for fast, single-pass decision scoring: given a text and a
+      fixed set of answer options it returns a calibrated probability for
+      every option, over inputs of up to 32,768 tokens, and generates no text.
+  - q: Is Decision-1 an LLM?
+    a: >-
+      It is built from one, a 9-billion-parameter Qwen3.5 model, but it is not
+      used as one. A language model generates text token by token; Decision-1
+      scores options in a single forward pass and returns probabilities, so
+      there are no output tokens, no rationale and nothing to parse.
+  - q: What does Microsoft Decision-1 cost?
+    a: >-
+      $0.042 per million input tokens, and output tokens are free, per
+      Microsoft's announcement of 9 October 2026. It is sold directly by Azure
+      in Microsoft Foundry, billed through the Azure subscription, and listed
+      on OpenRouter.
+  - q: What is the difference between a deprecated and a retired model, and does it apply here?
+    a: >-
+      Deprecated means an end date is announced and the model still answers;
+      retired means every call fails. Decision-1 was released in October 2026
+      and has no announced end date, but Microsoft says it will rebase the
+      model on other bases, including Microsoft AI and OpenAI models, so keep
+      your evaluation set to rerun on each version.
+  - q: Which question types does Decision-1 support?
+    a: >-
+      Yes/no questions that return a probability from 0 to 1, multiple-choice
+      questions that return one option plus a probability per option, rating
+      questions over ordered levels, and rubric-based grading of AI responses
+      and agent actions. Several questions about the same text can go in one
+      request, and the model can abstain with an option such as "cannot tell".
+  - q: When should I use Decision-1 instead of GPT or Claude?
+    a: >-
+      When you can list every acceptable answer up front and you do not need a
+      written explanation: classify a ticket, route a request to an agent,
+      prioritise a queue, decide whether a tool call needs approval, grade a
+      generated answer against a rubric. When the answer has to be written,
+      summarised or explained, use a language model.
+  - q: Are the speed and accuracy claims independently verified?
+    a: >-
+      Not as of 6 November 2026. The median latency about 35 times lower than
+      GPT-6 Sol, the highest accuracy across 36 benchmarks and nearly 150,000
+      questions, and the 1.3 percent decision flips under perturbation are
+      Microsoft's own measurements through Foundry. Third-party write-ups note
+      that the Foundry catalogue publishes the methodology but no figures.
+  - q: Can I download the Decision-1 weights?
+    a: >-
+      No. The weights are not distributed, so there is no self-hosting, no
+      fine-tuning and no quantised variant. Access is through Microsoft Foundry
+      or OpenRouter. If you need a self-hosted decision model, the base,
+      Qwen3.5-9B, is open-weight, and a small classifier fine-tuned on your
+      labels is the classic alternative.
+  - q: Can Decision-1 read images?
+    a: >-
+      No, it is text only and does not accept or produce image, audio or video
+      content. In Microsoft Foundry the Decisions API with the gpt-6-luna model
+      offers the same three question types over text and images, at language
+      model prices.
+---
+
+Most calls inside an AI application are not requests for prose. They are decisions: which queue does this ticket go to, is this tool call safe to run, does this generated answer meet the rubric, which of four actions comes next. Teams have been making those decisions with a language model and a regular expression on its output, paying flagship prices for a yes or a no.
+
+Microsoft Decision-1, announced on 9 October 2026, is Microsoft's answer to that waste: a model that scores a fixed set of options and returns a probability for each, without generating any text. This post explains what that means, how it differs from a large language model, what Microsoft claims and what is verified, and the use cases where it belongs. It is the companion to [Which LLM should you use?](/blog/which-llm-to-choose-2026/), where Decision-1 appears as one of nine model families, and it reuses the agent and evaluation patterns from my [Azure document-intelligence project](/portfolio/azure-ai-automation-document-intelligence/).
+
+## The short answer
+
+Decision-1 is a decision model, not a chatbot. Give it a text (the state) and a set of questions with fixed answers, and it returns a calibrated probability per answer in one pass: yes/no, one of several choices, or a position on an ordered scale. It is post-trained from Qwen3.5-9B, takes up to 32,768 tokens of text, costs $0.042 per million input tokens with free output, and runs in Microsoft Foundry and on OpenRouter. Use it for routing, classification, prioritisation, agent gates and grading. Use a language model when the answer has to be written.
+
+| Fact | Value, as published by Microsoft |
+| --- | --- |
+| Announced | 9 October 2026, Microsoft Command Line blog; generally available in Microsoft Foundry |
+| Base model | Qwen3.5-9B, post-trained for single-pass decision scoring; Microsoft says it will rebase on other models, including MAI and OpenAI |
+| What it returns | A calibrated probability score for every supplied answer option; no text, no rationale |
+| Question formats | Yes/no, multiple-choice, rating, classification and rubric-based questions |
+| Input | Up to 32K tokens of text; no image, audio or video |
+| Price | $0.042 per million input tokens; output tokens free |
+| Where | Microsoft Foundry (sold directly by Azure, billed through the Azure subscription) and OpenRouter |
+| Weights | Not distributed |
+
+## What is the difference between a decision model and an LLM?
+
+A language model generates an answer token by token; a decision model evaluates options you supply and scores them. The difference is the contract, not the intelligence. With an LLM you write "analyse this complaint and say what we should do", receive a paragraph, and parse it, hoping the format holds. With a decision model you send the complaint plus the options "refund, replace the order, escalate, do nothing", and receive a probability for each. Figure 1 shows the two flows on the same input.
+
+<Figure src="decision-vs-llm.en.svg" caption="Figure 1. The same complaint through a language model and through a decision model. The LLM returns text you must parse; Decision-1 returns a probability per option you can threshold. The probabilities in the figure are illustrative, not measured." />
+
+| Aspect | Large language model | Decision-1 |
+| --- | --- | --- |
+| Input | A prompt, free text, optionally images | A text state plus questions with fixed options |
+| Output | Generated text, or JSON through structured outputs | A probability per option; a selected option for choice questions |
+| Explanation | Can write a rationale | None by design |
+| Latency | Seconds at the flagship tier; output length drives it | Milliseconds: one forward pass, no output tokens (Microsoft reports a median about 35 times lower than GPT-6 Sol) |
+| Cost | $0.20 to $10 per million input tokens plus output | $0.042 per million input tokens, output free |
+| Calibration | A "confidence: 0.8" in generated text is a guess | The probability is part of the API; Microsoft's target is that a 90 percent prediction is right about nine times in ten on representative cases |
+| Best for | Writing, summarising, extracting, planning, coding | Classifying, routing, prioritising, verifying, grading |
+| Failure mode | Hallucinated content, format drift | Mis-calibration on inputs unlike the benchmark; abstention or refusal available |
+
+## How does the Decision-1 API work?
+
+The request has three parts: the text to score, the questions, and the deployment name. Each question has a type, instructions and the allowed answers. Microsoft Learn documents three types in the Foundry Decisions API, and the Decision-1 catalogue entry lists the same shapes under different names: yes/no, multiple-choice and rating.
+
+| Question type | Ask it to | Main result |
+| --- | --- | --- |
+| Predicate (yes/no) | Check whether a condition is true: "Does the customer ask for a refund?" | A probability from 0 to 1 that the condition is true |
+| Choice (multiple-choice) | Select one option without an order: a department, a content category | The chosen value, a probability per option, and a separate confidence |
+| Score (rating) | Rate an input against ordered levels: issue severity, answer quality | A probability per level and the probability-weighted average of the level indices |
+
+This is the shape of a choice question and its answer in the Foundry Decisions API, as documented by Microsoft Learn on 21 October 2026. The values are illustrative, like Microsoft's own example.
+
+```json
+{
+  "model": "YOUR-DEPLOYMENT-NAME",
+  "input": "I was charged twice for my order.",
+  "questions": [
+    {
+      "type": "choice",
+      "name": "department",
+      "instructions": "Which department should handle this complaint?",
+      "choices": [
+        { "value": "billing", "description": "Payments and refunds." },
+        { "value": "technical", "description": "Product problems." },
+        { "value": "shipping", "description": "Delivery and tracking." },
+        { "value": "other", "description": "All other requests." }
+      ]
+    }
+  ]
+}
+```
+
+```json
+{
+  "type": "choice",
+  "name": "department",
+  "choice": "billing",
+  "probabilities": [
+    { "value": "billing", "probability": 0.95 },
+    { "value": "technical", "probability": 0.02 },
+    { "value": "shipping", "probability": 0.01 },
+    { "value": "other", "probability": 0.02 }
+  ],
+  "confidence": 0.93
+}
+```
+
+Four rules from the documentation that save a week of debugging:
+
+1. **Give every question a unique name.** The answers array comes back in the same order, and the name is how you match them.
+2. **Put independent questions in one request.** Several questions about the same text are one call; a question that depends on an earlier answer is a second call.
+3. **Include a fallback option** such as "other" or "cannot tell" when the categories do not cover every input, and treat a refusal as different from a low probability.
+4. **Choose each threshold on labelled examples** from your own application, based on the cost of a false positive and a false negative in that scenario.
+
+The Microsoft Learn how-to for the Decisions API uses the gpt-6-luna model and the `/openai/v1/decisions` endpoint; Decision-1 is deployed from the Foundry catalogue as its own model with the same three question types. Check the catalogue entry for the exact endpoint of your deployment.
+
+## What does Microsoft claim, and what is independently verified?
+
+Everything below comes from Microsoft's announcement and its Learn pages. None of it had been reproduced by an independent evaluation on 6 November 2026, and third-party write-ups note that the Foundry catalogue describes the benchmark methodology without publishing figures. Read the table as the vendor's claims.
+
+| Claim | Microsoft's figure | Status |
+| --- | --- | --- |
+| Median latency | About 35 times lower than GPT-6 Sol; 2.5 times lower than the runner-up, H2O-Lightning-4B v1.1 | Vendor measurement through Foundry |
+| Accuracy | Highest in a 36-benchmark comparison spanning nearly 150,000 questions | Vendor measurement; the benchmark list is not published with figures |
+| Robustness | Changes its decision on 1.3 percent of perturbations on average; zero flips when option descriptions are paraphrased | Vendor measurement |
+| Safety testing | 5,250 requests across 11 benchmarks | Vendor measurement |
+| Calibration | The probability is part of the API, with the target that a 90 percent prediction is right about nine times in ten | Design goal; no calibration figure published |
+| Xbox Research | Competitive on quality with GPT-6 Sol while running over 14 times faster and 200 times cheaper | Internal Microsoft use case |
+| Copilot | Competitive with GPT-5.6 Luna and 100 times faster | Internal Microsoft use case |
+| Microsoft Discovery | 46 times more consistent than the LLM-based score at three times the speed | Internal Microsoft use case |
+| Price | $0.042 per million input tokens, output free | Published |
+
+The honest reading: the architecture argument is sound and the price is real, and the quality numbers are what you should measure yourself on a few hundred labelled examples before trusting a threshold.
+
+## When should you use Decision-1 instead of an LLM?
+
+Ask one question: can you list every acceptable answer before the call? If yes, and you do not need a written explanation, a decision model fits. If the answer has to be written, summarised or explained, it does not.
+
+| Problem | Language model | Decision-1 |
+| --- | --- | --- |
+| Write a customer email | Excellent | Not suitable |
+| Explain a financial report | Excellent | Not suitable |
+| Generate Python code | Excellent | Not suitable |
+| Extract fields into your own JSON schema | Excellent, with structured outputs | Not suitable |
+| Classify customer sentiment | Good | Excellent fit |
+| Route a request to the right agent or department | Good | Excellent fit |
+| Prioritise support tickets | Good | Excellent fit |
+| Select the next action from a fixed list | Good | Excellent fit |
+| Grade an AI-generated answer against a rubric | Good, with a rationale | Excellent fit for the score |
+| Check whether a tool call is within policy | Good, slow | Excellent fit |
+| Label a dataset with a fixed taxonomy | Good, expensive at volume | Excellent fit |
+| Content filtering and safety screening | Good | Excellent fit |
+
+The architectural takeaway is the same one that runs through the [LLM comparison](/blog/which-llm-to-choose-2026/): an agent might make thirty decisions during one run, and most of them do not need a reasoning model. A lightweight decision model handles the gates and the checks; the powerful model handles the planning and the writing.
+
+## Where does a decision model sit in a real system?
+
+Figure 2 shows the three places I put it: support triage, an agent loop, and an evaluation pipeline. Tap a layer to read what happens there.
+
+<Stacks id="decision-flows" caption="Figure 2. Three places for a decision model. In support triage it labels every ticket and grades the drafted reply; in an agent loop it gates every tool call and checks every result; in evaluation it scores thousands of outputs against a rubric while a language model judge is sampled for the written rationale." />
+
+The agent loop is the one that changes the economics most, so Figure 3 draws it in full.
+
+<Figure src="decision-agent-loop.en.svg" caption="Figure 3. An agent loop with a decision model at the gate and at the check. The planner, a reasoning model, drafts each step; Decision-1 decides whether the tool call is within policy and needs approval, then whether the result means continue, retry or escalate." />
+
+The pattern in words:
+
+1. **Plan.** A reasoning model (Claude Opus 5.5, GPT-6 Sol) reads the task and drafts the next tool call.
+2. **Gate.** Decision-1 answers three yes/no questions over the draft: within policy, a write action, needs human approval. Thresholds come from labelled examples; anything uncertain waits for a person.
+3. **Act.** The tool call runs through the same registry that serves MCP clients, with permissions per role.
+4. **Check.** Decision-1 scores the tool output with a choice question: continue, retry or escalate.
+5. **Record.** The state goes to a checkpoint in PostgreSQL or Redis so the run can pause and resume, and every decision with its probabilities and cost lands in the OpenTelemetry trace.
+
+This is the same approval-gated agent I built for the Azure document-intelligence project; the difference is that the gates were language-model calls then, and a decision model makes them cheaper and more consistent.
+
+## What does it cost at scale?
+
+Arithmetic at list price, not a quote. Three workloads, each with the assumptions stated, compared with the same tokens on GPT-6.1 Terra at $1 per million input tokens (output not counted, which flatters the LLM).
+
+| Workload | Assumptions | Decision-1 per month | GPT-6.1 Terra input only, per month |
+| --- | --- | --- | --- |
+| Support triage | 10,000 tickets a day, 1,500 tokens each, 3 questions in one call | 450M tokens, about $19 | about $450 plus output |
+| Agent gates and checks | 2,000 runs a day, 30 steps, 2 decisions a step, 2,000 tokens each | 7.2B tokens, about $302 | about $7,200 plus output |
+| Evaluation | 100,000 answers graded a week, 3,000 tokens each | 1.2B tokens, about $50 | about $1,200 plus output |
+
+The ratio is the point: at the same token count the decision model costs about 4 percent of a mid-tier language model's input price, and it produces no output tokens at all. Latency moves the same way, from seconds to milliseconds, which is what makes thirty gates per agent run acceptable.
+
+## What are the limits?
+
+- **No explanation.** The model returns probabilities and nothing else. When a user or an auditor needs a rationale, add a language-model call for the sampled cases.
+- **Text only, 32K tokens.** No images, audio or video; long documents must be chunked or summarised first. For images, the Foundry Decisions API with gpt-6-luna offers the same question types.
+- **Closed weights.** No download, fine-tuning, quantisation or self-hosting. If you need that, the base model Qwen3.5-9B is open, and a classifier trained on your labels remains the classic option.
+- **Vendor benchmarks only.** Speed, accuracy and calibration figures are Microsoft's own as of 6 November 2026.
+- **A moving base.** Microsoft plans to rebase Decision-1 on other models; keep the labelled set and rerun it on every version, as you would for any model retirement.
+- **Not for consequential decisions about people.** The model card rules out sole reliance for credit, employment, housing, insurance, education, healthcare and legal rights.
+- **Thresholds are yours.** A probability is only useful with a threshold you chose on your own data, and a low top probability means a person, not a coin flip.
+
+## How do you set the thresholds?
+
+1. **Collect 200 to 500 labelled examples** per question from real traffic, including the ugly ones.
+2. **Run them through the question as written**, and store the probability per option.
+3. **Plot precision and recall against the threshold** for each option, and pick the point where the cost of a false positive and a false negative balance for that scenario.
+4. **Define the escalation band**: everything between the thresholds, plus refusals, goes to a person.
+5. **Monitor drift weekly**: the share of escalations, the agreement with human labels on a sample, and the distribution of top probabilities. A shift means the inputs changed or the model version did.
+6. **Rerun the set on every new version** of the model before switching the deployment.
+
+## Which service should you choose for a decision?
+
+Figure 4 is the three-question guide. It ends in Decision-1 more often than you would expect, and in a language model whenever the answer has to be written.
+
+<Figure src="decision-guide.en.svg" caption="Figure 4. Decision model or language model. If you cannot list the answers, use an LLM with structured outputs; if you need a written explanation, use an LLM judge or combine it with Decision-1 for the score; if the input is not text or exceeds 32K tokens, use the Decisions API with gpt-6-luna or a multimodal model; otherwise Decision-1." />
+
+| Need | First option | Why |
+| --- | --- | --- |
+| Fixed options, text, high volume | Microsoft Decision-1 | Calibrated probability, milliseconds, $0.042 per million |
+| Fixed options over text and images | Decisions API with gpt-6-luna in Microsoft Foundry | Same predicate, choice and score questions, image input, language-model prices |
+| Your own JSON schema or a written explanation | A language model with structured outputs (Responses API) | The answer has to be generated |
+| Fixed options, must self-host | A classifier fine-tuned on your labels, or an open model such as Qwen3.5-9B with log-probability scoring | Weights you control; calibration is your job |
+
+## Sources
+
+- Microsoft, [Microsoft-Decision-1: Our model for fast decision-making](https://commandline.microsoft.com/microsoft-decision-1-model-foundry/), Achint Srivastava, 9 October 2026: base model, question types, calibration target, latency and accuracy comparisons, internal use cases, price and availability. Read on 6 November 2026.
+- Microsoft Learn, [Foundry Models sold by Azure](https://learn.microsoft.com/azure/foundry/foundry-models/concepts/models-sold-directly-by-azure), page dated 21 September 2026 and updated 29 October 2026: the Microsoft-Decision-1 row (decision, text classification, zero-shot classification; calibrated decision scoring; yes/no, multiple-choice, rating, classification and rubric-based questions; single-pass scoring over inputs of up to 32K tokens; text only; no explanations).
+- Microsoft Learn, [Use the Azure OpenAI Decisions API](https://learn.microsoft.com/azure/foundry/openai/how-to/decisions), page dated 21 October 2026: the predicate, choice and score question types, the request and response shapes, refusals and threshold guidance.
+- Microsoft Foundry catalogue, [Microsoft-Decision-1](https://ai.azure.com/catalog/models/Microsoft-Decision-1): the abstention option and the restriction on consequential decisions about people. The catalogue opens inside the signed-in Foundry portal; those two points are as quoted by the write-ups below, so check them in your own tenant.
+- OpenRouter, [microsoft/microsoft-decision-1](https://openrouter.ai/microsoft/microsoft-decision-1): the listing of 9 October 2026 with the same price.
+- Third-party write-ups read on 6 November 2026 for the independent-verification status (no published benchmark figures on the catalogue entry; weights not distributed): eesel.ai and Orca Router. Their numbers are not used here.
+- My own study notes of November 2026 on the use-case table, the agent loop, the cost arithmetic and the threshold procedure, written from the projects on this site. The cost figures are list-price arithmetic on stated assumptions, not quotes.

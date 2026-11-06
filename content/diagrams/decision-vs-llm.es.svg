@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 340" width="100%" role="img" aria-label="Dos filas de tres cajas. Fila superior, un modelo de lenguaje: un prompt como analiza esta queja de cliente entra en un modelo que genera texto token a token, con tokens de salida facturados, y sale como una respuesta de texto libre que tienes que interpretar. Fila inferior, un modelo de decisión: un estado más un conjunto fijo de opciones, reembolso, reposición, escalar o nada, entra en un modelo que puntúa todas las opciones en una pasada sin tokens de salida, y sale como una probabilidad por opción, por ejemplo 0,15, 0,65, 0,18 y 0,02, que puedes umbralizar o escalar. Una banda debajo dice: misma entrada, contrato distinto" style="height:auto;display:block">
+  <title>Un modelo de lenguaje y un modelo de decisión ante la misma queja</title>
+  <defs><marker id="ar-dvl-es" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#6f6f6f" /></marker></defs>
+  <text x="20" y="30" font-size="12" font-weight="600" fill="#6f6f6f">Un modelo de lenguaje</text>
+  <rect x="20" y="42" width="200" height="70" rx="8" fill="#f1ebfc" stroke="#7B3FE4" />
+  <text x="120" y="66" text-anchor="middle" font-size="12" font-weight="600" fill="#313131">Prompt</text>
+  <text x="120" y="84" text-anchor="middle" font-size="11" fill="#6f6f6f">"Analiza esta queja de cliente</text>
+  <text x="120" y="100" text-anchor="middle" font-size="11" fill="#6f6f6f">y di qué deberíamos hacer."</text>
+  <rect x="260" y="42" width="220" height="70" rx="8" fill="#f1ebfc" stroke="#7B3FE4" />
+  <text x="370" y="66" text-anchor="middle" font-size="12" font-weight="600" fill="#313131">Genera texto token a token</text>
+  <text x="370" y="84" text-anchor="middle" font-size="11" fill="#6f6f6f">tokens de salida facturados</text>
+  <text x="370" y="100" text-anchor="middle" font-size="11" fill="#6f6f6f">segundos de latencia en la gama alta</text>
+  <rect x="520" y="42" width="220" height="70" rx="8" fill="#f1ebfc" stroke="#7B3FE4" />
+  <text x="630" y="66" text-anchor="middle" font-size="12" font-weight="600" fill="#313131">Respuesta en texto libre</text>
+  <text x="630" y="84" text-anchor="middle" font-size="11" fill="#6f6f6f">"El cliente está descontento porque…"</text>
+  <text x="630" y="100" text-anchor="middle" font-size="11" fill="#6f6f6f">la interpretas tú; el formato varía</text>
+  <line x1="220" y1="77" x2="260" y2="77" stroke="#6f6f6f" stroke-width="1.5" marker-end="url(#ar-dvl-es)" />
+  <line x1="480" y1="77" x2="520" y2="77" stroke="#6f6f6f" stroke-width="1.5" marker-end="url(#ar-dvl-es)" />
+  <text x="20" y="160" font-size="12" font-weight="600" fill="#6f6f6f">Un modelo de decisión</text>
+  <rect x="20" y="172" width="200" height="70" rx="8" fill="#fff1ee" stroke="#FF3621" />
+  <text x="120" y="196" text-anchor="middle" font-size="12" font-weight="600" fill="#313131">Estado y opciones fijas</text>
+  <text x="120" y="214" text-anchor="middle" font-size="11" fill="#6f6f6f">la misma queja, más</text>
+  <text x="120" y="230" text-anchor="middle" font-size="11" fill="#6f6f6f">reembolso · reponer · escalar · nada</text>
+  <rect x="260" y="172" width="220" height="70" rx="8" fill="#fff1ee" stroke="#FF3621" />
+  <text x="370" y="196" text-anchor="middle" font-size="12" font-weight="600" fill="#313131">Puntúa todas las opciones a la vez</text>
+  <text x="370" y="214" text-anchor="middle" font-size="11" fill="#6f6f6f">sin tokens de salida, sin justificación</text>
+  <text x="370" y="230" text-anchor="middle" font-size="11" fill="#6f6f6f">una sola pasada de un modelo de 9B</text>
+  <rect x="520" y="172" width="220" height="70" rx="8" fill="#fff1ee" stroke="#FF3621" />
+  <text x="630" y="196" text-anchor="middle" font-size="12" font-weight="600" fill="#313131">Una probabilidad por opción</text>
+  <text x="630" y="214" text-anchor="middle" font-size="11" fill="#6f6f6f">0,15 · 0,65 · 0,18 · 0,02 (ilustrativo)</text>
+  <text x="630" y="230" text-anchor="middle" font-size="11" fill="#6f6f6f">umbral, o escalado a una persona</text>
+  <line x1="220" y1="207" x2="260" y2="207" stroke="#6f6f6f" stroke-width="1.5" marker-end="url(#ar-dvl-es)" />
+  <line x1="480" y1="207" x2="520" y2="207" stroke="#6f6f6f" stroke-width="1.5" marker-end="url(#ar-dvl-es)" />
+  <rect x="20" y="268" width="720" height="40" rx="8" fill="#f6f6f6" stroke="#cfcfcf" />
+  <text x="380" y="293" text-anchor="middle" font-size="12" font-weight="600" fill="#313131">Misma entrada, contrato distinto: texto que interpretar, o una probabilidad calibrada que umbralizar.</text>
+  <text x="20" y="330" font-size="11" fill="#6f6f6f">Decision-1 responde sí/no, opción múltiple y valoración sobre hasta 32K tokens de entrada (Microsoft Learn, 6 nov 2026).</text>
+</svg>

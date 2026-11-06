@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 400" width="100%" role="img" aria-label="A decision flow with three questions down the left: can you list every acceptable answer up front, if not use a language model with structured outputs or function calling; does the answer need a written explanation, if yes use a language model judge or a language model plus Decision-1 for the score; is the input text only and up to 32K tokens per call, if not use GPT-6 Luna through the Decisions API or a multimodal model; otherwise Microsoft Decision-1 with a predicate, choice or score question, thresholds chosen on labelled examples and low confidence escalated to a person. A footnote says it must never be the sole basis for decisions about people" style="height:auto;display:block">
+  <title>Decision model or language model: a decision flow</title>
+  <defs><marker id="ar-dg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#6f6f6f" /></marker></defs>
+  <rect x="20" y="20" width="380" height="56" rx="8" fill="#f6f6f6" stroke="#999999" />
+  <text x="210" y="53" text-anchor="middle" font-size="13" font-weight="600" fill="#313131">Can you list every acceptable answer up front?</text>
+  <rect x="430" y="20" width="310" height="56" rx="8" fill="#f1ebfc" stroke="#7B3FE4" />
+  <text x="585" y="43" text-anchor="middle" font-size="13" font-weight="600" fill="#313131">A language model</text>
+  <text x="585" y="63" text-anchor="middle" font-size="11" fill="#6f6f6f">structured outputs or function calling</text>
+  <line x1="400" y1="48" x2="430" y2="48" stroke="#6f6f6f" stroke-width="1.5" marker-end="url(#ar-dg)" />
+  <text x="415" y="42" text-anchor="middle" font-size="10" fill="#6f6f6f">no</text>
+  <line x1="210" y1="76" x2="210" y2="110" stroke="#6f6f6f" stroke-width="1.5" marker-end="url(#ar-dg)" />
+  <text x="222" y="97" font-size="10" fill="#6f6f6f">yes</text>
+  <rect x="20" y="110" width="380" height="56" rx="8" fill="#f6f6f6" stroke="#999999" />
+  <text x="210" y="143" text-anchor="middle" font-size="13" font-weight="600" fill="#313131">Does the answer need a written explanation?</text>
+  <rect x="430" y="110" width="310" height="56" rx="8" fill="#f1ebfc" stroke="#7B3FE4" />
+  <text x="585" y="133" text-anchor="middle" font-size="13" font-weight="600" fill="#313131">A language model judge</text>
+  <text x="585" y="153" text-anchor="middle" font-size="11" fill="#6f6f6f">or an LLM for the text, Decision-1 for the score</text>
+  <line x1="400" y1="138" x2="430" y2="138" stroke="#6f6f6f" stroke-width="1.5" marker-end="url(#ar-dg)" />
+  <text x="415" y="132" text-anchor="middle" font-size="10" fill="#6f6f6f">yes</text>
+  <line x1="210" y1="166" x2="210" y2="200" stroke="#6f6f6f" stroke-width="1.5" marker-end="url(#ar-dg)" />
+  <text x="222" y="187" font-size="10" fill="#6f6f6f">no</text>
+  <rect x="20" y="200" width="380" height="56" rx="8" fill="#f6f6f6" stroke="#999999" />
+  <text x="210" y="233" text-anchor="middle" font-size="13" font-weight="600" fill="#313131">Text only, up to 32K tokens per call?</text>
+  <rect x="430" y="200" width="310" height="56" rx="8" fill="#e8f2fb" stroke="#0078D4" />
+  <text x="585" y="223" text-anchor="middle" font-size="13" font-weight="600" fill="#313131">GPT-6 Luna through the Decisions API</text>
+  <text x="585" y="243" text-anchor="middle" font-size="11" fill="#6f6f6f">the same three question types, with images</text>
+  <line x1="400" y1="228" x2="430" y2="228" stroke="#6f6f6f" stroke-width="1.5" marker-end="url(#ar-dg)" />
+  <text x="415" y="222" text-anchor="middle" font-size="10" fill="#6f6f6f">no</text>
+  <line x1="210" y1="256" x2="210" y2="290" stroke="#6f6f6f" stroke-width="1.5" marker-end="url(#ar-dg)" />
+  <text x="222" y="277" font-size="10" fill="#6f6f6f">yes</text>
+  <rect x="20" y="290" width="720" height="46" rx="8" fill="#fff1ee" stroke="#FF3621" />
+  <text x="380" y="309" text-anchor="middle" font-size="12" font-weight="600" fill="#313131">Microsoft Decision-1: a predicate, choice or score question per concern, in one call</text>
+  <text x="380" y="327" text-anchor="middle" font-size="11" fill="#6f6f6f">choose each threshold on labelled examples; send low confidence and refusals to a person</text>
+  <text x="380" y="366" text-anchor="middle" font-size="11" fill="#6f6f6f">Not the sole basis for decisions about people: credit, employment, housing, insurance, education, healthcare, legal rights (model card).</text>
+  <text x="380" y="388" text-anchor="middle" font-size="11" fill="#6f6f6f">Speed and accuracy figures are Microsoft's own as of 6 November 2026; test on your data before you rely on them.</text>
+</svg>

@@ -113,6 +113,7 @@ body {
   .prose-dg code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.9em; background: var(--color-paper-100); padding: 0.1em 0.35em; border-radius: 3px; }
   .prose-dg pre { background: var(--color-ink-800); color: #f3f3f3; padding: 1rem 1.25rem; overflow-x: auto; border-radius: 4px; font-size: 0.9rem; line-height: 1.6; }
   .prose-dg pre code { background: transparent; padding: 0; color: inherit; }
+  .prose-dg .tblwrap { overflow-x: auto; -webkit-overflow-scrolling: touch; } /* Markdown.tsx wraps every table: a wide one scrolls sideways instead of widening the phone's layout viewport */
   .prose-dg table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
   .prose-dg th, .prose-dg td { border: 1px solid var(--color-ink-100); padding: 0.5rem 0.75rem; text-align: left; vertical-align: top; }
   .prose-dg th { background: var(--color-paper-100); color: var(--color-ink-700); font-weight: 600; }
@@ -331,13 +332,16 @@ body {
   .brain { display: none; }
   @media (scripting: enabled) {
     .capwrap .capmap { display: none !important; } /* !important: the list carries the Tailwind grid utility, which sits in a later cascade layer */
-    .brain { --R: 222px; --r2: 150px; --ico: 46px; --sm: 78px; --md: 94px; --lg: 110px; display: block; position: relative; height: 540px; isolation: isolate; border-radius: 1.25rem;
+    .brain { --R: 222px; --r2: 150px; --r-in: 138px; --r-out: 190px; --step: 32px; --ico: 46px; --sm: 78px; --md: 94px; --lg: 110px; display: block; position: relative; height: 540px; isolation: isolate; border-radius: 1.25rem;
       background: radial-gradient(ellipse at 50% 50%, rgba(255,255,255,.07), transparent 60%); }
     .brain[data-many] { --r2: 172px; }
-    @media (max-width: 40rem) { .brain { --R: 124px; --r2: 100px; --ico: 32px; --sm: 58px; --md: 66px; --lg: 76px; height: 400px; } .brain[data-many] { --r2: 118px; --ico: 28px; } }
+    @media (max-width: 40rem) { .brain { --R: 124px; --r2: 100px; --r-in: 84px; --r-out: 120px; --step: 36px; --ico: 32px; --sm: 58px; --md: 66px; --lg: 76px; height: 400px; } .brain[data-many] { --r2: 118px; --ico: 28px; } }
   }
   .brain__ring { position: absolute; left: 50%; top: 50%; width: calc(var(--R) * 2); height: calc(var(--R) * 2); translate: -50% -50%; border-radius: 9999px; border: 1px dashed rgba(255,255,255,.16); transition: opacity .4s; }
-  .brain__spoke { position: absolute; left: 50%; top: 50%; width: var(--R); height: 1px; background: linear-gradient(90deg, rgba(255,255,255,.28), rgba(255,255,255,.08)); transform-origin: 0 50%; transition: opacity .4s; }
+  /* spokes run from the brain to each node; while an area is open they stretch to where the other nodes stepped, and the open node's own spoke fades */
+  .brain__spoke { --len: var(--R); position: absolute; left: 50%; top: 50%; width: var(--len); height: 1px; background: linear-gradient(90deg, rgba(255,255,255,.28), rgba(255,255,255,.08)); transform-origin: 0 50%; transition: opacity .4s, width .45s cubic-bezier(.2,.7,.2,1); }
+  .brain[data-open] .brain__spoke { --len: calc(var(--R) + var(--step)); }
+  .brain[data-open] .brain__spoke[data-active] { opacity: 0; }
   /* signals: a glowing pulse runs from the brain along every spoke, and two sparks orbit the ring */
   .brain__spoke::after { content: ''; position: absolute; left: 0; top: 50%; width: 22px; height: 3px; translate: 0 -50%; border-radius: 9999px;
     background: linear-gradient(90deg, transparent, var(--color-accent)); box-shadow: 0 0 10px 2px rgba(31,170,85,.55); opacity: 0; animation: bsignal 2.6s linear infinite; animation-delay: calc(var(--i) * .33s); }
@@ -359,8 +363,7 @@ body {
   /* expanded: glide to the centre, grow, accent ring */
   .brain__node[aria-expanded="true"] { z-index: 6; translate: calc(-50% - var(--cx) * var(--R)) calc(-50% - var(--cy) * var(--R)); scale: 1.4; border-color: var(--color-accent); background: var(--color-ink-900); box-shadow: 0 0 0 8px rgba(31,170,85,.16), 0 24px 50px -16px rgba(0,0,0,.9); animation: none; }
   /* while one area is open the others step outward and shrink so the icon ring has room */
-  .brain[data-open] .brain__node:not([aria-expanded="true"]) { opacity: .3; scale: .8; translate: calc(-50% + var(--cx) * 32px) calc(-50% + var(--cy) * 32px); }
-  @media (max-width: 40rem) { .brain[data-open] .brain__node:not([aria-expanded="true"]) { translate: calc(-50% + var(--cx) * 36px) calc(-50% + var(--cy) * 36px); } }
+  .brain[data-open] .brain__node:not([aria-expanded="true"]) { opacity: .3; scale: .8; translate: calc(-50% + var(--cx) * var(--step)) calc(-50% + var(--cy) * var(--step)); }
   .brain[data-open] .brain__spoke, .brain[data-open] .brain__ring { opacity: .25; }
   .brain[data-open] .brain__core { opacity: 0; scale: .6; }
   .brain__lbl { font-size: .73rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; line-height: 1.12; text-align: center; text-wrap: balance; overflow-wrap: anywhere; }
@@ -369,11 +372,15 @@ body {
   .brain__node::after { content: ''; position: absolute; inset: -7px; border-radius: 9999px; border: 2px solid rgba(31,170,85,.6); pointer-events: none; animation: bring 2.6s ease-out infinite; animation-delay: calc(var(--i) * .32s); }
   .brain[data-open] .brain__node::after, .brain__node[aria-expanded="true"]::after { animation: none; opacity: 0; }
   /* tool icons: plain crisp marks on a ring around the centred node, with a faint white halo so dark marks stay visible on the dark section */
-  .brain__icon { position: absolute; z-index: 7; left: calc(50% + var(--sx) * var(--r2)); top: calc(50% + var(--sy) * var(--r2)); translate: -50% -50%; width: calc(var(--ico) * var(--k, 1)); height: calc(var(--ico) * var(--k, 1)); transition: scale .2s; animation: bicon .5s cubic-bezier(.2,.7,.2,1) both; animation-delay: calc(var(--i) * 28ms); }
+  .brain__icon { --rr: var(--r2); position: absolute; z-index: 7; left: calc(50% + var(--sx) * var(--rr)); top: calc(50% + var(--sy) * var(--rr)); translate: -50% -50%; width: calc(var(--ico) * var(--k, 1)); height: calc(var(--ico) * var(--k, 1)); transition: scale .2s; animation: bicon .5s cubic-bezier(.2,.7,.2,1) both; animation-delay: calc(var(--i) * 28ms); }
+  /* twenty or more marks (data-dense): every second one sits on an outer ring */
+  .brain[data-dense] .brain__icon { --rr: var(--r-in); }
+  .brain[data-dense] .brain__icon[data-ring="out"] { --rr: var(--r-out); }
   .brain__icon img { display: block; width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 0 1.5px rgba(255,255,255,.95)) drop-shadow(0 3px 8px rgba(0,0,0,.6)); -webkit-user-drag: none; }
-  /* connector from each icon back to the centred node, with its own pulse travelling outwards */
+  /* connector from each icon back to the centred node, with its own pulse travelling inwards. The pulse moves with transform (rotate, then translateX)
+     so it slides along the rotated connector; the individual `translate` property would move it along the page's x-axis instead */
   .brain__icon::before, .brain__icon::after { content: ''; position: absolute; left: 50%; top: 50%; transform-origin: 0 50%; transform: rotate(calc(var(--a) + 180deg)); z-index: -1; }
-  .brain__icon::before { width: calc(var(--r2) - var(--ico) * .75); height: 1px; background: linear-gradient(90deg, rgba(255,255,255,.3), rgba(255,255,255,.06)); animation: bconnect .5s both; animation-delay: calc(var(--i) * 28ms); }
+  .brain__icon::before { width: calc(var(--rr) - var(--ico) * .75); height: 1px; background: linear-gradient(90deg, rgba(255,255,255,.3), rgba(255,255,255,.06)); animation: bconnect .5s both; animation-delay: calc(var(--i) * 28ms); }
   .brain__icon::after { width: 16px; height: 2px; margin-top: -1px; border-radius: 9999px; background: linear-gradient(90deg, var(--color-accent), transparent); box-shadow: 0 0 8px 2px rgba(31,170,85,.5); opacity: 0;
     animation: bsignal2 2.2s linear infinite; animation-delay: calc(.5s + var(--i) * .17s); }
   .brain__icon:hover { scale: 1.25; z-index: 8; }
@@ -383,7 +390,7 @@ body {
   .brain__tip { position: absolute; left: 50%; top: calc(100% + .3rem); translate: -50% 0; padding: .15rem .5rem; border-radius: 4px; background: rgba(33,33,33,.94); font-size: .68rem; white-space: nowrap; color: #fff; opacity: 0; transition: opacity .15s; pointer-events: none; }
   .brain__icon:hover .brain__tip { opacity: 1; }
   @media (hover: none) { .brain__tip { display: none; } }
-  .brain__hint { position: absolute; left: 1rem; right: 1rem; bottom: .5rem; margin: 0; text-align: center; font-size: .8rem; line-height: 1.4; color: var(--color-ink-300); }
+  .brain__hint { position: absolute; left: 1rem; right: 1rem; bottom: .5rem; margin: 0; padding: .2rem .6rem; border-radius: .5rem; background: rgba(43,44,47,.9); text-align: center; font-size: .8rem; line-height: 1.4; color: var(--color-ink-300); } /* the backdrop keeps the caption legible over the dimmed node at the bottom of the ring */
   .brain__hint strong { color: #fff; }
   @media (max-width: 40rem) { .brain__hint { bottom: auto; top: 100%; margin-top: .5rem; } } /* below the stage so it never overlaps the icon ring */
   .brain__names { display: block; margin-top: .15rem; font-size: .72rem; color: var(--color-ink-400); }
@@ -850,11 +857,11 @@ body {
 @keyframes bring { 0% { transform: scale(.9); opacity: .9; } 70%, 100% { transform: scale(1.22); opacity: 0; } }
 @keyframes bfloat { 50% { translate: -50% calc(-50% - 7px); } }
 @keyframes bpulse { 0%, 100% { transform: scale(1); opacity: .7; } 50% { transform: scale(1.08); opacity: .25; } }
-@keyframes bsignal { 0% { translate: 0 -50%; opacity: 0; } 12% { opacity: 1; } 85% { opacity: 1; } 100% { translate: calc(var(--R) - 22px) -50%; opacity: 0; } }
-@keyframes bsignal2 { 0% { translate: calc(var(--r2) - var(--ico) * .75 - 16px) 0; opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } 100% { translate: 0 0; opacity: 0; } }
+@keyframes bsignal { 0% { translate: 0 -50%; opacity: 0; } 12% { opacity: 1; } 85% { opacity: 1; } 100% { translate: calc(var(--len) - 22px) -50%; opacity: 0; } }
+@keyframes bsignal2 { 0% { transform: rotate(calc(var(--a) + 180deg)) translateX(calc(var(--rr) - var(--ico) * .75 - 16px)); opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } 100% { transform: rotate(calc(var(--a) + 180deg)) translateX(0); opacity: 0; } }
 @keyframes borbit { to { transform: rotate(360deg); } }
 @keyframes bconnect { from { scale: 0 1; } }
-@keyframes bicon { from { opacity: 0; translate: calc(-50% - var(--sx) * var(--r2)) calc(-50% - var(--sy) * var(--r2)); scale: .2; } }
+@keyframes bicon { from { opacity: 0; translate: calc(-50% - var(--sx) * var(--rr)) calc(-50% - var(--sy) * var(--rr)); scale: .2; } }
 @keyframes hero-fade { 0%, 35% { opacity: 0; } 50%, 85% { opacity: 1; } 100% { opacity: 0; } }
 @keyframes hero-up { from { opacity: .01; transform: translateY(22px); } }
 @keyframes hero-up-lcp { from { transform: translateY(22px); } }

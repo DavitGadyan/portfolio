@@ -1,7 +1,7 @@
 import { MDXRemote } from 'next-mdx-remote/rsc';
 import remarkGfm from 'remark-gfm';
 import rehypeSlug from 'rehype-slug';
-import type { AnchorHTMLAttributes, ImgHTMLAttributes, ReactNode } from 'react';
+import type { AnchorHTMLAttributes, ImgHTMLAttributes, ReactNode, TableHTMLAttributes } from 'react';
 import { VideoFacade } from '@/components/embeds/VideoFacade';
 import { Video } from '@/components/embeds/Video';
 import { Screen } from '@/components/embeds/Screen';
@@ -28,6 +28,8 @@ export function Markdown({ source, playLabel = 'Play video', locale = 'en' }: { 
     Figure: (p: { src: string; caption?: string }) => <Figure {...p} />,
     img: (p: ImgHTMLAttributes<HTMLImageElement>) => <MdImage src={String(p.src ?? '')} alt={String(p.alt ?? '')} />,
     a: MdLink,
+    // a wide comparison table scrolls sideways inside its own box; left bare, a phone browser widens the whole layout viewport to fit it and zooms the page out
+    table: (p: TableHTMLAttributes<HTMLTableElement>) => <div className="tblwrap"><table {...p} /></div>,
   };
   return (
     <MDXRemote source={source} components={components} options={{ mdxOptions: { remarkPlugins: [remarkGfm], rehypePlugins: [rehypeSlug] } }} />

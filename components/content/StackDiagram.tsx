@@ -1,8 +1,8 @@
 'use client';
 
 import { useId, useState, type CSSProperties, type KeyboardEvent } from 'react';
-import { Activity, Bot, Box, Container, Cpu, Database, KeyRound, Layers, LayoutDashboard, Network, Search, Server, Shield, Warehouse, Workflow, Zap, type LucideIcon } from 'lucide-react';
-import type { StackIcon } from '@/data/blog/azure-stacks';
+import { Activity, Bot, Box, Brain, CircleCheck, Container, Cpu, Database, Eye, FileText, Gauge, GitBranch, Inbox, KeyRound, Layers, LayoutDashboard, Network, Scale, Search, Server, Shield, User, Warehouse, Workflow, Wrench, Zap, type LucideIcon } from 'lucide-react';
+import type { StackIcon } from '@/data/blog/stacks';
 
 export type StackMark = { src: string; alt: string; k: number };
 export type StackView = {
@@ -13,7 +13,8 @@ export type StackView = {
   variants: { id: string; label: string; logo?: StackMark; summary: string; useCase: string; layers: { id: string; label: string; note: string; items: { name: string; logo?: StackMark; icon?: StackIcon }[] }[] }[];
 };
 
-const ICONS: Record<StackIcon, LucideIcon> = { bot: Bot, search: Search, workflow: Workflow, database: Database, warehouse: Warehouse, server: Server, container: Container, zap: Zap, network: Network, shield: Shield, key: KeyRound, activity: Activity, cpu: Cpu, layers: Layers, layout: LayoutDashboard };
+const ICONS: Record<StackIcon, LucideIcon> = { bot: Bot, search: Search, workflow: Workflow, database: Database, warehouse: Warehouse, server: Server, container: Container, zap: Zap, network: Network, shield: Shield, key: KeyRound, activity: Activity, cpu: Cpu, layers: Layers, layout: LayoutDashboard,
+  user: User, inbox: Inbox, check: CircleCheck, gauge: Gauge, scale: Scale, file: FileText, branch: GitBranch, brain: Brain, eye: Eye, wrench: Wrench };
 
 function Mark({ logo, icon, size }: { logo?: StackMark; icon?: StackIcon; size: number }) {
   if (logo) {

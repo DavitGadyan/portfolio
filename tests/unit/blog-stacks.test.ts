@@ -1,14 +1,14 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { stackDiagrams } from '@/data/blog/azure-stacks';
+import { stackDiagrams } from '@/data/blog/stacks';
 import { logos } from '@/data/skillLogos';
 
 const SLUG = 'azure-fabric-databricks-foundry-which-to-choose';
 
-describe('blog stack diagrams (data/blog/azure-stacks.ts)', () => {
+describe('blog stack diagrams (data/blog/stacks.ts)', () => {
   it('two diagrams, every string in both languages, every layer with items, every brand mark on disk', () => {
-    expect(Object.keys(stackDiagrams)).toEqual(['clouds', 'stacks']);
+    expect(Object.keys(stackDiagrams)).toEqual(['clouds', 'stacks', 'llm-routes', 'decision-flows']);
     for (const d of Object.values(stackDiagrams)) {
       expect(d.title.en.trim()).not.toBe('');
       expect(d.title.es.trim()).not.toBe('');

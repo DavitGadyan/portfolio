@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 340" width="100%" role="img" aria-label="Cuatro tarjetas en fila: un modelo denso, donde todos los parámetros trabajan en cada token, ejemplos Qwen3.8-27B y Mistral Medium 3.5; una mezcla de expertos, donde un enrutador envía cada token a unos pocos expertos, ejemplo DeepSeek-V4-Pro con 1,6 billones de parámetros totales y 49 mil millones activos; un modelo de razonamiento, que trabaja el problema antes de responder y está integrado en todos los buques insignia de 2026; y un modelo de decisión, que puntúa un conjunto fijo de opciones con probabilidades calibradas y sin texto, ejemplo Microsoft Decision-1. Una banda debajo dice que las categorías se solapan y que pesos abiertos frente a API propietaria es un eje distinto" style="height:auto;display:block">
+  <title>Cuatro tipos de modelo: denso, mezcla de expertos, razonamiento, decisión</title>
+  <rect x="20" y="30" width="165" height="190" rx="8" fill="#e8f2fb" stroke="#0078D4" />
+  <text x="102" y="58" text-anchor="middle" font-size="13" font-weight="600" fill="#313131">Denso</text>
+  <text x="102" y="84" text-anchor="middle" font-size="11" fill="#313131">Todos los parámetros</text>
+  <text x="102" y="102" text-anchor="middle" font-size="11" fill="#313131">trabajan en cada token.</text>
+  <text x="102" y="120" text-anchor="middle" font-size="11" fill="#313131">Fácil de servir</text>
+  <text x="102" y="138" text-anchor="middle" font-size="11" fill="#313131">y de ajustar.</text>
+  <text x="102" y="172" text-anchor="middle" font-size="11" fill="#6f6f6f">Qwen3.8-27B</text>
+  <text x="102" y="190" text-anchor="middle" font-size="11" fill="#6f6f6f">Mistral Medium 3.5 (128B)</text>
+  <rect x="205" y="30" width="165" height="190" rx="8" fill="#e9f6f0" stroke="#1E7F5C" />
+  <text x="287" y="58" text-anchor="middle" font-size="13" font-weight="600" fill="#313131">Mezcla de expertos</text>
+  <text x="287" y="84" text-anchor="middle" font-size="11" fill="#313131">Un enrutador manda cada</text>
+  <text x="287" y="102" text-anchor="middle" font-size="11" fill="#313131">token a pocos expertos.</text>
+  <text x="287" y="120" text-anchor="middle" font-size="11" fill="#313131">Tamaño total enorme,</text>
+  <text x="287" y="138" text-anchor="middle" font-size="11" fill="#313131">tamaño activo pequeño.</text>
+  <text x="287" y="172" text-anchor="middle" font-size="11" fill="#6f6f6f">DeepSeek-V4-Pro: 1,6T,</text>
+  <text x="287" y="190" text-anchor="middle" font-size="11" fill="#6f6f6f">49B activos por token</text>
+  <rect x="390" y="30" width="165" height="190" rx="8" fill="#f1ebfc" stroke="#7B3FE4" />
+  <text x="472" y="58" text-anchor="middle" font-size="13" font-weight="600" fill="#313131">Razonamiento</text>
+  <text x="472" y="84" text-anchor="middle" font-size="11" fill="#313131">Trabaja el problema</text>
+  <text x="472" y="102" text-anchor="middle" font-size="11" fill="#313131">antes de responder.</text>
+  <text x="472" y="120" text-anchor="middle" font-size="11" fill="#313131">Está en todos los buques</text>
+  <text x="472" y="138" text-anchor="middle" font-size="11" fill="#313131">insignia de 2026; regulable.</text>
+  <text x="472" y="172" text-anchor="middle" font-size="11" fill="#6f6f6f">GPT-6 Astra, Fable 5.1,</text>
+  <text x="472" y="190" text-anchor="middle" font-size="11" fill="#6f6f6f">Gemini 4 Argon, Grok 4.7</text>
+  <rect x="575" y="30" width="165" height="190" rx="8" fill="#fff1ee" stroke="#FF3621" />
+  <text x="657" y="58" text-anchor="middle" font-size="13" font-weight="600" fill="#313131">Modelo de decisión</text>
+  <text x="657" y="84" text-anchor="middle" font-size="11" fill="#313131">Puntúa opciones fijas</text>
+  <text x="657" y="102" text-anchor="middle" font-size="11" fill="#313131">con probabilidades</text>
+  <text x="657" y="120" text-anchor="middle" font-size="11" fill="#313131">calibradas. Sin texto,</text>
+  <text x="657" y="138" text-anchor="middle" font-size="11" fill="#313131">una pasada, céntimos.</text>
+  <text x="657" y="172" text-anchor="middle" font-size="11" fill="#6f6f6f">Microsoft Decision-1</text>
+  <text x="657" y="190" text-anchor="middle" font-size="11" fill="#6f6f6f">(Qwen3.5-9B postentrenado)</text>
+  <rect x="20" y="245" width="720" height="44" rx="8" fill="#f6f6f6" stroke="#cfcfcf" />
+  <text x="380" y="264" text-anchor="middle" font-size="12" font-weight="600" fill="#313131">Las categorías se solapan: DeepSeek-V4-Pro es una mezcla de expertos y un modelo de razonamiento.</text>
+  <text x="380" y="281" text-anchor="middle" font-size="11" fill="#6f6f6f">Pesos abiertos o API propietaria es un eje distinto: cualquiera de los cuatro puede ser una cosa u otra.</text>
+  <text x="20" y="322" font-size="12" fill="#6f6f6f">Tamaños según las fichas de modelo en Hugging Face y Microsoft Learn, leídas el 6 de noviembre de 2026.</text>
+</svg>

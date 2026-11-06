@@ -1,4 +1,4 @@
-import { stackDiagrams } from '@/data/blog/azure-stacks';
+import { stackDiagrams } from '@/data/blog/stacks';
 import { logoScale, logoSrc, logos, type LogoId } from '@/data/skillLogos';
 import type { Locale } from '@/lib/i18n/config';
 import { getMessages } from '@/lib/i18n/messages';
@@ -11,7 +11,7 @@ import { StackDiagram, type StackMark, type StackView } from './StackDiagram';
  */
 export function Stacks({ id, caption, locale }: { id: string; caption?: string; locale: Locale }) {
   const d = stackDiagrams[id];
-  if (!d) throw new Error(`[content] stack diagram not found: ${id} (data/blog/azure-stacks.ts)`);
+  if (!d) throw new Error(`[content] stack diagram not found: ${id} (data/blog/stacks.ts)`);
   const m = getMessages(locale);
   const mark = (l?: LogoId): StackMark | undefined => (l ? { src: withBasePath(logoSrc(l)), alt: logos[l][1], k: logoScale(l) } : undefined);
   const view: StackView = {

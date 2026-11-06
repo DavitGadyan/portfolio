@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 340" width="100%" role="img" aria-label="Four cards side by side: a dense model, where all parameters work on every token, examples Qwen3.8-27B and Mistral Medium 3.5; a mixture of experts, where a router sends each token to a few experts, example DeepSeek-V4-Pro with 1.6 trillion total and 49 billion active parameters; a reasoning model, which works through the problem before answering and is built into every 2026 flagship; and a decision model, which scores a fixed set of options with calibrated probabilities and no text, example Microsoft Decision-1. A band underneath says the categories overlap and that open weights versus proprietary API is a separate axis" style="height:auto;display:block">
+  <title>Four kinds of model: dense, mixture of experts, reasoning, decision</title>
+  <rect x="20" y="30" width="165" height="190" rx="8" fill="#e8f2fb" stroke="#0078D4" />
+  <text x="102" y="58" text-anchor="middle" font-size="13" font-weight="600" fill="#313131">Dense</text>
+  <text x="102" y="84" text-anchor="middle" font-size="11" fill="#313131">All parameters work</text>
+  <text x="102" y="102" text-anchor="middle" font-size="11" fill="#313131">on every token.</text>
+  <text x="102" y="120" text-anchor="middle" font-size="11" fill="#313131">Simple to serve</text>
+  <text x="102" y="138" text-anchor="middle" font-size="11" fill="#313131">and to fine-tune.</text>
+  <text x="102" y="172" text-anchor="middle" font-size="11" fill="#6f6f6f">Qwen3.8-27B</text>
+  <text x="102" y="190" text-anchor="middle" font-size="11" fill="#6f6f6f">Mistral Medium 3.5 (128B)</text>
+  <rect x="205" y="30" width="165" height="190" rx="8" fill="#e9f6f0" stroke="#1E7F5C" />
+  <text x="287" y="58" text-anchor="middle" font-size="13" font-weight="600" fill="#313131">Mixture of experts</text>
+  <text x="287" y="84" text-anchor="middle" font-size="11" fill="#313131">A router sends each</text>
+  <text x="287" y="102" text-anchor="middle" font-size="11" fill="#313131">token to a few experts.</text>
+  <text x="287" y="120" text-anchor="middle" font-size="11" fill="#313131">Huge total size, small</text>
+  <text x="287" y="138" text-anchor="middle" font-size="11" fill="#313131">active size per token.</text>
+  <text x="287" y="172" text-anchor="middle" font-size="11" fill="#6f6f6f">DeepSeek-V4-Pro: 1.6T total,</text>
+  <text x="287" y="190" text-anchor="middle" font-size="11" fill="#6f6f6f">49B active per token</text>
+  <rect x="390" y="30" width="165" height="190" rx="8" fill="#f1ebfc" stroke="#7B3FE4" />
+  <text x="472" y="58" text-anchor="middle" font-size="13" font-weight="600" fill="#313131">Reasoning</text>
+  <text x="472" y="84" text-anchor="middle" font-size="11" fill="#313131">Works through the</text>
+  <text x="472" y="102" text-anchor="middle" font-size="11" fill="#313131">problem before answering.</text>
+  <text x="472" y="120" text-anchor="middle" font-size="11" fill="#313131">Built into every 2026</text>
+  <text x="472" y="138" text-anchor="middle" font-size="11" fill="#313131">flagship; effort is a dial.</text>
+  <text x="472" y="172" text-anchor="middle" font-size="11" fill="#6f6f6f">GPT-6 Astra, Fable 5.1,</text>
+  <text x="472" y="190" text-anchor="middle" font-size="11" fill="#6f6f6f">Gemini 4 Argon, Grok 4.7</text>
+  <rect x="575" y="30" width="165" height="190" rx="8" fill="#fff1ee" stroke="#FF3621" />
+  <text x="657" y="58" text-anchor="middle" font-size="13" font-weight="600" fill="#313131">Decision model</text>
+  <text x="657" y="84" text-anchor="middle" font-size="11" fill="#313131">Scores a fixed set of</text>
+  <text x="657" y="102" text-anchor="middle" font-size="11" fill="#313131">options with calibrated</text>
+  <text x="657" y="120" text-anchor="middle" font-size="11" fill="#313131">probabilities. No text,</text>
+  <text x="657" y="138" text-anchor="middle" font-size="11" fill="#313131">one pass, cents per million.</text>
+  <text x="657" y="172" text-anchor="middle" font-size="11" fill="#6f6f6f">Microsoft Decision-1</text>
+  <text x="657" y="190" text-anchor="middle" font-size="11" fill="#6f6f6f">(post-trained Qwen3.5-9B)</text>
+  <rect x="20" y="245" width="720" height="44" rx="8" fill="#f6f6f6" stroke="#cfcfcf" />
+  <text x="380" y="264" text-anchor="middle" font-size="12" font-weight="600" fill="#313131">The categories overlap: DeepSeek-V4-Pro is a mixture of experts and a reasoning model.</text>
+  <text x="380" y="281" text-anchor="middle" font-size="11" fill="#6f6f6f">Open weights or proprietary API is a separate axis: any of the four can be either.</text>
+  <text x="20" y="322" font-size="12" fill="#6f6f6f">Sizes from the vendors' model cards on Hugging Face and Microsoft Learn, read on 6 November 2026.</text>
+</svg>

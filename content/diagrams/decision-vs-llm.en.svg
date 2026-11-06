@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 340" width="100%" role="img" aria-label="Two rows of three boxes. Top row, a language model: a prompt such as analyse this customer complaint goes into a model that generates text token by token, with output tokens billed, and comes out as a free-text answer that you have to parse. Bottom row, a decision model: a state plus a fixed set of options, refund, replace, escalate or nothing, goes into a model that scores every option in one pass with no output tokens, and comes out as a probability per option, for example 0.15, 0.65, 0.18 and 0.02, that you can threshold or escalate. A band underneath says: same input, different contract" style="height:auto;display:block">
+  <title>A language model and a decision model on the same complaint</title>
+  <defs><marker id="ar-dvl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#6f6f6f" /></marker></defs>
+  <text x="20" y="30" font-size="12" font-weight="600" fill="#6f6f6f">A language model</text>
+  <rect x="20" y="42" width="200" height="70" rx="8" fill="#f1ebfc" stroke="#7B3FE4" />
+  <text x="120" y="66" text-anchor="middle" font-size="12" font-weight="600" fill="#313131">Prompt</text>
+  <text x="120" y="84" text-anchor="middle" font-size="11" fill="#6f6f6f">"Analyse this customer complaint</text>
+  <text x="120" y="100" text-anchor="middle" font-size="11" fill="#6f6f6f">and say what we should do."</text>
+  <rect x="260" y="42" width="220" height="70" rx="8" fill="#f1ebfc" stroke="#7B3FE4" />
+  <text x="370" y="66" text-anchor="middle" font-size="12" font-weight="600" fill="#313131">Generates text token by token</text>
+  <text x="370" y="84" text-anchor="middle" font-size="11" fill="#6f6f6f">hundreds of output tokens, billed</text>
+  <text x="370" y="100" text-anchor="middle" font-size="11" fill="#6f6f6f">seconds of latency at the flagship tier</text>
+  <rect x="520" y="42" width="220" height="70" rx="8" fill="#f1ebfc" stroke="#7B3FE4" />
+  <text x="630" y="66" text-anchor="middle" font-size="12" font-weight="600" fill="#313131">Free-text answer</text>
+  <text x="630" y="84" text-anchor="middle" font-size="11" fill="#6f6f6f">"The customer is unhappy because…"</text>
+  <text x="630" y="100" text-anchor="middle" font-size="11" fill="#6f6f6f">you parse it; the format can drift</text>
+  <line x1="220" y1="77" x2="260" y2="77" stroke="#6f6f6f" stroke-width="1.5" marker-end="url(#ar-dvl)" />
+  <line x1="480" y1="77" x2="520" y2="77" stroke="#6f6f6f" stroke-width="1.5" marker-end="url(#ar-dvl)" />
+  <text x="20" y="160" font-size="12" font-weight="600" fill="#6f6f6f">A decision model</text>
+  <rect x="20" y="172" width="200" height="70" rx="8" fill="#fff1ee" stroke="#FF3621" />
+  <text x="120" y="196" text-anchor="middle" font-size="12" font-weight="600" fill="#313131">State and fixed options</text>
+  <text x="120" y="214" text-anchor="middle" font-size="11" fill="#6f6f6f">the same complaint, plus</text>
+  <text x="120" y="230" text-anchor="middle" font-size="11" fill="#6f6f6f">refund · replace · escalate · nothing</text>
+  <rect x="260" y="172" width="220" height="70" rx="8" fill="#fff1ee" stroke="#FF3621" />
+  <text x="370" y="196" text-anchor="middle" font-size="12" font-weight="600" fill="#313131">Scores every option in one pass</text>
+  <text x="370" y="214" text-anchor="middle" font-size="11" fill="#6f6f6f">no output tokens, no rationale</text>
+  <text x="370" y="230" text-anchor="middle" font-size="11" fill="#6f6f6f">a single forward pass of a 9B model</text>
+  <rect x="520" y="172" width="220" height="70" rx="8" fill="#fff1ee" stroke="#FF3621" />
+  <text x="630" y="196" text-anchor="middle" font-size="12" font-weight="600" fill="#313131">A probability per option</text>
+  <text x="630" y="214" text-anchor="middle" font-size="11" fill="#6f6f6f">0.15 · 0.65 · 0.18 · 0.02 (illustrative)</text>
+  <text x="630" y="230" text-anchor="middle" font-size="11" fill="#6f6f6f">threshold it, or escalate to a person</text>
+  <line x1="220" y1="207" x2="260" y2="207" stroke="#6f6f6f" stroke-width="1.5" marker-end="url(#ar-dvl)" />
+  <line x1="480" y1="207" x2="520" y2="207" stroke="#6f6f6f" stroke-width="1.5" marker-end="url(#ar-dvl)" />
+  <rect x="20" y="268" width="720" height="40" rx="8" fill="#f6f6f6" stroke="#cfcfcf" />
+  <text x="380" y="293" text-anchor="middle" font-size="12" font-weight="600" fill="#313131">Same input, different contract: text you have to parse, or a calibrated probability you can threshold.</text>
+  <text x="20" y="330" font-size="11" fill="#6f6f6f">Decision-1 answers yes/no, multiple-choice and rating questions over up to 32K input tokens (Microsoft Learn, 6 Nov 2026).</text>
+</svg>

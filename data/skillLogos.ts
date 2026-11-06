@@ -28,6 +28,11 @@ export const logos = {
   mistral: ['mistral.svg', 'Mistral AI'], gitlab: ['gitlab.svg', 'GitLab'], bitbucket: ['bitbucket.svg', 'Bitbucket'], go: ['go.svg', 'Go'], php: ['php.svg', 'PHP'], prefect: ['prefect.svg', 'Prefect'],
   // the Azure / Fabric / Databricks / Foundry post's stack diagrams (data/blog/azure-stacks.ts)
   spark: ['apachespark.svg', 'Apache Spark'], mlflow: ['mlflow.svg', 'MLflow'], powerbi: ['powerbi.svg', 'Power BI'], sharepoint: ['sharepoint.svg', 'SharePoint'], microsoft: ['microsoft.svg', 'Microsoft'],
+  // Microsoft data and AI services (official Azure architecture icons in assets/logos/azure, Fabric from @fabric-msft/svg-icons) for the skills map and the Azure post
+  fabric: ['fabric.svg', 'Microsoft Fabric'], foundry: ['foundry.svg', 'Microsoft Foundry'], aisearch: ['azure-ai-search.svg', 'Azure AI Search'], datafactory: ['data-factory.svg', 'Azure Data Factory'],
+  docintel: ['document-intelligence.svg', 'Azure AI Document Intelligence'], decision1: ['microsoft.svg', 'Microsoft Decision-1'],
+  // LLM vendors (skills map "AI Agents" node and the model-comparison posts, data/blog/llm-stacks.ts)
+  qwen: ['qwen.svg', 'Qwen (Alibaba)'], deepseek: ['deepseek.svg', 'DeepSeek'], llama: ['meta.svg', 'Meta Llama'], ollama: ['ollama.svg', 'Ollama'], nvidia: ['nvidia.svg', 'NVIDIA'], cohere: ['cohere.svg', 'Cohere'],
 } as const;
 export type LogoId = keyof typeof logos;
 export const logoSrc = (id: LogoId) => '/logos/' + logos[id][0];
