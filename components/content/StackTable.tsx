@@ -22,7 +22,7 @@ export function StackTable({ stack, locale }: { stack: ProjectStack; locale: Loc
                   <span className="tchip__disc" aria-hidden="true">
                     {logo
                       // eslint-disable-next-line @next/next/no-img-element -- tiny brand marks served from public/logos
-                      ? <img src={withBasePath(logo.src)} alt="" width={22} height={22} decoding="async" loading="lazy" />
+                      ? <img src={withBasePath(logo.src)} alt="" width={22} height={22} decoding="async" loading="lazy" data-mono={logo.mono ? '' : undefined} />
                       : <span>{monogram(s)}</span>}
                   </span>
                   {s}

@@ -51,4 +51,20 @@ test.describe('project showcase', () => {
     for (const v of await page.locator('.prose-dg video').all()) await expect(v).toHaveAttribute('preload', 'none');
     await expect(page.locator('.prose-dg img:not(.facade img)')).toHaveCount(4);
   });
+
+  test('stack chips: every icon loads, the first technology named picks the mark, and the white GitHub mark is darkened on its white disc', async ({ page }) => {
+    await page.goto('/portfolio/smartsearch-ecommerce-search-ranking/');
+    const chip = (text: string) => page.locator('.tchip', { hasText: text }).locator('img');
+    await expect(chip('Next.js 15')).toHaveAttribute('src', /\/logos\/nextjs\.png$/);
+    await expect(chip('Docker Compose')).toHaveAttribute('src', /\/logos\/docker\.png$/); // not the Postgres named inside its brackets
+    await expect(chip('MLflow model registry')).toHaveAttribute('src', /\/logos\/mlflow\.svg$/);
+    await expect(page.locator('.tchip', { hasText: 'LambdaRank' }).locator('img')).toHaveCount(0); // a monogram, not the AWS mark
+    for (const img of await page.locator('.tchip img').all()) {
+      await img.scrollIntoViewIfNeeded();
+      await expect.poll(() => img.evaluate((i: HTMLImageElement) => i.naturalWidth)).toBeGreaterThan(0);
+    }
+    await expect(chip('GitHub Actions')).toHaveAttribute('data-mono', '');
+    expect(await chip('GitHub Actions').evaluate((i) => getComputedStyle(i).filter)).toBe('brightness(0)');
+    await expect(chip('Next.js 15')).not.toHaveAttribute('data-mono', '');
+  });
 });

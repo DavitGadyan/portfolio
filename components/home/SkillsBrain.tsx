@@ -5,7 +5,7 @@ import { CertDialog, type CertInfo, type CertStrings } from './CertDialog';
 import brain from '@/assets/images/my-logo.png';
 
 export type BrainSkill = { id: string; src: string; label: string; scale?: number; cert?: CertInfo };
-export type BrainNode = { id: string; order: number; title: string; short: string; line: string; skills: BrainSkill[] };
+export type BrainNode = { id: string; order: number; title: string; short: string; skills: BrainSkill[] };
 export type BrainStrings = { label: string; close: string; tools: string; certHint: string } & CertStrings;
 
 /**
@@ -71,9 +71,6 @@ export function SkillsBrain({ nodes, locale, t }: { nodes: BrainNode[]; locale: 
           <span key={k.id} className="brain__icon" data-ring={ring} role="img" aria-label={k.label} title={k.label} style={style}>{img}{tip}</span>
         );
       })}
-      <p className="brain__hint" aria-live="polite">
-        {active && <><strong>{active.title}</strong> · {active.line} <span className="brain__names">{icons.map((k) => k.label).join(' · ')}</span></>}
-      </p>
       {cert?.cert && <CertDialog cert={cert.cert} locale={locale} t={t} returnFocusTo={opener} onClosed={() => setCert(null)} />}
     </div>
   );

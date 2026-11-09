@@ -21,7 +21,8 @@ stack:
     - Simulator that sends 20,000 shopper personas through the same ranking code as the API
   ai:
     - Hybrid retrieval, BM25 (bm25s) and static embeddings (model2vec) fused by reciprocal rank fusion
-    - LightGBM LambdaRank with 23 features, model versions in MLflow
+    - LightGBM LambdaRank ranker with 23 features
+    - MLflow model registry
     - Contextual bandit (linear Thompson sampling) with off-policy evaluation
     - Claude tool-use assistant (Sonnet), Haiku for bulk jobs
     - Product knowledge graph (NetworkX, Louvain communities)

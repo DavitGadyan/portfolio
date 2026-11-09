@@ -12,7 +12,7 @@ import { SkillsBrain } from './SkillsBrain';
 export function CapabilityMap({ locale }: { locale: Locale }) {
   const m = getMessages(locale);
   const nodes = [...capabilityStages, capabilityBranch].map((s) => ({
-    id: s.id, order: s.order, title: s.title[locale], short: s.short[locale], line: s.line[locale],
+    id: s.id, order: s.order, title: s.title[locale], short: s.short[locale],
     skills: s.skills.map((id) => {
       const c = certs[id];
       const cert = c ? { src: withBasePath(certSrc(c)), title: c.title[locale], issued: c.issued, expires: c.expires, id: c.id } : undefined;

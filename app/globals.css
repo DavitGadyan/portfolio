@@ -296,6 +296,7 @@ body {
   .tchip { display: inline-flex; align-items: center; gap: .5rem; padding: .25rem .75rem .25rem .25rem; border-radius: 9999px; background: rgba(255,255,255,.7); border: 1px solid rgba(43,44,47,.12); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); box-shadow: 0 10px 24px -16px rgba(33,33,33,.5), inset 0 1px 0 #fff; font-size: .85rem; color: var(--color-ink-700); }
   .tchip__disc { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 9999px; background: #fff; box-shadow: inset 0 0 0 1px rgba(43,44,47,.1), 0 4px 10px -6px rgba(33,33,33,.5); }
   .tchip__disc img { width: 22px; height: 22px; object-fit: contain; }
+  .tchip__disc img[data-mono] { filter: brightness(0); } /* white or pale marks (GitHub, Grok, MySQL, Kali) would vanish on the white disc */
   .tchip__disc span { font-size: .62rem; font-weight: 700; letter-spacing: .04em; color: var(--color-ink-500); }
   .metrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; margin: 0; }
   .metrics__item { padding: .8rem .9rem; border-radius: .75rem; background: var(--color-paper-50); border: 1px solid var(--color-ink-100); }
@@ -390,11 +391,6 @@ body {
   .brain__tip { position: absolute; left: 50%; top: calc(100% + .3rem); translate: -50% 0; padding: .15rem .5rem; border-radius: 4px; background: rgba(33,33,33,.94); font-size: .68rem; white-space: nowrap; color: #fff; opacity: 0; transition: opacity .15s; pointer-events: none; }
   .brain__icon:hover .brain__tip { opacity: 1; }
   @media (hover: none) { .brain__tip { display: none; } }
-  .brain__hint { position: absolute; left: 1rem; right: 1rem; bottom: .5rem; margin: 0; padding: .2rem .6rem; border-radius: .5rem; background: rgba(43,44,47,.9); text-align: center; font-size: .8rem; line-height: 1.4; color: var(--color-ink-300); } /* the backdrop keeps the caption legible over the dimmed node at the bottom of the ring */
-  .brain__hint strong { color: #fff; }
-  @media (max-width: 40rem) { .brain__hint { bottom: auto; top: 100%; margin-top: .5rem; } } /* below the stage so it never overlaps the icon ring */
-  .brain__names { display: block; margin-top: .15rem; font-size: .72rem; color: var(--color-ink-400); }
-  @media (hover: hover) { .brain__names { display: none; } }
   @media (prefers-reduced-motion: reduce) { .brain__node, .brain__node::after, .brain__core::after, .brain__icon, .brain__spoke::after, .brain__orbit, .brain__icon::before, .brain__icon::after { animation: none; } .brain__spoke::after, .brain__icon::after { display: none; } .brain__node, .brain__core { transition: none; } }
 
   /* Testimonials: self-turning 3D glass card carousel. Default (no JS / old browsers) = a scroll-snap row of the same height */
