@@ -1,0 +1,119 @@
+---
+title: "SmartSearch: Ecommerce Search, Learning to Rank and A/B Testing"
+date: 2026-11-09
+lastmod: 2026-11-09
+cover: /images/portfolio/smartsearch-cover.jpg
+coverAlt: "SmartSearch cover: the title SmartSearch and the line Ecommerce search, ranking and A/B testing engine on a pale blue and sand backdrop, next to two tilted screenshots, the console's experiment report and the storefront home page with its search bar"
+summary: "An ecommerce search engine built end to end: shoppers search 42,994 real furniture and decor products, keyword and semantic retrieval are fused, a LightGBM ranker orders the results, and every result explains its score. An experimentation engine splits shoppers 50/50 and issues ship, keep running or reject, and a Claude assistant shops and checks out over the Agentic Commerce Protocol. Offline NDCG@10 rises from 0.688 to 0.722 on 233k human relevance grades; shopper behaviour is simulated and labelled as such. Python, FastAPI, PostgreSQL with pgvector, LightGBM, Next.js, 48 backend tests."
+description: "Ecommerce search engine: hybrid retrieval, LightGBM learning to rank, A/B tests with honest verdicts, and a Claude assistant that checks out over the Agentic Commerce Protocol."
+categories:
+  - data-science-ml
+  - ai-agents
+  - fullstack-uiux
+stack:
+  frontend:
+    - Next.js 15, React 19, TypeScript
+    - Tailwind CSS 4, TanStack Query with a persisted cache
+    - Recharts for the console charts
+  backend:
+    - Python 3.12, FastAPI, SQLAlchemy (async), Alembic
+    - Experiment statistics as pure functions, checked against scipy and statsmodels
+    - Simulator that sends 20,000 shopper personas through the same ranking code as the API
+  ai:
+    - Hybrid retrieval, BM25 (bm25s) and static embeddings (model2vec) fused by reciprocal rank fusion
+    - LightGBM LambdaRank with 23 features, model versions in MLflow
+    - Contextual bandit (linear Thompson sampling) with off-policy evaluation
+    - Claude tool-use assistant (Sonnet), Haiku for bulk jobs
+    - Product knowledge graph (NetworkX, Louvain communities)
+  data:
+    - PostgreSQL 16 with pgvector, Redis
+    - WANDS catalog, queries and 233k human relevance grades (real)
+    - Simulated shopper events, 2.6M over 35 days
+    - SQL marts for the funnel, search terms, experiments and cohorts
+  infra:
+    - Docker Compose (Postgres, Redis, MLflow, API, web), Makefile
+    - GitHub Actions CI (lint, migrations, tests, front-end build)
+    - 48 backend tests in 10 files
+  security:
+    - Console behind a keyword, with a signed 12-hour cookie
+    - Admin calls proxied server-side, so the API key never reaches the browser
+    - The assistant may present only products a tool returned
+    - Single-use delegated payment tokens from a mock provider, no card number stored
+links:
+  github: https://github.com/DavitGadyan/SmartSearch
+outcomes:
+  - Ranking quality on 233k human relevance grades rises from NDCG@10 0.688 for keyword search to 0.705 with hybrid retrieval and 0.722 with the learned ranker, in 5-fold cross-validation with behavioural features zeroed so no click can leak.
+  - In the online A/B test the new ranker lifts search click-through by 4.3% (p = 0.0004) and cuts searches without a click by 7.1%. Conversion is up 4.2% but not significant at 7,000 shoppers per arm, so the engine's verdict is keep running, not ship.
+  - Every search result explains its position, with the ranker score, the personalization term and the top feature contributions in a drawer next to the results.
+  - A Claude assistant searches, explains each pick, adds to the cart and checks out through the Agentic Commerce Protocol, the same endpoints an external AI agent would use, and it can only present products the store's own tools returned.
+  - A merchant describes a storefront change in one sentence and gets an A/B test with both arms previewed, a sample-size plan and a reject or fail-to-reject verdict. 48 backend tests cover the platform, with the statistics verified against scipy and statsmodels.
+metrics:
+  - label: Real products searched
+    value: "42,994"
+  - label: Human relevance grades
+    value: "233k"
+  - label: Ranking quality, NDCG@10
+    value: "0.688 → 0.722"
+  - label: Search click-through in the A/B test
+    value: "+4.3%"
+  - label: Backend tests
+    value: "48"
+featured: true
+order: 13
+---
+
+## The problem
+
+Ecommerce search teams have to prove that a ranking change makes shoppers buy more, not only that it scores better offline. That takes three things most demos skip: a ranker evaluated on human judgments without leakage, an experiment engine that reaches its own verdict, and a clear line between what is real and what is simulated. SmartSearch is a complete, inspectable version of that loop: retrieve, rank, personalize, record behaviour, test, decide, and let an AI agent buy. It is a personal project, not client work. The catalog, the queries and the relevance grades come from Wayfair's public WANDS dataset, and the project is not affiliated with Wayfair.
+
+## The product in use
+
+<Video src="/videos/smartsearch-demo.mp4" poster="/videos/smartsearch-demo.webp" ratio="16 / 9" title="SmartSearch walkthrough" caption="A walkthrough of just under three minutes, no audio: the storefront and its recommendation rails, a search with the Why this ranking? drawer, a product page, the assistant answering a request for a small balcony under $300, a checkout over the Agentic Commerce Protocol, the merchant console, an experiment report, and an A/B test drafted from one sentence." />
+
+## What I built
+
+**Search and ranking.** A query such as "mid-century walnut nightstand under 200" is parsed for its price limit and its category. BM25 and semantic search each return 200 candidates, and reciprocal rank fusion merges them. A LightGBM LambdaRank model trained on the 233k human grades orders the fused list with 23 features: retrieval scores and ranks, category match, title overlap, price, rating, stock and 30-day behaviour rates. A "Why this ranking?" drawer on every result shows the ranker score, the personalization term and the top feature contributions, so relevance can be debugged instead of guessed.
+
+![Search results for a mid-century nightstand query with the Why this ranking? drawer open: position, ranker score, personalization term, top feature contributions and candidate counts](/images/portfolio/smartsearch-search.jpg)
+
+**Personalization and recommendations.** Personalization is an additive boost bounded between −1 and 1, built from a shopper's brand, category, style, material, colour and price history. It sits outside the model, so it can be switched off and tested on its own, and a new shopper gets zero. Product pages carry three kinds of recommendation: similar items from the embedding space, bought together from co-purchase similarity, and goes with it from a product knowledge graph. A Thompson-sampling slot at position 5 gives products with fewer than 50 impressions a chance to be seen.
+
+![Product page: a rug with its attributes and a photo labelled as representative, above the start of the Goes with it rail](/images/portfolio/smartsearch-recommendations.jpg)
+
+**Shopping assistant.** A Claude tool-use loop calls the store's own search, recommendation and knowledge-graph tools, and it may only present products a tool returned. It extracts the budget and the constraints from the request, gives a one-line reason for each pick, and adds to the cart when asked. A greeting gets a reply, not a search. Each answer shows a trace with the number of model calls and the time taken.
+
+![Shopping assistant: product cards with a one-line reason under each pick and a trace line showing one model call](/images/portfolio/smartsearch-assistant.jpg)
+
+**Agentic checkout.** The store implements the merchant side of the Agentic Commerce Protocol: checkout sessions, a product feed and delegated payment tokens. The cart page and the assistant are clients of those same endpoints, so one checkout implementation serves people and AI agents, and agent orders land in the same event log and experiments as every other purchase. Payment runs on a mock provider with test cards only.
+
+![Checkout: two cart items, the shipping choice, totals and the note that payment tokens come from a mock provider](/images/portfolio/smartsearch-checkout.jpg)
+
+**Merchant console.** Behind a keyword, the console shows revenue, revenue per visitor, conversion, click-through and zero-result rate with period-over-period changes, the search funnel, search terms with a position-bias curve, segments and cohorts, and a revenue-at-stake list that ranks where the funnel leaks. All of it reads from marts built on the simulated event log.
+
+![Console overview: revenue, revenue per visitor, conversion, click-through, visitors, searches, order value and zero-result rate, with revenue and funnel charts](/images/portfolio/smartsearch-console.jpg)
+
+**Experiments with a verdict.** Shoppers are split 50/50 by a salted hash and stay in their arm, and every assigned shopper stays in the denominator. The report previews what each arm shows for the same query, then gives control and treatment, the confidence interval, the p-value and a plain verdict. For the headline test that verdict is "inconclusive, keep running": conversion of 12.26% against 11.76% is +4.2% at p = 0.36, and detecting a 5% lift needs about 48,000 shoppers per arm, not 7,000.
+
+![Experiment report: control and treatment rankings side by side, conversion of 12.26% against 11.76% marked not significant with the verdict inconclusive, keep running, next to the secondary metrics](/images/portfolio/smartsearch-experiment.jpg)
+
+**A test from one sentence.** In the console, "Make the add-to-cart button green and call it Add to bag" becomes two arms with live previews, a hypothesis and a sample-size plan from the live baseline. The assistant says when it had to substitute (the tool offers an accent style, not a green option), and results on simulated traffic are labelled as simulated, with the assumed effect stated.
+
+![Experiment builder: the request in a chat, the assistant's draft with its sample-size plan, and control and treatment previews with Add to cart and Add to bag buttons](/images/portfolio/smartsearch-builder.jpg)
+
+**Ranking quality next to online results.** The console puts the offline table beside the experiments: NDCG@10, MRR and Recall@50 per strategy from 5-fold cross-validation, with a 95% confidence interval on the lift, and the champion model's feature importance from the MLflow registry. An offline win still has to survive the A/B test to ship.
+
+![Ranking quality: NDCG@10, MRR and Recall@50 for BM25 plus popularity, hybrid retrieval, and hybrid plus LambdaRank, with the lift and its confidence interval, next to the feature importance chart](/images/portfolio/smartsearch-ranking.jpg)
+
+## How a result is judged
+
+Offline, the three strategies are compared on 479 judged queries with 5-fold cross-validation, and the ranker is retrained per fold. Behavioural features are frozen at the end of the warm-up period and zeroed for the headline number. Before that fix, one split moved the baseline from 0.58 to 0.71 from leaked clicks alone. Hybrid retrieval adds +0.017 NDCG@10 over BM25 (95% CI 0.006 to 0.029), and hybrid retrieval with the ranker adds +0.034 (0.022 to 0.045). On the 96 test queries never searched during warm-up, BM25 with a popularity boost scores 0.584 against 0.729 for the fused list.
+
+Online, the engine runs a sample-ratio check first. Then come a two-proportion z-test on conversion, Welch's t-test and a bootstrap for revenue per visitor, the delta method for ratio metrics, CUPED, Benjamini–Hochberg across the secondary metrics, and a sequential test so early looks do not inflate false positives, followed by power and the minimum detectable effect. An A/A test runs alongside to show the machinery does not invent lifts (p = 0.07, nothing significant at 5%). The exploration slot raised the add-to-cart rate by 12% (p = 0.001), with conversion +11% at p = 0.08. A contextual bandit that picks the ranker per request looked 4% better in off-policy evaluation and then showed −6.2% conversion live (p = 0.27), which is why it was tested live instead of shipped on the estimate.
+
+## Architecture
+
+A Next.js 15 storefront and console talk to a FastAPI backend. The ML runtime runs inside the API process: bm25s indexes, model2vec embeddings held as an in-memory matrix, rank fusion, the LightGBM ranker, the affinity boost, the bandit, item-item similarity and the knowledge graph. PostgreSQL with pgvector holds the catalog, the append-only event log and the SQL marts the console reads. Redis caches shopper profiles. MLflow keeps the model registry, and a new model is promoted only when its cross-validated NDCG@10 is at least as good as the champion's. A simulator draws 20,000 shoppers from six personas and sends every search through the same ranking code as the API, with a position-biased click model calibrated on the public Retailrocket clickstream. A decision layer answers fixed-option questions (query intent, assistant routing, a relevance judge) through Microsoft-Decision-1 or a local fallback, so the system runs without credentials. One `make setup` downloads the data, builds the indexes, trains the ranker, runs the simulation and writes the experiment report.
+
+## What is real and what is simulated
+
+Real: the 42,994 products, the queries and the 233k graded relevance judgments (WANDS), and the funnel ratios used to calibrate the simulator (Retailrocket). Simulated: all shopper behaviour (20,000 personas, 2.6M events over 35 days), plus prices, brands and stock, which are synthesized and flagged in the data. So the A/B results validate the pipeline and the statistics, not a business case, and the conversion lift is not significant. Product photos are either generated from the catalog text (166) or representative photos from the Amazon Berkeley Objects dataset matched by text similarity (17,396), and both kinds are labelled on the product page. Checkout uses a mock payment provider. Tests created in the console read on simulated traffic with an assumed effect until real visitors arrive. The project is not affiliated with Wayfair or Amazon.
