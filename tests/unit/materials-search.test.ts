@@ -20,7 +20,7 @@ describe('materials search index', () => {
         if (e.kind !== 'video') expect(e.href).toMatch(/#c-[a-z0-9-]+$/);
       }
       expect(idx.filter((e) => e.kind === 'video')).toHaveLength(5);
-      expect(idx.filter((e) => e.kind === 'mindmap')).toHaveLength(73 + 88); // Snowflake + Databricks concepts
+      expect(idx.filter((e) => e.kind === 'mindmap')).toHaveLength(73 + 88 + 94); // Snowflake + Databricks + LLM concepts
     }
     const en = buildSearchIndex('en');
     expect(en.find((e) => e.id === 'snowflake:feat-time-travel')?.href).toBe('/materials/mindmaps/snowflake/#c-feat-time-travel');

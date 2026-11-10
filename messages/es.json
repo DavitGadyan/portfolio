@@ -223,8 +223,8 @@
     "videosDescription": "Cinco vídeos breves de David Gadyan, grabados para propuestas a clientes, uno por área: ciencia de datos y machine learning, IA generativa, trading algorítmico, marketing y ventas con IA, y SaaS y sistemas de IA full-stack construidos de principio a fin.",
     "quizzesTitle": "Quizzes de código: chuletas de JavaScript, React y SQL con quizzes de práctica",
     "quizzesDescription": "Tres mapas interactivos de sintaxis de David Gadyan para pruebas técnicas cronometradas: JavaScript, React y SQL de Snowflake. Cada mapa explica los patrones que más preguntan las pruebas e incluye un quiz de 20 preguntas tipo test, elegidas al azar y corregidas al final.",
-    "mindmapsTitle": "Mapas mentales: los conceptos clave de Snowflake y Databricks en mapas interactivos",
-    "mindmapsDescription": "Mapas mentales interactivos de David Gadyan construidos a partir de apuntes de cursos. Snowflake para desarrolladores, científicos de datos e ingenieros de datos (arquitectura, objetos básicos, funciones de la plataforma, ingeniería de datos, IA con Cortex, aprendizaje automático y aplicaciones) y Databricks para ingenieros de datos (arquitectura Medallion, Apache Spark, la plataforma, el workspace, clústeres, notebooks y DBFS), cada concepto con su caso de uso y el código que lo acompaña."
+    "mindmapsTitle": "Mapas mentales: los conceptos clave de Snowflake, Databricks y los LLM en mapas interactivos",
+    "mindmapsDescription": "Mapas mentales interactivos de David Gadyan construidos a partir de apuntes de cursos. Snowflake para desarrolladores, científicos de datos e ingenieros de datos (arquitectura, objetos básicos, funciones de la plataforma, ingeniería de datos, IA con Cortex, aprendizaje automático y aplicaciones) y Databricks para ingenieros de datos (arquitectura Medallion, Apache Spark, la plataforma, el workspace, clústeres, notebooks y DBFS), además de una chuleta de LLM (APIs frontera frente a modelos de pesos abiertos, densos y mezcla de expertos, VRAM, licencias, trading y contenido restringido), cada concepto con su caso de uso y el código que lo acompaña."
   },
   "a11y": {
     "quote": "Cita",
@@ -331,11 +331,11 @@
   },
   "mindmaps": {
     "heading": "Mapas mentales",
-    "tagline": "Los conceptos clave de una tecnología en un solo mapa conectado: componentes, casos de uso y capacidades de IA, a partir de apuntes de cursos.",
+    "tagline": "Los conceptos clave de una tecnología en un solo mapa conectado: componentes, casos de uso y capacidades de IA, a partir de apuntes de cursos y documentación de los proveedores.",
     "open": "Abrir la carpeta",
     "count": "{n} mapas",
     "countOne": "1 mapa",
-    "intro": "Un mapa por tecnología que estudio, construido a partir de la transcripción del curso y nada más: qué es cada componente, cuándo se usa y dónde entra la IA. Despliega las ramas, pulsa un concepto para ver sus detalles o pasa al modo edición y reorganiza el mapa.",
+    "intro": "Un mapa por tecnología que estudio, construido a partir de la transcripción de un curso o de la documentación de los propios proveedores, y nada más: qué es cada componente, cuándo se usa y dónde entra la IA. Despliega las ramas, pulsa un concepto para ver sus detalles o pasa al modo edición y reorganiza el mapa.",
     "pick": "Elige un mapa",
     "concepts": "{n} conceptos",
     "branches": "{n} ramas",
@@ -346,8 +346,8 @@
     "useCase": "Cuándo usarlo",
     "ai": "Ángulo de IA",
     "commands": "En código",
-    "facts": "Cifras del curso",
-    "source": "Lección",
+    "facts": "Cifras clave",
+    "source": "Fuente",
     "close": "Cerrar detalles",
     "edit": "Editar el mapa",
     "done": "Terminar edición",

@@ -14,13 +14,13 @@ test.describe('mind maps', () => {
   test('a folder tile on the Materials index, the Snowflake and Databricks tiles inside', async ({ page }) => {
     await page.goto('/materials/');
     const tile = page.locator('.tg__tile', { hasText: 'Mind Maps' });
-    await expect(tile).toContainText('2 maps');
+    await expect(tile).toContainText('3 maps');
     await tile.click();
     await page.waitForURL(/\/materials\/mindmaps\/$/);
     await expect(page.locator('h1')).toHaveText('Mind Maps');
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', /\/materials\/mindmaps\/$/);
     const tiles = page.locator('.tg__tile');
-    await expect(tiles).toHaveCount(2);
+    await expect(tiles).toHaveCount(3);
     await expect(tiles.first()).toContainText('Snowflake');
     await expect(tiles.first()).toContainText('8 branches · 73 concepts');
     await expect(tiles.first().locator('img')).toHaveAttribute('src', /\/logos\/snowflake\.svg$/);
@@ -35,7 +35,7 @@ test.describe('mind maps', () => {
     await page.goto('/materials/mindmaps/databricks/');
     await expect(page.locator('h1')).toHaveText(/Databricks Mind Map/);
     await expect(page.locator('link[rel="alternate"][hreflang="es"]')).toHaveAttribute('href', /\/es\/materials\/mindmaps\/databricks\/$/);
-    await expect(page.locator('.tg__tool')).toHaveCount(2); // the switcher lists both maps
+    await expect(page.locator('.tg__tool')).toHaveCount(3); // the switcher lists every map
     await expect(page.locator('.tg__tool[aria-current="page"]')).toContainText('Databricks');
     const nodes = page.locator('.react-flow__node');
     await expect(nodes).toHaveCount(DBX_START, { timeout: 20_000 });
@@ -46,7 +46,7 @@ test.describe('mind maps', () => {
     await expect(panel).toHaveAttribute('data-state', 'open');
     await expect(panel.locator('#tg-panel-title')).toHaveText('Photon');
     await expect(panel.locator('.tg__group')).toHaveText('Databricks platform');
-    await expect(panel.locator('.mm__facts li').first()).toContainText('Lesson: How to create Spark Cluster');
+    await expect(panel.locator('.mm__facts li').first()).toContainText('Source: How to create Spark Cluster');
     await card(page, 'nb').locator('.mm__badge').click();
     await expect(nodes).toHaveCount(DBX_START + 6); // six direct children; magic commands and dbutils keep theirs folded
     await expect(card(page, 'nb-magic').locator('.mm__badge')).toHaveText('5');
@@ -73,6 +73,36 @@ test.describe('mind maps', () => {
     await expect(p.locator('.mmlist h3')).toHaveCount(88);
     await expect(p.locator('.mmlist > li')).toHaveCount(8);
     await expect(p.locator('.mmlist .tglist__code', { hasText: 'dbutils.fs.mount' })).toHaveCount(1);
+    await ctx.close();
+  });
+
+  test('the LLM map: the VRAM branch open at start, a figure with its source, the GPU tiers fold, Spanish, no JavaScript', async ({ page, browser }) => {
+    await page.goto('/materials/mindmaps/llms/');
+    await expect(page.locator('h1')).toHaveText(/LLM Cheatsheet Mind Map/);
+    await expect(page.locator('.tg__tool[aria-current="page"]')).toContainText('LLMs');
+    const nodes = page.locator('.react-flow__node');
+    await expect(nodes).toHaveCount(17, { timeout: 20_000 }); // the root, eight branches and the eight VRAM concepts
+    await expect(card(page, 'vram-tiers').locator('.mm__badge')).toHaveText('7');
+    const panel = page.locator('#tg-panel');
+    await tap(page, 'vram-kv');
+    await expect(panel.locator('#tg-panel-title')).toHaveText('KV cache');
+    await expect(panel.locator('.mm__facts li').first()).toContainText('Source: NVIDIA blog');
+    await expect(panel.locator('.tg__code').first()).toContainText('kv_heads');
+    await page.keyboard.press('Escape');
+    await card(page, 'vram-tiers').locator('.mm__badge').click();
+    await expect(nodes).toHaveCount(17 + 7);
+
+    await page.goto('/es/materials/mindmaps/llms/');
+    await expect(page.locator('h1')).toHaveText(/Mapa mental de LLM/);
+    await expect(page.locator('.react-flow__node')).toHaveCount(17, { timeout: 20_000 });
+    await tap(page, 'vram-moe');
+    await expect(page.locator('#tg-panel-title')).toHaveText('La trampa de memoria del MoE');
+
+    const ctx = await browser.newContext({ javaScriptEnabled: false });
+    const p = await ctx.newPage();
+    await p.goto('/materials/mindmaps/llms/');
+    await expect(p.locator('.mmlist h3')).toHaveCount(94);
+    await expect(p.locator('.mmlist > li')).toHaveCount(8);
     await ctx.close();
   });
 
@@ -111,7 +141,7 @@ test.describe('mind maps', () => {
     }).toPass({ timeout: 15_000 });
     await expect(panel.locator('.tg__group')).toHaveText('Core objects');
     await expect(panel.locator('.mm__facts li')).toHaveCount(3);
-    await expect(panel.locator('.mm__facts li').first()).toContainText('Lesson: Virtual Warehouses');
+    await expect(panel.locator('.mm__facts li').first()).toContainText('Source: Virtual Warehouses');
     await page.keyboard.press('Escape');
     await expect(panel).toHaveAttribute('data-state', 'empty');
     await expect(page.locator('.tg__sources')).toContainText('Coursera');

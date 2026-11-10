@@ -59,6 +59,17 @@ describe('mind maps', () => {
     expect(d.nodes.filter((n) => n.logo).map((n) => n.logo)).toEqual(['databricks', 'azure', 'github', 'azure', 'azure']);
   });
 
+  it('LLMs: eight branches, 94 concepts, the VRAM branch open at start, every figure tied to its source', () => {
+    const l = mindmaps.find((m) => m.id === 'llms')!;
+    expect(l.nodes).toHaveLength(94);
+    expect(l.nodes.filter((n) => !n.parent).map((b) => b.id)).toEqual(['access', 'arch', 'frontier', 'open', 'vram', 'lic', 'trade', 'safe']);
+    expect(l.openAtStart).toEqual(['vram']);
+    expect(l.nodes.filter((n) => n.parent === 'vram')).toHaveLength(8);
+    expect(l.nodes.filter((n) => n.parent === 'vram-tiers')).toHaveLength(7);
+    expect(l.nodes.filter((n) => n.parent === 'open')).toHaveLength(10);
+    for (const n of l.nodes) for (const f of n.facts ?? []) expect(f.at).toMatch(/^[A-Z]/);
+  });
+
   /** Places every card of a map under several fold states and checks that no two visible cards overlap and none sits over the root. */
   function expectCleanLayout(id: string, total: number, branches: number, keepOpen: string) {
     const s = mindmaps.find((m) => m.id === id)!;
@@ -87,5 +98,6 @@ describe('mind maps', () => {
     const dbx = expectCleanLayout('databricks', 88, 8, 'plat');
     expect(dbx).toHaveLength(8 + 10); // the platform branch and its ten direct children; the toolset keeps its five folded
     expect(dbx.filter((p) => p.side === 'right').map((p) => p.id).filter((id) => !id.includes('-'))).toEqual(['de', 'plat', 'arch', 'nb']);
+    expect(expectCleanLayout('llms', 94, 8, 'vram')).toHaveLength(8 + 8); // the VRAM branch and its eight children; quantisation and GPU tiers stay folded
   });
 });
