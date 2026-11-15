@@ -1,0 +1,93 @@
+---
+title: "AI Jobs MCP: Remote MCP Server with Google OAuth on AWS Lambda"
+date: 2026-11-15
+lastmod: 2026-11-15
+cover: /images/portfolio/aijobs-cover.jpg
+coverAlt: "AI Jobs MCP cover: the title Remote MCP Server and the line Google OAuth, AWS Lambda, Live Data on a dark blue backdrop, with a glass cube holding a lambda symbol linked to three job cards and a shield with a keyhole"
+summary: "A production remote MCP server that lets Claude, Cursor and any other MCP client search live AI job leads stored in Supabase. Users sign in with Google through a branded consent page, every tool is read-only, and tool calls are limited to 2 per minute per IP. It runs serverless on AWS Lambda (arm64) behind a Function URL, keeps encrypted OAuth state in DynamoDB, deploys with one command through uv and AWS SAM, and costs cents per month. Python, FastMCP, Supabase REST, 24 automated tests."
+description: "Remote MCP server for AI job leads: Google OAuth sign-in, read-only tools, per-IP rate limit, serverless on AWS Lambda with DynamoDB, one-command SAM deploy."
+categories:
+  - ai-agents
+  - cloud-devops-llmops
+  - security-compliance
+stack:
+  frontend:
+    - Server-rendered landing, Terms and Privacy pages with the logo, plus the consent-page footer
+  backend:
+    - Python 3.12, FastMCP (Streamable HTTP), uvicorn
+    - Supabase REST (PostgREST) client with column checks against the live schema
+    - Five tools - search_leads, get_lead, lead_stats, describe_leads_schema, whoami
+  ai:
+    - Model Context Protocol server for Claude Code, Claude.ai and Desktop connectors, Cursor and MCP Inspector
+    - Tool annotations mark every tool read-only
+  data:
+    - Supabase ai_leads table, GET requests only
+    - DynamoDB on demand for OAuth state and rate-limit counters, expired by TTL
+  infra:
+    - AWS Lambda arm64 (Graviton), 512 MB, zip package, Lambda Web Adapter layer
+    - Lambda Function URL, no API Gateway, VPC or container registry
+    - AWS SAM template and a deploy script that builds Linux arm64 wheels with uv
+    - CloudWatch Logs with 14-day retention
+    - 24 pytest tests, ruff
+  security:
+    - Google OAuth through the FastMCP GoogleProvider, openid and email scopes only, verified e-mail required
+    - Dynamic client registration handled by the server, because Google does not offer it
+    - Branded consent page with Terms and Privacy pages
+    - OAuth state encrypted with Fernet before it reaches DynamoDB
+    - 2 tool calls per minute per IP, the IP taken from the Function URL request context so callers cannot spoof it
+    - Secrets kept in Lambda environment variables, never sent to clients
+links:
+  github: https://github.com/DavitGadyan/ai-jobs
+outcomes:
+  - Claude, Cursor or any MCP client can ask for AI job leads in plain language, for example the most recent AI jobs in Barcelona, and get live rows from Supabase back through five read-only tools.
+  - Anyone with a verified Google account can connect. The first connection shows a branded consent page, then Google sign-in, and clients refresh their tokens silently afterwards.
+  - The server can only read. It sends GET requests only, every tool carries a read-only annotation, and a test checks both.
+  - Abuse is capped at 2 tool calls per minute per IP, counted in DynamoDB so the limit holds across Lambda instances, while handshake and sign-in requests do not count.
+  - One command builds the arm64 package and deploys the SAM stack. The server runs inside the Lambda and DynamoDB free tiers at personal traffic, so it costs cents per month.
+metrics:
+  - label: MCP tools, all read-only
+    value: "5"
+  - label: Tool calls per minute per IP
+    value: "2"
+  - label: Automated tests
+    value: "24"
+  - label: Deploy
+    value: "1 command"
+featured: true
+order: 14
+---
+
+## The problem
+
+Job leads collected from job boards and career pages are only useful if you can ask questions about them where you already work. An MCP server puts them inside Claude or Cursor, but a remote one has to answer three questions that a local demo skips: who may connect, what they may do, and what it costs to keep it running. AI Jobs MCP answers them with Google sign-in, read-only tools with a rate limit, and a serverless deployment that idles at almost no cost. It is a personal project built on my own lead data.
+
+## The product in use
+
+<Video src="/videos/aijobs-demo.mp4" poster="/videos/aijobs-demo.webp" ratio="16 / 10" title="AI Jobs MCP walkthrough" caption="A walkthrough of under thirty seconds, no audio: a client asks for the most recent AI jobs in Barcelona, the server asks for sign-in, the AI Jobs consent page and Google sign-in open in the browser, and the search_leads tool returns live leads from the deployed server. The e-mail address on the Google screens is blurred." />
+
+## What I built
+
+**Five read-only tools.** `search_leads` combines keywords with filters for company, location, source, status, seniority, remote policy, skills, minimum score and the last N days, with sorting and paging. `get_lead` returns every field of one lead, including requirements, matched and missing skills and company research. `lead_stats` counts leads by any column, `describe_leads_schema` lists the columns and their types for custom filters, and `whoami` shows the signed-in Google account. Every column name is checked against the live schema and every value is quoted, so tool input cannot reshape the query.
+
+**Sign-in with Google.** MCP clients expect to register themselves with the server they connect to, and Google does not offer that. The server therefore acts as an OAuth proxy: clients register with it, and users sign in at Google. Only the `openid` and `email` scopes are requested, so the Google app needs no review, and any account with a verified e-mail gets access. On the first connection a branded consent page with the logo, Terms and Privacy links asks for approval.
+
+![AI Jobs consent page in the browser: the application AI Jobs demo asks to access the MCP server AI Jobs, with the callback address, Allow Access and Deny buttons, and a note that access is read-only](/images/portfolio/aijobs-consent.jpg)
+
+**Answers in the client.** After sign-in the client lists the tools and calls them. In the demo, the request for the most recent AI jobs in Barcelona becomes a `search_leads` call with a location, a keyword and newest-first sorting, and the leads come back with company, remote policy, seniority, score and the date found.
+
+![Terminal client after sign-in: the tool list, the search_leads call for Barcelona and a table of recent AI jobs with role, company, remote policy, seniority, score and date found](/images/portfolio/aijobs-results.jpg)
+
+## Architecture
+
+The client calls `/mcp` over HTTPS on a Lambda Function URL. The Lambda Web Adapter runs uvicorn and the FastMCP app unchanged inside an arm64 Lambda, so the same code runs locally and in AWS. The function reads leads from Supabase over REST with GET requests only. DynamoDB, billed on demand, holds two things that must survive cold starts and be shared across instances: the OAuth state (client registrations and upstream tokens, encrypted with Fernet) and the per-IP rate-limit counters, both expired by TTL. Logs go to CloudWatch with 14-day retention. A Function URL replaces API Gateway, and a zip package on Graviton replaces Docker and a container registry, which keeps the bill inside the free tiers at personal traffic.
+
+## Security and limits
+
+- **Read-only by design.** Only GET requests leave the server, every tool is annotated read-only, and a test enforces both.
+- **Rate limit.** 2 tool calls per minute per IP. Handshake and sign-in requests do not count. The IP comes from the Function URL request context, which callers cannot spoof.
+- **Secrets stay on the server.** The Supabase key, the Google client secret and the token-signing key live in Lambda environment variables and never reach a client.
+- **Spec fallbacks.** Lambda renames the `WWW-Authenticate` header on 401 responses, so clients find the authorization server through `/.well-known/oauth-protected-resource/mcp`, as the MCP specification allows.
+
+## Deploy and test
+
+One script builds the Linux arm64 wheels with uv, copies the code and the Lambda entrypoint, and deploys the SAM stack, then prints the server URL and the Google redirect URI. The stack is a DynamoDB table, a log group and the function with its Function URL. 24 pytest tests cover the leads client, the authentication and branding pages, and the rate limit, and ruff runs on every edit.

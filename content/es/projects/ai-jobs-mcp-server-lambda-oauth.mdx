@@ -1,0 +1,56 @@
+---
+title: "AI Jobs MCP: servidor MCP remoto con Google OAuth en AWS Lambda"
+coverAlt: "Portada de AI Jobs MCP: el título Remote MCP Server y la línea Google OAuth, AWS Lambda, Live Data sobre un fondo azul oscuro, con un cubo de cristal con el símbolo lambda unido a tres fichas de empleo y un escudo con una cerradura"
+summary: "Un servidor MCP remoto en producción que permite a Claude, Cursor y cualquier otro cliente MCP buscar ofertas de empleo en IA en tiempo real guardadas en Supabase. Los usuarios inician sesión con Google a través de una página de consentimiento con marca propia, todas las herramientas son de solo lectura y las llamadas a herramientas se limitan a 2 por minuto por IP. Funciona sin servidores en AWS Lambda (arm64) detrás de una Function URL, guarda el estado OAuth cifrado en DynamoDB, se despliega con un solo comando mediante uv y AWS SAM y cuesta céntimos al mes. Python, FastMCP, Supabase REST, 24 tests automáticos."
+description: "Servidor MCP remoto para ofertas de empleo en IA: inicio de sesión con Google OAuth, herramientas de solo lectura, límite por IP y AWS Lambda con DynamoDB, desplegado con SAM."
+outcomes:
+  - Claude, Cursor o cualquier cliente MCP pueden pedir ofertas de empleo en IA en lenguaje natural, por ejemplo los empleos de IA más recientes en Barcelona, y reciben filas en tiempo real de Supabase a través de cinco herramientas de solo lectura.
+  - Cualquier persona con una cuenta de Google verificada puede conectarse. La primera conexión muestra una página de consentimiento con marca propia y después el inicio de sesión de Google, y a partir de ahí los clientes renuevan sus tokens sin pedir nada.
+  - El servidor solo puede leer. Solo envía peticiones GET, cada herramienta lleva la anotación de solo lectura y un test comprueba ambas cosas.
+  - El abuso queda limitado a 2 llamadas a herramientas por minuto por IP, contadas en DynamoDB para que el límite se mantenga entre instancias de Lambda, mientras que el handshake y el inicio de sesión no cuentan.
+  - Un solo comando construye el paquete arm64 y despliega la pila de SAM. Con tráfico personal el servidor se mantiene dentro de los niveles gratuitos de Lambda y DynamoDB, así que cuesta céntimos al mes.
+metrics:
+  - label: Herramientas MCP, todas de solo lectura
+    value: "5"
+  - label: Llamadas a herramientas por minuto por IP
+    value: "2"
+  - label: Tests automáticos
+    value: "24"
+  - label: Despliegue
+    value: "1 comando"
+---
+
+## El problema
+
+Las ofertas recogidas de portales de empleo y páginas de empleo de empresas solo sirven si se pueden consultar donde ya se trabaja. Un servidor MCP las lleva a Claude o Cursor, pero uno remoto tiene que responder tres preguntas que una demo local se salta: quién puede conectarse, qué puede hacer y cuánto cuesta mantenerlo en marcha. AI Jobs MCP las responde con inicio de sesión de Google, herramientas de solo lectura con límite de uso y un despliegue sin servidores que en reposo casi no cuesta nada. Es un proyecto personal construido sobre mis propios datos de ofertas.
+
+## El producto en uso
+
+<Video src="/videos/aijobs-demo.mp4" poster="/videos/aijobs-demo.webp" ratio="16 / 10" title="Recorrido por AI Jobs MCP" caption="Un recorrido de menos de treinta segundos, sin audio: un cliente pide los empleos de IA más recientes en Barcelona, el servidor pide iniciar sesión, la página de consentimiento de AI Jobs y el inicio de sesión de Google se abren en el navegador, y la herramienta search_leads devuelve ofertas en tiempo real desde el servidor desplegado. La dirección de correo de las pantallas de Google aparece difuminada." />
+
+## Qué construí
+
+**Cinco herramientas de solo lectura.** `search_leads` combina palabras clave con filtros por empresa, ubicación, fuente, estado, nivel, modalidad remota, habilidades, puntuación mínima y los últimos N días, con orden y paginación. `get_lead` devuelve todos los campos de una oferta, incluidos los requisitos, las habilidades que encajan y las que faltan y la investigación sobre la empresa. `lead_stats` cuenta ofertas por cualquier columna, `describe_leads_schema` lista las columnas y sus tipos para filtros a medida y `whoami` muestra la cuenta de Google con la que se ha iniciado sesión. Cada nombre de columna se comprueba contra el esquema real y cada valor va entre comillas, así que la entrada de una herramienta no puede alterar la consulta.
+
+**Inicio de sesión con Google.** Los clientes MCP esperan registrarse ellos mismos en el servidor al que se conectan, y Google no lo permite. Por eso el servidor actúa como proxy OAuth: los clientes se registran en él y los usuarios inician sesión en Google. Solo se piden los scopes `openid` y `email`, así que la app de Google no necesita revisión, y cualquier cuenta con un correo verificado obtiene acceso. En la primera conexión, una página de consentimiento con el logotipo y los enlaces a los Términos y la Privacidad pide la aprobación.
+
+![Página de consentimiento de AI Jobs en el navegador: la aplicación AI Jobs demo pide acceso al servidor MCP AI Jobs, con la dirección de retorno, los botones Allow Access y Deny y una nota de que el acceso es de solo lectura](/images/portfolio/aijobs-consent.jpg)
+
+**Respuestas en el cliente.** Tras iniciar sesión, el cliente lista las herramientas y las llama. En la demo, la petición de los empleos de IA más recientes en Barcelona se convierte en una llamada a `search_leads` con una ubicación, una palabra clave y orden de más reciente a más antiguo, y las ofertas vuelven con la empresa, la modalidad remota, el nivel, la puntuación y la fecha en que se encontraron.
+
+![Cliente de terminal tras iniciar sesión: la lista de herramientas, la llamada a search_leads para Barcelona y una tabla de empleos de IA recientes con puesto, empresa, modalidad remota, nivel, puntuación y fecha](/images/portfolio/aijobs-results.jpg)
+
+## Arquitectura
+
+El cliente llama a `/mcp` por HTTPS en una Function URL de Lambda. El Lambda Web Adapter ejecuta uvicorn y la app FastMCP sin cambios dentro de una Lambda arm64, así que el mismo código funciona en local y en AWS. La función lee las ofertas de Supabase por REST, solo con peticiones GET. DynamoDB, facturado bajo demanda, guarda dos cosas que deben sobrevivir a los arranques en frío y compartirse entre instancias: el estado OAuth (registros de clientes y tokens de Google, cifrados con Fernet) y los contadores del límite por IP, que caducan por TTL. Los logs van a CloudWatch con 14 días de retención. Una Function URL sustituye a API Gateway, y un paquete zip en Graviton sustituye a Docker y a un registro de contenedores, lo que mantiene la factura dentro de los niveles gratuitos con tráfico personal.
+
+## Seguridad y límites
+
+- **Solo lectura por diseño.** Del servidor solo salen peticiones GET, cada herramienta está anotada como de solo lectura y un test hace cumplir ambas cosas.
+- **Límite de uso.** 2 llamadas a herramientas por minuto por IP. El handshake y el inicio de sesión no cuentan. La IP sale del contexto de la petición de la Function URL, que quien llama no puede falsificar.
+- **Los secretos se quedan en el servidor.** La clave de Supabase, el secreto del cliente de Google y la clave de firma de tokens viven en variables de entorno de Lambda y nunca llegan a un cliente.
+- **Alternativas del estándar.** Lambda renombra la cabecera `WWW-Authenticate` en las respuestas 401, así que los clientes encuentran el servidor de autorización a través de `/.well-known/oauth-protected-resource/mcp`, como permite la especificación MCP.
+
+## Despliegue y tests
+
+Un script construye los wheels de Linux arm64 con uv, copia el código y el punto de entrada de Lambda y despliega la pila de SAM; al terminar muestra la URL del servidor y la URI de redirección de Google. La pila es una tabla de DynamoDB, un grupo de logs y la función con su Function URL. 24 tests de pytest cubren el cliente de ofertas, las páginas de autenticación y marca y el límite de uso, y ruff se ejecuta en cada edición.
