@@ -16,28 +16,28 @@ stack:
     - TanStack Query
   backend:
     - Python 3.11, FastAPI
-    - Job runner as a separate process (pipelines/lakehouse_jobs)
-    - SQL guard (read-only, approved tables, no personal data, forced row limit)
+    - Separate job runner process
+    - Read-only SQL guard
   ai:
-    - Ollama (qwen2.5:7b, nomic-embed-text) as the local option
-    - Databricks Model Serving and Microsoft Foundry as hosted options
-    - LangGraph risk agent (code sets the risk, the model explains)
+    - Ollama as the local option
+    - Databricks Model Serving, Microsoft Foundry
+    - LangGraph risk agent
     - Text-to-SQL and document RAG over pgvector
     - MLflow for the fraud model
   data:
-    - PySpark and Delta Lake, bronze, silver and gold from YAML and Spark SQL packs
-    - DuckDB for local queries, PostgreSQL 16 with pgvector
-    - Databricks tables, Delta Shares, cloud files, HTTP, REST, JDBC, local files and PDFs as sources
-    - NYC TLC trips and Open-Meteo weather (real), fintech-risk (synthetic), ops-demo (generated)
+    - PySpark and Delta Lake (medallion layers)
+    - DuckDB, PostgreSQL 16 with pgvector
+    - Databricks, Delta Sharing, REST, JDBC, PDFs
+    - NYC TLC trips, Open-Meteo, synthetic data
   infra:
-    - Databricks Asset Bundle (databricks.yml) for the workspace deployment
-    - Docker Compose, Makefile, GitHub Actions CI with a pgvector service
-    - 88 backend tests in 11 files, AI evals per pack
+    - Databricks Asset Bundle deployment
+    - Docker Compose, GitHub Actions CI
+    - 88 backend tests, AI evals per pack
   security:
-    - High-risk actions, reruns, backfills and KPI promotions wait for an approver
-    - Append-only audit log (updates and deletes rejected by the database)
-    - Full card numbers blocked at ingestion; personal-data columns refused by the SQL guard and masked in samples
-    - Sending a task's data to a hosted model needs an approver's explicit confirmation
+    - Approver gate for high-risk actions
+    - Append-only audit log
+    - Card numbers blocked, personal data masked
+    - Approval before data goes to a hosted model
 links:
   github: https://github.com/DavitGadyan/Databricks
 outcomes:

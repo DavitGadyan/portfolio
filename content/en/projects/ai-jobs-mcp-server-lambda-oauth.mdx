@@ -12,30 +12,30 @@ categories:
   - security-compliance
 stack:
   frontend:
-    - Server-rendered landing, Terms and Privacy pages with the logo, plus the consent-page footer
+    - Landing, Terms and Privacy pages
   backend:
-    - Python 3.12, FastMCP (Streamable HTTP), uvicorn
-    - Supabase REST (PostgREST) client with column checks against the live schema
-    - Five tools - search_leads, get_lead, lead_stats, describe_leads_schema, whoami
+    - Python 3.12, FastMCP, uvicorn
+    - Supabase REST client with schema checks
+    - Five MCP tools (search, lead, stats, schema)
   ai:
-    - Model Context Protocol server for Claude Code, Claude.ai and Desktop connectors, Cursor and MCP Inspector
+    - MCP server for Claude and Cursor
     - Tool annotations mark every tool read-only
   data:
     - Supabase ai_leads table, GET requests only
-    - DynamoDB on demand for OAuth state and rate-limit counters, expired by TTL
+    - DynamoDB for OAuth state and rate limits
   infra:
-    - AWS Lambda arm64 (Graviton), 512 MB, zip package, Lambda Web Adapter layer
-    - Lambda Function URL, no API Gateway, VPC or container registry
-    - AWS SAM template and a deploy script that builds Linux arm64 wheels with uv
+    - AWS Lambda arm64 with Lambda Web Adapter
+    - Lambda Function URL, no API Gateway
+    - AWS SAM template, uv builds
     - CloudWatch Logs with 14-day retention
     - 24 pytest tests, ruff
   security:
-    - Google OAuth through the FastMCP GoogleProvider, openid and email scopes only, verified e-mail required
-    - Dynamic client registration handled by the server, because Google does not offer it
-    - Branded consent page with Terms and Privacy pages
-    - OAuth state encrypted with Fernet before it reaches DynamoDB
-    - 2 tool calls per minute per IP, the IP taken from the Function URL request context so callers cannot spoof it
-    - Secrets kept in Lambda environment variables, never sent to clients
+    - Google OAuth, openid and email scopes only
+    - Dynamic client registration on the server
+    - Branded consent page
+    - Fernet-encrypted OAuth state
+    - Per-IP rate limit, 2 calls per minute
+    - Secrets server-side only
 links:
   github: https://github.com/DavitGadyan/ai-jobs
 outcomes:

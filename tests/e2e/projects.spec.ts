@@ -54,7 +54,7 @@ test.describe('project showcase', () => {
 
   test('stack chips: every icon loads, the first technology named picks the mark, and the white GitHub mark is darkened on its white disc', async ({ page }) => {
     await page.goto('/portfolio/smartsearch-ecommerce-search-ranking/');
-    const chip = (text: string) => page.locator('.tchip', { hasText: text }).locator('img');
+    const chip = (text: string) => page.locator('.tchip', { hasText: text }).locator('img').first();
     await expect(chip('Next.js 15')).toHaveAttribute('src', /\/logos\/nextjs\.png$/);
     await expect(chip('Docker Compose')).toHaveAttribute('src', /\/logos\/docker\.png$/); // not the Postgres named inside its brackets
     await expect(chip('MLflow model registry')).toHaveAttribute('src', /\/logos\/mlflow\.svg$/);
@@ -66,5 +66,9 @@ test.describe('project showcase', () => {
     await expect(chip('GitHub Actions')).toHaveAttribute('data-mono', '');
     expect(await chip('GitHub Actions').evaluate((i) => getComputedStyle(i).filter)).toBe('brightness(0)');
     await expect(chip('Next.js 15')).not.toHaveAttribute('data-mono', '');
+    // every tool named in an entry gets its own mark, and hovering a mark shows the tool's name
+    const docker = page.locator('.tchip', { hasText: 'Docker Compose' });
+    await expect(docker.locator('.tchip__disc')).toHaveCount(4);
+    await expect(docker.locator('.tchip__disc').nth(1)).toHaveAttribute('data-tip', 'PostgreSQL');
   });
 });

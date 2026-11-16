@@ -12,27 +12,27 @@ categories:
   - cloud-devops-llmops
 stack:
   frontend:
-    - Next.js 16, React 19, Tailwind and Auth.js management console
-    - Interactive 3D architecture explorer with a guided tour (Three.js)
+    - Next.js 16, React 19 console
+    - Three.js 3D architecture explorer
   backend:
-    - LiteLLM OSS proxy (pinned by tag and digest) with custom Python plugins on its public CustomLogger hooks
-    - FastAPI control plane with SQLAlchemy and Alembic, keeping LiteLLM, OpenBao and Postgres consistent
+    - LiteLLM OSS proxy with custom plugins
+    - FastAPI control plane, SQLAlchemy
   ai:
-    - One OpenAI-compatible API with stable aliases (chat-default, chat-premium, chat-local, embed-default)
-    - OpenAI, Anthropic, Bedrock, Azure, Vertex AI and self-hosted vLLM or Ollama behind the aliases, with fallbacks
-    - Guardrails for PII (Microsoft Presidio and patterns), secrets, prompt injection, deny lists and answer checks
+    - OpenAI-compatible API with model aliases
+    - OpenAI, Anthropic, Bedrock, Azure, vLLM
+    - Presidio PII and prompt-injection guardrails
   data:
-    - PostgreSQL for projects, policies, the request log, access requests and the admin audit
-    - Redis for per-model limit windows and live cache invalidation
+    - PostgreSQL for policies, logs and audit
+    - Redis for limits and cache invalidation
   infra:
-    - Docker Compose for one server, a Helm chart for Kubernetes (cloud or on-prem, air-gapped registries)
-    - "AWS version: Bedrock AgentCore Runtime, Gateway, Identity and Memory, Lambda, Aurora PostgreSQL, DynamoDB, Cognito"
-    - pytest suites with 44 tests (28 unit, 16 end-to-end), 139 in the AWS version
+    - Docker Compose, Helm on Kubernetes
+    - AWS Bedrock AgentCore, Aurora, Cognito
+    - "pytest: 44 tests, 139 on AWS"
   security:
-    - OpenBao vault with one AppRole per project; provider keys never leave the vault and the gateway
+    - OpenBao vault, one AppRole per project
     - Live key rotation with no restart
-    - Keycloak SSO (Active Directory, Entra ID, Okta) with four console roles and an audited approval workflow
-    - "AWS version: Cedar policy at the gateway, then Postgres grants and row-level security, all keys in Secrets Manager"
+    - Keycloak SSO, roles and audited approvals
+    - AWS Cedar policies, Postgres RLS
 outcomes:
   - Provider keys live only in the OpenBao vault. Each project's apps can read only their own gateway key, and a read of another team's key or a provider key is refused with 403, which the end-to-end suite checks.
   - Spend stops at the cap. Budgets and RPM/TPM limits apply per project, app and user, plus per-model limits per project; an over-limit call gets 429, for example the fourth premium call in a minute.

@@ -298,6 +298,12 @@ body {
   .tchip__disc img { width: 22px; height: 22px; object-fit: contain; }
   .tchip__disc img[data-mono] { filter: brightness(0); } /* white or pale marks (GitHub, Grok, MySQL, Kali) would vanish on the white disc */
   .tchip__disc span { font-size: .62rem; font-weight: 700; letter-spacing: .04em; color: var(--color-ink-500); }
+  .tchip__marks { display: inline-flex; align-items: center; }
+  .tchip__marks .tchip__disc { position: relative; }
+  .tchip__marks .tchip__disc + .tchip__disc { margin-left: -8px; }
+  .tchip__marks .tchip__disc:hover { z-index: 2; }
+  .tchip__disc[data-tip]::after { content: attr(data-tip); position: absolute; left: 0; bottom: calc(100% + 6px); transform: translateY(4px); white-space: nowrap; padding: .2rem .5rem; border-radius: .4rem; background: var(--color-ink-900, #1b1c1f); color: #fff; font-size: .72rem; font-weight: 600; opacity: 0; pointer-events: none; transition: opacity .15s ease, transform .15s ease; }
+  .tchip__disc[data-tip]:hover::after { opacity: 1; transform: none; }
   .metrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; margin: 0; }
   .metrics__item { padding: .8rem .9rem; border-radius: .75rem; background: var(--color-paper-50); border: 1px solid var(--color-ink-100); }
   .metrics__value { margin: 0; font-size: 1.25rem; font-weight: 700; line-height: 1.15; color: var(--color-ink-700); }

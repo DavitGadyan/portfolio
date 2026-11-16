@@ -13,33 +13,33 @@ categories:
 stack:
   frontend:
     - Next.js 15, React 19, TypeScript
-    - Tailwind CSS 4, TanStack Query with a persisted cache
+    - Tailwind CSS 4, TanStack Query
     - Recharts for the console charts
   backend:
-    - Python 3.12, FastAPI, SQLAlchemy (async), Alembic
-    - Experiment statistics as pure functions, checked against scipy and statsmodels
-    - Simulator that sends 20,000 shopper personas through the same ranking code as the API
+    - Python 3.12, FastAPI, SQLAlchemy
+    - A/B test statistics checked against scipy
+    - Simulator with 20,000 shopper personas
   ai:
-    - Hybrid retrieval, BM25 (bm25s) and static embeddings (model2vec) fused by reciprocal rank fusion
+    - "Hybrid retrieval: BM25 + embeddings"
     - LightGBM LambdaRank ranker with 23 features
     - MLflow model registry
-    - Contextual bandit (linear Thompson sampling) with off-policy evaluation
-    - Claude tool-use assistant (Sonnet), Haiku for bulk jobs
-    - Product knowledge graph (NetworkX, Louvain communities)
+    - Contextual bandit, off-policy evaluation
+    - Claude tool-use shopping assistant
+    - NetworkX product knowledge graph
   data:
     - PostgreSQL 16 with pgvector, Redis
-    - WANDS catalog, queries and 233k human relevance grades (real)
+    - WANDS catalog, 233k relevance grades
     - Simulated shopper events, 2.6M over 35 days
-    - SQL marts for the funnel, search terms, experiments and cohorts
+    - SQL marts for funnel and experiments
   infra:
-    - Docker Compose (Postgres, Redis, MLflow, API, web), Makefile
-    - GitHub Actions CI (lint, migrations, tests, front-end build)
+    - Docker Compose (Postgres, Redis, MLflow)
+    - GitHub Actions CI
     - 48 backend tests in 10 files
   security:
-    - Console behind a keyword, with a signed 12-hour cookie
-    - Admin calls proxied server-side, so the API key never reaches the browser
-    - The assistant may present only products a tool returned
-    - Single-use delegated payment tokens from a mock provider, no card number stored
+    - Console behind a signed cookie
+    - Server-side admin proxy
+    - Assistant grounded in tool results
+    - Single-use payment tokens, no cards stored
 links:
   github: https://github.com/DavitGadyan/SmartSearch
 outcomes:

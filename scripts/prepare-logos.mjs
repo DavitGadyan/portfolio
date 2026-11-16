@@ -34,7 +34,9 @@ const svgs = { 'kali-linux': 'kalilinux/557C94', owasp: 'owasp/000000', 'burp-su
   // Azure / Fabric / Databricks / Foundry post (data/blog/azure-stacks.ts): no Simple Icons mark exists for Microsoft Fabric, OneLake, Delta Lake or Vertex AI; those cards use the Microsoft mark or a line icon
   apachespark: 'apachespark/E25A1C', mlflow: 'mlflow/0194E2',
   // AI Gateways mind map (data/mindmaps/gateway.ts): no Simple Icons mark exists for LiteLLM, Bifrost, Portkey, Apache APISIX or Langfuse; those cards use line icons
-  cloudflare: 'cloudflare/F38020', kong: 'kong/003459', envoy: 'envoyproxy/AC6199', vault: 'vault/000000', opentelemetry: 'opentelemetry/425CC7', openrouter: 'openrouter/6566F1' };
+  cloudflare: 'cloudflare/F38020', kong: 'kong/003459', envoy: 'envoyproxy/AC6199', vault: 'vault/000000', opentelemetry: 'opentelemetry/425CC7', openrouter: 'openrouter/6566F1',
+  // project stack chips (lib/content/techLogos.ts), brand colours
+  threejs: 'threedotjs', keycloak: 'keycloak', terraform: 'terraform', prometheus: 'prometheus', grafana: 'grafana', argo: 'argo', opencv: 'opencv', scrapy: 'scrapy', sqlalchemy: 'sqlalchemy', firebase: 'firebase', vue: 'vuedotjs', hubspot: 'hubspot', duckdb: 'duckdb', rabbitmq: 'rabbitmq', ffmpeg: 'ffmpeg', onnx: 'onnx', gcal: 'googlecalendar', gmail: 'gmail', gsheets: 'googlesheets', x: 'x', reddit: 'reddit', kaggle: 'kaggle', digitalocean: 'digitalocean', helm: 'helm', tanstack: 'tanstack', pydantic: 'pydantic', zoho: 'zoho', resend: 'resend', apple: 'apple', trivy: 'trivy', intel: 'intel', whatsapp: 'whatsapp', pytest: 'pytest', ruff: 'ruff', sqlite: 'sqlite', paperspace: 'paperspace', mqtt: 'mqtt' };
 // marks the simpleicons.org CDN no longer serves but the npm package still ships (pinned version): fetched from jsDelivr and tinted with the brand colour
 const jsd = { powerbi: ['powerbi', 'F2C811'], sharepoint: ['microsoftsharepoint', '0078D4'] };
 // official marks served by the brands themselves or by svgl.app (no Simple Icons entry): name → URL. Microsoft Fabric comes from Microsoft's own

@@ -20,19 +20,19 @@ stack:
     - Salesforce REST and Tooling APIs (httpx)
     - Background runs polled by the UI
   ai:
-    - Claude Opus 5.5 and Haiku 5.5 (structured outputs, tool-use loop, prompt caching)
-    - OpenAI SDK for ChatGPT and OpenAI-compatible private models (Ollama, vLLM)
+    - Claude Opus 5.5 and Haiku 5.5
+    - OpenAI SDK, private models (Ollama, vLLM)
     - Deterministic rules engine under every agent
   data:
-    - SQLite audit log (runs, model calls, approvals)
+    - SQLite audit log
     - Seeded demo org or a live Salesforce org
   infra:
     - Make-based local setup
     - Runs with no API keys on the demo org
   security:
-    - PII, PHI and PCI detection with masking before data leaves the network
+    - PII, PHI and PCI masking
     - Private-LLM route for medical and card data
-    - Human approval for every write, send and merge
+    - Human approval for every write
     - Audit log with tokens and cost per call
 links:
   github: https://github.com/DavitGadyan/Salesforce

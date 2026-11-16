@@ -20,24 +20,24 @@ stack:
     - SQLAlchemy, Pydantic
     - Queue worker (Azure Queue, Azurite locally)
   ai:
-    - Claude via the Anthropic SDK (opus-5-5, haiku-5-5)
-    - Ollama alternative (qwen2.5, bge-m3 / nomic-embed-text)
-    - Azure AI Document Intelligence (optional), PyMuPDF, Claude vision OCR
+    - Claude via the Anthropic SDK
+    - Ollama as the local alternative
+    - Azure Document Intelligence, vision OCR
     - MCP server over the same tool registry
   data:
     - PostgreSQL 16 + pgvector
-    - Full-text search fused with RRF, LLM reranking
+    - Full-text + RRF fusion, LLM reranking
     - Azure Blob Storage
   infra:
     - Azure Container Apps, Bicep
     - Key Vault, user-assigned managed identity
-    - OpenTelemetry to Postgres and Application Insights
+    - OpenTelemetry, Application Insights
     - Docker Compose, GitHub Actions
   security:
     - Role-based tool permissions
-    - Human approval for every write action, also over MCP
+    - Human approval for every write
     - PII redaction before external LLM calls
-    - Audit log, right-to-erasure path, EU region by default
+    - Audit log, right to erasure, EU region
 links:
   github: https://github.com/DavitGadyan/Azure
 outcomes:

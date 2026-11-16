@@ -12,30 +12,30 @@ categories:
   - ai-agents
 stack:
   frontend:
-    - Next.js, TypeScript (BFF proxy, review UI, audit viewer, Copilot chat)
+    - Next.js, TypeScript review and audit UI
   backend:
-    - Python, FastAPI (API, queue worker, indexed batch Job, CronJobs and MCP ops server from one image)
+    - Python, FastAPI API, workers and batch jobs
     - RabbitMQ with a dead-letter queue
   ai:
-    - Claude via the Anthropic SDK (opus-5-5, haiku-5-5); Claude in Microsoft Foundry for prod
-    - Structured outputs from Pydantic schemas, refusal handling, one retry
+    - Claude (Anthropic SDK and Foundry)
+    - Structured outputs from Pydantic schemas
     - PHI redaction gate before every model call
-    - Read-only MCP Ops Copilot over Prometheus, Loki, Kubernetes and Argo Rollouts
+    - Read-only MCP Ops Copilot
     - Claude review of infrastructure PRs in CI
   data:
-    - PostgreSQL 17 (StatefulSet locally, Flexible Server on Azure)
+    - PostgreSQL 17 (Azure Flexible Server)
     - SeaweedFS S3 locally, Azure Blob in prod
-    - SHA-256 hash-chained audit table, nightly verified pg_dump
+    - Hash-chained audit table, verified backups
   infra:
-    - Kubernetes (kind locally, AKS on Azure), Helm chart
-    - Argo CD (ApplicationSet, GitOps) and Argo Rollouts (canary)
-    - HPA, Prometheus + Grafana, Loki + Fluent Bit, Kyverno, cert-manager
-    - Terraform (AKS, Firewall, WAF, Key Vault, ACR, PostgreSQL, Blob, Policy)
-    - GitHub Actions (ci, cd, promote, security, ai-review, terraform)
+    - Kubernetes (AKS), Helm chart
+    - Argo CD GitOps, Argo Rollouts canary
+    - Prometheus, Grafana, Loki, Kyverno
+    - Terraform for AKS, WAF, Key Vault and more
+    - GitHub Actions CI/CD and security scans
   security:
-    - Default-deny NetworkPolicies, RBAC per ServiceAccount, Pod Security restricted
-    - Trivy, Checkov, Gitleaks, CodeQL, pip-audit, npm audit; cosign keyless signing + SBOM
-    - Workload identity and OIDC federation, no long-lived credentials; CMK encryption
+    - Default-deny NetworkPolicies, RBAC
+    - Trivy, Checkov, CodeQL; signed images + SBOM
+    - Workload identity, no long-lived credentials
     - HIPAA, SOC 2 and GDPR control matrix
 links:
   github: https://github.com/DavitGadyan/k8s

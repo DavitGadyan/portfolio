@@ -19,20 +19,20 @@ stack:
     - sqlglot (parse, policy rewrite, transpile)
   ai:
     - Claude via the Anthropic SDK (opus-5-5)
-    - Semantic model with certified metrics and verified queries (Cortex Analyst-style)
+    - Semantic model with certified metrics
     - Six-step SQL guardrail before execution
   data:
-    - Snowflake (roles, masking and row-access policies, streams and tasks, dynamic tables, semantic views)
-    - DuckDB demo engine laid out like a Snowflake account (bronze, silver, gold, account_usage)
-    - dbt-style tests, watermark + MERGE incremental loads
-    - NetSuite, Salesforce, HubSpot and Stripe data models
+    - Snowflake policies, streams, dynamic tables
+    - DuckDB demo engine shaped like Snowflake
+    - dbt-style tests, incremental MERGE loads
+    - NetSuite, Salesforce, HubSpot, Stripe models
   infra:
     - Docker Compose, Makefile
     - 48 backend tests + TypeScript check
   security:
     - Least-privilege roles, key-pair service user
-    - Masking and row-access policies enforced in SQL
-    - Read-only guardrail (one SELECT, grant check, LIMIT)
+    - Masking and row-access policies
+    - Read-only SQL guardrail
     - DuckDB with file and network access disabled
 links:
   github: https://github.com/DavitGadyan/Snowflake

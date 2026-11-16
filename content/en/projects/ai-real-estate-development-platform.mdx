@@ -15,23 +15,23 @@ stack:
   frontend:
     - Next.js
     - Landing page with live product widgets
-    - Dashboard, search, lot analysis and AI assistant views
+    - Dashboard, search, lot analysis, AI assistant
   backend:
     - Python
     - Automated MLS sync (every 12 h)
     - Pro forma cost, ROI and time-to-sell engine
     - Postgres
   ai:
-    - LLM analyst with cited answers (MLS, zoning code, uploaded reports)
-    - XGBoost automated valuation model (first phase)
+    - LLM analyst with cited answers
+    - XGBoost automated valuation model
   data:
     - MLS land listings
-    - County zoning code (by-right uses, conditional uses, limits)
-    - 22-field lot catalog (utilities, sewer vs septic, flood zone, slope, FAR)
+    - County zoning code
+    - 22-field lot catalog
     - Selenium, pandas, SQLAlchemy (first phase)
   infra: []
   security:
-    - Session-only PDF/Word uploads, discarded when the session ends and never used for training
+    - Session-only uploads, never used for training
 links: {}
 outcomes:
   - Every MLS land listing lands in the database automatically twice a day, with listings stored, added, removed and price changes visible on a sync card.

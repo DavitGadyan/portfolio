@@ -24,23 +24,23 @@ stack:
     - Postgres 16 with pgvector
     - Server-Sent Events
   ai:
-    - "Three model roles: primary, critique and judge"
-    - Any OpenAI-compatible endpoint, swappable or self-hosted
-    - Local embeddings and retrieval over the trader's own documents
-    - "Structured answers: decision, reasons, rules, evidence, uncertainty"
+    - Primary, critique and judge models
+    - Any OpenAI-compatible endpoint
+    - Local embeddings and retrieval
+    - Structured, evidence-backed answers
     - Evidence check that strips unsupported claims
-    - Reviewed feedback to a few-shot learning state, judge-gated
+    - Judge-gated few-shot learning
   data:
     - Live sessions read the trader's charting tool
-    - "Backtests: CSV, a market-data library or synthetic series"
-    - Versioned method package (steps, rules, documents)
+    - Backtests on CSV, market or synthetic data
+    - Versioned method package
   infra:
     - Docker Compose, uv and a Makefile
-    - Offline mode with a mock model and synthetic data
+    - Offline mode with a mock model
   security:
     - Bearer-token API
-    - No-training and zero-retention provider settings
-    - Delivered under NDA; no client material on this page
+    - No-training, zero-retention settings
+    - Delivered under NDA
 links: {}
 outcomes:
   - Delivered in 25 hours between 21 September and 12 October 2026; rated 5.0 on Upwork and endorsed as Reliable, Committed to Quality, Solution Oriented, Clear Communicator and Accountable for Outcomes.

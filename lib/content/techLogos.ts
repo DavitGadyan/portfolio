@@ -21,6 +21,8 @@ const ALIASES: [RegExp, LogoId][] = [
   [/plotly/i, 'plotly'], [/\bd3(\.js)?\b/i, 'd3'], [/javascript/i, 'javascript'], [/streamlit/i, 'streamlit'], [/mlflow/i, 'mlflow'], [/\bspark\b|pyspark/i, 'spark'],
   [/kafka/i, 'kafka'], [/airflow/i, 'airflow'], [/prefect/i, 'prefect'], [/django/i, 'django'], [/power ?bi/i, 'powerbi'], [/sharepoint/i, 'sharepoint'], [/nvidia|jetson|tensorrt/i, 'nvidia'], [/\bphp\b/i, 'php'],
   [/^R\b|\bR (shiny|studio|package)/i, 'r'],
+  [/three\.?js/i, 'threejs'], [/keycloak/i, 'keycloak'], [/terraform/i, 'terraform'], [/prometheus/i, 'prometheus'], [/grafana/i, 'grafana'], [/\bargo\b/i, 'argo'], [/opencv/i, 'opencv'], [/scrapy/i, 'scrapy'], [/sqlalchemy/i, 'sqlalchemy'], [/firebase/i, 'firebase'], [/\bvue(\.js)?\b/i, 'vue'], [/hubspot/i, 'hubspot'], [/duckdb/i, 'duckdb'], [/rabbitmq/i, 'rabbitmq'], [/ffmpeg/i, 'ffmpeg'], [/\bonnx\b/i, 'onnx'], [/google calendar/i, 'gcal'], [/\bgmail\b/i, 'gmail'], [/google sheets/i, 'gsheets'], [/\bx\/twitter\b|\btwitter\b|\btweet/i, 'x'], [/reddit/i, 'reddit'], [/kaggle/i, 'kaggle'], [/digitalocean/i, 'digitalocean'], [/\bhelm\b/i, 'helm'], [/tanstack/i, 'tanstack'], [/pydantic/i, 'pydantic'], [/\bzoho\b/i, 'zoho'], [/\bresend\b/i, 'resend'], [/\bapple\b|testflight|\bios\b/i, 'apple'], [/\btrivy\b/i, 'trivy'], [/openvino/i, 'intel'], [/whatsapp/i, 'whatsapp'], [/pytest/i, 'pytest'], [/\bruff\b/i, 'ruff'], [/sqlite/i, 'sqlite'], [/paperspace/i, 'paperspace'], [/\bmqtt\b/i, 'mqtt'],
+  [/cloudflare/i, 'cloudflare'], [/opentelemetry/i, 'opentelemetry'], [/key vault/i, 'azure'], [/dynamodb|cloudwatch|route 53|cognito|\baurora\b|secrets manager/i, 'aws'],
 ];
 
 /** Marks drawn in white or pale grey for the dark skills map. On a white disc they need darkening, or the chip looks empty. */
@@ -38,6 +40,27 @@ const match = (text: string): LogoId | null => {
 export function techLogo(name: string): { src: string; label: string; mono: boolean } | null {
   const id = match(name.split(/[(;]/, 1)[0]) ?? match(name);
   return id ? { src: logoSrc(id), label: logos[id][1], mono: LIGHT_MARKS.has(id) } : null;
+}
+
+/**
+ * Every technology an entry names, in reading order.
+ * Aliases are tried in priority order and a match may not overlap text an earlier alias already claimed, so
+ * "React Native" yields only React Native and "Claude Code" only Claude Code. Capped at `max` marks.
+ */
+export function techLogos(name: string, max = 5): { src: string; label: string; mono: boolean }[] {
+  const spans: [number, number][] = [];
+  const hits: { id: LogoId; at: number }[] = [];
+  for (const [re, id] of ALIASES) {
+    const m = re.exec(name);
+    if (!m) continue;
+    const a = m.index, b = a + m[0].length;
+    if (spans.some(([s, e]) => a < e && b > s)) continue;
+    spans.push([a, b]);
+    if (!hits.some((h) => h.id === id)) hits.push({ id, at: a });
+  }
+  const ids = hits.sort((x, y) => x.at - y.at).map((h) => h.id);
+  const out: { src: string; label: string; mono: boolean }[] = ids.map((id) => ({ src: logoSrc(id), label: logos[id][1], mono: LIGHT_MARKS.has(id) }));
+  return out.slice(0, max);
 }
 
 /** Two-letter fallback monogram for stack entries without a logo. */

@@ -4,7 +4,7 @@ import matter from 'gray-matter';
 import sharp from 'sharp';
 import { describe, expect, it } from 'vitest';
 import { logos, logoSrc, type LogoId } from '@/data/skillLogos';
-import { LIGHT_MARKS, techLogo } from '@/lib/content/techLogos';
+import { LIGHT_MARKS, techLogo, techLogos } from '@/lib/content/techLogos';
 
 /** "Stack by layer" chips on the project pages: the right mark for each entry, and never an empty disc. */
 const DIR = join(process.cwd(), 'content/en/projects');
@@ -26,6 +26,15 @@ async function ink(src: string, darkened: boolean): Promise<number> {
 }
 
 describe('project stack chips', () => {
+  it('every tool an entry names gets a mark, lead first, no overlaps', () => {
+    expect(techLogos('Docker Compose (Postgres, Redis, MLflow)').map((l) => l.label)).toEqual(['Docker', 'PostgreSQL', 'Redis', 'MLflow']);
+    expect(techLogos('React Native and Expo').map((l) => l.label)).not.toContain('React');
+    for (const s of chips) {
+      const marks = techLogos(s);
+      expect(new Set(marks.map((m) => m.src)).size).toBe(marks.length);
+    }
+  });
+
   it('the text before the first bracket or semicolon names the mark', () => {
     expect(techLogo('Next.js 15, React 19, TypeScript')?.label).toBe('Next.js');
     expect(techLogo('Docker Compose (Postgres, Redis, MLflow, API, web), Makefile')?.label).toBe('Docker');
@@ -65,7 +74,7 @@ describe('project stack chips', () => {
 
   it('every chip of every project shows a visible mark or a monogram, never an empty disc', async () => {
     const used = new Map<string, boolean>();
-    for (const text of chips) { const logo = techLogo(text); if (logo) used.set(logo.src, logo.mono); }
+    for (const text of chips) for (const logo of techLogos(text)) used.set(logo.src, logo.mono);
     expect(chips.length).toBeGreaterThan(400);
     expect(used.size).toBeGreaterThan(40);
     for (const [src, mono] of used) expect(await ink(src, mono), src).toBeGreaterThan(0.03);
