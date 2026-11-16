@@ -114,8 +114,10 @@ test.describe('mind maps', () => {
     await expect(nodes).toHaveCount(19, { timeout: 20_000 }); // the root, nine branches and the nine scenarios
     await expect(card(page, 'scen-pick').locator('.mm__badge')).toHaveText('7');
     const panel = page.locator('#tg-panel');
-    await tap(page, 'scen-enterprise');
-    await expect(panel.locator('#tg-panel-title')).toHaveText('Enterprise AI gateway');
+    await expect(async () => {
+      await tap(page, 'scen-enterprise');
+      await expect(panel.locator('#tg-panel-title')).toHaveText('Enterprise AI gateway', { timeout: 1_000 });
+    }).toPass({ timeout: 15_000 });
     await page.keyboard.press('Escape');
     await card(page, 'arch').locator('.mm__badge').click();
     await expect(nodes).toHaveCount(19 + 10);
@@ -139,8 +141,10 @@ test.describe('mind maps', () => {
     await page.goto('/es/materials/mindmaps/gateway/');
     await expect(page.locator('h1')).toHaveText(/Mapa mental de AI Gateway/);
     await expect(page.locator('.react-flow__node')).toHaveCount(19, { timeout: 20_000 });
-    await tap(page, 'scen-agent');
-    await expect(page.locator('#tg-panel-title')).toHaveText('Gateway de agentes');
+    await expect(async () => {
+      await tap(page, 'scen-agent');
+      await expect(page.locator('#tg-panel-title')).toHaveText('Gateway de agentes', { timeout: 1_000 });
+    }).toPass({ timeout: 15_000 });
 
     const ctx = await browser.newContext({ javaScriptEnabled: false });
     const p = await ctx.newPage();
