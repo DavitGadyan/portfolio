@@ -62,7 +62,7 @@ Teams hiring for Salesforce and AI work describe the same five problems: "we wan
 
 ## The product in use
 
-<Video src="/videos/sf-ops-copilot-walkthrough.mp4" poster="/videos/sf-ops-copilot-walkthrough.webp" ratio="4 / 3" title="SF Ops Copilot walkthrough" caption="Three-minute walkthrough of the five modules on the seeded demo org. Real-time runs; the model waits are shown at 8× speed." />
+<Video src="/videos/sf-ops-copilot-walkthrough.mp4" poster="/videos/sf-ops-copilot-walkthrough.webp" ratio="4 / 3" title="SF Ops Copilot walkthrough" caption="The five modules on the seeded demo org; the model waits are shown at 8× speed." />
 
 ## What I built
 
@@ -70,7 +70,7 @@ Teams hiring for Salesforce and AI work describe the same five problems: "we wan
 
 **AI router.** Salesforce becomes the data source for any model. Each request is routed by policy to Salesforce itself (a SOQL answer, no model, $0), Claude Opus, Claude Haiku, ChatGPT or a private LLM in the company's network (Ollama or vLLM), chosen by sensitivity, stakes and cost. The trust layer finds PII, PHI and PCI in every record: medical and card data goes only to the in-network model; names, e-mails and phones are replaced with tokens before any outside model sees them and restored in the answer. Providers that are down are skipped with a fallback, and a compare mode runs one record across every connected model, so the routing choice rests on the team's own data. Adding or swapping a provider is a setting, not a rebuild.
 
-<Video src="/videos/sf-ops-ai-router.mp4" poster="/videos/sf-ops-ai-router.webp" ratio="4 / 3" title="AI router module" caption="The AI router module, one minute." />
+<Video src="/videos/sf-ops-ai-router.mp4" poster="/videos/sf-ops-ai-router.webp" ratio="4 / 3" title="AI router module" caption="The AI router module." />
 
 ![Patient data is routed to a private LLM and never leaves the network](/images/portfolio/sf-ops-router-private-llm.jpg)
 
@@ -80,17 +80,17 @@ Teams hiring for Salesforce and AI work describe the same five problems: "we wan
 
 **Code review.** AI-written Salesforce code often looks fine and fails at scale: queries inside loops, missing sharing and field-level security, hard-coded IDs and keys. Every Apex class and Flow is checked by deterministic rules first (SOQL, DML and callouts in loops, sharing, FLS, injection, hard-coded IDs and secrets, test quality), then Claude confirms each finding, adds the ones rules cannot see and returns corrected code plus a bulk test class. On one sample payment class the rules found 8 issues and Claude found 4 more, including a callout-after-DML error that stops the job after the first record.
 
-<Video src="/videos/sf-ops-code-review.mp4" poster="/videos/sf-ops-code-review.webp" ratio="4 / 3" title="Code review module" caption="The code review module, half a minute." />
+<Video src="/videos/sf-ops-code-review.mp4" poster="/videos/sf-ops-code-review.webp" ratio="4 / 3" title="Code review module" caption="The code review module." />
 
 ![Apex review: the findings, then the corrected Queueable code and a bulk test class](/images/portfolio/sf-ops-code-review-corrected-diff.jpg)
 
 **Revenue agent.** A Claude tool-use agent scores and tiers each dormant lead, picks a next best action and drafts a short, specific e-mail. Every fact in a draft is checked against the record, and drafts citing anything that is not in the CRM go back to the model for a rewrite. A duplicate scan proposes merges. Nothing is sent or updated until a person approves it.
 
-<Video src="/videos/sf-ops-revenue-agent.mp4" poster="/videos/sf-ops-revenue-agent.webp" ratio="4 / 3" title="Revenue agent module" caption="The revenue agent module, half a minute." />
+<Video src="/videos/sf-ops-revenue-agent.mp4" poster="/videos/sf-ops-revenue-agent.webp" ratio="4 / 3" title="Revenue agent module" caption="The revenue agent module." />
 
 **Refresh and migrate.** After a sandbox refresh someone has to mask personal data, point integrations at test endpoints, stop scheduled jobs and reload test data, usually from memory. The planner inventories the org and builds that checklist from its own metadata, orders the data seeding so lookups resolve, maps fields for an org-to-org move and reconciles record counts; Claude reviews the plan as an architect and writes the ordered runbook.
 
-<Video src="/videos/sf-ops-refresh.mp4" poster="/videos/sf-ops-refresh.webp" ratio="4 / 3" title="Refresh and migrate module" caption="The refresh and migrate module, 40 seconds." />
+<Video src="/videos/sf-ops-refresh.mp4" poster="/videos/sf-ops-refresh.webp" ratio="4 / 3" title="Refresh and migrate module" caption="The refresh and migrate module." />
 
 ![Sandbox refresh plan with Claude's architect review and runbook](/images/portfolio/sf-ops-refresh-architect-review.jpg)
 

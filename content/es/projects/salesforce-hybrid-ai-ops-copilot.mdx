@@ -27,7 +27,7 @@ Los equipos que contratan trabajo de Salesforce e IA describen los mismos cinco 
 
 ## El producto en uso
 
-<Video src="/videos/sf-ops-copilot-walkthrough.mp4" poster="/videos/sf-ops-copilot-walkthrough.webp" ratio="4 / 3" title="Recorrido por SF Ops Copilot" caption="Recorrido de tres minutos por los cinco módulos sobre la org de demostración. Ejecuciones en tiempo real; las esperas del modelo se muestran a 8×." />
+<Video src="/videos/sf-ops-copilot-walkthrough.mp4" poster="/videos/sf-ops-copilot-walkthrough.webp" ratio="4 / 3" title="Recorrido por SF Ops Copilot" caption="Los cinco módulos sobre la org de demostración; las esperas del modelo se muestran a 8×." />
 
 ## Qué construí
 
@@ -35,7 +35,7 @@ Los equipos que contratan trabajo de Salesforce e IA describen los mismos cinco 
 
 **Router de IA.** Salesforce pasa a ser la fuente de datos de cualquier modelo. Cada petición se enruta por política al propio Salesforce (una respuesta SOQL, sin modelo, 0 $), a Claude Opus, a Claude Haiku, a ChatGPT o a un LLM privado en la red de la empresa (Ollama o vLLM), según la sensibilidad, lo que está en juego y el coste. La capa de confianza detecta PII, PHI y PCI en cada registro: los datos médicos y de tarjetas solo van al modelo dentro de la red; nombres, correos y teléfonos se sustituyen por tokens antes de que un modelo externo los vea y se restauran en la respuesta. Los proveedores caídos se saltan con una alternativa, y un modo de comparación ejecuta un mismo registro en todos los modelos conectados, para que la decisión de enrutado se apoye en los datos del propio equipo. Añadir o cambiar un proveedor es un ajuste, no una reconstrucción.
 
-<Video src="/videos/sf-ops-ai-router.mp4" poster="/videos/sf-ops-ai-router.webp" ratio="4 / 3" title="Módulo del router de IA" caption="El módulo del router de IA, un minuto." />
+<Video src="/videos/sf-ops-ai-router.mp4" poster="/videos/sf-ops-ai-router.webp" ratio="4 / 3" title="Módulo del router de IA" caption="El módulo del router de IA." />
 
 ![Los datos de pacientes se enrutan a un LLM privado y nunca salen de la red](/images/portfolio/sf-ops-router-private-llm.jpg)
 
@@ -45,17 +45,17 @@ Los equipos que contratan trabajo de Salesforce e IA describen los mismos cinco 
 
 **Revisión de código.** El código de Salesforce escrito con IA suele parecer correcto y falla a escala: consultas dentro de bucles, falta de sharing y de seguridad a nivel de campo, identificadores y claves escritos a mano. Cada clase Apex y cada Flow pasa primero por reglas deterministas (SOQL, DML y callouts en bucles, sharing, FLS, inyección, identificadores y secretos fijos, calidad de los tests); después Claude confirma cada hallazgo, añade los que las reglas no pueden ver y devuelve el código corregido más una clase de test masivo. En una clase de pagos de ejemplo las reglas encontraron 8 problemas y Claude halló 4 más, incluido un callout después de DML que detiene el trabajo tras el primer registro.
 
-<Video src="/videos/sf-ops-code-review.mp4" poster="/videos/sf-ops-code-review.webp" ratio="4 / 3" title="Módulo de revisión de código" caption="El módulo de revisión de código, medio minuto." />
+<Video src="/videos/sf-ops-code-review.mp4" poster="/videos/sf-ops-code-review.webp" ratio="4 / 3" title="Módulo de revisión de código" caption="El módulo de revisión de código." />
 
 ![Revisión de Apex: los hallazgos, después el código Queueable corregido y una clase de test masivo](/images/portfolio/sf-ops-code-review-corrected-diff.jpg)
 
 **Agente de ingresos.** Un agente de Claude con herramientas puntúa y clasifica cada lead dormido, elige la siguiente mejor acción y redacta un correo breve y concreto. Cada dato del borrador se comprueba contra el registro, y los borradores que citan algo que no está en el CRM vuelven al modelo para reescribirse. Un análisis de duplicados propone fusiones. No se envía ni se actualiza nada hasta que una persona lo aprueba.
 
-<Video src="/videos/sf-ops-revenue-agent.mp4" poster="/videos/sf-ops-revenue-agent.webp" ratio="4 / 3" title="Módulo del agente de ingresos" caption="El módulo del agente de ingresos, medio minuto." />
+<Video src="/videos/sf-ops-revenue-agent.mp4" poster="/videos/sf-ops-revenue-agent.webp" ratio="4 / 3" title="Módulo del agente de ingresos" caption="El módulo del agente de ingresos." />
 
 **Refresh y migración.** Tras un refresh de sandbox, alguien tiene que enmascarar los datos personales, apuntar las integraciones a entornos de prueba, parar los trabajos programados y recargar los datos de prueba, normalmente de memoria. El planificador inventaría la org y construye esa lista a partir de sus propios metadatos, ordena la carga de datos para que las búsquedas resuelvan, mapea los campos para un traslado entre orgs y concilia los recuentos de registros; Claude revisa el plan como arquitecto y escribe el runbook ordenado.
 
-<Video src="/videos/sf-ops-refresh.mp4" poster="/videos/sf-ops-refresh.webp" ratio="4 / 3" title="Módulo de refresh y migración" caption="El módulo de refresh y migración, 40 segundos." />
+<Video src="/videos/sf-ops-refresh.mp4" poster="/videos/sf-ops-refresh.webp" ratio="4 / 3" title="Módulo de refresh y migración" caption="El módulo de refresh y migración." />
 
 ![Plan de refresh de sandbox con la revisión de arquitecto de Claude y el runbook](/images/portfolio/sf-ops-refresh-architect-review.jpg)
 
