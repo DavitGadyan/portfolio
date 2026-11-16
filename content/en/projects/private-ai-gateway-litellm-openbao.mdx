@@ -1,0 +1,112 @@
+---
+title: "Private AI Gateway: Secure, Self-Hosted LLM Access for Every Team"
+date: 2026-11-16
+lastmod: 2026-11-16
+cover: /images/portfolio/aigateway-cover.jpg
+coverAlt: "Private AI Gateway cover: the title Private AI Gateway and the line One secure door between your company and every AI model, four features (secrets vault per project, budgets and rate limits, PII and prompt-injection guardrails, usage and cost per team) and a glowing glass shield in front of a server rack"
+summary: "A self-hosted AI gateway that every company app and AI agent goes through to reach a model. Provider keys stay in an OpenBao vault and each team can open only its own. Budgets and rate limits stop spend at the cap. Guardrails mask personal data and block leaked secrets and prompt injection. Every call is logged per team for chargeback, and apps keep the OpenAI SDK while models change behind stable aliases. LiteLLM OSS with custom plugins, FastAPI, a Next.js console with Keycloak SSO, Docker and Helm, 44 tests. A second build shows the same ideas on AWS with Bedrock AgentCore Gateway, Cedar policies and Postgres row-level security."
+description: "Self-hosted AI gateway: keys in an OpenBao vault per team, budgets and rate limits, PII and prompt-injection guardrails, cost per team, plus an AWS AgentCore version."
+categories:
+  - ai-agents
+  - security-compliance
+  - cloud-devops-llmops
+stack:
+  frontend:
+    - Next.js 16, React 19, Tailwind and Auth.js management console
+    - Interactive 3D architecture explorer with a guided tour (Three.js)
+  backend:
+    - LiteLLM OSS proxy (pinned by tag and digest) with custom Python plugins on its public CustomLogger hooks
+    - FastAPI control plane with SQLAlchemy and Alembic, keeping LiteLLM, OpenBao and Postgres consistent
+  ai:
+    - One OpenAI-compatible API with stable aliases (chat-default, chat-premium, chat-local, embed-default)
+    - OpenAI, Anthropic, Bedrock, Azure, Vertex AI and self-hosted vLLM or Ollama behind the aliases, with fallbacks
+    - Guardrails for PII (Microsoft Presidio and patterns), secrets, prompt injection, deny lists and answer checks
+  data:
+    - PostgreSQL for projects, policies, the request log, access requests and the admin audit
+    - Redis for per-model limit windows and live cache invalidation
+  infra:
+    - Docker Compose for one server, a Helm chart for Kubernetes (cloud or on-prem, air-gapped registries)
+    - "AWS version: Bedrock AgentCore Runtime, Gateway, Identity and Memory, Lambda, Aurora PostgreSQL, DynamoDB, Cognito"
+    - pytest suites with 44 tests (28 unit, 16 end-to-end), 139 in the AWS version
+  security:
+    - OpenBao vault with one AppRole per project; provider keys never leave the vault and the gateway
+    - Live key rotation with no restart
+    - Keycloak SSO (Active Directory, Entra ID, Okta) with four console roles and an audited approval workflow
+    - "AWS version: Cedar policy at the gateway, then Postgres grants and row-level security, all keys in Secrets Manager"
+outcomes:
+  - Provider keys live only in the OpenBao vault. Each project's apps can read only their own gateway key, and a read of another team's key or a provider key is refused with 403, which the end-to-end suite checks.
+  - Spend stops at the cap. Budgets and RPM/TPM limits apply per project, app and user, plus per-model limits per project; an over-limit call gets 429, for example the fourth premium call in a minute.
+  - Staff can use AI without sending customer data out. E-mails, phone numbers and card numbers are masked before the model sees them, and leaked secrets and prompt-injection attempts are blocked, on the company's own servers.
+  - Every call, allowed or blocked, is logged with project, app, model, tokens, cost and the guardrail result, so finance gets cost per team and a CSV export for chargeback.
+  - The same design runs on AWS. A company copilot on Bedrock AgentCore checks every tool call three times, at the gateway, in the database grants and in row-level security, so each employee sees only their own tables, columns and rows.
+metrics:
+  - label: Automated tests (self-hosted)
+    value: "44"
+  - label: Other teams' keys readable
+    value: "0 (403)"
+  - label: Revoked key stops working
+    value: "≤ 5 s"
+  - label: Restarts to rotate a key
+    value: "0"
+featured: true
+order: 15
+---
+
+## The problem
+
+Every team bought its own AI account. API keys sat in code and chat, nobody knew the total bill until the invoice arrived, and staff pasted customer e-mails and card numbers into prompts. Switching to a cheaper or better model meant changing every app. The fix is one gateway that every app and AI agent goes through: it holds the keys, caps the spend, checks what goes out and records every call. This gateway runs on the company's own servers or in its own cloud account, and a second build shows the same controls with managed AWS services.
+
+## The product in use
+
+<Video src="/videos/aigateway-demo.mp4" poster="/videos/aigateway-demo.webp" ratio="16 / 9" title="Private AI Gateway walkthrough" caption="A 90-second walkthrough without sound: the architecture tour, the overview dashboard, a project with its budget and limits, a new app key, the vault login per project, the guardrail playground masking personal data, the request log, the access-request inbox, usage and chargeback export, and the model aliases. The data comes from a demo company." />
+
+## What I built
+
+**One door with a dashboard.** The overview shows requests, tokens, cost, the block rate, rate-limited calls, errors and p95 latency for the chosen period, a daily chart of requests and cost, the top projects and models by spend, and the health of the gateway, the vault and Redis. The question "what do we spend on AI, and on what?" has a live answer.
+
+![AI Gateway console overview: cards for requests, tokens, cost, blocked, rate-limited, errors and p95 latency, a requests and cost chart over 30 days, component health, and tables of the top projects and models by spend](/images/portfolio/aigateway-overview.jpg)
+
+**Budgets and limits per team.** Each team is a project with an owner, a cost centre and a data classification. It gets a rate limit, a budget for a period, a list of allowed models and limits per model. In the screenshot the support bot may make 1.2k requests per minute, spend $400 per 30 days, and call the premium model only 30 times a minute.
+
+![Project page for the Customer Support Bot: owner, cost centre, confidential classification, a 1.2k requests-per-minute limit, a $400 budget per 30 days, three allowed models and a 30 requests-per-minute limit on chat-premium](/images/portfolio/aigateway-limits.jpg)
+
+**Keys locked in a vault, one door per team.** Provider keys (OpenAI, Anthropic and others) live only in OpenBao, the open-source fork of Vault. The console issues each project its own vault login, shown once and valid for 720 hours. With it, the team's apps can read only their own gateway key under the project's path; every other path returns 403. A new provider key is rotated into every running gateway worker without a restart.
+
+![Workload credentials tab: an OpenBao AppRole with role_id, a hidden secret_id shown once and expiring in 720 hours, the vault address, the readable path for this project only, an environment block and a Python snippet that reads the key and calls the gateway](/images/portfolio/aigateway-secrets.jpg)
+
+**Guardrails per team.** Each project picks a policy, and each check (personal data, secrets, prompt injection, deny words, answer checks) can block, mask or only log. The playground tests a policy before it goes live: a prompt with an e-mail, a phone number and a card number comes back with all three replaced by placeholders, which is what the model receives. Personal-data detection uses Microsoft Presidio on the company's own servers, so there is no per-call fee and no third party sees the text. Answers are checked too, including streamed ones.
+
+![Guardrail policy editor and playground: mask action, PII and secret scans switched on, a test prompt with an e-mail, a phone number and a card number, and the masked result with three findings](/images/portfolio/aigateway-guardrails.jpg)
+
+**Teams ask, security approves.** A project owner asks for a model, a higher limit or more budget, with a reason. A security admin approves or rejects, and approval applies the change to the gateway in seconds. The requester, the approver, the time and the reason stay on record, and nobody can approve their own request.
+
+![Access requests inbox: a model request for the HR assistant to keep HR data on-prem, a rejected $900 budget request, an approved premium-model request for payments and an approved 1.2k requests-per-minute limit for Black Friday traffic](/images/portfolio/aigateway-access.jpg)
+
+**Swap models, not code.** Apps call stable names such as `chat-default` or `chat-premium` through the standard OpenAI SDK. The platform team decides which model sits behind each name: OpenAI, Anthropic, Bedrock, Azure, Vertex AI or the company's own GPUs with vLLM or Ollama. Fallbacks run from premium to default to local. A built-in practice model lets anyone try the whole system without a provider account.
+
+## Architecture
+
+![Interactive architecture explorer in the console: apps and agents, the AI gateway, the OpenBao vault, guardrails, the request log, the management console and the company's servers as a 3D graph with a guided tour](/images/portfolio/aigateway-architecture.jpg)
+
+An app calls the gateway with its own key. **LiteLLM** checks the key, the team's model list, its rate limits and its budget. My plugin, written only against LiteLLM's public hooks, then loads the project's policy (cached for 30 seconds and refreshed over Redis when the console changes it), applies the per-model limit and runs the input guardrails over every user-supplied string. LiteLLM's router picks a deployment for the alias, with retries and fallbacks. Output guardrails check the answer, and a request-log row records tokens, cost, latency and findings. Prompts are stored only when a project opts in, encrypted with a vault transit key.
+
+The features LiteLLM sells as Enterprise (vault integration, guardrail integrations, reports, single sign-on) are built here on open source, nothing is imported from its enterprise code, and there is no gateway licence fee. The FastAPI control plane keeps LiteLLM, OpenBao and Postgres consistent on every change and rolls back if a step fails. The Next.js console signs in through Keycloak, so staff use their company login, and offers four roles: platform admin, security admin, project owner and viewer.
+
+## The same gateway on AWS
+
+Clients who prefer managed services get the same ideas on their cloud. As an example I built a company copilot on **Amazon Bedrock AgentCore** that answers employees' questions about company data and only ever shows each person the tables, columns and rows they are allowed to see.
+
+![AWS architecture of the company copilot in eu-central-1: the employee signs in with Cognito, the copilot app on Lambda calls AgentCore Runtime with the same token, the agent uses Claude on Bedrock, AgentCore Memory and DynamoDB checkpoints, and calls tools through AgentCore Gateway, where a request interceptor, the Cedar policy engine and the Identity key vault sit in front of a data service in a private VPC with Aurora PostgreSQL and an entity context layer; all keys are in Secrets Manager and logs and Cedar decisions go to CloudWatch](/images/portfolio/aigateway-aws-architecture.jpg)
+
+- **The gateway decides first.** AgentCore Gateway exposes the data and context tools over MCP. Its JWT authorizer checks the employee's Cognito token, and a **Cedar** policy decides which tools and tables a department and clearance level may use. Restricted columns are refused before the request reaches the data, and nothing that writes is permitted.
+- **The database decides again.** A data service in a private VPC verifies the token once more, switches to the department's Postgres role and sets the employee id for the transaction. Aurora grants limit tables and columns, and row-level security limits rows to the employee's own records, reporting line, department, region or clearance.
+- **The agent never handles identity.** The tools take no user ids. The employee's token travels from the browser through the agent and the gateway to the database session, so a persuasive prompt cannot change who is asking. A second model also screens each message for attempts to override the rules, as defence in depth.
+- **Managed pieces.** LangGraph with Claude on Bedrock runs in AgentCore Runtime, AgentCore Memory keeps per-employee preferences, DynamoDB holds checkpoints, and every key and password lives in AWS Secrets Manager. 129 local tests cover the access matrix, the services, the Cedar policy and the agent end to end, and 10 more run against the deployed stack.
+
+The same pattern maps to Azure (API Management's AI gateway with token limits and Content Safety) and Google Cloud (Apigee with Model Armor). The [AI Gateways mind map](/materials/mindmaps/gateway/) compares the options.
+
+## Security and testing
+
+Apps reach only the gateway and the vault; only the gateway can reach model providers. Provider keys exist in the vault and in the gateway's memory, never in env files, Helm values or the console. The control plane can write provider keys but cannot read them back. Every change in the console writes an audit row, and the vault's own audit log records every secret read. LiteLLM is pinned by tag and image digest after the 2026 incidents with compromised releases, and the upgrade path includes a signature check. The 44 tests cover guardrails, limits and live rotation, and the 16 end-to-end tests prove the claims above: cross-project reads get 403, a revoked key stops everywhere within 5 seconds, keys rotate with no restart, over-limit calls get 429 and every blocked request is logged exactly once.
+
+The screenshots use a demo company, and the chart history includes generated demo data.
