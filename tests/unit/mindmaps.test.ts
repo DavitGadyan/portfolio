@@ -70,6 +70,16 @@ describe('mind maps', () => {
     for (const n of l.nodes) for (const f of n.facts ?? []) expect(f.at).toMatch(/^[A-Z]/);
   });
 
+  it('AI gateways: nine branches, 84 concepts, the scenarios open at start, the gateway chooser folded under them', () => {
+    const g = mindmaps.find((m) => m.id === 'gateway')!;
+    expect(g.nodes).toHaveLength(84);
+    expect(g.nodes.filter((n) => !n.parent).map((b) => b.id)).toEqual(['why', 'core', 'oss', 'aws', 'azure', 'gcp', 'saas', 'arch', 'scen']);
+    expect(g.openAtStart).toEqual(['scen']);
+    expect(g.nodes.filter((n) => n.parent === 'scen')).toHaveLength(9);
+    expect(g.nodes.filter((n) => n.parent === 'scen-pick')).toHaveLength(7);
+    for (const n of g.nodes) for (const f of n.facts ?? []) expect(f.at).toMatch(/^[A-Z]/);
+  });
+
   /** Places every card of a map under several fold states and checks that no two visible cards overlap and none sits over the root. */
   function expectCleanLayout(id: string, total: number, branches: number, keepOpen: string) {
     const s = mindmaps.find((m) => m.id === id)!;
@@ -99,5 +109,6 @@ describe('mind maps', () => {
     expect(dbx).toHaveLength(8 + 10); // the platform branch and its ten direct children; the toolset keeps its five folded
     expect(dbx.filter((p) => p.side === 'right').map((p) => p.id).filter((id) => !id.includes('-'))).toEqual(['de', 'plat', 'arch', 'nb']);
     expect(expectCleanLayout('llms', 94, 8, 'vram')).toHaveLength(8 + 8); // the VRAM branch and its eight children; quantisation and GPU tiers stay folded
+    expect(expectCleanLayout('gateway', 84, 9, 'scen')).toHaveLength(9 + 9); // the scenarios branch and its nine children; the chooser keeps its seven folded
   });
 });

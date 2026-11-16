@@ -14,13 +14,13 @@ test.describe('mind maps', () => {
   test('a folder tile on the Materials index, the Snowflake and Databricks tiles inside', async ({ page }) => {
     await page.goto('/materials/');
     const tile = page.locator('.tg__tile', { hasText: 'Mind Maps' });
-    await expect(tile).toContainText('3 maps');
+    await expect(tile).toContainText('4 maps');
     await tile.click();
     await page.waitForURL(/\/materials\/mindmaps\/$/);
     await expect(page.locator('h1')).toHaveText('Mind Maps');
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', /\/materials\/mindmaps\/$/);
     const tiles = page.locator('.tg__tile');
-    await expect(tiles).toHaveCount(3);
+    await expect(tiles).toHaveCount(4);
     await expect(tiles.first()).toContainText('Snowflake');
     await expect(tiles.first()).toContainText('8 branches · 73 concepts');
     await expect(tiles.first().locator('img')).toHaveAttribute('src', /\/logos\/snowflake\.svg$/);
@@ -35,7 +35,7 @@ test.describe('mind maps', () => {
     await page.goto('/materials/mindmaps/databricks/');
     await expect(page.locator('h1')).toHaveText(/Databricks Mind Map/);
     await expect(page.locator('link[rel="alternate"][hreflang="es"]')).toHaveAttribute('href', /\/es\/materials\/mindmaps\/databricks\/$/);
-    await expect(page.locator('.tg__tool')).toHaveCount(3); // the switcher lists every map
+    await expect(page.locator('.tg__tool')).toHaveCount(4); // the switcher lists every map
     await expect(page.locator('.tg__tool[aria-current="page"]')).toContainText('Databricks');
     const nodes = page.locator('.react-flow__node');
     await expect(nodes).toHaveCount(DBX_START, { timeout: 20_000 });
@@ -103,6 +103,50 @@ test.describe('mind maps', () => {
     await p.goto('/materials/mindmaps/llms/');
     await expect(p.locator('.mmlist h3')).toHaveCount(94);
     await expect(p.locator('.mmlist > li')).toHaveCount(8);
+    await ctx.close();
+  });
+
+  test('the AI gateway map: the scenarios open at start, a sourced figure, the chooser folds, Spanish, no JavaScript', async ({ page, browser }) => {
+    await page.goto('/materials/mindmaps/gateway/');
+    await expect(page.locator('h1')).toHaveText(/AI Gateway Mind Map/);
+    await expect(page.locator('.tg__tool[aria-current="page"]')).toContainText('AI Gateways');
+    const nodes = page.locator('.react-flow__node');
+    await expect(nodes).toHaveCount(19, { timeout: 20_000 }); // the root, nine branches and the nine scenarios
+    await expect(card(page, 'scen-pick').locator('.mm__badge')).toHaveText('7');
+    const panel = page.locator('#tg-panel');
+    await tap(page, 'scen-enterprise');
+    await expect(panel.locator('#tg-panel-title')).toHaveText('Enterprise AI gateway');
+    await page.keyboard.press('Escape');
+    await card(page, 'arch').locator('.mm__badge').click();
+    await expect(nodes).toHaveCount(19 + 10);
+    // the unfold is still animating the layout: retry the click until it lands
+    await expect(async () => {
+      await tap(page, 'arch-supply');
+      await expect(panel.locator('#tg-panel-title')).toHaveText('Supply-chain hygiene', { timeout: 1_000 });
+    }).toPass({ timeout: 15_000 });
+    await expect(panel.locator('.mm__facts li').first()).toContainText('Source: LiteLLM security update');
+    await page.keyboard.press('Escape');
+    // the cards are still moving after the arch unfold: retry the badge until the chooser opens
+    const pick = card(page, 'scen-pick').locator('.mm__badge');
+    await expect(async () => {
+      if ((await nodes.count()) !== 19 + 10 + 7) {
+        await pick.evaluate((el) => el.scrollIntoView({ block: 'center', behavior: 'instant' }));
+        await pick.click({ force: true });
+      }
+      await expect(nodes).toHaveCount(19 + 10 + 7, { timeout: 1_000 });
+    }).toPass({ timeout: 15_000 });
+
+    await page.goto('/es/materials/mindmaps/gateway/');
+    await expect(page.locator('h1')).toHaveText(/Mapa mental de AI Gateway/);
+    await expect(page.locator('.react-flow__node')).toHaveCount(19, { timeout: 20_000 });
+    await tap(page, 'scen-agent');
+    await expect(page.locator('#tg-panel-title')).toHaveText('Gateway de agentes');
+
+    const ctx = await browser.newContext({ javaScriptEnabled: false });
+    const p = await ctx.newPage();
+    await p.goto('/materials/mindmaps/gateway/');
+    await expect(p.locator('.mmlist h3')).toHaveCount(84);
+    await expect(p.locator('.mmlist > li')).toHaveCount(9);
     await ctx.close();
   });
 

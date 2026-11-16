@@ -33,6 +33,9 @@ export const logos = {
   docintel: ['document-intelligence.svg', 'Azure AI Document Intelligence'], decision1: ['microsoft.svg', 'Microsoft Decision-1'],
   // LLM vendors (skills map "AI Agents" node and the model-comparison posts, data/blog/llm-stacks.ts)
   qwen: ['qwen.svg', 'Qwen (Alibaba)'], deepseek: ['deepseek.svg', 'DeepSeek'], llama: ['meta.svg', 'Meta Llama'], ollama: ['ollama.svg', 'Ollama'], nvidia: ['nvidia.svg', 'NVIDIA'], cohere: ['cohere.svg', 'Cohere'],
+  // AI Gateways mind map (data/mindmaps/gateway.ts)
+  cloudflare: ['cloudflare.svg', 'Cloudflare'], kong: ['kong.svg', 'Kong'], envoy: ['envoy.svg', 'Envoy'], vault: ['vault.svg', 'HashiCorp Vault'],
+  opentelemetry: ['opentelemetry.svg', 'OpenTelemetry'], openrouter: ['openrouter.svg', 'OpenRouter'],
 } as const;
 export type LogoId = keyof typeof logos;
 export const logoSrc = (id: LogoId) => '/logos/' + logos[id][0];

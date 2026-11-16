@@ -32,7 +32,9 @@ const svgs = { 'kali-linux': 'kalilinux/557C94', owasp: 'owasp/000000', 'burp-su
   streamlit: 'streamlit/FF4B4B', kafka: 'apachekafka/231F20', airflow: 'apacheairflow/017CEE', django: 'django/092E20', mistral: 'mistralai/FA520F', // no dbt mark on Simple Icons: the card uses a line icon
   gitlab: 'gitlab/FC6D26', bitbucket: 'bitbucket/0052CC', go: 'go/00ADD8', php: 'php/777BB4', prefect: 'prefect/070E10',
   // Azure / Fabric / Databricks / Foundry post (data/blog/azure-stacks.ts): no Simple Icons mark exists for Microsoft Fabric, OneLake, Delta Lake or Vertex AI; those cards use the Microsoft mark or a line icon
-  apachespark: 'apachespark/E25A1C', mlflow: 'mlflow/0194E2' };
+  apachespark: 'apachespark/E25A1C', mlflow: 'mlflow/0194E2',
+  // AI Gateways mind map (data/mindmaps/gateway.ts): no Simple Icons mark exists for LiteLLM, Bifrost, Portkey, Apache APISIX or Langfuse; those cards use line icons
+  cloudflare: 'cloudflare/F38020', kong: 'kong/003459', envoy: 'envoyproxy/AC6199', vault: 'vault/000000', opentelemetry: 'opentelemetry/425CC7', openrouter: 'openrouter/6566F1' };
 // marks the simpleicons.org CDN no longer serves but the npm package still ships (pinned version): fetched from jsDelivr and tinted with the brand colour
 const jsd = { powerbi: ['powerbi', 'F2C811'], sharepoint: ['microsoftsharepoint', '0078D4'] };
 // official marks served by the brands themselves or by svgl.app (no Simple Icons entry): name → URL. Microsoft Fabric comes from Microsoft's own
