@@ -1,0 +1,106 @@
+---
+title: "Audit Pro: un LLM que detecta errores en informes NIIF para auditores"
+coverAlt: "Portada de Audit Pro: el título Audit Pro, la línea An LLM first pass on financial reports, the errors and points an auditor should check first, y tres puntos (errores entre páginas con evidencia, referencias NIIF y puntos de interés, 41 configuraciones de modelo medidas) junto a una foto generada con IA de un escritorio al atardecer: un balance impreso de una empresa inventada con dos totales rodeados en rojo, un bolígrafo rojo y un portátil con las puntuaciones del campeón de calidad en ese informe (4 de 4 errores inyectados encontrados, 3 de 5 hallazgos reales, 42,8 s)"
+summary: "Un asistente que da a los auditores una primera revisión del informe financiero NIIF de un cliente. Lee un PDF, un enlace o texto pegado y redacta los errores (cifras que no cuadran entre páginas, totales que no suman, desviaciones de las NIIF) y los puntos de interés que conviene comprobar, cada uno con su página, la evidencia citada, la referencia NIIF y un procedimiento sugerido, siempre en un único esquema JSON fijo. Un verificador determinista y un paso de anclaje impiden que el modelo invente hallazgos, y todo se ejecuta en la GPU de la propia firma, así que ningún informe sale de ella. Un laboratorio de benchmarks eligió el modelo: 41 configuraciones de 19 modelos abiertos medidas en una RTX 4090 por calidad, latencia, rendimiento y coste, con pruebas A/B de cada técnica. FastAPI, un laboratorio en Next.js, Docker y Helm, imágenes firmadas en CI."
+description: "Un LLM que da a los auditores una primera revisión de informes NIIF: errores entre páginas, puntos de interés y referencias NIIF, en la GPU de la firma, con 41 configuraciones medidas."
+outcomes:
+  - El auditor recibe un primer borrador de qué revisar antes de leer el informe de principio a fin. Cada hallazgo indica su página, la partida, la cifra esperada y la encontrada, la evidencia citada, la referencia NIIF y una confianza, y los puntos de interés llegan con un procedimiento de auditoría sugerido.
+  - El modelo no puede inventar una cifra. Las cuentas y los cruces entre páginas se comprueban con aritmética decimal exacta, cada cifra que extrae el modelo debe estar impresa en la página citada, y un hallazgo cuya cita no está en esa página se descarta antes de que lo vea el agente crítico.
+  - Los informes de los clientes no salen de la firma. El modelo se ejecuta en la GPU de la propia firma con vLLM; el código no tiene ninguna vía hacia una API externa de LLM ni un plan B que la use.
+  - La elección del modelo se mide, no se adivina. 41 configuraciones de 19 modelos abiertos (tamaño, cuantización, caché KV, longitud de contexto, decodificación especulativa) se puntuaron por calidad de detección, latencia, rendimiento y coste en la misma GPU y con los mismos informes sintéticos con errores conocidos.
+  - Las mejores configuraciones muestran su compromiso a la vista. Qwen3-14B AWQ obtiene la mejor puntuación de calidad (68,8 sobre 100, 70,3 % de recall); añadir una caché KV en FP8 y decodificación especulativa n-gram mantiene el mismo recall con un tercio menos de coste (0,97 $ frente a 1,43 $ por 1.000 auditorías); la mezcla de expertos 30B-A3B es la que más errores encuentra (83,8 % de recall).
+metrics:
+  - label: Configuraciones medidas (19 modelos)
+    value: "41"
+  - label: Mejor recall de errores (Qwen3-30B-A3B)
+    value: "83,8 %"
+  - label: Coste por 1.000 auditorías (equilibrado)
+    value: "0,97 $"
+  - label: Datos de informes enviados a API externas de LLM
+    value: "0"
+---
+
+## El problema
+
+Un auditor abre el informe anual de un cliente y lo primero es encontrar lo que está mal: una cifra de deudores en las notas que no coincide con el balance, un estado de flujos de efectivo que no termina en el efectivo del balance, un movimiento de reservas que no cuadra, una revelación sobre arrendamientos o deterioro que las NIIF exigen y el informe omite. Encontrarlo a mano es lento, y es el mismo trabajo en cada informe. Los modelos de chat generales no sirven: inventan cifras, citan páginas que no contienen el dato, y los estados financieros no publicados de un cliente no se pueden enviar a una API externa.
+
+## Qué construí
+
+**Una primera revisión para el auditor, no un veredicto.** Le das a Audit Pro un PDF, un enlace o texto pegado. Un pequeño pipeline multiagente devuelve dos listas: **errores**, como "la cifra 48.138 de la página 6 no corresponde con el valor 50.876 de la página 2 para deudores comerciales", y **puntos de interés**, los lugares que el auditor debería comprobar, cada uno con el motivo, la referencia NIIF y un procedimiento sugerido. Los hallazgos son borradores que el auditor verifica, y los prompts prohíben afirmar que hay fraude.
+
+**Una forma de respuesta fija.** Cada respuesta, también los fallos, sigue el mismo JSON Schema: empresa, estados encontrados, periodo y moneda, y después cada error con su página y páginas relacionadas, estado, partida, categoría, gravedad, cifras esperada y encontrada, la referencia NIIF (por ejemplo NIC 1.113), la evidencia citada, una confianza, qué paso lo detectó y si se verificó. Un resultado parcial (falló un paso de un agente) se marca con 206, así que una herramienta posterior o un archivo de auditoría nunca recibe media respuesta que parezca completa.
+
+**El pipeline.**
+
+1. **La ingesta** lee el PDF página a página, una página web o texto pegado, con límites de páginas y tamaño y una protección SSRF para los enlaces.
+2. **Un agente clasificador** encuentra la empresa, la moneda, la unidad, el cierre del periodo y el tipo de estado de cada página.
+3. **Un agente extractor** convierte cada página en partidas con los valores del periodo actual y el anterior. Un valor que no está impreso en su página citada se descarta.
+4. **Comprobaciones deterministas**, con aritmética decimal exacta y sin modelo: la ecuación contable, los totales frente a sus componentes, el margen bruto y el resultado del ejercicio, la cadena de flujos de efectivo desde las secciones hasta el efectivo final y el del balance, el movimiento de reservas y la misma cifra en páginas distintas. De aquí salen los hallazgos "la página X no corresponde con la página Y".
+5. **Agentes especialistas en NIIF trabajan en paralelo**, cada uno con las páginas que le corresponden: presentación y políticas (NIC 1, 8), ingresos y deudores (NIIF 15, 9), activos y deterioro (NIC 16, 36, 38, NIIF 16), flujos de efectivo (NIC 7), y provisiones, impuestos, partes vinculadas y hechos posteriores (NIC 37, 12, 24, 10).
+6. **Anclaje y un crítico.** La cita de un hallazgo debe coincidir con la página citada o se descarta. Un agente crítico conserva o rechaza cada superviviente y fija su confianza; lo que queda por debajo de 0,5 pasa a ser un punto de interés en lugar de un error.
+7. **Montaje**: quitar duplicados, ordenar por gravedad, numerar los errores y validar la respuesta contra el esquema.
+
+Cada llamada al modelo pide a vLLM JSON restringido por esquema con temperatura 0, y los ficheros de prompts se resumen con un hash en los metadatos de la respuesta, así que cada resultado dice qué modelo, revisión y versión de prompt lo produjo.
+
+## Elegir el modelo: 41 configuraciones en una GPU
+
+Una firma de auditoría lo ejecuta en su propio hardware, así que la pregunta es qué modelo abierto, cuantización y configuración de servicio dan los hallazgos más fiables en una tarjeta de 24 GB con una velocidad y un coste aceptables. Construí un laboratorio de benchmarks para responderla con mediciones.
+
+**Cómo funciona una ejecución.** Cada configuración es una revisión fijada de Hugging Face con los argumentos exactos de vLLM. El laboratorio comprueba que cabe en la GPU, arranca vLLM 0.34 en una RTX 4090 alquilada en Vast.ai (0,415 $ la hora) y mide dos cosas. Velocidad: AIPerf envía directamente al motor peticiones de 4.000 tokens con respuestas de 600 a concurrencia fija y registra el tiempo hasta el primer token, la latencia, los tokens por segundo y la VRAM máxima. Calidad: el pipeline de auditoría completo recorre informes NIIF sintéticos. Un generador crea informes anuales coherentes de empresas inventadas, inyecta errores en las cifras impresas y guarda la respuesta exacta de cada uno, así que puntuar no necesita un LLM como juez.
+
+**Qué se puntúa.** Recall (errores inyectados encontrados), precisión (hallazgos que son errores reales), exactitud numérica (las dos cifras que no cuadran, correctas), exactitud de página (la página citada contiene de verdad un error), anclaje (la evidencia citada está de verdad en la página) y validez del esquema. La puntuación de calidad es 30 % recall, 20 % precisión, 20 % numérica, 15 % página y 15 % anclaje.
+
+**Hasta ahora** hay 89 configuraciones definidas y 41 han terminado con datos completos: 19 modelos abiertos de Qwen, DeepSeek, Meta, OpenAI, IBM, Liquid AI y AllenAI, en AWQ y GPTQ de 4 bits, MXFP4 y BF16, con y sin caché KV en FP8, decodificación especulativa n-gram, caché de prefijos y un contexto más largo. El resto se está repitiendo tras un fallo. Estas son las elegidas:
+
+| Configuración Qwen3 | Elegida por | Calidad | Recall | Por informe | $ / 1.000 auditorías |
+|---|---|---|---|---|---|
+| 14B AWQ, contexto de 32k | Calidad | 68,8 | 70,3 % | 44 s | 1,43 |
+| 14B AWQ, KV FP8, n-gram | Equilibrio | 66,6 | 70,3 % | 32 s | 0,97 |
+| 30B-A3B GPTQ (MoE) | Más errores encontrados | 64,3 | 83,8 % | 50 s | 1,57 |
+| 8B AWQ | Rendimiento | 56,3 | 30,6 % | 35 s | – |
+| 4B AWQ, sin caché de prefijos | Menor coste | 42,2 | 43,2 % | 22 s | 0,67 |
+
+El tiempo por informe es la media de una auditoría completa por el pipeline (varias llamadas al modelo, unos 14.000 tokens), con cuatro informes en curso a la vez. El coste es solo el alquiler de la GPU: 0,415 $ la hora sobre el tiempo real de la evaluación, dividido entre los informes auditados. Con la configuración equilibrada sale a un dólar por 1.000 auditorías, o 1,5 céntimos por auditoría que superó el listón de aceptación (al menos el 95 % de los errores inyectados encontrados y al menos el 90 % de sus hallazgos ciertos). El modelo de 8B llega a 500 tokens por segundo con 16 usuarios a la vez, pero encuentra demasiado pocos errores para auditar, así que solo cuenta como resultado de velocidad.
+
+<Bench id="auditpro" caption="Las 38 ejecuciones válidas en una RTX 4090 con informes NIIF sintéticos (se omiten tres con artefactos de puntuación). Cambia de vista para ver calidad frente a coste, rendimiento según la carga, cualquier métrica por separado, lo que cambió cada técnica y los veredictos A/B." />
+
+**Qué hicieron las técnicas.** Frente a Qwen3-14B AWQ sin cambios, ejecuciones únicas con los mismos informes:
+
+- **Caché KV en FP8 más decodificación especulativa n-gram** dio el mejor resultado de velocidad y coste: cada informe tardó un 26 % menos y costó un 31 % menos, con el mismo recall y 1,9 puntos menos de calidad.
+- **La decodificación especulativa n-gram sola** redujo el tiempo de auditoría un 12,5 %, pero hizo la prueba de carga con tokens aleatorios un 32 % más lenta. Los informes repiten cifras y etiquetas que el borrador n-gram puede adivinar; los tokens aleatorios no le dan nada que adivinar y la verificación cuesta más de lo que ahorra. La lección: mide la decodificación especulativa con tu propio tráfico, no con una carga sintética.
+- **La caché KV en FP8 sola** dio un 9 % más de rendimiento bajo carga y sitio para más usuarios, pero no acortó ninguna auditoría.
+- **La caché de prefijos** conviene mantenerla: los agentes comparten prompts de sistema largos y sin ella las auditorías tardaron un 5 % más. Un contexto de 32k en lugar de 16k no cambió nada medible.
+- **Quién cuantizó el modelo importa tanto como los bits.** La versión GPTQ de 4 bits de Qwen3-30B-A3B encontró el 84 % de los errores; cuatro versiones AWQ de 4 bits de la comunidad, de la misma familia, encontraron entre el 16 % y el 62 %.
+- **Una mezcla de expertos es rápida por llamada, no por auditoría.** Qwen3-30B-A3B activa unos 3,4B de sus 30,5B parámetros por token, así que una llamada tarda 4,0 s frente a 8,1 s del 14B denso y el rendimiento es unas 1,7 veces mayor, pero escribe más por informe, así que una auditoría completa tarda más. Su anclaje, por debajo del 25 % como el de DeepSeek-R1, parece un problema de medición que falta investigar.
+- **La GPU está limitada por la memoria.** Con el modelo de 8B el laboratorio midió 947 GB/s de ancho de banda, lo que limita la decodificación a unos 155 tokens por segundo con 6,1 GB de pesos; el motor llegó a 113, el 73 % de ese techo.
+
+**Qué dijeron las pruebas A/B.** El framework hizo 25 comparaciones emparejadas. Rechazó cuatro versiones AWQ de Qwen3-30B-A3B, cuyo intervalo de confianza de recall quedó entero por debajo del margen de 2 puntos (por ejemplo −70 puntos, de −86 a −51). Todo lo demás fue no concluyente, también la opción equilibrada: el recall no cambió, pero con unos 15 documentos por ejecución el propio framework estima que harían falta entre 75 y 2.000 documentos emparejados para demostrar las diferencias más pequeñas. Ninguna se aceptó, y la página lo dice en lugar de declarar ganadores.
+
+**Límites, sin adornos.** Ninguna configuración cumple todavía los umbrales de calidad que fijé para producción (exactitud numérica 98 %, exactitud de página 95 %, anclaje 95 %, recall 85 %, validez del esquema 99 %), así que son los mejores resultados hasta ahora, no un modelo certificado. Las puntuaciones salen de informes sintéticos en inglés (15 documentos por ejecución en la mayoría), no de un conjunto de referencia revisado por contables, y casi todas las filas son ejecuciones únicas. Un campeón nuevo solo sustituye al anterior si gana por al menos 2 puntos.
+
+## Un informe, de principio a fin
+
+![Una página del informe sintético de entrada y el resultado del campeón de calidad sobre él](/images/portfolio/auditpro-example.jpg)
+
+La entrada es un informe anual sintético de una empresa inventada, Syunik Mining Services OJSC, con cuatro errores inyectados: el activo corriente total impreso como 127.899 en lugar de 122.644 (página 2), el margen bruto como 74.809 en lugar de 70.879 (página 3), el total de patrimonio neto y pasivo como 288.604 en lugar de 270.552, así que el balance no cuadra (página 2), y una política contable que dice que el inmovilizado material no se amortiza, en contra de la NIC 16.43 (página 6). El campeón de calidad, Qwen3-14B AWQ, leyó las siete páginas en 42,8 segundos y devolvió JSON válido con cinco hallazgos. Encontró los cuatro errores, puso cuatro hallazgos en la página correcta y dio las cifras esperada y encontrada exactas en dos de los tres errores aritméticos. Dos de sus cinco hallazgos no eran errores reales, así que la precisión en este informe fue del 60 %, por debajo del listón del 90 %. En los 15 informes, el mismo modelo encontró todos los errores en seis, ninguno en tres y superó el listón de aceptación en uno: por eso cada hallazgo sigue siendo un borrador para el auditor.
+
+## El laboratorio
+
+La aplicación Next.js es donde se elige y se sirve el modelo.
+
+- **Lab**: elige modelos, motores y técnicas. Con varios seleccionados lanza una prueba; con uno, lo despliega. Un planificador de capacidad muestra la VRAM libre, los pesos, la caché KV y cuántos usuarios caben antes de arrancar nada.
+- **Experimentos**: todas las ejecuciones, los umbrales de calidad que superaron o no, un gráfico de calidad frente a coste con la frontera de Pareto y una recomendación por perfil (calidad, equilibrio, rendimiento, coste).
+- **Decisiones A/B**: un candidato frente a su referencia con réplicas, intervalos de confianza bootstrap y p-valores corregidos con Holm, que terminan en aceptar, rechazar, sin beneficio o no concluyente.
+- **Optimización**: aceptación de la decodificación especulativa, caché de prefijos y aislamiento entre clientes, prefill por fragmentos, capacidad de la caché KV, el roofline y un simulador de batching.
+- **Auditar un informe**: sube un informe y lee los errores y los puntos de interés.
+- **En directo**: paneles de GPU e inferencia, con dashboards de Grafana para vLLM, la GPU y la calidad de las auditorías detrás.
+
+## Despliegue y seguridad
+
+Una sola imagen de contenedor reúne vLLM, la API, el dashboard, Prometheus y Grafana para un servidor con una GPU; un chart de Helm los ejecuta como pods separados con políticas de red, contenedores sin root, sistemas de ficheros de solo lectura y autoescalado con KEDA. Los pesos del modelo se descargan una vez a un volumen, se comprueban con los hashes SHA-256 de Hugging Face y después el motor funciona sin conexión. GitHub Actions construye las imágenes, las firma por digest con cosign, las escanea y empaqueta y firma el chart de Helm. 246 tests (149 de la API y el pipeline, 97 de puntuación, selección y el laboratorio) se ejecutan sin GPU contra un motor simulado; en 40 informes sintéticos las comprobaciones deterministas encuentran todos los errores que buscan, y en 20 informes limpios no señalan nada.
+
+La API pide una clave en cada ruta de auditoría y de métricas; el dashboard usa autenticación básica y guarda la clave en el servidor. Nunca se registran los cuerpos de las peticiones ni los prompts, cada respuesta se valida contra el esquema antes de devolverla, y el controlador de despliegue solo acepta imágenes de la lista permitida, fijadas por digest y firmadas. Los benchmarks en GPU alquiladas de un marketplace usan solo informes sintéticos; los documentos reales de clientes se procesan en el hardware de la propia firma.
+
+## Próximos pasos
+
+Un conjunto de referencia revisado por contables que sustituya al sintético, la prueba con 8 y 16 usuarios para cada configuración (en marcha ahora), OCR para PDF escaneados, informes en armenio y ruso, y acceso por usuario con aislamiento por cliente.

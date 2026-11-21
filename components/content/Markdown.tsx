@@ -8,6 +8,7 @@ import { Screen } from '@/components/embeds/Screen';
 import { MdImage } from './MdImage';
 import { Figure } from './Figure';
 import { Stacks } from './Stacks';
+import { Bench } from './Bench';
 import { withBasePath } from '@/lib/site';
 import type { Locale } from '@/lib/i18n/config';
 
@@ -18,9 +19,10 @@ function MdLink(props: AnchorHTMLAttributes<HTMLAnchorElement>) {
   return <a {...props} href={internal} {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})} />;
 }
 
-export function Markdown({ source, playLabel = 'Play video', locale = 'en' }: { source: string; playLabel?: string; /** for the components that carry their own strings (`<Stacks/>`) */ locale?: Locale }) {
+export function Markdown({ source, playLabel = 'Play video', locale = 'en' }: { source: string; playLabel?: string; /** for the components that carry their own strings (`<Stacks/>`, `<Bench/>`) */ locale?: Locale }) {
   const components = {
     Stacks: (p: { id: string; caption?: string }) => <Stacks {...p} locale={locale} />,
+    Bench: (p: { id: string; caption?: string }) => <Bench {...p} locale={locale} />,
     YouTube: (p: { id: string; title?: string }) => <VideoFacade provider="youtube" {...p} playLabel={playLabel} />,
     Loom: (p: { id: string; title?: string }) => <VideoFacade provider="loom" {...p} playLabel={playLabel} />,
     Video: (p: { src: string; poster?: string; title?: string; ratio?: string; caption?: string }) => <Video {...p} />,

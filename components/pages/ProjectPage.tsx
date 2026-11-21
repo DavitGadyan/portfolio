@@ -62,10 +62,10 @@ export function ProjectPage({ locale, slug }: { locale: Locale; slug: string }) 
             <Img src={p.cover} alt={p.coverAlt} width={1000} height={731} priority sizes="(min-width: 1024px) 896px, 100vw" className="h-auto w-full" />
           </figure>
           <div className="mt-10 grid gap-12 lg:grid-cols-[minmax(0,1fr)_320px]">
-            <div>
+            <div className="min-w-0">
               <p className="lead font-medium text-ink-700">{p.summary}</p>
               <div className="prose-dg mt-8">
-                <Markdown source={p.body} playLabel={fmt(m.a11y.playVideo, { title: p.title })} />
+                <Markdown source={p.body} playLabel={fmt(m.a11y.playVideo, { title: p.title })} locale={locale} />
               </div>
               {p.clientNote && <p className="mt-8 text-sm italic text-ink-400">{p.clientNote}</p>}
             </div>

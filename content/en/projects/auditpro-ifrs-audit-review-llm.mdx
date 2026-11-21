@@ -1,0 +1,141 @@
+---
+title: "Audit Pro: an LLM That Flags Errors in IFRS Reports for Auditors"
+date: 2026-11-21
+lastmod: 2026-11-21
+cover: /images/portfolio/auditpro-cover.jpg
+coverAlt: "Audit Pro cover: the title Audit Pro, the line An LLM first pass on financial reports, the errors and points an auditor should check first, and three points (errors between pages with evidence, IFRS references and points of interest, 41 model setups measured) beside an AI-generated photo of a desk at dusk: a printed balance sheet of an invented company with two totals circled in red, a red pen, and a laptop showing the quality champion's scores on that report (4 of 4 injected errors found, 3 of 5 findings real, 42.8 s)"
+summary: "An assistant that gives auditors a first pass on a client's IFRS financial report. It reads a PDF, a link or pasted text and drafts the errors (figures that disagree between pages, totals that do not add up, departures from IFRS) and the points of interest worth testing, each with its page, the quoted evidence, the IFRS reference and a suggested procedure, always in one fixed JSON schema. A deterministic checker and a grounding step stop the model from inventing findings, and everything runs on the firm's own GPU, so no report leaves it. A benchmark lab chose the model: 41 configurations of 19 open models measured on one RTX 4090 for quality, latency, throughput and cost, with A/B tests on every technique. FastAPI, a Next.js lab, Docker and Helm, signed images in CI."
+description: "An LLM that gives auditors a first pass on IFRS reports: errors between pages, points of interest, IFRS references, on the firm's own GPU, with 41 model setups measured."
+categories:
+  - ai-agents
+  - finance-quant
+  - cloud-devops-llmops
+stack:
+  frontend:
+    - Next.js 16, React 19 lab and audit UI
+    - Quality vs cost charts, A/B decision pages
+  backend:
+    - FastAPI audit API, asyncio agent pipeline
+    - Pydantic schema, JSON Schema output contract
+    - pdfplumber and trafilatura ingest, SSRF guard
+  ai:
+    - Qwen3, DeepSeek-R1, Llama 3.1, gpt-oss
+    - AWQ, GPTQ, MXFP4 and BF16, FP8 KV cache
+    - vLLM structured JSON output
+    - n-gram speculative decoding
+    - Decimal checks plus a critic agent
+  data:
+    - Synthetic IFRS reports with ground truth
+    - results index, Prometheus metrics, Grafana
+  infra:
+    - NVIDIA RTX 4090 with vLLM, AIPerf load tests
+    - Docker all-in-one image, Helm chart with KEDA
+    - GitHub Actions, cosign-signed images
+    - "pytest: 246 tests (149 API, 97 benchmark)"
+  security:
+    - All inference local, no external LLM API
+    - API key, basic auth, NetworkPolicy, non-root
+    - Model weights pinned and SHA-256 verified
+outcomes:
+  - An auditor gets a first draft of what to look at before reading the report end to end. Every finding names its page, the line item, the expected and the found figure, the quoted evidence, the IFRS reference and a confidence, and points of interest come with a suggested audit procedure.
+  - The model cannot invent a number. Arithmetic and cross-page ties are checked with exact decimal maths, every figure the model extracts must be printed on its cited page, and a finding whose quote is not on that page is dropped before the critic agent sees it.
+  - Client reports stay inside the firm. The model runs on the firm's own GPU through vLLM; the code has no path to an external LLM API and no fallback to one.
+  - The model choice is measured, not guessed. 41 configurations of 19 open models (size, quantization, KV cache, context length, speculative decoding) were scored for detection quality, latency, throughput and cost on the same GPU and the same synthetic reports with known errors.
+  - The best configurations trade off openly. Qwen3-14B AWQ gives the highest quality score (68.8 of 100, 70.3% recall); adding an FP8 KV cache and n-gram speculative decoding keeps the same recall for about a third less cost ($0.97 against $1.43 per 1,000 audits); the 30B-A3B mixture of experts finds the most errors (83.8% recall).
+metrics:
+  - label: Model setups measured (19 models)
+    value: "41"
+  - label: Best error recall (Qwen3-30B-A3B)
+    value: "83.8%"
+  - label: Cost per 1,000 audits (balanced)
+    value: "$0.97"
+  - label: Report data sent to external LLM APIs
+    value: "0"
+featured: true
+order: 2
+---
+
+## The problem
+
+An auditor opens a client's annual report and has to find what is wrong before anything else: a receivables figure in the notes that does not match the balance sheet, a cash-flow statement that does not end at the cash on the balance sheet, a retained-earnings roll-forward that does not tie, a lease or impairment disclosure that IFRS asks for and the report leaves out. Finding these by hand is slow, and it is the same work on every report. General chat models are not an answer: they invent numbers, they cite pages that do not hold the figure, and a client's unpublished financial statements cannot be sent to an outside API.
+
+## What I built
+
+**A first pass for the auditor, not a verdict.** You give Audit Pro a PDF, a link or pasted text. A small multi-agent pipeline returns two lists: **errors**, such as "the figure 48,138 on page 6 does not correspond with the page 2 value 50,876 for trade receivables", and **points of interest**, the places an auditor should test, each with the reason, the IFRS reference and a suggested procedure. Findings are drafts for an auditor to verify, and the prompts forbid asserting fraud.
+
+**One fixed answer shape.** Every response, including failures, follows the same JSON Schema: company, statements found, reporting period and currency, then each error with its page and related pages, statement, line item, category, severity, expected and found figures, the IFRS reference (for example IAS 1.113), the quoted evidence, a confidence, which step detected it and whether it was verified. A partial result (one agent step failed) is marked 206, so a downstream tool or an audit file never receives a half answer that looks complete.
+
+**The pipeline.**
+
+1. **Ingest** reads the PDF page by page, a web page or pasted text, with page and size limits and an SSRF guard for links.
+2. **A classifier agent** finds the company, currency, unit, period end and the statement type of every page.
+3. **An extractor agent** turns each page into line items with values for the current and prior period. A value that is not printed on its cited page is dropped.
+4. **Deterministic checks**, with exact decimal maths and no model: the accounting equation, totals against their components, gross profit and profit for the year, the cash-flow chain from sections to closing cash and the balance-sheet cash, the retained-earnings roll-forward, and the same figure on different pages. These produce the "page X does not correspond with page Y" findings.
+5. **IFRS specialist agents run in parallel**, each on the pages routed to it: presentation and policies (IAS 1, 8), revenue and receivables (IFRS 15, 9), assets and impairment (IAS 16, 36, 38, IFRS 16), cash flow (IAS 7), and provisions, tax, related parties and events after the period (IAS 37, 12, 24, 10).
+6. **Grounding and a critic.** A finding's quote must match the cited page, or it is dropped. A critic agent keeps or rejects each survivor and sets its confidence; anything below 0.5 becomes a point of interest instead of an error.
+7. **Assemble**: remove duplicates, sort by severity, number the errors and validate the answer against the schema.
+
+Every model call asks vLLM for schema-constrained JSON at temperature 0, and the prompt files are hashed into the answer's metadata, so each result says which model, revision and prompt version produced it.
+
+## Choosing the model: 41 setups on one GPU
+
+An audit firm runs this on its own hardware, so the question is which open model, quantization and serving setup gives the most trustworthy findings on one 24 GB card at an acceptable speed and cost. I built a benchmark lab to answer it with measurements.
+
+**How a run works.** Each configuration is a pinned Hugging Face revision with exact vLLM arguments. The lab checks it fits the GPU, starts vLLM 0.34 on an RTX 4090 rented on Vast.ai ($0.415 an hour), then measures two things. Speed: AIPerf sends 4,000-token requests with 600-token answers straight to the engine at fixed concurrency and records time to first token, latency, tokens per second and peak VRAM. Quality: the full audit pipeline runs over synthetic IFRS reports. A generator builds consistent annual reports for invented companies, injects errors into the printed figures and keeps the exact answer for each one, so scoring needs no LLM judge.
+
+**What is scored.** Recall (injected errors found), precision (findings that are real errors), numeric accuracy (both disagreeing figures right), page accuracy (the cited page really holds an error), grounding (quoted evidence is really on the page) and schema validity. The quality score is 30% recall, 20% precision, 20% numeric, 15% page and 15% grounding.
+
+**So far** 89 configurations are defined and 41 have finished with full data: 19 open models from Qwen, DeepSeek, Meta, OpenAI, IBM, Liquid AI and AllenAI, in 4-bit AWQ and GPTQ, MXFP4 and BF16, with and without an FP8 KV cache, n-gram speculative decoding, prefix caching and a longer context. The rest are re-running after a crash. These are the picks:
+
+| Qwen3 setup | Picked for | Quality | Recall | Per report | $ / 1,000 audits |
+|---|---|---|---|---|---|
+| 14B AWQ, 32k context | Quality | 68.8 | 70.3% | 44 s | 1.43 |
+| 14B AWQ, FP8 KV, n-gram | Balanced | 66.6 | 70.3% | 32 s | 0.97 |
+| 30B-A3B GPTQ (MoE) | Most errors found | 64.3 | 83.8% | 50 s | 1.57 |
+| 8B AWQ | Throughput | 56.3 | 30.6% | 35 s | – |
+| 4B AWQ, no prefix cache | Lowest cost | 42.2 | 43.2% | 22 s | 0.67 |
+
+Time per report is the average for one whole audit through the pipeline (several model calls, about 14,000 tokens), with four reports in progress at once. Cost is GPU rental only: $0.415 an hour over the evaluation's wall time, divided by the reports audited. With the balanced setup that is about one dollar per 1,000 audits, or about 1.5 cents per audit that met the acceptance bar (at least 95% of the injected errors found and at least 90% of its findings true). The 8B model reaches 500 tokens per second at 16 concurrent users, but it finds too few errors for audit work, so it counts only as a speed result.
+
+<Bench id="auditpro" caption="All 38 valid runs on one RTX 4090 with synthetic IFRS reports (three runs with scoring artefacts left out). Switch views for quality against cost, throughput by load, any single metric, what each technique changed and the A/B verdicts." />
+
+**What the techniques did.** Against plain Qwen3-14B AWQ, single runs on the same reports:
+
+- **FP8 KV cache plus n-gram speculative decoding** gave the best speed and cost: each report took 26% less time and cost 31% less, with the same recall and 1.9 fewer quality points.
+- **n-gram speculative decoding alone** cut audit time by 12.5% but made the random-token load test 32% slower. Audit pages repeat figures and labels the n-gram drafter can guess; random tokens give it nothing to guess, and verification then costs more than it saves. The lesson: measure speculative decoding on your own traffic, not on a synthetic load.
+- **FP8 KV cache alone** gave 9% more throughput under load and room for more users, but did not shorten a single audit.
+- **Prefix caching** is worth keeping: the agents share long system prompts, and switching it off made audits 5% slower. A 32k context instead of 16k changed nothing measurable.
+- **Who quantized the model matters as much as the bit width.** The GPTQ 4-bit build of Qwen3-30B-A3B found 84% of errors; four community AWQ 4-bit builds of the same family found 16% to 62%.
+- **A mixture of experts is fast per call, not per audit.** Qwen3-30B-A3B activates about 3.4B of its 30.5B parameters per token, so one model call takes 4.0 s against 8.1 s for the dense 14B and throughput is about 1.7 times higher, but it writes more per report, so a whole audit takes longer. Its grounding score, under 25% like DeepSeek-R1's, looks like a measurement issue that is still to be investigated.
+- **The GPU is memory-bound.** On the 8B model the lab measured 947 GB/s of memory bandwidth, which caps decoding at about 155 tokens per second for 6.1 GB of weights; the engine reached 113, or 73% of that ceiling.
+
+**What the A/B tests said.** The framework ran 25 paired comparisons. It rejected four AWQ builds of Qwen3-30B-A3B, whose whole recall confidence interval sat below the 2-point margin (for example −70 points, from −86 to −51). Everything else was inconclusive, including the balanced pick: recall did not change, but with about 15 documents per run the framework itself estimates that 75 to 2,000 paired documents are needed to prove the smaller differences. None was accepted, and the page says so instead of declaring winners.
+
+**Honest limits.** The quality gates I set for production (numeric accuracy 98%, page accuracy 95%, grounding 95%, recall 85%, schema validity 99%) are not met by any configuration yet, so these are the best results so far, not a certified model. The scores come from synthetic English reports (15 documents per run for most runs), not an accountant-reviewed golden set, and most rows are single runs. A new champion replaces the old one only when it wins by at least 2 points.
+
+## One report, start to finish
+
+![A page of the synthetic input report and the quality champion's result on it](/images/portfolio/auditpro-example.jpg)
+
+The input is a synthetic annual report for an invented company, Syunik Mining Services OJSC, with four injected errors: total current assets printed as 127,899 instead of 122,644 (page 2), gross profit 74,809 instead of 70,879 (page 3), total equity and liabilities 288,604 instead of 270,552, so the balance sheet does not balance (page 2), and an accounting policy that says property, plant and equipment is not depreciated, against IAS 16.43 (page 6). The quality champion, Qwen3-14B AWQ, read the seven pages in 42.8 seconds and returned valid JSON with five findings. It found all four errors, put four findings on the right page and gave the exact expected and found figures for two of the three arithmetic errors. Two of its five findings were not real errors, so precision on this report was 60%, below the 90% acceptance bar. Across the 15 reports the same model found every error in six, nothing in three, and passed the acceptance bar on one: the reason every finding stays a draft for the auditor.
+
+## The lab
+
+The Next.js app is where the model is chosen and served.
+
+- **Lab**: pick models, engines and techniques. Several selected launch a test job; one selected deploys it. A capacity planner shows the free VRAM, the weights, the KV cache and how many users fit before anything starts.
+- **Experiments**: every run, the quality gates it passed or failed, a quality-against-cost chart with the Pareto frontier, and a recommendation per profile (quality, balanced, throughput, cost).
+- **A/B decisions**: a candidate against its baseline with replicates, bootstrap confidence intervals and Holm-corrected p-values, ending in accept, reject, no benefit or inconclusive.
+- **Optimization**: speculative decoding acceptance, prefix caching and tenant isolation, chunked prefill, KV cache capacity, the roofline and a batching simulator.
+- **Audit a report**: upload a report and read the errors and points of interest.
+- **Live**: GPU and inference tiles, with Grafana dashboards for vLLM, the GPU and audit quality behind them.
+
+## Deployment and security
+
+One container image holds vLLM, the API, the dashboard, Prometheus and Grafana for a single GPU server; a Helm chart runs them as separate pods with network policies, non-root containers, read-only file systems and KEDA autoscaling. Model weights are downloaded once to a volume, checked against Hugging Face's SHA-256 hashes, and the engine then runs offline. GitHub Actions builds the images, signs them by digest with cosign, scans them, and packages and signs the Helm chart. 246 tests (149 for the API and pipeline, 97 for scoring, selection and the lab) run without a GPU against a stand-in engine; on 40 synthetic reports the deterministic checks find every error they target, and on 20 clean reports they report nothing.
+
+The API needs a key on every audit and metrics route; the dashboard uses basic auth and keeps the key on the server. Request bodies and prompts are never logged, every answer is validated against the schema before it is returned, and the deploy controller only accepts allow-listed, digest-pinned, signed images. Benchmarks on rented marketplace GPUs use synthetic reports only; real client documents run on the firm's own hardware.
+
+## What is next
+
+An accountant-reviewed golden set to replace the synthetic one, the 8- and 16-user sweep for every configuration (running now), OCR for scanned PDFs, Armenian and Russian reports, and per-user access with client-level isolation.

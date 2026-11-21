@@ -1,0 +1,65 @@
+import { benchData } from '@/data/projects/auditproBench';
+import type { Locale } from '@/lib/i18n/config';
+import { getMessages } from '@/lib/i18n/messages';
+import { BenchView, type BenchViewData, type BenchViewMetric } from './BenchView';
+
+/**
+ * `<Bench id="auditpro" caption="…" />` in a project's MDX: interactive charts of a measured model benchmark (BenchView.tsx, client)
+ * plus the same numbers as plain tables for readers without JavaScript (`.bch` / `.bch-nojs` in globals.css).
+ */
+export function Bench({ id, caption, locale }: { id: string; caption?: string; locale: Locale }) {
+  const d = benchData[id];
+  if (!d) throw new Error(`[content] benchmark not found: ${id} (data/projects/auditproBench.ts)`);
+  const b = getMessages(locale).bench;
+  const metrics: BenchViewMetric[] = [
+    { id: 'quality', label: b.mQuality, unit: '', better: 'up' },
+    { id: 'recall', label: b.mRecall, unit: '%', better: 'up' },
+    { id: 'precision', label: b.mPrecision, unit: '%', better: 'up' },
+    { id: 'numeric', label: b.mNumeric, unit: '%', better: 'up' },
+    { id: 'page', label: b.mPage, unit: '%', better: 'up' },
+    { id: 'grounding', label: b.mGrounding, unit: '%', better: 'up' },
+    { id: 'auditS', label: b.mTime, unit: 's', better: 'down' },
+    { id: 'cost', label: b.mCost, unit: '$', better: 'down' },
+  ];
+  const picks: Record<string, string> = { quality: b.pickQuality, balanced: b.pickBalanced, recall: b.pickRecall, throughput: b.pickThroughput, cost: b.pickCost };
+  const view: BenchViewData = {
+    id,
+    metrics,
+    runs: d.runs.map((r) => ({
+      id: r.id,
+      label: r.label,
+      quant: r.quant,
+      pick: r.pick,
+      pickLabel: r.pick ? picks[r.pick] : undefined,
+      caveat: r.groundingCaveat,
+      speed: r.speed,
+      tok: r.tok,
+      metrics: { quality: r.quality, recall: r.recall, precision: r.precision, numeric: r.numeric, page: r.page, grounding: r.grounding, auditS: r.auditS, cost: r.cost },
+    })),
+    techniques: d.techniques.map((t) => ({ id: t.id, label: t.label[locale], verdict: t.verdict[locale], deltas: t.deltas.map((x) => ({ metric: x.metric[locale], value: x.value, unit: x.unit, better: x.better })) })),
+    ab: d.ab.map((a) => ({ candidate: a.candidate, baseline: a.baseline, verdict: a.verdict, metric: a.metric[locale], delta: a.delta, lo: a.lo, hi: a.hi, unit: a.unit, p: a.p })),
+    s: {
+      tabs: { cost: b.tabCost, speed: b.tabSpeed, metric: b.tabMetric, tech: b.tabTech, ab: b.tabAb },
+      costX: b.costX, costY: b.costY, speedX: b.speedX, speedY: b.speedY, hint: b.hint, better: b.better, notMeasured: b.notMeasured, verdict: b.verdict, ci: b.ci, caveat: b.caveat, showAll: b.showAll, showTop: b.showTop, abNote: b.abNote,
+    },
+  };
+  const cell = (v: number | undefined, unit: string) => (v === undefined ? '–' : unit === '$' ? `$${v.toFixed(2)}` : unit === '%' ? `${v.toFixed(1)}%` : unit === 's' ? `${Math.round(v)} s` : v.toFixed(1));
+  return (
+    <figure className="fig fig--bench">
+      <BenchView data={view} />
+      <div className="bch-nojs">
+        <div className="tblwrap">
+          <table>
+            <thead><tr><th scope="col">{b.run}</th>{metrics.map((m) => <th key={m.id} scope="col">{m.label}</th>)}<th scope="col">{b.speedY} (4)</th></tr></thead>
+            <tbody>
+              {view.runs.map((r) => (
+                <tr key={r.id}><th scope="row">{r.label}{r.pickLabel ? ` (${r.pickLabel})` : ''}</th>{metrics.map((m) => <td key={m.id}>{cell(r.metrics[m.id], m.unit)}</td>)}<td>{r.tok[4] ?? '–'}</td></tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      {caption && <figcaption>{caption}</figcaption>}
+    </figure>
+  );
+}

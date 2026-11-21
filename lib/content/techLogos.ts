@@ -9,7 +9,7 @@ const ALIASES: [RegExp, LogoId][] = [
   [/\byolo/i, 'yolo'], [/hugging ?face|transformers\b/i, 'huggingface'], [/langgraph/i, 'langgraph'], [/langchain/i, 'langchain'], [/\bmcp\b/i, 'mcp'],
   [/\bn8n\b/i, 'n8n'], [/document intelligence|form recognizer/i, 'docintel'], [/ai search|cognitive search/i, 'aisearch'], [/data factory/i, 'datafactory'], [/\bfabric\b/i, 'fabric'],
   [/foundry/i, 'foundry'], [/decision-?1/i, 'decision1'], [/ollama/i, 'ollama'], [/qwen/i, 'qwen'], [/deepseek/i, 'deepseek'], [/llama/i, 'llama'], [/mistral/i, 'mistral'],
-  [/openai|gpt|chatgpt|whisper|dall/i, 'openai'], [/claude code/i, 'claudecode'], [/claude|anthropic/i, 'claude'], [/gemini/i, 'gemini'], [/\bgrok\b/i, 'grok'], [/cohere/i, 'cohere'], [/bedrock/i, 'bedrock'],
+  [/openai|gpt(?!q)|whisper|dall/i, 'openai'], [/claude code/i, 'claudecode'], [/claude|anthropic/i, 'claude'], [/gemini/i, 'gemini'], [/\bgrok\b/i, 'grok'], [/cohere/i, 'cohere'], [/bedrock/i, 'bedrock'],
   [/kubernetes|\bk8s\b|\beks\b/i, 'kubernetes'], [/azure (ai|openai)/i, 'azureai'], [/\bazure\b/i, 'azure'], [/docker/i, 'docker'], [/textract/i, 'textract'],
   [/\baws\b|\bec2\b|\bs3\b|\blambda\b|sagemaker|\brds\b|cloudfront/i, 'aws'], [/\bgcp\b|google cloud|cloud run|vertex|app engine/i, 'gcp'], [/vercel/i, 'vercel'],
   [/linux|ubuntu/i, 'linux'], [/raspberry/i, 'raspberrypi'], [/github/i, 'github'], [/gitlab/i, 'gitlab'], [/bitbucket/i, 'bitbucket'], [/figma/i, 'figma'], [/stripe/i, 'stripe'], [/hipaa/i, 'hipaa'],

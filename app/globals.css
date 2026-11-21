@@ -153,6 +153,65 @@ body {
   .stk__hint { margin: .45rem 0 0; font-size: .76rem; color: var(--color-ink-300); }
   @media (max-width: 40rem) { .stk__layer { grid-template-columns: 1fr; gap: .3rem; padding: .5rem .65rem; } }
   @media (scripting: enabled) and (prefers-reduced-motion: no-preference) { .stk__panel { animation: tgin .3s ease-out both; } .stk__note p { animation: tgin .25s ease-out both; } }
+  /* Interactive benchmark charts in project pages (components/content/Bench.tsx + BenchView.tsx): plain SVG on the .stk dark panel; the tables (.bch-nojs) show without JavaScript */
+  .bch { display: none; }
+  @media (scripting: enabled) { .bch { display: block; } .bch-nojs { display: none; } }
+  .bch__tabs { display: flex; flex-wrap: wrap; gap: .5rem; margin: 0 0 .9rem; }
+  .bch__tab { padding: .4rem .9rem; border-radius: 9999px; border: 1px solid var(--color-ink-200); background: var(--color-paper-0); color: var(--color-ink-700); font: inherit; font-size: .88rem; font-weight: 600; cursor: pointer; }
+  .bch__tab:hover { border-color: var(--color-ink-400); }
+  .bch__tab[aria-selected="true"] { border-color: var(--color-accent); box-shadow: 0 0 0 3px rgba(31,170,85,.18); }
+  .bch__tab:focus-visible, .bch button:focus-visible, .bch__pt:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 3px; }
+  .bch__panel { border-radius: 1rem; border: 1px solid rgba(255,255,255,.1); background: radial-gradient(ellipse at 50% 0%, #26272a, #141416 70%); color: #fff; padding: 1rem; }
+  .bch__svg { display: block; width: 100%; height: auto; overflow: visible; }
+  .bch__axes line { stroke: rgba(255,255,255,.1); }
+  .bch__axes text, .bch__pt text, .bch__better { fill: var(--color-ink-200); font-size: 12px; }
+  .bch__axlabel { fill: var(--color-ink-300) !important; font-size: 12px; letter-spacing: .04em; }
+  .bch__better { fill: var(--color-accent) !important; font-weight: 600; }
+  .bch__pt { cursor: pointer; outline: none; }
+  .bch__pt circle { stroke: #141416; stroke-width: 2; transition: r .15s; }
+  .bch__pt[data-on] circle { stroke: #fff; }
+  .bch__pt[data-on] text { fill: #fff; font-weight: 600; }
+  .bch__end { font-size: 12px; font-weight: 700; }
+  .bch__legend { display: flex; flex-wrap: wrap; gap: .4rem; margin: 0 0 .8rem; }
+  .bch__legend button { display: inline-flex; align-items: center; gap: .4rem; padding: .25rem .65rem; border-radius: 9999px; border: 1px solid rgba(255,255,255,.18); background: rgba(255,255,255,.06); color: #fff; font: inherit; font-size: .78rem; font-weight: 600; cursor: pointer; }
+  .bch__legend button[aria-pressed="false"] { opacity: .45; }
+  .bch__legend button[aria-pressed="true"] { border-color: var(--color-accent); }
+  .bch__legend i { width: .65rem; height: .65rem; border-radius: 50%; }
+  .bch__detail { margin-top: .6rem; padding: .7rem .85rem; border-radius: .7rem; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); font-size: .85rem; }
+  .bch__pick { margin-left: .5rem; font-size: .72rem; text-transform: uppercase; letter-spacing: .1em; color: var(--color-ink-300); }
+  .bch__detail dl { display: grid; grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr)); gap: .4rem .9rem; margin: .55rem 0 0; }
+  .bch__detail dt { font-size: .7rem; color: var(--color-ink-300); }
+  .bch__detail dd { margin: 0; font-weight: 700; }
+  .bch ul { list-style: none; margin: 0; padding: 0; }
+  .bch ul li { margin: 0; }
+  .bch__bars, .bch__delta, .bch__ab { display: grid; gap: .5rem; }
+  .bch__bars li, .bch__delta li, .bch__ab li { display: grid; grid-template-columns: minmax(0, 14rem) minmax(0, 1fr) 5.5rem; gap: .75rem; align-items: center; font-size: .82rem; }
+  .bch__blabel { color: var(--color-ink-100); line-height: 1.3; }
+  .bch__blabel em { color: var(--color-ink-300); font-style: normal; }
+  .bch__btrack, .bch__dtrack, .bch__citrack { position: relative; height: .8rem; border-radius: 9999px; background: rgba(255,255,255,.07); }
+  .bch__bfill { position: absolute; inset: 0 auto 0 0; border-radius: inherit; transition: width .35s ease-out; }
+  .bch__bars li[data-best] .bch__bval { color: var(--color-accent); }
+  .bch__bval { text-align: right; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .bch__dtrack::after { content: ""; position: absolute; left: 50%; top: -.2rem; bottom: -.2rem; width: 1px; background: rgba(255,255,255,.35); }
+  .bch__dfill { position: absolute; top: 0; bottom: 0; border-radius: 9999px; }
+  .bch__delta li[data-k="good"] .bch__dfill { background: var(--color-accent); }
+  .bch__delta li[data-k="bad"] .bch__dfill { background: #f87171; }
+  .bch__delta li[data-k="good"] .bch__bval { color: #4ade80; }
+  .bch__delta li[data-k="bad"] .bch__bval { color: #fca5a5; }
+  .bch__tech h4 { margin: 0 0 .7rem; font-size: .92rem; color: #fff; }
+  .bch__tech section + section { margin-top: 1.2rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,.1); }
+  .bch p.bch__verdict { margin: .7rem 0 0; font-size: .85rem; color: var(--color-ink-200); }
+  .bch p.bch__verdict strong { color: #fff; }
+  .bch__ci { position: absolute; top: .2rem; bottom: .2rem; border-radius: 9999px; background: rgba(56,189,248,.45); }
+  .bch__cidot { position: absolute; top: 50%; width: .7rem; height: .7rem; margin: -.35rem 0 0 -.35rem; border-radius: 50%; background: #fff; }
+  .bch__citrack::after { content: ""; position: absolute; left: 50%; top: -.2rem; bottom: -.2rem; width: 1px; background: rgba(255,255,255,.35); }
+  .bch__ab li[data-v="ACCEPT"] .bch__bval { color: #4ade80; }
+  .bch__ab li[data-v="REJECT"] .bch__bval { color: #fca5a5; }
+  .bch p.bch__note { margin: .5rem 0 .7rem; font-size: .78rem; line-height: 1.45; color: var(--color-ink-300); }
+  .bch__more { margin-top: .7rem; padding: .3rem .8rem; border-radius: 9999px; border: 1px solid rgba(255,255,255,.2); background: transparent; color: #fff; font: inherit; font-size: .8rem; cursor: pointer; }
+  .bch p.bch__hint { margin: .7rem 0 0; font-size: .76rem; color: var(--color-ink-300); }
+  @media (max-width: 40rem) { .bch__bars li, .bch__delta li, .bch__ab li { grid-template-columns: minmax(0, 1fr) 4.5rem; } .bch__bars .bch__blabel, .bch__delta .bch__blabel, .bch__ab .bch__blabel { grid-column: 1 / -1; } .bch__axes text, .bch__pt text { font-size: 15px; } }
+  @media (scripting: enabled) and (prefers-reduced-motion: no-preference) { .bch__panel { animation: tgin .3s ease-out both; } }
   .prose-dg hr { border: 0; border-top: 1px solid var(--color-ink-100); }
   .prose-dg--on-dark { color: #d9d9d9; }
   .prose-dg--on-dark a { color: #fff; }
