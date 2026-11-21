@@ -205,7 +205,7 @@ test.describe('materials', () => {
     await expect(items.first().locator('.msrch__kind')).toHaveText('Mind map · Snowflake');
     await expect(items.first().locator('strong mark').first()).toHaveText(/time/i);
     await expect(page.locator('.msrch__state')).toContainText(/results for “time travel”/);
-    await box.fill('cachíng'); // accents and case are ignored
+    await box.fill('prompt cachíng'); // accents and case are ignored
     await expect(items.first()).toContainText(/caching/i);
     await expect(items.first().locator('.msrch__kind')).toContainText('Technique map · Claude');
     await items.first().click();

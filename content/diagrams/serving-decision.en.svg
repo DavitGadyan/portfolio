@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 370" width="100%" role="img" aria-label="Decision flow from workload to engine: vLLM, TensorRT-LLM, Triton, SGLang, or llm-d on top" style="height:auto;display:block">
+  <title>Decision flow for the engine</title>
+  <defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#6f6f6f"/></marker></defs>
+  <rect x="20" y="150" width="150" height="60" rx="8" fill="#fff4e5" stroke="#d9822b" />
+  <text x="95.0" y="184.0" text-anchor="middle" font-size="13" font-weight="600" fill="#313131">Which engine first?</text>
+  <line x1="170" y1="180" x2="230" y2="45" stroke="#6f6f6f" stroke-width="1.5" marker-end="url(#a)"/>
+  <rect x="230" y="20" width="380" height="50" rx="8" fill="#e8f2fb" stroke="#0078D4" />
+  <text x="420.0" y="49.0" text-anchor="middle" font-size="13" font-weight="600" fill="#313131">Wide model choice, AMD or CPU too, a safe default</text>
+  <line x1="610" y1="45" x2="640" y2="45" stroke="#6f6f6f" stroke-width="1.5" marker-end="url(#a)"/>
+  <rect x="640" y="20" width="260" height="50" rx="8" fill="#e9f6ec" stroke="#2e8b57" />
+  <text x="770.0" y="49.0" text-anchor="middle" font-size="13" font-weight="600" fill="#313131">vLLM</text>
+  <line x1="170" y1="180" x2="230" y2="115" stroke="#6f6f6f" stroke-width="1.5" marker-end="url(#a)"/>
+  <rect x="230" y="90" width="380" height="50" rx="8" fill="#e8f2fb" stroke="#0078D4" />
+  <text x="420.0" y="119.0" text-anchor="middle" font-size="13" font-weight="600" fill="#313131">NVIDIA only, maximum speed, you accept a build step</text>
+  <line x1="610" y1="115" x2="640" y2="115" stroke="#6f6f6f" stroke-width="1.5" marker-end="url(#a)"/>
+  <rect x="640" y="90" width="260" height="50" rx="8" fill="#e9f6ec" stroke="#2e8b57" />
+  <text x="770.0" y="119.0" text-anchor="middle" font-size="13" font-weight="600" fill="#313131">TensorRT-LLM</text>
+  <line x1="170" y1="180" x2="230" y2="185" stroke="#6f6f6f" stroke-width="1.5" marker-end="url(#a)"/>
+  <rect x="230" y="160" width="380" height="50" rx="8" fill="#e8f2fb" stroke="#0078D4" />
+  <text x="420.0" y="189.0" text-anchor="middle" font-size="13" font-weight="600" fill="#313131">Many models or pipelines behind one server</text>
+  <line x1="610" y1="185" x2="640" y2="185" stroke="#6f6f6f" stroke-width="1.5" marker-end="url(#a)"/>
+  <rect x="640" y="160" width="260" height="50" rx="8" fill="#e9f6ec" stroke="#2e8b57" />
+  <text x="770.0" y="189.0" text-anchor="middle" font-size="13" font-weight="600" fill="#313131">Triton (+ TRT-LLM or vLLM backend)</text>
+  <line x1="170" y1="180" x2="230" y2="255" stroke="#6f6f6f" stroke-width="1.5" marker-end="url(#a)"/>
+  <rect x="230" y="230" width="380" height="50" rx="8" fill="#e8f2fb" stroke="#0078D4" />
+  <text x="420.0" y="259.0" text-anchor="middle" font-size="13" font-weight="600" fill="#313131">Long shared prefixes, agents, RadixAttention</text>
+  <line x1="610" y1="255" x2="640" y2="255" stroke="#6f6f6f" stroke-width="1.5" marker-end="url(#a)"/>
+  <rect x="640" y="230" width="260" height="50" rx="8" fill="#e9f6ec" stroke="#2e8b57" />
+  <text x="770.0" y="259.0" text-anchor="middle" font-size="13" font-weight="600" fill="#313131">SGLang</text>
+  <line x1="170" y1="180" x2="230" y2="325" stroke="#6f6f6f" stroke-width="1.5" marker-end="url(#a)"/>
+  <rect x="230" y="300" width="380" height="50" rx="8" fill="#fff4e5" stroke="#d9822b" />
+  <text x="420.0" y="329.0" text-anchor="middle" font-size="13" font-weight="600" fill="#313131">Many GPUs, many nodes, one cluster</text>
+  <line x1="610" y1="325" x2="640" y2="325" stroke="#6f6f6f" stroke-width="1.5" marker-end="url(#a)"/>
+  <rect x="640" y="300" width="260" height="50" rx="8" fill="#e9f6ec" stroke="#2e8b57" />
+  <text x="770.0" y="329.0" text-anchor="middle" font-size="13" font-weight="600" fill="#313131">add llm-d on top</text>
+</svg>

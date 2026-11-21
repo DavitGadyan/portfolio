@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 350" width="100%" role="img" aria-label="Barras horizontales de ancho de banda pico: PCIe 5.0 x16 128 GB/s, NVLink 4 en H100 900 GB/s, NVLink 5 en Blackwell 1.800 GB/s, memoria HBM3 de la H100 3.350 GB/s" style="height:auto;display:block">
+  <title>Escalera de ancho de banda: PCIe, NVLink, HBM</title>
+  <defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#6f6f6f"/></marker></defs>
+  <text x="380" y="24" text-anchor="middle" font-size="13" font-weight="600" fill="#313131">Ancho de banda pico, GB/s (cifras de los fabricantes)</text>
+  <text x="20" y="77" text-anchor="start" font-size="12" font-weight="600" fill="#313131">PCIe 5.0 x16</text>
+  <rect x="190" y="50" width="17.95820895522388" height="40" rx="3" fill="#f6f6f6" stroke="#9a9a9a" />
+  <text x="217.95820895522388" y="76" text-anchor="start" font-size="12" font-weight="600" fill="#313131">128 GB/s</text>
+  <text x="20" y="139" text-anchor="start" font-size="12" font-weight="600" fill="#313131">NVLink 4 · H100</text>
+  <rect x="190" y="112" width="126.26865671641791" height="40" rx="3" fill="#e8f2fb" stroke="#0078D4" />
+  <text x="326.2686567164179" y="138" text-anchor="start" font-size="12" font-weight="600" fill="#313131">900 GB/s</text>
+  <text x="20" y="201" text-anchor="start" font-size="12" font-weight="600" fill="#313131">NVLink 5 · Blackwell</text>
+  <rect x="190" y="174" width="252.53731343283582" height="40" rx="3" fill="#e8f2fb" stroke="#0078D4" />
+  <text x="452.53731343283584" y="200" text-anchor="start" font-size="12" font-weight="600" fill="#313131">1.800 GB/s</text>
+  <text x="20" y="263" text-anchor="start" font-size="12" font-weight="600" fill="#313131">HBM3 · H100 SXM</text>
+  <rect x="190" y="236" width="470.0" height="40" rx="3" fill="#e9f6f0" stroke="#1E7F5C" />
+  <text x="670.0" y="262" text-anchor="start" font-size="12" font-weight="600" fill="#313131">3.350 GB/s</text>
+  <text x="380" y="318" text-anchor="middle" font-size="11" font-weight="400" fill="#6f6f6f">PCIe es el bus de uso general; NVLink une GPU directamente; HBM es la memoria en el paquete de la GPU.</text>
+  <text x="380" y="336" text-anchor="middle" font-size="11" font-weight="400" fill="#6f6f6f">PCIe y NVLink son totales bidireccionales; picos, no velocidades medidas.</text>
+</svg>

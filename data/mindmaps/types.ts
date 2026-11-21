@@ -29,8 +29,19 @@ export interface MindNode {
   facts?: { text: Localized<string>; at: string }[];
 }
 
+/** A block under the canvas: a diagram (content/diagrams/<figure.src>.<locale>.svg), a comparison table, or both. */
+export interface MapSection {
+  id: string;
+  title: Localized<string>;
+  intro?: Localized<string>;
+  figure?: { src: string; caption: Localized<string> };
+  table?: { head: Localized<string[]>; rows: Localized<string[]>[] };
+}
+
 export interface MindMap {
   id: string;
+  /** Diagrams and comparison tables printed under the map (also readable without JavaScript). */
+  sections?: MapSection[];
   logo: LogoId;
   name: string;
   tagline: Localized<string>;
@@ -44,6 +55,18 @@ export interface MindMap {
   nodes: MindNode[];
 }
 
+/** A titled section of /materials/mindmaps/: an exam-prep topic with its icon, a one-line intro and the maps that belong to it, in study order. */
+export interface MindMapGroup {
+  id: string;
+  icon: IconId;
+  title: Localized<string>;
+  intro: Localized<string>;
+  /** Map ids, in the order they should be studied. */
+  maps: string[];
+}
+
 export const L = (en: string, es: string): Localized<string> => ({ en, es });
 /** A proper name or code: the same in both languages. */
 export const C = (s: string): Localized<string> => ({ en: s, es: s });
+/** A table row or header in both languages (same number of cells). */
+export const LA = (en: string[], es: string[]): Localized<string[]> => ({ en, es });

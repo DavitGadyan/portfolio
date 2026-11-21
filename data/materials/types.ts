@@ -13,7 +13,10 @@ export type IconId =
   | 'sigma' | 'group' | 'columns' | 'git-merge' | 'trophy' | 'file-json' | 'merge'
   // mind maps (data/mindmaps/*)
   | 'warehouse' | 'database' | 'cloud' | 'cpu' | 'sparkles' | 'brain' | 'file-text' | 'terminal' | 'git-branch' | 'share' | 'bell' | 'activity'
-  | 'history' | 'languages' | 'file-search' | 'container' | 'store' | 'users' | 'zap' | 'timer' | 'package' | 'function' | 'plug' | 'download' | 'layout';
+  | 'history' | 'languages' | 'file-search' | 'container' | 'store' | 'users' | 'zap' | 'timer' | 'package' | 'function' | 'plug' | 'download' | 'layout'
+  // LLM serving and LLMOps maps
+  | 'rocket' | 'flask' | 'shield-check' | 'scale' | 'radar' | 'microchip' | 'memory' | 'git-compare' | 'hard-drive' | 'shrink' | 'fast-forward'
+  | 'ruler' | 'flag' | 'graduation' | 'scissors' | 'recycle';
 
 /** `official` = documented by the vendor; `study` = a published analysis; `estimate` = a third-party or experience-based range. */
 export type ImpactKind = 'official' | 'estimate' | 'study';

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 360" width="100%" role="img" aria-label="Bar chart of KV cache size for one sequence: 0.52 GB at 4K tokens, 1.05 GB at 8K, 2.10 GB at 16K, 4.19 GB at 32K and 8.39 GB at 64K, growing linearly" style="height:auto;display:block">
+  <title>KV cache size against context length</title>
+  <defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#6f6f6f"/></marker></defs>
+  <text x="380" y="24" text-anchor="middle" font-size="13" font-weight="600" fill="#313131">KV cache per sequence (GB)</text>
+  <line x1="70" y1="300" x2="720" y2="300" stroke="#9a9a9a" />
+  <rect x="110" y="286.3647199046484" width="70" height="13.63528009535161" rx="3" fill="#e8f2fb" stroke="#0078D4" />
+  <text x="145" y="278.3647199046484" text-anchor="middle" font-size="12" font-weight="600" fill="#313131">0.52</text>
+  <text x="145" y="320" text-anchor="middle" font-size="12" font-weight="400" fill="#313131">4K tokens</text>
+  <rect x="235" y="272.46722288438616" width="70" height="27.532777115613825" rx="3" fill="#fdf1e3" stroke="#B25E09" />
+  <text x="270" y="264.46722288438616" text-anchor="middle" font-size="12" font-weight="600" fill="#313131">1.05</text>
+  <text x="270" y="320" text-anchor="middle" font-size="12" font-weight="400" fill="#313131">8K tokens</text>
+  <rect x="360" y="244.93444576877235" width="70" height="55.06555423122765" rx="3" fill="#e8f2fb" stroke="#0078D4" />
+  <text x="395" y="236.93444576877235" text-anchor="middle" font-size="12" font-weight="600" fill="#313131">2.10</text>
+  <text x="395" y="320" text-anchor="middle" font-size="12" font-weight="400" fill="#313131">16K tokens</text>
+  <rect x="485" y="190.1311084624553" width="70" height="109.8688915375447" rx="3" fill="#fdf1e3" stroke="#B25E09" />
+  <text x="520" y="182.1311084624553" text-anchor="middle" font-size="12" font-weight="600" fill="#313131">4.19</text>
+  <text x="520" y="320" text-anchor="middle" font-size="12" font-weight="400" fill="#313131">32K tokens</text>
+  <rect x="610" y="80.0" width="70" height="220.0" rx="3" fill="#e8f2fb" stroke="#0078D4" />
+  <text x="645" y="72.0" text-anchor="middle" font-size="12" font-weight="600" fill="#313131">8.39</text>
+  <text x="645" y="320" text-anchor="middle" font-size="12" font-weight="400" fill="#313131">64K tokens</text>
+  <text x="380" y="345" text-anchor="middle" font-size="11" font-weight="400" fill="#6f6f6f">Linear growth: doubling the context doubles the cache. Orange bars are the worked example (1.05 GB and 4.19 GB).</text>
+</svg>

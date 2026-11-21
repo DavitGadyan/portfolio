@@ -1,0 +1,238 @@
+---
+title: 'vLLM, TensorRT-LLM, SGLang y Triton comparados: servir modelos, más llm-d en Kubernetes con Helm'
+coverAlt: 'Cuatro teselas llamadas vLLM, TensorRT-LLM, SGLang y Triton sobre fondo oscuro bajo el título "Model serving compared", con la línea "plus llm-d on Kubernetes with Helm"'
+description: >-
+  Implementar y optimizar el servicio de LLM: vLLM, TensorRT-LLM, SGLang y
+  Triton Inference Server comparados en tablas y diagramas, cuándo encaja cada
+  uno y cómo llm-d, Helm y Kubernetes ejecutan pools de prefill y decode.
+summary: >-
+  vLLM, TensorRT-LLM y SGLang son motores de inferencia; Triton es una capa de
+  servicio que puede alojar dos de ellos; llm-d es la capa de Kubernetes que
+  enruta entre pods de motor. Este artículo separa las cuatro capas, compara
+  las herramientas en siete tablas y tres diagramas, explica cuándo elegir
+  cada una y cómo Helm instala llm-d con pools separados de prefill y decode.
+about:
+  - vLLM
+  - TensorRT-LLM
+  - SGLang
+  - Triton Inference Server
+  - llm-d
+  - Helm
+  - Kubernetes
+  - Desagregación de prefill y decode
+takeaways:
+  - >-
+    **Motor, servidor y orquestador son tres trabajos distintos.** vLLM,
+    TensorRT-LLM y SGLang ejecutan el modelo; Triton Inference Server envuelve
+    motores tras una API; llm-d enruta peticiones entre pods de motor en
+    Kubernetes. Comparar vLLM con Triton es comparar capas diferentes.
+  - >-
+    **Empieza con vLLM salvo que una restricción diga otra cosa.** Admite GPU
+    NVIDIA y AMD y CPU, un servidor compatible con OpenAI y la lista de
+    modelos más amplia. Elige TensorRT-LLM si solo usas NVIDIA y quieres la
+    máxima velocidad, y SGLang para tráfico de agentes con muchos prefijos.
+  - >-
+    **Todos los motores optimizan las mismas cuatro cosas:** batching, memoria
+    del KV cache, pesos de menor precisión y menos pasos de decode. Mide con
+    tus propios prompts; ninguna herramienta gana en todas las cargas.
+  - >-
+    **Helm despliega, llm-d enruta, vLLM calcula.** Helm instala y actualiza
+    los recursos de Kubernetes; llm-d elige el pod de cada petición; vLLM
+    genera los tokens. Helm no orquesta las peticiones de inferencia.
+  - >-
+    **Separar prefill y decode compensa a escala, no por defecto.** Da escalado
+    y ajuste independientes a cambio de transferir el KV; mantén un despliegue
+    combinado para tráfico pequeño con prompts cortos.
+faq:
+  - q: ¿Qué diferencia hay entre vLLM y Triton Inference Server?
+    a: >-
+      vLLM es un motor de inferencia que ejecuta el modelo. Triton Inference
+      Server es una capa de servicio general con endpoints HTTP y gRPC, dynamic
+      batching, métricas y repositorios de modelos, y puede alojar un backend
+      de vLLM o de TensorRT-LLM. Puedes usar vLLM solo, o Triton con vLLM dentro.
+  - q: ¿Es TensorRT-LLM más rápido que vLLM?
+    a: >-
+      TensorRT-LLM es la biblioteca de NVIDIA afinada para sus GPU, con FP8 en
+      H100 y posteriores y FP4 en B200, así que es el candidato habitual cuando
+      importa la velocidad máxima en NVIDIA. Que supere a vLLM depende del
+      modelo, la precisión, la forma del batch y la versión. Prueba ambos con
+      tu tráfico.
+  - q: ¿Cuándo usar SGLang?
+    a: >-
+      Cuando muchas peticiones comparten prefijos largos, como agentes con un
+      prompt de sistema y una lista de herramientas fijos, o chat de varios
+      turnos. SGLang documenta RadixAttention y prefix caching para ello. vLLM
+      también tiene prefix caching, así que prueba los dos.
+  - q: ¿Cómo se conecta llm-d con Helm?
+    a: >-
+      llm-d publica charts de Helm y manifiestos de Kustomize para sus recetas
+      de despliegue. Helm instala y configura los componentes en Kubernetes;
+      llm-d hace el enrutado consciente de la inferencia; vLLM genera. El chart
+      antiguo ModelService está obsoleto a favor de un despliegue del servidor
+      de modelos con Kustomize, así que lee la guía actual de llm-d antes de
+      copiar un comando.
+  - q: ¿llm-d solo admite unos pocos modelos?
+    a: >-
+      No. El soporte de modelos viene del motor, sobre todo vLLM, que documenta
+      200 o más arquitecturas de Hugging Face. llm-d añade recetas probadas
+      para algunos modelos y hardware, y una receta puede estar mantenida por
+      la comunidad en lugar de validada cada noche. Pregunta primero si vLLM
+      ejecuta el modelo en tu GPU y luego si llm-d tiene receta para esa
+      configuración.
+  - q: ¿Debe un mensaje de seguimiento ir al mismo nodo que hizo el prefill?
+    a: >-
+      En un chat de varios turnos, el nodo que ya tiene el KV cache de la
+      conversación puede evitar recalcularlo, y por eso llm-d ofrece enrutado
+      consciente del prefix cache. Con desagregación, prefill y decode corren
+      en pools distintos por diseño, así que el router elige por petición según
+      dónde está la caché y la carga, no un nodo fijo.
+  - q: ¿Puedo probar llm-d en Minikube?
+    a: >-
+      Ahí puedes aprender la orquestación: kubectl get nodes, kubectl get
+      pods -A, helm list -A. La inferencia real con GPU y RDMA necesita nodos
+      GPU y una red adecuada, que un clúster local de Minikube no ofrece.
+---
+
+La pregunta detrás de este artículo es una línea de oferta de empleo: implementar y optimizar soluciones de servicio de modelos con frameworks como vLLM, TensorRT-LLM, SGLang o Triton Inference Server. La trampa es tratar esos cuatro nombres como competidores. No son el mismo tipo de cosa, y las herramientas de Kubernetes que los rodean (Helm, llm-d) son otra capa más.
+
+Lo escribí como la referencia que tengo abierta al dimensionar una pila de servicio. Separa las capas, compara las herramientas en tablas, dice cuándo encaja cada una y termina con cómo llm-d, Helm y Kubernetes ejecutan pools separados de prefill y decode. Si quieres empezar por la elección del modelo, lee [¿Qué LLM usar?](/es/blog/which-llm-to-choose-2026/).
+
+## La respuesta corta
+
+Usa **vLLM** salvo que una restricción apunte a otro lado: es la opción general con más soporte de hardware y de modelos. Elige **TensorRT-LLM** para despliegues solo NVIDIA donde la velocidad máxima justifique la configuración extra, **SGLang** cuando muchas peticiones comparten prefijos largos, y **Triton** cuando un servidor debe dar frente a varios modelos o pipelines. Añade **llm-d** cuando un pod de motor ya no basta y necesitas enrutado, conciencia del prefix cache y pools separados de prefill y decode en Kubernetes.
+
+Todo lo de abajo se comprobó el 19 de noviembre de 2026 contra la documentación de los propios proyectos (en Fuentes). Donde una celda dice "no confirmado", no encontré la afirmación en la página que leí, que no es lo mismo que "no existe". No hago afirmaciones de rendimiento: la velocidad depende del modelo, la GPU, la precisión y el tráfico.
+
+## ¿Qué es cada herramienta y en qué capa está?
+
+| Herramienta | Capa | Qué hace |
+| --- | --- | --- |
+| vLLM | Motor | Ejecuta el modelo con PagedAttention, continuous batching, prefix caching y un servidor de API compatible con OpenAI |
+| TensorRT-LLM | Motor | Biblioteca de código abierto de NVIDIA para inferencia optimizada de LLM en GPU NVIDIA, con una API Python y arquitectura basada en PyTorch |
+| SGLang | Motor | Framework de servicio de alto rendimiento para modelos de lenguaje y multimodales, con RadixAttention, prefix caching y paralelismo multi-GPU |
+| Triton Inference Server | Capa de servicio | Servidor de código abierto que despliega modelos de varios frameworks tras HTTP/REST y gRPC, con dynamic batching, ensembles y métricas |
+| llm-d | Orquestación | Pila de inferencia de código abierto para Kubernetes que ejecuta motores como vLLM y SGLang en un clúster; proyecto CNCF Sandbox |
+| Helm | Despliegue | Instala y configura aplicaciones de Kubernetes a partir de charts y un archivo de valores |
+
+<Figure src="serving-stack.es.svg" caption="Figura 1. La pila de servicio en cuatro capas. llm-d orquesta pods de motor en Kubernetes, Triton sirve modelos y puede alojar TensorRT-LLM y vLLM como backends, el motor ejecuta el modelo y la GPU calcula." />
+
+## ¿Cómo se comparan vLLM, TensorRT-LLM, SGLang y Triton?
+
+| Característica | vLLM | TensorRT-LLM | SGLang | Triton |
+| --- | --- | --- | --- | --- |
+| Batching | Continuous batching, chunked prefill | In-flight batching, chunked prefill | No confirmado en las páginas que leí | Dynamic batching por modelo; in-flight batching con el backend de TensorRT-LLM |
+| KV cache | PagedAttention, prefix caching | Paged KV cache con reutilización de bloques | RadixAttention, prefix caching | Delegado al backend |
+| Cuantización | FP8, MXFP8/MXFP4, NVFP4, INT8, INT4, GPTQ/AWQ, GGUF | FP8 en H100 y posteriores, FP4 en B200 | No confirmado | Delegado al backend |
+| Decodificación especulativa | n-gram, suffix, EAGLE, DFlash | EAGLE, MTP, n-gram | No confirmado | A través del backend |
+| Paralelismo | Tensor, pipeline, datos, expertos, contexto | Tensor, pipeline, expertos | Paralelismo multi-GPU | Delegado al backend |
+| Hardware | GPU NVIDIA y AMD, CPU x86, ARM, PowerPC | GPU NVIDIA | NVIDIA, AMD, Intel Xeon, Google TPU, Ascend NPU y otros | GPU NVIDIA, CPU x86 y ARM, AWS Inferentia |
+| API | Compatible con OpenAI, Anthropic Messages, gRPC | API Python; CLI de servicio | Compatible con OpenAI | HTTP/REST y gRPC (protocolo KServe) |
+| Prefill/decode desagregado | Sí | Beta | No confirmado | No aplica |
+
+## ¿Cuándo tiene más sentido cada una?
+
+| Situación | Elige | Por qué |
+| --- | --- | --- |
+| Modelo de pesos abiertos, primer despliegue, hardware mixto | vLLM | Mayor cobertura de hardware y modelos, endpoint sencillo estilo OpenAI |
+| Flota solo NVIDIA, importan latencia y coste por token | TensorRT-LLM | Kernels afinados por NVIDIA y FP8/FP4 en GPU recientes |
+| Agentes o chat con prompts de sistema largos compartidos | SGLang, o vLLM con prefix caching | Reutilizar el prefijo evita recalcular los mismos tokens; prueba ambos |
+| Un endpoint para varios modelos, ML clásico y LLM | Triton | Repositorio de modelos, ensembles, métricas, varios backends |
+| Muchas GPU en varios nodos, enrutado consciente del KV | llm-d sobre el motor | El enrutado y la gestión de pools no son trabajo del motor |
+| Experimento en portátil o solo CPU | vLLM para CPU, o un runtime local | vLLM indica soporte de CPU; producción va en GPU |
+
+<Figure src="serving-decision.es.svg" caption="Figura 2. Flujo de decisión del motor. vLLM por defecto; TensorRT-LLM para velocidad máxima solo NVIDIA, Triton para muchos modelos tras un servidor, SGLang para tráfico con muchos prefijos, y llm-d cuando el despliegue abarca muchos nodos." />
+
+El posicionamiento de estas dos tablas es mi lectura de la documentación, no una medición.
+
+## ¿Qué optimizaciones importan y qué cuestan?
+
+| Técnica | Qué mejora | Contrapartida |
+| --- | --- | --- |
+| Continuous o in-flight batching | Uso de la GPU: las peticiones nuevas se unen a un batch en marcha | Un batch mayor sube la latencia por petición |
+| Paged KV cache | Menos memoria desperdiciada, más peticiones concurrentes | Sobrecoste de gestionar bloques |
+| Prefix caching | Se salta el prefill de prefijos compartidos, baja el tiempo hasta el primer token | Solo ayuda si los prefijos se repiten de verdad |
+| Cuantización (FP8, INT4, FP4) | Pesos más pequeños, más sitio para el KV cache | Hay que comprobar la calidad en tu tarea |
+| Decodificación especulativa | Menos pasos secuenciales de decode | Necesita un método de borrador; la ganancia varía con el prompt |
+| Paralelismo tensor, pipeline, expertos | Cabe un modelo mayor que una GPU | Exige enlaces rápidos, ver NVLink e InfiniBand |
+| Desagregación prefill/decode | Escalado y ajuste separados por fase | Coste de transferir el KV, más piezas móviles |
+
+## ¿Qué añade llm-d en Kubernetes y cómo encaja Helm?
+
+Piénsalo como cuatro trabajos. Kubernetes gestiona el clúster. Helm instala y configura aplicaciones en él. llm-d aporta enrutado y orquestación conscientes de la inferencia. vLLM (o SGLang) ejecuta el modelo.
+
+| Pieza | Trabajo | Cómo llega |
+| --- | --- | --- |
+| Gateway | Punto de entrada de las peticiones | Helm, o un gateway existente |
+| Router y endpoint picker (EPP) | Elige el pod de motor para cada petición | Helm |
+| Pods de motor (vLLM) | Generan tokens | Manifiestos de Kubernetes o Kustomize en las guías actuales de llm-d |
+| LeaderWorkerSet | Agrupa pods para réplicas de modelo multinodo | Helm |
+| Monitorización | Métricas y paneles | Herramientas adicionales |
+
+llm-d describe sus despliegues como "well-lit paths", recetas probadas que incluyen charts de Helm o manifiestos de Kustomize, parámetros de ajuste, cargas de ejemplo, benchmarks y monitorización. Los caminos de su documentación incluyen una base optimizada, enrutado por latencia predicha, enrutado preciso consciente del prefix cache, una caché de prefijos por niveles, compartición de prefix cache entre pares, desagregación prefill/decode y paralelismo de expertos amplio para modelos de mezcla de expertos.
+
+Una instalación con Helm, con la ubicación del chart tomada de la receta publicada del router de llm-d (confírmala con la guía actual, porque los charts cambian):
+
+```bash
+helm install my-router \
+  oci://ghcr.io/llm-d/charts/llm-d-router-standalone \
+  -f router-values.yaml \
+  --namespace llm-d \
+  --create-namespace
+```
+
+Helm renderiza las plantillas del chart con tus valores como recursos de Kubernetes y los envía a la API; los controladores de Kubernetes concilian entonces el clúster con ese estado deseado. Para cambiar la configuración editas el archivo de valores y ejecutas `helm upgrade` con el mismo nombre de release. Este esquema es solo ilustrativo, no son las claves exactas de los charts actuales de llm-d:
+
+```yaml
+router:
+  replicas: 2
+prefill:
+  replicas: 4
+decode:
+  replicas: 8
+```
+
+Subir decode de 8 a 12 pide entonces cuatro pods más a Kubernetes, siempre que la carga respete ese ajuste y el clúster tenga las GPU.
+
+<Figure src="serving-llmd-helm.es.svg" caption="Figura 3. Helm instala el router y los pools de prefill y decode. El router elige un pod de prefill, el KV cache pasa a un pod de decode por RDMA y los tokens vuelven al cliente." />
+
+## ¿Deben prefill y decode correr en nodos separados?
+
+Prefill lee todo el prompt en paralelo y está limitado por cómputo; decode produce tokens de uno en uno y lo limitan el ancho de banda de memoria y la capacidad del KV cache. Los pools separados permiten dar a cada fase sus propias GPU, paralelismo y señal de escalado, y evitan que los prompts largos frenen el decode. El precio es mover el KV cache entre pools, por lo que la red (NVLink dentro del nodo, InfiniBand o RoCE entre nodos) decide si compensa.
+
+| Opción | Tiene sentido cuando | Cuidado con |
+| --- | --- | --- |
+| Prefill y decode combinados, un pool | Modelos pequeños o medianos, prompts cortos, fase inicial | Los prompts largos retrasan el decode de otros usuarios |
+| Enrutado consciente del prefix cache, pods combinados | Chat de varios turnos, prompts de sistema compartidos | Pods saturados si el router ignora la carga |
+| Pools de prefill y decode desagregados | Alta concurrencia, prompts largos, objetivos de latencia estrictos | La transferencia del KV exige una red rápida |
+| Paralelismo de expertos amplio | Modelos grandes de mezcla de expertos en muchas GPU | Fuerte exigencia de interconexión y operación |
+
+Para un mensaje de seguimiento en el mismo chat, el pod que ya tiene el KV cache de la conversación ahorra cálculo, así que un router que sabe dónde están los prefijos en caché supera al round-robin. Es el mismo razonamiento que mantener capacidad de prefill separada: controlas el espacio de caché y el escalado por fase.
+
+## ¿llm-d solo admite unos pocos modelos?
+
+No. El soporte de modelos viene del motor. La documentación de modelos admitidos de vLLM lista más de 200 arquitecturas de Hugging Face (Llama, Qwen, DeepSeek, Mistral, Gemma, Phi, Nemotron y modelos multimodales). Lo que cambia es el nivel de validación.
+
+| Pregunta | Qué comprobar |
+| --- | --- |
+| ¿Puede el motor ejecutar el modelo? | La arquitectura aparece en los modelos admitidos de vLLM |
+| ¿Funciona en mi hardware? | CUDA, ROCm u otro backend, más el formato de cuantización |
+| ¿Funcionan juntos el paralelismo y el tipo de KV cache? | Paralelismo tensor, pipeline, datos o expertos y el dtype de la caché |
+| ¿Tiene llm-d una receta? | Existe un well-lit path o un camino específico del modelo para tu configuración |
+| ¿Está validada la receta? | Algunas recetas se marcan como mantenidas por la comunidad en lugar de validadas cada noche |
+
+## ¿Qué hacer primero?
+
+1. Despliega un modelo con vLLM y un endpoint compatible con OpenAI; registra el tiempo hasta el primer token, los tokens por segundo y el uso del KV cache con tus prompts reales.
+2. Prueba la cuantización y el prefix caching, y conserva un conjunto de prompts de referencia para comprobar la calidad.
+3. Prueba TensorRT-LLM y SGLang con los mismos prompts si tu hardware y tu tráfico lo justifican.
+4. Contenedoriza, mete el motor en un release de Helm y añade un pool de nodos GPU con el device plugin de NVIDIA.
+5. Solo entonces añade llm-d, enrutado consciente del prefijo y, si las cifras lo piden, pools separados de prefill y decode.
+
+## Fuentes
+
+- Documentación de vLLM, [docs.vllm.ai](https://docs.vllm.ai/en/latest/): lista de características (PagedAttention, continuous batching, chunked prefill, prefix caching, formatos de cuantización, métodos de decodificación especulativa, paralelismo, hardware, servidores de API, prefill desagregado). Leída el 19 de noviembre de 2026.
+- NVIDIA, [resumen de TensorRT-LLM](https://nvidia.github.io/TensorRT-LLM/overview.html): arquitectura PyTorch, in-flight batching, paged KV cache, FP8 y FP4, decodificación especulativa, paralelismo, servicio desagregado (Beta). Leída el 19 de noviembre de 2026.
+- SGLang, [docs.sglang.io](https://docs.sglang.io/): RadixAttention, prefix caching, paralelismo multi-GPU, hardware admitido. Leída el 19 de noviembre de 2026.
+- NVIDIA, [guía de usuario de Triton Inference Server](https://docs.nvidia.com/deeplearning/triton-inference-server/user-guide/docs/index.html) y el [backend de TensorRT-LLM](https://github.com/triton-inference-server/tensorrtllm_backend): backends, dynamic e in-flight batching, ensembles, protocolos, métricas. Leídas el 19 de noviembre de 2026.
+- llm-d, [documentación](https://llm-d.ai/docs): well-lit paths, recursos de Helm y Kustomize, estado CNCF Sandbox, motores admitidos. Leída el 19 de noviembre de 2026.
+- Mis propias notas de estudio de noviembre de 2026 sobre cómo se conectan Helm, llm-d, Kubernetes y vLLM, la lista de comprobación de modelos admitidos y las opciones de colocación. Las tablas de posicionamiento son mi lectura de la documentación, el `values.yaml` es ilustrativo y los nombres de charts y flags deben confirmarse con la guía actual de llm-d antes de usarlos.

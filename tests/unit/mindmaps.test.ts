@@ -1,10 +1,24 @@
 import { describe, expect, it } from 'vitest';
-import { mindmaps, NODE_KINDS } from '@/data/mindmaps';
+import { mindmaps, mindmapGroups, ungroupedMaps, groupOf, NODE_KINDS } from '@/data/mindmaps';
 import { ICONS } from '@/components/materials/icons';
 import { logos } from '@/data/skillLogos';
 import { childrenOf, layoutTree, NODE_H, NODE_W, ROOT_W } from '@/lib/mindmap/layout';
 
 describe('mind maps', () => {
+  it('sections: every map sits in exactly one section, in study order, with an icon and both languages', () => {
+    expect(mindmapGroups.map((g) => g.id)).toEqual(['foundations', 'serving', 'ops', 'data']);
+    expect(mindmapGroups.map((g) => g.maps)).toEqual([['llms', 'gpu'], ['serving'], ['llmops', 'gateway'], ['snowflake', 'databricks']]);
+    expect(ungroupedMaps).toEqual([]);
+    const ids = mindmapGroups.flatMap((g) => g.maps);
+    expect(new Set(ids).size).toBe(ids.length);
+    expect(mindmaps.map((m) => m.id)).toEqual(ids); // tiles and the switcher follow the sections
+    for (const g of mindmapGroups) {
+      expect(ICONS[g.icon]).toBeTypeOf('object');
+      for (const f of [g.title, g.intro]) { expect(f.en.trim()).not.toBe(''); expect(f.es.trim()).not.toBe(''); }
+      for (const id of g.maps) expect(groupOf(id)).toBe(g);
+    }
+  });
+
   it('every concept is bilingual, uniquely identified, hangs off an existing parent and is typed', () => {
     expect(mindmaps.length).toBeGreaterThan(0);
     for (const m of mindmaps) {
@@ -80,6 +94,25 @@ describe('mind maps', () => {
     for (const n of g.nodes) for (const f of n.facts ?? []) expect(f.at).toMatch(/^[A-Z]/);
   });
 
+  it('GPU map: eleven branches, 85 concepts, the ladder open at start, four figures and the architecture table backed by files', async () => {
+    const g = mindmaps.find((m) => m.id === 'gpu')!;
+    expect(g.nodes).toHaveLength(85);
+    expect(g.nodes.filter((n) => !n.parent).map((b) => b.id)).toEqual(['cpugpu', 'attn', 'kv', 'mem', 'pcie', 'nvlink', 'net', 'nccl', 'arch', 'k8s', 'ladder']);
+    expect(g.openAtStart).toEqual(['ladder']);
+    expect(g.nodes.filter((n) => n.parent === 'ladder')).toHaveLength(6);
+    expect(g.nodes.filter((n) => n.parent === 'arch')).toHaveLength(7);
+    for (const n of g.nodes) for (const f of n.facts ?? []) expect(f.at).toMatch(/^[A-Z]/);
+    const fs = await import('node:fs');
+    const figs = (g.sections ?? []).flatMap((x) => (x.figure ? [x.figure.src] : []));
+    expect(figs).toHaveLength(4);
+    for (const f of figs) for (const l of ['en', 'es']) expect(fs.existsSync(`content/diagrams/${f}.${l}.svg`), `${f}.${l}.svg`).toBe(true);
+    for (const x of g.sections ?? []) if (x.table) {
+      for (const l of ['en', 'es'] as const) for (const r of x.table.rows) expect(r[l]).toHaveLength(x.table.head[l].length);
+      expect(x.table.rows.length).toBeGreaterThan(0);
+    }
+    expect(g.sections?.find((x) => x.id === 'sec-arch')?.table?.rows).toHaveLength(6);
+  });
+
   /** Places every card of a map under several fold states and checks that no two visible cards overlap and none sits over the root. */
   function expectCleanLayout(id: string, total: number, branches: number, keepOpen: string) {
     const s = mindmaps.find((m) => m.id === id)!;
@@ -109,6 +142,28 @@ describe('mind maps', () => {
     expect(dbx).toHaveLength(8 + 10); // the platform branch and its ten direct children; the toolset keeps its five folded
     expect(dbx.filter((p) => p.side === 'right').map((p) => p.id).filter((id) => !id.includes('-'))).toEqual(['de', 'plat', 'arch', 'nb']);
     expect(expectCleanLayout('llms', 94, 8, 'vram')).toHaveLength(8 + 8); // the VRAM branch and its eight children; quantisation and GPU tiers stay folded
+    expect(expectCleanLayout('gpu', 85, 11, 'ladder')).toHaveLength(11 + 6); // the ladder branch and its six children
     expect(expectCleanLayout('gateway', 84, 9, 'scen')).toHaveLength(9 + 9); // the scenarios branch and its nine children; the chooser keeps its seven folded
+  });
+  it('LLM serving: nine branches, 88 concepts, the exam branch open at start, EAGLE-3 explained in five steps', () => {
+    const v = mindmaps.find((m) => m.id === 'serving')!;
+    expect(v.nodes).toHaveLength(88);
+    expect(v.nodes.filter((n) => !n.parent).map((b) => b.id)).toEqual(['eng', 'batch', 'kv', 'quant', 'spec', 'par', 'pd', 'metric', 'exam']);
+    expect(v.openAtStart).toEqual(['exam']);
+    expect(v.nodes.filter((n) => n.parent === 'exam')).toHaveLength(10);
+    expect(v.nodes.filter((n) => n.parent === 'sp-eagle').map((n) => n.id)).toEqual(['e3-reuse', 'e3-head', 'e3-verify', 'e3-steps', 'e3-myth']);
+    expect(v.sections?.map((s) => s.id)).toEqual(['sec-engines', 'sec-spec']);
+    for (const n of v.nodes) for (const f of n.facts ?? []) expect(f.at).toMatch(/^[A-Z]/);
+  });
+
+  it('LLMOps: nine branches, 84 concepts, the exam branch open at start, release and evaluation tables', () => {
+    const o = mindmaps.find((m) => m.id === 'llmops')!;
+    expect(o.nodes).toHaveLength(84);
+    expect(o.nodes.filter((n) => !n.parent).map((b) => b.id)).toEqual(['life', 'prompt', 'eval', 'obs', 'guard', 'deploy', 'cost', 'rag', 'exam']);
+    expect(o.openAtStart).toEqual(['exam']);
+    expect(o.nodes.filter((n) => n.parent === 'exam')).toHaveLength(9);
+    expect(o.sections?.map((s) => s.id)).toEqual(['sec-release', 'sec-eval']);
+    for (const s of o.sections ?? []) for (const r of s.table!.rows) expect(r.en.length).toBe(r.es.length);
+    for (const n of o.nodes) for (const f of n.facts ?? []) expect(f.at).toMatch(/^[A-Z]/);
   });
 });

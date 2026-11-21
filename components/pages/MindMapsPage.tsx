@@ -8,12 +8,13 @@ import { breadcrumbNode, personNode, webPageNode, websiteNode } from '@/lib/seo/
 import { homePath, pagePath } from '@/lib/locale-path';
 import { absUrl, withBasePath } from '@/lib/site';
 import { logoScale, logoSrc } from '@/data/skillLogos';
-import { MINDMAPS_PATH, mapPath, mindmaps, type MindMap, type MindNode } from '@/data/mindmaps';
+import { MINDMAPS_PATH, mapPath, mindmaps, mindmapGroups, groupOf, type MindMap, type MindNode } from '@/data/mindmaps';
 import { SiteFrame } from '@/components/layout/SiteFrame';
 import { SectionTitle } from '@/components/ui/SectionTitle';
 import { Breadcrumbs } from '@/components/content/Breadcrumbs';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { TechIcon } from '@/components/materials/icons';
+import { Figure } from '@/components/content/Figure';
 import { MindMapLab } from '@/components/materials/MindMapLab';
 import type { MindMapView, MindStrings } from '@/components/materials/MindMapFlow';
 
@@ -45,19 +46,29 @@ export function MindMapsPage({ locale }: { locale: Locale }) {
             <SectionTitle as="h1" align="center">{m.mindmaps.heading}</SectionTitle>
             <p className="mt-6 text-[1.02rem] leading-relaxed">{m.mindmaps.intro}</p>
           </div>
-          <ul className="tg__tiles" role="list">
-            {mindmaps.map((x) => (
-              <li key={x.id}>
-                <Link href={pagePath(locale, mapPath(x.id))} className="tg__tile" prefetch={false}>
-                  {/* eslint-disable-next-line @next/next/no-img-element -- brand mark served as-is from public/logos */}
-                  <img src={withBasePath(logoSrc(x.logo))} alt="" width={56} height={56} style={{ '--k': logoScale(x.logo) } as CSSProperties} />
-                  <strong>{x.name}</strong>
-                  <p>{x.tagline[locale]}</p>
-                  <small>{fmt(m.mindmaps.branches, { n: x.nodes.filter((n) => !n.parent).length })} · {fmt(m.mindmaps.concepts, { n: x.nodes.length })} · {m.mindmaps.openMap} →</small>
-                </Link>
-              </li>
-            ))}
-          </ul>
+          {mindmapGroups.map((g, gi) => (
+            <section key={g.id} id={`g-${g.id}`} className="mmgroup" aria-labelledby={`g-${g.id}-h`}>
+              <h2 id={`g-${g.id}-h`} className="mmgroup__title">
+                <TechIcon id={g.icon} size={20} />
+                <span className="mmgroup__num">{gi + 1}</span>
+                {g.title[locale]}
+              </h2>
+              <p className="mmgroup__intro">{g.intro[locale]}</p>
+              <ul className="tg__tiles" role="list">
+                {g.maps.map((id) => getMindMap(id)!).map((x) => (
+                  <li key={x.id}>
+                    <Link href={pagePath(locale, mapPath(x.id))} className="tg__tile" prefetch={false}>
+                      {/* eslint-disable-next-line @next/next/no-img-element -- brand mark served as-is from public/logos */}
+                      <img src={withBasePath(logoSrc(x.logo))} alt="" width={56} height={56} style={{ '--k': logoScale(x.logo) } as CSSProperties} />
+                      <strong>{x.name}</strong>
+                      <p>{x.tagline[locale]}</p>
+                      <small>{fmt(m.mindmaps.branches, { n: x.nodes.filter((n) => !n.parent).length })} · {fmt(m.mindmaps.concepts, { n: x.nodes.length })} · {m.mindmaps.openMap} →</small>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ))}
         </div>
       </section>
     </SiteFrame>
@@ -116,6 +127,7 @@ export function MindMapPage({ locale, id }: { locale: Locale; id: string }) {
   const x = getMindMap(id)!;
   const path = mapPath(x.id);
   const branches = x.nodes.filter((n) => !n.parent);
+  const grp = groupOf(x.id);
   const bc = breadcrumbNode(locale, path, [{ name: m.nav.home, path: '/' }, { name: m.nav.materials, path: MATERIALS }, { name: s.heading, path: MINDMAPS_PATH }, { name: x.name, path }]);
   const graph = { '@context': 'https://schema.org', '@graph': [personNode(locale), websiteNode(),
     { ...webPageNode({ locale, path, name: x.title[locale], description: x.description[locale], breadcrumbId: bc['@id'] }),
@@ -136,6 +148,14 @@ export function MindMapPage({ locale, id }: { locale: Locale; id: string }) {
           <div className="mx-auto mt-8 max-w-3xl text-center">
             <SectionTitle as="h1" align="center">{x.title[locale]}</SectionTitle>
             <p className="mt-6 text-[1.02rem] leading-relaxed">{x.tagline[locale]}</p>
+            {grp && (
+              <p className="mt-4">
+                <Link href={`${pagePath(locale, MINDMAPS_PATH)}#g-${grp.id}`} className="mmgroup__chip" prefetch={false}>
+                  <TechIcon id={grp.icon} size={14} />
+                  {fmt(s.inSection, { n: mindmapGroups.indexOf(grp) + 1, name: grp.title[locale] })}
+                </Link>
+              </p>
+            )}
           </div>
           <ul className="tg__tools" role="list" aria-label={s.pick}>
             {mindmaps.map((y) => (
@@ -154,6 +174,21 @@ export function MindMapPage({ locale, id }: { locale: Locale; id: string }) {
             </ol>
             <MindMapLab view={mapView(x, locale)} t={t} />
           </div>
+          {x.sections?.map((sec) => (
+            <section key={sec.id} id={sec.id} className="mmsec prose-dg">
+              <h2>{sec.title[locale]}</h2>
+              {sec.intro && <p>{sec.intro[locale]}</p>}
+              {sec.figure && <Figure src={`${sec.figure.src}.${locale}.svg`} caption={sec.figure.caption[locale]} />}
+              {sec.table && (
+                <div className="tblwrap">
+                  <table>
+                    <thead><tr>{sec.table.head[locale].map((h, i) => <th key={i} scope="col">{h}</th>)}</tr></thead>
+                    <tbody>{sec.table.rows.map((r, i) => <tr key={i}>{r[locale].map((c, j) => (j === 0 ? <th key={j} scope="row">{c}</th> : <td key={j}>{c}</td>))}</tr>)}</tbody>
+                  </table>
+                </div>
+              )}
+            </section>
+          ))}
           <p className="tg__sources mx-auto max-w-3xl text-center">{x.sources[locale]}</p>
         </div>
       </section>

@@ -11,31 +11,37 @@ const START = 21; // the root, eight branches and the twelve Cortex concepts ope
 const DBX_START = 19; // the root, eight branches and the ten platform capabilities open at start
 
 test.describe('mind maps', () => {
-  test('a folder tile on the Materials index, the Snowflake and Databricks tiles inside', async ({ page }) => {
+  test('a folder tile on the Materials index, four sections in study order, each tile inside its section', async ({ page }) => {
     await page.goto('/materials/');
     const tile = page.locator('.tg__tile', { hasText: 'Mind Maps' });
-    await expect(tile).toContainText('4 maps');
+    await expect(tile).toContainText('7 maps');
     await tile.click();
     await page.waitForURL(/\/materials\/mindmaps\/$/);
     await expect(page.locator('h1')).toHaveText('Mind Maps');
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', /\/materials\/mindmaps\/$/);
-    const tiles = page.locator('.tg__tile');
-    await expect(tiles).toHaveCount(4);
-    await expect(tiles.first()).toContainText('Snowflake');
-    await expect(tiles.first()).toContainText('8 branches · 73 concepts');
-    await expect(tiles.first().locator('img')).toHaveAttribute('src', /\/logos\/snowflake\.svg$/);
-    await expect(tiles.nth(1)).toContainText('Databricks');
-    await expect(tiles.nth(1)).toContainText('8 branches · 88 concepts');
-    await expect(tiles.nth(1).locator('img')).toHaveAttribute('src', /\/logos\/databricks\.svg$/);
-    await tiles.first().click();
+    const groups = page.locator('.mmgroup');
+    await expect(groups).toHaveCount(4);
+    await expect(groups.locator('h2')).toHaveText(['1LLM foundations and hardware', '2LLM serving and inference', '3LLMOps and AI gateways', '4Data and ML platforms']);
+    await expect(groups.first().locator('h2 svg')).toHaveCount(1); // the section icon
+    await expect(page.locator('.tg__tile')).toHaveCount(7);
+    await expect(page.locator('#g-serving .tg__tile')).toHaveCount(1);
+    await expect(page.locator('#g-ops .tg__tile').first()).toContainText('LLMOps');
+    const data = page.locator('#g-data .tg__tile');
+    await expect(data.first()).toContainText('Snowflake');
+    await expect(data.first()).toContainText('8 branches · 73 concepts');
+    await expect(data.first().locator('img')).toHaveAttribute('src', /\/logos\/snowflake\.svg$/);
+    await expect(data.nth(1)).toContainText('8 branches · 88 concepts');
+    await expect(data.nth(1).locator('img')).toHaveAttribute('src', /\/logos\/databricks\.svg$/);
+    await data.first().click();
     await page.waitForURL(/\/materials\/mindmaps\/snowflake\/$/);
+    await expect(page.locator('.mmgroup__chip')).toHaveText('Section 4: Data and ML platforms'); // the way back to its section
   });
 
   test('the Databricks map: the platform branch open at start, a figure with its lesson, nested folds, Spanish, no JavaScript', async ({ page, browser }) => {
     await page.goto('/materials/mindmaps/databricks/');
     await expect(page.locator('h1')).toHaveText(/Databricks Mind Map/);
     await expect(page.locator('link[rel="alternate"][hreflang="es"]')).toHaveAttribute('href', /\/es\/materials\/mindmaps\/databricks\/$/);
-    await expect(page.locator('.tg__tool')).toHaveCount(4); // the switcher lists every map
+    await expect(page.locator('.tg__tool')).toHaveCount(7); // the switcher lists every map
     await expect(page.locator('.tg__tool[aria-current="page"]')).toContainText('Databricks');
     const nodes = page.locator('.react-flow__node');
     await expect(nodes).toHaveCount(DBX_START, { timeout: 20_000 });
@@ -103,6 +109,50 @@ test.describe('mind maps', () => {
     await p.goto('/materials/mindmaps/llms/');
     await expect(p.locator('.mmlist h3')).toHaveCount(94);
     await expect(p.locator('.mmlist > li')).toHaveCount(8);
+    await ctx.close();
+  });
+
+  test('the serving map: exam points open at start, EAGLE-3 steps, comparison tables, section chip, Spanish, no JavaScript', async ({ page, browser }) => {
+    await page.goto('/materials/mindmaps/serving/');
+    await expect(page.locator('.react-flow__node')).toHaveCount(20, { timeout: 20_000 }); // the root, nine branches and the ten exam points
+    await expect(page.locator('.mmgroup__chip')).toHaveText('Section 2: LLM serving and inference');
+    await expect(page.locator('#sec-engines table tbody tr')).toHaveCount(4);
+    await expect(page.locator('#sec-spec table tbody tr')).toHaveCount(5);
+    await page.goto('/es/materials/mindmaps/serving/');
+    await expect(page.locator('.mmgroup__chip')).toHaveText('Sección 2: Servir LLM e inferencia');
+    const ctx = await browser.newContext({ javaScriptEnabled: false });
+    const p = await ctx.newPage();
+    await p.goto('/materials/mindmaps/serving/');
+    await expect(p.locator('.mmlist h3')).toHaveCount(88);
+    await expect(p.locator('.mmlist > li')).toHaveCount(9);
+    await expect(p.locator('.mmlist')).toContainText('EAGLE-3');
+    await ctx.close();
+  });
+
+  test('the LLMOps map: exam points open at start, release and evaluation tables', async ({ page }) => {
+    await page.goto('/materials/mindmaps/llmops/');
+    await expect(page.locator('.react-flow__node')).toHaveCount(19, { timeout: 20_000 }); // the root, nine branches and the nine exam points
+    await expect(page.locator('.mmgroup__chip')).toHaveText('Section 3: LLMOps and AI gateways');
+    await expect(page.locator('#sec-release table tbody tr')).toHaveCount(4);
+    await expect(page.locator('#sec-eval table tbody tr')).toHaveCount(4);
+  });
+
+  test('the GPU map: the ladder opens at start, tables and diagrams render, Spanish, no JavaScript', async ({ page, browser }) => {
+    await page.goto('/materials/mindmaps/gpu/');
+    await expect(page.locator('h1')).toHaveText(/GPU Mind Map/);
+    await expect(page.locator('.react-flow__node')).toHaveCount(18, { timeout: 20_000 }); // the root, eleven branches and the six ladder levels
+    await expect(page.locator('#sec-arch table tbody tr')).toHaveCount(6);
+    await expect(page.locator('#sec-k8s svg')).toBeVisible();
+    await expect(page.locator('#sec-bw svg')).toBeVisible();
+    await page.goto('/es/materials/mindmaps/gpu/');
+    await expect(page.locator('h1')).toHaveText(/Mapa mental de GPU/);
+    await expect(page.locator('#sec-arch h2')).toContainText('Seis arquitecturas');
+    const ctx = await browser.newContext({ javaScriptEnabled: false });
+    const p = await ctx.newPage();
+    await p.goto('/materials/mindmaps/gpu/');
+    await expect(p.locator('.mmlist h3')).toHaveCount(85);
+    await expect(p.locator('.mmlist > li')).toHaveCount(11);
+    await expect(p.locator('#sec-pd table')).toBeVisible();
     await ctx.close();
   });
 

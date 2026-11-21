@@ -223,8 +223,8 @@
     "videosDescription": "Cinco vídeos breves de David Gadyan, grabados para propuestas a clientes, uno por área: ciencia de datos y machine learning, IA generativa, trading algorítmico, marketing y ventas con IA, y SaaS y sistemas de IA full-stack construidos de principio a fin.",
     "quizzesTitle": "Quizzes de código: chuletas de JavaScript, React y SQL con quizzes de práctica",
     "quizzesDescription": "Tres mapas interactivos de sintaxis de David Gadyan para pruebas técnicas cronometradas: JavaScript, React y SQL de Snowflake. Cada mapa explica los patrones que más preguntan las pruebas e incluye un quiz de 20 preguntas tipo test, elegidas al azar y corregidas al final.",
-    "mindmapsTitle": "Mapas mentales: los conceptos clave de Snowflake, Databricks, los LLM y los AI gateways en mapas interactivos",
-    "mindmapsDescription": "Mapas mentales interactivos de David Gadyan construidos a partir de apuntes de cursos. Snowflake para desarrolladores, científicos de datos e ingenieros de datos (arquitectura, objetos básicos, funciones de la plataforma, ingeniería de datos, IA con Cortex, aprendizaje automático y aplicaciones) y Databricks para ingenieros de datos (arquitectura Medallion, Apache Spark, la plataforma, el workspace, clústeres, notebooks y DBFS), además de una chuleta de LLM (APIs frontera frente a modelos de pesos abiertos, densos y mezcla de expertos, VRAM, licencias, trading y contenido restringido) y un mapa de AI gateways (por qué una empresa necesita uno, LiteLLM, Bifrost, Portkey y otros gateways de código abierto, Amazon Bedrock y AgentCore Gateway, Azure API Management, Apigee, gateways alojados y los escenarios de cada uno), cada concepto con su caso de uso y el código que lo acompaña."
+    "mindmapsTitle": "Mapas mentales: despliegue de LLM, inferencia, LLMOps, GPU, AI gateways, Snowflake y Databricks",
+    "mindmapsDescription": "Mapas mentales interactivos de David Gadyan, agrupados para preparar exámenes. Fundamentos de LLM y hardware: una chuleta de LLM (API frontier frente a modelos de pesos abiertos, densos y mixture of experts, dimensionado de VRAM, licencias) y un mapa de GPU (atención con Query, Key y Value, la caché KV, PCIe, NVLink, InfiniBand, RDMA y NCCL). Servir LLM e inferencia: vLLM, TensorRT-LLM, SGLang y Triton, continuous batching, PagedAttention, cuantización, decodificación especulativa con EAGLE-3, paralelismo, separación de prefill y decode con llm-d, y métricas de inferencia. LLMOps y gateways de IA: evaluación, observabilidad, guardrails, estrategias de despliegue, control de costes y gobernanza, además de LiteLLM, Bedrock, Azure API Management y otros gateways. Plataformas de datos: Snowflake y Databricks. Cada concepto con su caso de uso y el código que hay detrás."
   },
   "a11y": {
     "quote": "Cita",
@@ -335,11 +335,12 @@
     "open": "Abrir la carpeta",
     "count": "{n} mapas",
     "countOne": "1 mapa",
-    "intro": "Un mapa por tecnología que estudio, construido a partir de la transcripción de un curso o de la documentación de los propios proveedores, y nada más: qué es cada componente, cuándo se usa y dónde entra la IA. Despliega las ramas, pulsa un concepto para ver sus detalles o pasa al modo edición y reorganiza el mapa.",
+    "intro": "Un mapa por tecnología que estudio, construido a partir de apuntes de curso o de la documentación de los propios proveedores, y nada más: qué es cada componente, cuándo se usa y dónde entra la IA. Los mapas se agrupan en cuatro secciones en orden de estudio: fundamentos de LLM y hardware, servir LLM e inferencia, LLMOps y gateways de IA, y después las plataformas de datos. Los mapas de inferencia y de LLMOps terminan con una rama de puntos clave para el examen. Despliega las ramas, pulsa un concepto para ver sus detalles o pasa al modo edición y reorganiza el mapa.",
     "pick": "Elige un mapa",
     "concepts": "{n} conceptos",
     "branches": "{n} ramas",
     "openMap": "Abrir el mapa",
+    "inSection": "Sección {n}: {name}",
     "graphLabel": "Mapa mental de {tool}",
     "hint": "Pulsa un concepto para leer qué es, cuándo se usa y su ángulo de IA. El número de una tarjeta despliega su rama.",
     "what": "Qué es",

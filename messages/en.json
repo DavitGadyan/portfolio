@@ -223,8 +223,8 @@
     "videosDescription": "Five short videos by David Gadyan, recorded for client proposals, one per area: data science and machine learning, generative AI, algorithmic trading, AI marketing and sales, and full-stack SaaS and AI systems built end to end.",
     "quizzesTitle": "Code Quizzes: JavaScript, React and SQL Cheatsheets with Practice Quizzes",
     "quizzesDescription": "Three interactive syntax maps by David Gadyan for timed coding assessments: JavaScript, React and Snowflake SQL. Each map explains the patterns tests ask about most and comes with a 20-question multiple-choice quiz, drawn at random and graded at the end.",
-    "mindmapsTitle": "Mind Maps: Snowflake, Databricks, LLM and AI Gateway Key Concepts as Interactive Maps",
-    "mindmapsDescription": "Interactive mind maps by David Gadyan built from course notes. Snowflake for developers, data scientists and data engineers (architecture, core objects, platform features, data engineering, AI with Cortex, machine learning and apps) and Databricks for data engineers (Medallion architecture, Apache Spark, the platform, the workspace, clusters, notebooks and DBFS), plus an LLM cheatsheet (frontier APIs against open-weight models, dense and mixture of experts, VRAM sizing, licences, trading and restricted content) and an AI gateway map (why a company needs one, LiteLLM, Bifrost, Portkey and other open-source gateways, Amazon Bedrock and AgentCore Gateway, Azure API Management, Apigee, hosted gateways and the scenarios behind each), each concept with its use case and the code behind it."
+    "mindmapsTitle": "Mind Maps: LLM Deployment, Serving, LLMOps, GPU, AI Gateway, Snowflake and Databricks Key Concepts",
+    "mindmapsDescription": "Interactive mind maps by David Gadyan, grouped for exam preparation. LLM foundations and hardware: an LLM cheatsheet (frontier APIs against open-weight models, dense and mixture of experts, VRAM sizing, licences) and a GPU map (attention with Query, Key and Value, the KV cache, PCIe, NVLink, InfiniBand, RDMA and NCCL). LLM serving and inference: vLLM, TensorRT-LLM, SGLang and Triton, continuous batching, PagedAttention, quantization, speculative decoding with EAGLE-3, parallelism, prefill and decode disaggregation with llm-d, and serving metrics. LLMOps and AI gateways: evaluation, observability, guardrails, release strategies, cost control and governance, plus LiteLLM, Bedrock, Azure API Management and other gateways. Data platforms: Snowflake and Databricks. Each concept comes with its use case and the code behind it."
   },
   "a11y": {
     "quote": "Quote",
@@ -335,11 +335,12 @@
     "open": "Open the folder",
     "count": "{n} maps",
     "countOne": "1 map",
-    "intro": "One map per technology I study, built from a course transcript or the vendors' own documentation, and nothing else: what each component is, when it is used and where AI comes in. Unfold the branches, click a concept for its details, or switch to edit mode and reshape the map.",
+    "intro": "One map per technology I study, built from course notes or the vendors' own documentation, and nothing else: what each component is, when it is used and where AI comes in. The maps are grouped into four sections in study order: LLM foundations and hardware, LLM serving and inference, LLMOps and AI gateways, then the data platforms. The serving and LLMOps maps each end with a Key exam points branch. Unfold the branches, click a concept for its details, or switch to edit mode and reshape the map.",
     "pick": "Pick a map",
     "concepts": "{n} concepts",
     "branches": "{n} branches",
     "openMap": "Open the map",
+    "inSection": "Section {n}: {name}",
     "graphLabel": "Mind map of {tool}",
     "hint": "Click a concept to read what it is, when it is used and its AI angle. The number on a card unfolds its branch.",
     "what": "What it is",
