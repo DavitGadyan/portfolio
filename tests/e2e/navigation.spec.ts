@@ -40,7 +40,7 @@ test.describe('language switcher and navigation', () => {
     await page.goto('/portfolio/');
     const cards = page.getByTestId('project-card');
     const all = await cards.count();
-    expect(all).toBe(49);
+    expect(all).toBe(50);
     await page.locator('label[for="f-security-compliance"]').click();
     await expect(cards.filter({ visible: true })).toHaveCount(7); // Security & Compliance: Virgil, AITA, Azure AI Automation, SF Ops Copilot, AI Jobs MCP, Private AI Gateway, CareLens
     await expect(page.locator('.pnote')).toBeVisible();

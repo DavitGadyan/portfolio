@@ -1,0 +1,67 @@
+---
+title: "Jev AlphaTrading: trading cripto con modelos de decisión"
+coverAlt: "Portada de Jev AlphaTrading: el título Jev AlphaTrading, la línea Jev 1.14 and Microsoft Decision-1.1 tested honestly after costs y tres resultados (63 % menos de pérdida por operación con RLVR, drawdown a la mitad y mantenido en 2025 sin ver, 837 tests automáticos) junto a una foto generada con IA de un escritorio oscuro con dos monitores que muestran la página real de backtest y la del ciclo de aprendizaje"
+summary: "Una plataforma de investigación de trading cripto construida sobre modelos de decisión tipados, Jev 1.14 y Microsoft Decision-1.1. Un motor de reglas determinista convierte velas de 1 minuto en hechos exactos y encuentra setups de day trading; el modelo de decisión juzga cada uno y devuelve LONG, NEUTRAL o SHORT con stop, objetivo y probabilidades. Un backtester de 1 minuto cobra comisiones y deslizamiento y compara cada ejecución con comprar y mantener y con entradas aleatorias, y RLVR, un ciclo de autoaprendizaje, solo cambia la estrategia cuando el cambio se sostiene en datos que no ha visto. Su primer cambio aceptado redujo la pérdida por operación un 63 % y el drawdown a la mitad. FastAPI, Next.js, MongoDB, OpenRouter, 837 tests."
+description: "Investigación de trading cripto con Jev 1.14 y Microsoft Decision-1.1: motor de reglas, backtests de 1 minuto tras costes, ciclo RLVR y paper trading en vivo."
+outcomes:
+  - El primer cambio aceptado del ciclo de autoaprendizaje redujo la pérdida por operación de −0,37R a −0,14R (un 63 % menos) y el drawdown máximo de −10,3 % a −5,2 % en cinco monedas entre 2022 y 2024, y la mejora se mantuvo en datos de 2025 que nunca había visto (de −0,19R a −0,06R).
+  - Los modelos de decisión se integran de forma segura. Jev 1.14 y Microsoft Decision-1.1 ven un estado de mercado anonimizado (sin moneda, fechas ni precios), cada respuesta se guarda en caché, el gasto tiene un tope fijo y una negativa cuenta como no. 1.826 llamadas al modelo costaron 0,12 $.
+  - Cada idea pasa la misma prueba. Un backtester de 1 minuto cobra un 0,10 % de comisión más deslizamiento por lado y compara cada ejecución con comprar y mantener, entradas aleatorias y entradas aleatorias filtradas por tendencia, y los datos divididos y congelados con un registro de pruebas impiden el sobreajuste.
+  - La investigación se cuenta tal como se midió. Los dos modelos confirmaron los 197 setups que juzgaron y no eligieron ganadores mejor que el azar (AUC 0,47–0,48), y las entradas de day trading no tenían ventaja tras costes. El seguimiento lento de tendencia fue la única estrategia positiva en todos los periodos, con un 29 % anual.
+  - Esa regla de tendencia opera ahora en paper trading dentro de la API con el mismo código del backtest. Desde el 12 de septiembre de 2026, un periodo que la investigación nunca tocó, obtuvo −1,9 % en 67 días mientras comprar y mantener perdía un 24,2 %, con un drawdown máximo del −9 %.
+metrics:
+  - label: Pérdida por operación tras el ciclo de aprendizaje
+    value: "−63 %"
+  - label: Drawdown máximo
+    value: "−10,3 % → −5,2 %"
+  - label: Llamadas al modelo de decisión, coste total
+    value: "1.826 · 0,12 $"
+  - label: Tests automáticos
+    value: "837"
+---
+
+## El problema
+
+Un trader quería convertir una estrategia discrecional de day trading en algo que una máquina pudiera decidir, probar y mejorar, y saber, sin engañar a nadie, si los nuevos modelos de decisión (modelos de lenguaje entrenados para devolver decisiones tipadas con probabilidades en lugar de texto) aportan valor real sobre las reglas. En cripto es difícil: unos costes de alrededor del 0,22 % por operación completa se comen las ventajas pequeñas, y un backtest que mira el futuro o se ajusta con los mismos datos que publica siempre parecerá bueno.
+
+## Qué construí
+
+**Un motor de reglas que produce hechos, no opiniones.** Un motor determinista de estructura de mercado procesa velas de 1 minuto barra a barra y responde todo lo que se puede calcular con exactitud: la dirección de la tendencia en tres marcos temporales (diario, horario y 5 minutos), los niveles que fijan el stop y el objetivo, y si la relación beneficio-riesgo tras costes llega a 1,5. Se reconstruyó para funcionar de forma incremental y se demostró igual al motor original en 500 series de precios aleatorias, y un test comprueba que ninguna decisión cambia al quitar todos los datos posteriores.
+
+**La estrategia como preguntas tipadas.** La estrategia es un conjunto versionado de 32 preguntas tipadas en 8 etapas. El motor responde 25 con hechos exactos; el modelo de decisión responde 7, cada una como sí o no con una probabilidad, una elección o una puntuación. Cada pregunta registra quién la responde, su papel (filtro, característica, decisión o gestión) y si es una regla establecida o una hipótesis que aún debe ganarse su sitio en un backtest. El editor de preguntas valida cada cambio antes de que pueda entrar en vivo.
+
+**Modelos de decisión detrás de una sola capa de proveedor.** Jev 1.14 (TypeSafe) y Microsoft Decision-1.1 se llaman a través de la API Decisions de OpenRouter. El modelo ve un estado anonimizado, nunca la moneda, la fecha ni un precio, así que no puede recordar qué pasó después. Las respuestas se guardan en caché, el gasto se detiene en un tope fijo, una negativa siempre cuenta como "no", y el modelo elige entre candidatos que construyó el motor; nunca inventa un precio. Los modelos se cambian en la configuración, donde aparecen 44 con sus precios.
+
+![Página de configuración: el selector de modelo de decisión con Jev 1.14 elegido entre 44 modelos con su precio por millón de tokens y su contexto, y el panel de gasto con 0,118 $ gastados de un tope de 3 $](/images/portfolio/jev-decision-models.jpg)
+
+**Un backtester difícil de engañar.** Cada ejecución llena en la apertura del minuto siguiente, supone que el stop se toca antes que el objetivo dentro de un minuto, cobra un 0,10 % de comisión más deslizamiento por lado y nunca mantiene una operación a través de datos que faltan. Cada ejecución se compara con comprar y mantener, con entradas aleatorias con las mismas salidas y con entradas aleatorias mientras los filtros de tendencia son alcistas. Los datos se dividen una vez y se congelan: desarrollo 2021–2024 con un presupuesto de 40 evaluaciones, validación 2025 con 12 consultas y una sola consulta de prueba en 2026. Cada evaluación se escribe en un registro encadenado por hash, y la API rechaza las ejecuciones que superan el presupuesto.
+
+![Backtest de cinco monedas en 2022–2024 con Jev 1.14 y el conjunto de preguntas 1.1: rentabilidad neta −4,8 %, esperanza −0,14R, 41 % de aciertos, drawdown máximo −5,2 %, 174 operaciones; la curva de capital frente a comprar y mantener, costes y exposición, y un panel de referencias que muestra que las entradas aleatorias con las mismas salidas lo hicieron igual de bien](/images/portfolio/jev-backtest.jpg)
+
+**RLVR, un ciclo de autoaprendizaje.** Cada decisión se puntúa con su resultado real, neto de comisiones. El ciclo estima qué preguntas ayudaron y cuáles perjudicaron, propone un cambio cada vez (un filtro nuevo, una pregunta del modelo reformulada, una respuesta excluida) y lo juzga en la parte del registro que no ha visto: una cota inferior de confianza, los tramos positivos y las monedas positivas deben coincidir antes de promover una versión nueva, y cualquier versión se puede revertir.
+
+![Página del ciclo de aprendizaje: el ciclo de seis pasos (decidir, resultado, recompensa, actualización de valor, diagnóstico de preguntas, filtro) alrededor del conjunto de preguntas 1.1 en vivo, nueve iteraciones con una promovida, propuestas rechazadas con los motivos del filtro y el gráfico de recompensa acumulada](/images/portfolio/jev-learning-loop.jpg)
+
+**Una consola de investigación completa.** Decisiones en vivo por moneda, backtests con progreso en tiempo real, el ciclo de aprendizaje con sus hallazgos y su registro de pruebas, el editor de preguntas, la investigación de estrategias y la configuración, en Next.js con gráficos de TradingView.
+
+## Resultados
+
+| | Jev 1.14 | Microsoft Decision-1.1 |
+|---|---|---|
+| Mismo setup: P(válido) · posición | 0,88 · LONG 0,97 | 0,96 · LONG 0,96 |
+| Setups juzgados (5 monedas, 2023) | 197, todos confirmados | 197, todos confirmados |
+| Operaciones · resultado por operación tras costes | 151 · −0,50R | 151 · −0,50R |
+| Elegir ganadores (AUC) | 0,47 | 0,48 |
+
+- **El ciclo de aprendizaje funcionó.** Su primer cambio aceptado, un filtro que exige que el stop sea al menos cuatro veces el coste de la operación completa, llevó la ejecución de cinco monedas en 2022–2024 de 239 operaciones a −0,37R y un drawdown de −10,3 % a 174 operaciones a −0,14R y −5,2 %. En 2025, donde no se eligió nada, el mismo cambio pasó de −0,19R a −0,06R.
+- **Los modelos de decisión no aportaron capacidad de selección en estos setups.** Los dos confirmaron todos los setups que el motor les pasó, y sus probabilidades no separaron ganadores de perdedores. Un modelo solo se gana su sitio cuando sabe algo que el motor no sabe; aquí no fue así.
+- **Las entradas de day trading no tenían ventaja tras costes**, ni siquiera sin comisiones (−0,02R por operación). Se registraron antes de probarlas once ideas más de la literatura de 2025–2026, y ninguna pasó la validación.
+- **El seguimiento lento de tendencia se sostuvo.** El momentum de 28 días gestionado por volatilidad (mantener una moneda mientras su rentabilidad a 28 días es positiva, con menos tamaño cuando la volatilidad diaria supera el 2 %) fue la única estrategia positiva en todos los periodos probados, con un 29 % anual neto de costes.
+
+![Página de investigación de estrategias: el objetivo del 2 % diario marcado como no alcanzado (la mejor estrategia probada, momentum de serie temporal a 28 días, promedió +0,22 % diario tras costes), y una tabla de estrategias con parámetros publicados, su rentabilidad diaria y anual, ratio de Sharpe, drawdown máximo y tiempo invertido, incluidas variantes con apalancamiento y con machine learning horario](/images/portfolio/jev-strategy-research.jpg)
+
+## Paper trading en vivo
+
+La regla de tendencia opera ahora en paper trading dentro de la API: decide una vez al día con barras diarias cerradas de Binance usando exactamente el código del backtest, llena al precio en vivo, cobra comisiones y valora la cartera al cierre. En el periodo posterior al 12 de septiembre de 2026, que la investigación nunca usó, obtuvo −1,9 % en 67 días mientras comprar y mantener perdía un 24,2 %, con un drawdown máximo del −9 %. Funciona en vivo desde el 18 de noviembre de 2026.
+
+Es una plataforma de investigación, no asesoramiento financiero: midió con honestidad, redujo pérdidas y encontró lo que no funciona, y no afirma tener una estrategia de day trading rentable.

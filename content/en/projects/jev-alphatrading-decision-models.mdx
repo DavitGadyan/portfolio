@@ -1,0 +1,98 @@
+---
+title: "Jev AlphaTrading: Crypto Trading Research with Decision Models"
+date: 2026-11-21
+lastmod: 2026-11-21
+cover: /images/portfolio/jev-cover.jpg
+coverAlt: "Jev AlphaTrading cover: the title Jev AlphaTrading, the line Jev 1.14 and Microsoft Decision-1.1 tested honestly after costs, and three results (63% lower loss per trade with RLVR, drawdown halved and held on unseen 2025, 837 automated tests) beside an AI-generated photo of a dark desk with two monitors showing the real backtest page and the learning-loop page"
+summary: "A crypto trading research platform built on typed decision models, Jev 1.14 and Microsoft Decision-1.1. A deterministic rule engine turns 1-minute candles into exact facts and finds day-trading setups; the decision model judges each one and returns LONG, NEUTRAL or SHORT with a stop, a target and probabilities. A 1-minute backtester charges fees and slippage and compares every run with buy-and-hold and random entries, and RLVR, a self-learning loop, changes the strategy only when the change holds on data it has not seen. Its first accepted change cut the loss per trade by 63% and halved the drawdown. FastAPI, Next.js, MongoDB, OpenRouter, 837 tests."
+description: "Crypto trading research with Jev 1.14 and Microsoft Decision-1.1: rule engine, 1-minute backtests after costs, an RLVR self-learning loop and live paper trading."
+categories:
+  - ai-agents
+  - finance-quant
+  - data-science-ml
+stack:
+  frontend:
+    - Next.js 15, React 19 research console
+    - TradingView charts, live decision pages
+  backend:
+    - FastAPI, job runner, progress stream
+    - Hash-chained trial ledger with budgets
+  ai:
+    - Jev 1.14, Microsoft Decision-1.1
+    - OpenRouter Decisions API, spend cap
+    - RLVR self-learning loop
+    - Gradient-boosted setup scoring
+  data:
+    - MongoDB candles, Parquet cache
+    - SQLite or Postgres results, Binance data
+  infra:
+    - "pytest and Vitest: 837 tests"
+    - Ubuntu services, SSH-tunnelled Mongo
+  security:
+    - Anonymised model input, no symbol or date
+    - Read-only market data, server-side API key
+    - Look-ahead tests, frozen data splits
+outcomes:
+  - The self-learning loop's first accepted change cut the loss per trade from −0.37R to −0.14R (63% lower) and the maximum drawdown from −10.3% to −5.2% on five coins over 2022–2024, and the gain held on 2025 data it had never seen (−0.19R to −0.06R).
+  - Decision models are wired in safely. Jev 1.14 and Microsoft Decision-1.1 see an anonymised market state (no symbol, dates or prices), every answer is cached, spend has a hard cap and a refusal counts as no. 1,826 model calls cost $0.12.
+  - Every idea meets the same test. A 1-minute backtester charges 0.10% fees plus slippage per side and compares each run with buy-and-hold, random entries and trend-filtered random entries, and frozen data splits with a trial ledger stop over-fitting.
+  - The research is reported as measured. Both decision models confirmed all 197 setups they judged and picked winners no better than chance (AUC 0.47–0.48), and the day-trading entries had no edge after costs. Slow trend following was the one strategy positive in every period, at about 29% a year.
+  - That trend rule now trades on paper inside the API with the backtest's own code. From 12 September 2026, a period research never touched, it returned −1.9% over 67 days while buy-and-hold lost 24.2%, with a −9% maximum drawdown.
+metrics:
+  - label: Loss per trade after the learning loop
+    value: "−63%"
+  - label: Maximum drawdown
+    value: "−10.3% → −5.2%"
+  - label: Decision-model calls, total cost
+    value: "1,826 · $0.12"
+  - label: Automated tests
+    value: "837"
+featured: true
+order: 6
+---
+
+## The problem
+
+A trader wanted a discretionary day-trading strategy turned into something a machine can decide, test and improve, and wanted to know, without fooling anyone, whether the new decision models (language models trained to return typed decisions with probabilities rather than prose) add real value on top of rules. Crypto makes this hard: costs of about 0.22% a round trip eat small edges, and a backtest that peeks at the future or is tuned on the same data it reports on will always look good.
+
+## What I built
+
+**A rule engine that produces facts, not opinions.** A deterministic market-structure engine processes 1-minute candles one bar at a time and answers everything that can be computed exactly: trend direction on three timeframes (daily, hourly and 5-minute), the levels that place the stop and the target, and whether the reward-to-risk after costs reaches 1.5. It was rebuilt to work incrementally and proven equal to the original engine on 500 random price series, and a test checks that no decision changes when all later data is removed.
+
+**The strategy as typed questions.** The strategy is a versioned set of 32 typed questions in 8 stages. The engine answers 25 of them with exact facts; the decision model answers 7, each as yes or no with a probability, a choice or a score. Every question records who answers it, its role (gate, feature, decision or management) and whether it is an established rule or a hypothesis that still has to earn its place in a backtest. The question editor validates every change before it can go live.
+
+**Decision models behind one provider layer.** Jev 1.14 (TypeSafe) and Microsoft Decision-1.1 are called through the OpenRouter Decisions API. The model sees an anonymised state, never the coin, the date or a price, so it cannot recall what happened next. Responses are cached, spending stops at a hard cap, a refusal always counts as "no", and the model chooses among candidates the engine built; it never invents a price. Models are switched in settings, and 44 are listed with their prices.
+
+![Settings page: the decision model picker with Jev 1.14 selected among 44 models with their price per million tokens and context, and the spend panel showing $0.118 spent of a $3 cap](/images/portfolio/jev-decision-models.jpg)
+
+**A backtester that is hard to fool.** Every run fills at the next minute's open, assumes the stop is hit before the target inside a minute, charges 0.10% fees plus slippage per side and never carries a trade across missing data. Each run is compared with buy-and-hold, random entries with the same exits and random entries while the trend filters are bullish. Data is split once and frozen: development 2021–2024 with a budget of 40 evaluations, validation 2025 with 12 looks, and a single test look on 2026. Every evaluation is written to a hash-chained ledger, and the API refuses runs that exceed the budget.
+
+![Backtest of five coins over 2022–2024 with Jev 1.14 and question set 1.1: net return −4.8%, expectancy −0.14R, win rate 41%, maximum drawdown −5.2%, 174 trades; the equity line against buy-and-hold, cost and exposure, and a baseline panel showing that random entries with the same exits did as well](/images/portfolio/jev-backtest.jpg)
+
+**RLVR, a self-learning loop.** Every decision is scored by its realised outcome, net of fees. The loop estimates which questions helped and which hurt, proposes one change at a time (a new gate, a reworded model question, an excluded answer) and judges it on the part of the log it has not seen: a lower confidence bound, positive folds and positive coins must all agree before a new version is promoted, and any version can be rolled back.
+
+![Learning loop page: the six-step cycle (decide, outcome, reward, value update, question diagnostics, gate) around the live question set 1.1, nine iterations with one promoted, rejected proposals with the gate's reasons, and the cumulative reward chart](/images/portfolio/jev-learning-loop.jpg)
+
+**A full research console.** Live decisions per coin, backtests with progress streaming, the learning loop with its insights and trial ledger, the question editor, strategy research and settings, on Next.js with TradingView charts.
+
+## Results
+
+| | Jev 1.14 | Microsoft Decision-1.1 |
+|---|---|---|
+| Same setup: P(valid) · position | 0.88 · LONG 0.97 | 0.96 · LONG 0.96 |
+| Setups judged (5 coins, 2023) | 197, all confirmed | 197, all confirmed |
+| Trades · result per trade after costs | 151 · −0.50R | 151 · −0.50R |
+| Picking winners (AUC) | 0.47 | 0.48 |
+
+- **The learning loop worked.** Its first accepted change, a gate that requires the stop to be at least four times the round-trip cost, took the five-coin 2022–2024 run from 239 trades at −0.37R and a −10.3% drawdown to 174 trades at −0.14R and −5.2%. On 2025, which nothing had been chosen on, the same change moved −0.19R to −0.06R.
+- **The decision models added no selection skill on these setups.** Both confirmed every setup the engine passed them, and their probabilities did not separate winners from losers. A model earns its place only when it knows something the engine does not; here it did not.
+- **The day-trading entries had no edge after costs**, even at zero fees (−0.02R a trade). Eleven further ideas from the 2025–2026 literature were registered before testing, and none passed validation.
+- **Slow trend following held up.** Volatility-managed 28-day momentum (hold a coin while its 28-day return is positive, smaller size when daily volatility is above 2%) was the one strategy positive in every period tested, about 29% a year net of costs.
+
+![Strategy research page: the target of 2% a day marked as not met (the best tested strategy, 28-day time-series momentum, averaged +0.22% a day after costs), and a table of strategies with published parameters, their return per day and per year, Sharpe ratio, maximum drawdown and time invested, including leverage and hourly machine-learning variants](/images/portfolio/jev-strategy-research.jpg)
+
+## Live paper trading
+
+The trend rule now trades on paper inside the API: it decides once a day from closed Binance bars with exactly the code the backtest used, fills at the live price, charges fees and marks the portfolio at the close. Over the forward period from 12 September 2026, which research never used, it returned −1.9% in 67 days while buy-and-hold lost 24.2%, with a maximum drawdown of −9%. It has run live since 18 November 2026.
+
+This is a research platform, not financial advice: it measured honestly, reduced losses and found what does not work, and it does not claim a profitable day-trading strategy.
