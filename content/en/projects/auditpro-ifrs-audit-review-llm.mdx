@@ -1,11 +1,11 @@
 ---
 title: "Audit Pro: Inference-Optimized LLM for IFRS Audit Review"
 date: 2026-11-21
-lastmod: 2026-11-21
+lastmod: 2026-11-22
 cover: /images/portfolio/auditpro-cover.jpg
-coverAlt: "Audit Pro cover: the title Audit Pro, the line An LLM first pass on financial reports, the errors and points an auditor should check first, and three points (errors between pages with evidence, IFRS references and points of interest, 41 model setups measured) beside an AI-generated photo of a desk at dusk: a printed balance sheet of an invented company with two totals circled in red, a red pen, and a laptop showing the quality champion's scores on that report (4 of 4 injected errors found, 3 of 5 findings real, 42.8 s)"
-summary: "An assistant that gives auditors a first pass on a client's IFRS financial report. It reads a PDF, a link or pasted text and drafts the errors (figures that disagree between pages, totals that do not add up, departures from IFRS) and the points of interest worth testing, each with its page, the quoted evidence, the IFRS reference and a suggested procedure, always in one fixed JSON schema. A deterministic checker and a grounding step stop the model from inventing findings, and everything runs on the firm's own GPU, so no report leaves it. A benchmark lab chose the model: 41 configurations of 19 open models measured on one RTX 4090 for quality, latency, throughput and cost, with A/B tests on every technique. FastAPI, a Next.js lab, Docker and Helm, signed images in CI."
-description: "An LLM that gives auditors a first pass on IFRS reports: errors between pages, points of interest, IFRS references, on the firm's own GPU, with 41 model setups measured."
+coverAlt: "Audit Pro cover: the title Audit Pro, the line An LLM first pass on financial reports, the errors and points an auditor should check first, and three points (errors between pages with evidence, IFRS references and points of interest, 57 model setups measured) beside an AI-generated photo of a desk at dusk: a printed balance sheet of an invented company with two totals circled in red, a red pen, and a laptop showing Qwen3-14B AWQ's scores on that report (4 of 4 injected errors found, 3 of 5 findings real, 42.8 s)"
+summary: "An assistant that gives auditors a first pass on a client's IFRS financial report. It reads a PDF, a link or pasted text and drafts the errors (figures that disagree between pages, totals that do not add up, departures from IFRS) and the points of interest worth testing, each with its page, the quoted evidence, the IFRS reference and a suggested procedure, always in one fixed JSON schema. A deterministic checker and a grounding step stop the model from inventing findings, and everything runs on the firm's own GPU, so no report leaves it. A benchmark lab chose the model: 57 configurations of 19 open models measured on one RTX 4090 for quality, latency, throughput and cost, with A/B tests on every technique. FastAPI, a Next.js lab, Docker and Helm, signed images in CI."
+description: "An LLM that gives auditors a first pass on IFRS reports: errors between pages, points of interest, IFRS references, on the firm's own GPU, with 57 model setups measured."
 categories:
   - ai-agents
   - finance-quant
@@ -19,10 +19,10 @@ stack:
     - Pydantic schema, JSON Schema output contract
     - pdfplumber and trafilatura ingest, SSRF guard
   ai:
-    - Qwen3, DeepSeek-R1, Llama 3.1, gpt-oss
-    - AWQ, GPTQ, MXFP4 and BF16, FP8 KV cache
+    - Qwen3, Phi-4, DeepSeek-R1, Llama 3.1
+    - AWQ, GPTQ, FP8, MXFP4, BF16, FP8 KV cache
     - vLLM structured JSON output
-    - n-gram speculative decoding
+    - n-gram and draft-model speculation
     - Decimal checks plus a critic agent
   data:
     - Synthetic IFRS reports with ground truth
@@ -37,17 +37,17 @@ stack:
     - API key, basic auth, NetworkPolicy, non-root
     - Model weights pinned and SHA-256 verified
 outcomes:
-  - An auditor gets a first draft of what to look at before reading the report end to end. Every finding names its page, the line item, the expected and the found figure, the quoted evidence, the IFRS reference and a confidence, and points of interest come with a suggested audit procedure.
-  - The model cannot invent a number. Arithmetic and cross-page ties are checked with exact decimal maths, every figure the model extracts must be printed on its cited page, and a finding whose quote is not on that page is dropped before the critic agent sees it.
-  - Client reports stay inside the firm. The model runs on the firm's own GPU through vLLM; the code has no path to an external LLM API and no fallback to one.
-  - The model choice is measured, not guessed. 41 configurations of 19 open models (size, quantization, KV cache, context length, speculative decoding) were scored for detection quality, latency, throughput and cost on the same GPU and the same synthetic reports with known errors.
-  - The best configurations trade off openly. Qwen3-14B AWQ gives the highest quality score (68.8 of 100, 70.3% recall); adding an FP8 KV cache and n-gram speculative decoding keeps the same recall for about a third less cost ($0.97 against $1.43 per 1,000 audits); the 30B-A3B mixture of experts finds the most errors (83.8% recall).
+  - "A first draft for the auditor: each finding with its page, figures, quoted evidence and IFRS reference."
+  - "No invented numbers: exact decimal checks, and a figure or quote not on its cited page is dropped."
+  - "Client reports never leave the firm: inference runs on its own GPU, with no external LLM API."
+  - "57 setups of 19 open models measured for quality, latency, throughput and cost on one RTX 4090."
+  - "Best quality: Qwen3-14B AWQ, 8k context (69.1). Best cost: FP8 KV + n-gram, $0.97 per 1,000 audits."
 metrics:
   - label: Model setups measured (19 models)
-    value: "41"
+    value: "57"
   - label: Best error recall (Qwen3-30B-A3B)
     value: "83.8%"
-  - label: Cost per 1,000 audits (balanced)
+  - label: Cost per 1,000 audits (best cost)
     value: "$0.97"
   - label: Report data sent to external LLM APIs
     value: "0"
@@ -77,7 +77,7 @@ An auditor opens a client's annual report and has to find what is wrong before a
 
 Every model call asks vLLM for schema-constrained JSON at temperature 0, and the prompt files are hashed into the answer's metadata, so each result says which model, revision and prompt version produced it.
 
-## Choosing the model: 41 setups on one GPU
+## Choosing the model: 57 setups on one GPU
 
 An audit firm runs this on its own hardware, so the question is which open model, quantization and serving setup gives the most trustworthy findings on one 24 GB card at an acceptable speed and cost. I built a benchmark lab to answer it with measurements.
 
@@ -85,39 +85,43 @@ An audit firm runs this on its own hardware, so the question is which open model
 
 **What is scored.** Recall (injected errors found), precision (findings that are real errors), numeric accuracy (both disagreeing figures right), page accuracy (the cited page really holds an error), grounding (quoted evidence is really on the page) and schema validity. The quality score is 30% recall, 20% precision, 20% numeric, 15% page and 15% grounding.
 
-**So far** 89 configurations are defined and 41 have finished with full data: 19 open models from Qwen, DeepSeek, Meta, OpenAI, IBM, Liquid AI and AllenAI, in 4-bit AWQ and GPTQ, MXFP4 and BF16, with and without an FP8 KV cache, n-gram speculative decoding, prefix caching and a longer context. The rest are re-running after a crash. These are the picks:
+**So far** 89 configurations are defined and 57 have finished with full data: 19 open models from Qwen, DeepSeek, Meta, Microsoft, OpenAI, IBM, Liquid AI and AllenAI (10 of them mixtures of experts), in 4-bit AWQ and GPTQ, FP8, MXFP4 and BF16, with and without an FP8 KV cache, n-gram or draft-model speculative decoding, prefix caching and different context lengths. The rest are re-running after a crash. These are the picks:
 
-| Qwen3 setup | Picked for | Quality | Recall | Per report | $ / 1,000 audits |
+| Setup | Picked for | Quality | Recall | Per report | $ / 1,000 audits |
 |---|---|---|---|---|---|
-| 14B AWQ, 32k context | Quality | 68.8 | 70.3% | 44 s | 1.43 |
-| 14B AWQ, FP8 KV, n-gram | Balanced | 66.6 | 70.3% | 32 s | 0.97 |
-| 30B-A3B GPTQ (MoE) | Most errors found | 64.3 | 83.8% | 50 s | 1.57 |
-| 8B AWQ | Throughput | 56.3 | 30.6% | 35 s | – |
-| 4B AWQ, no prefix cache | Lowest cost | 42.2 | 43.2% | 22 s | 0.67 |
+| Qwen3-14B AWQ, 8k context | Quality | 69.1 | 70.7% | 46 s | 1.36 |
+| Qwen3-14B AWQ, FP8 KV, n-gram | Best cost | 66.6 | 70.3% | 32 s | 0.97 |
+| Qwen3-14B AWQ, draft model | Speed, same quality | 68.6 | 69.3% | 34 s | 0.99 |
+| Phi-4 FP8 | Best arithmetic (88.3%) | 68.5 | 70.7% | 153 s | 4.53 |
+| Qwen3-30B-A3B GPTQ (MoE) | Most errors found | 64.3 | 83.8% | 50 s | 1.57 |
+| Qwen2.5-7B BF16, no prefix cache | Throughput (484 tokens/s) | 48.7 | 40.0% | 53 s | 1.56 |
 
-Time per report is the average for one whole audit through the pipeline (several model calls, about 14,000 tokens), with four reports in progress at once. Cost is GPU rental only: $0.415 an hour over the evaluation's wall time, divided by the reports audited. With the balanced setup that is about one dollar per 1,000 audits, or about 1.5 cents per audit that met the acceptance bar (at least 95% of the injected errors found and at least 90% of its findings true). The 8B model reaches 500 tokens per second at 16 concurrent users, but it finds too few errors for audit work, so it counts only as a speed result.
+Time per report is the average for one whole audit through the pipeline (several model calls, about 14,000 tokens), with four reports in progress at once. Cost is GPU rental only: $0.415 an hour over the evaluation's wall time, divided by the reports audited. With the best-cost setup that is about one dollar per 1,000 audits, or about 1.5 cents per audit that met the acceptance bar (at least 95% of the injected errors found and at least 90% of its findings true). Qwen2.5-7B reaches 484 tokens per second at 16 concurrent users in BF16 and 671 in 4-bit AWQ, but it finds too few errors for audit work (40% and 12%), so it counts only as a speed result.
 
-<Bench id="auditpro" caption="All 38 valid runs on one RTX 4090 with synthetic IFRS reports (three runs with scoring artefacts left out). Switch views for quality against cost, throughput by load, any single metric, what each technique changed and the A/B verdicts." />
+<Bench id="auditpro" caption="All 52 valid runs on one RTX 4090 with synthetic IFRS reports (five runs with scoring artefacts left out). Switch views for quality against cost, the load curves, any single metric, what each technique changed and the A/B verdicts; the charts start with the top runs and a few contrasting ones." />
+
+**Under load.** The load curves show where one 24 GB card runs out. The 14B models flatten after 8 concurrent requests: Qwen3-14B AWQ goes from 272 to 301 tokens per second between 8 and 16, and its 95th-percentile time to first token jumps to 17.6 s because requests queue for KV-cache memory; Phi-4 FP8 waits 39 s at 16. The 7B and 8B models keep scaling to 16: Qwen2.5-7B AWQ with an FP8 KV cache reaches 963 tokens per second, Llama 3.1 8B 528 and Qwen3-8B 500. For one auditor at a time a 14B model answers each call in about 8 s; a team of eight sharing the card is where a second GPU or a smaller KV cache starts to pay.
 
 **What the techniques did.** Against plain Qwen3-14B AWQ, single runs on the same reports:
 
 - **FP8 KV cache plus n-gram speculative decoding** gave the best speed and cost: each report took 26% less time and cost 31% less, with the same recall and 1.9 fewer quality points.
+- **A draft model works as well.** Qwen3-0.6B proposing five tokens at a time for Qwen3-14B AWQ cut each report by 24% at the same quality (68.6 against 68.5) for $0.99 per 1,000 audits, and like n-gram it is slower on random load-test tokens.
 - **n-gram speculative decoding alone** cut audit time by 12.5% but made the random-token load test 32% slower. Audit pages repeat figures and labels the n-gram drafter can guess; random tokens give it nothing to guess, and verification then costs more than it saves. The lesson: measure speculative decoding on your own traffic, not on a synthetic load.
-- **FP8 KV cache alone** gave 9% more throughput under load and room for more users, but did not shorten a single audit.
+- **FP8 KV cache alone** gave 9% more throughput under load and room for more users, but did not shorten a single audit. On Phi-4 FP8 it gave 49% more throughput at 16 users and halved the queueing, with the same quality. On Qwen2.5-7B it broke the JSON output completely, so it is tested per model, never switched on by default.
 - **Prefix caching** is worth keeping: the agents share long system prompts, and switching it off made audits 5% slower. A 32k context instead of 16k changed nothing measurable.
 - **Who quantized the model matters as much as the bit width.** The GPTQ 4-bit build of Qwen3-30B-A3B found 84% of errors; four community AWQ 4-bit builds of the same family found 16% to 62%.
-- **A mixture of experts is fast per call, not per audit.** Qwen3-30B-A3B activates about 3.4B of its 30.5B parameters per token, so one model call takes 4.0 s against 8.1 s for the dense 14B and throughput is about 1.7 times higher, but it writes more per report, so a whole audit takes longer. Its grounding score, under 25% like DeepSeek-R1's, looks like a measurement issue that is still to be investigated.
+- **A mixture of experts is fast per call, not per audit.** Qwen3-30B-A3B activates about 3.4B of its 30.5B parameters per token, so one model call takes 4.0 s against 8.1 s for the dense 14B and throughput is about 1.7 times higher, but it writes more per report, so a whole audit takes longer. Its grounding score, under 25% like DeepSeek-R1's and Phi-4's, looks like a measurement issue that is still to be investigated.
 - **The GPU is memory-bound.** On the 8B model the lab measured 947 GB/s of memory bandwidth, which caps decoding at about 155 tokens per second for 6.1 GB of weights; the engine reached 113, or 73% of that ceiling.
 
-**What the A/B tests said.** The framework ran 25 paired comparisons. It rejected four AWQ builds of Qwen3-30B-A3B, whose whole recall confidence interval sat below the 2-point margin (for example −70 points, from −86 to −51). Everything else was inconclusive, including the balanced pick: recall did not change, but with about 15 documents per run the framework itself estimates that 75 to 2,000 paired documents are needed to prove the smaller differences. None was accepted, and the page says so instead of declaring winners.
+**What the A/B tests said.** The framework ran 37 paired comparisons. It rejected four AWQ builds of Qwen3-30B-A3B, whose whole recall confidence interval sat below the 2-point margin (for example −70 points, from −86 to −51). Everything else was inconclusive, including the best-cost and draft-model picks: recall did not change, but with 15 to 30 documents per run the framework itself estimates that 75 to 2,000 paired documents are needed to prove the smaller differences. None was accepted, and the page says so instead of declaring winners.
 
-**Honest limits.** The quality gates I set for production (numeric accuracy 98%, page accuracy 95%, grounding 95%, recall 85%, schema validity 99%) are not met by any configuration yet, so these are the best results so far, not a certified model. The scores come from synthetic English reports (15 documents per run for most runs), not an accountant-reviewed golden set, and most rows are single runs. A new champion replaces the old one only when it wins by at least 2 points.
+**Honest limits.** The quality gates I set for production (numeric accuracy 98%, page accuracy 95%, grounding 95%, recall 85%, schema validity 99%) are not met by any configuration yet, so these are the best results so far, not a certified model. The scores come from synthetic English reports (15 or 30 documents per run), not an accountant-reviewed golden set, and most rows are single runs. A new champion replaces the old one only when it wins by at least 2 points.
 
 ## One report, start to finish
 
-![A page of the synthetic input report and the quality champion's result on it](/images/portfolio/auditpro-example.jpg)
+![A page of the synthetic input report and Qwen3-14B AWQ's result on it](/images/portfolio/auditpro-example.jpg)
 
-The input is a synthetic annual report for an invented company, Syunik Mining Services OJSC, with four injected errors: total current assets printed as 127,899 instead of 122,644 (page 2), gross profit 74,809 instead of 70,879 (page 3), total equity and liabilities 288,604 instead of 270,552, so the balance sheet does not balance (page 2), and an accounting policy that says property, plant and equipment is not depreciated, against IAS 16.43 (page 6). The quality champion, Qwen3-14B AWQ, read the seven pages in 42.8 seconds and returned valid JSON with five findings. It found all four errors, put four findings on the right page and gave the exact expected and found figures for two of the three arithmetic errors. Two of its five findings were not real errors, so precision on this report was 60%, below the 90% acceptance bar. Across the 15 reports the same model found every error in six, nothing in three, and passed the acceptance bar on one: the reason every finding stays a draft for the auditor.
+The input is a synthetic annual report for an invented company, Syunik Mining Services OJSC, with four injected errors: total current assets printed as 127,899 instead of 122,644 (page 2), gross profit 74,809 instead of 70,879 (page 3), total equity and liabilities 288,604 instead of 270,552, so the balance sheet does not balance (page 2), and an accounting policy that says property, plant and equipment is not depreciated, against IAS 16.43 (page 6). Qwen3-14B AWQ with a 32k context, the quality pick before the 8k run, read the seven pages in 42.8 seconds and returned valid JSON with five findings. It found all four errors, put four findings on the right page and gave the exact expected and found figures for two of the three arithmetic errors. Two of its five findings were not real errors, so precision on this report was 60%, below the 90% acceptance bar. Across the 15 reports the same model found every error in six, nothing in three, and passed the acceptance bar on one: the reason every finding stays a draft for the auditor.
 
 ## The lab
 
@@ -138,4 +142,4 @@ The API needs a key on every audit and metrics route; the dashboard uses basic a
 
 ## What is next
 
-An accountant-reviewed golden set to replace the synthetic one, the 8- and 16-user sweep for every configuration (running now), OCR for scanned PDFs, Armenian and Russian reports, and per-user access with client-level isolation.
+An accountant-reviewed golden set to replace the synthetic one, the 8- and 16-user sweep for every configuration (21 of 57 have it), OCR for scanned PDFs, Armenian and Russian reports, and per-user access with client-level isolation.

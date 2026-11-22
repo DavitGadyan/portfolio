@@ -21,7 +21,9 @@ export function Bench({ id, caption, locale }: { id: string; caption?: string; l
     { id: 'auditS', label: b.mTime, unit: 's', better: 'down' },
     { id: 'cost', label: b.mCost, unit: '$', better: 'down' },
   ];
-  const picks: Record<string, string> = { quality: b.pickQuality, balanced: b.pickBalanced, recall: b.pickRecall, throughput: b.pickThroughput, cost: b.pickCost };
+  const picks: Record<string, string> = { quality: b.pickQuality, balanced: b.pickBalanced, recall: b.pickRecall, throughput: b.pickThroughput, cost: b.pickCost, numeric: b.pickNumeric };
+  /** load-chart lines: the picks and a few contrasting sizes; the first five are drawn until a reader toggles the rest */
+  const CURVE_ORDER = ['qwen3-14b-awq-ctx8k', 'qwen3-14b-awq-draft', 'phi-4-fp8', 'qwen2.5-7b-bf16-noprefix', 'qwen2.5-7b-awq', 'qwen3-8b-awq', 'llama3.1-8b-awq', 'deepseek-r1-distill-14b-awq', 'qwen2.5-7b-fp8'];
   const view: BenchViewData = {
     id,
     metrics,
@@ -32,15 +34,23 @@ export function Bench({ id, caption, locale }: { id: string; caption?: string; l
       pick: r.pick,
       pickLabel: r.pick ? picks[r.pick] : undefined,
       caveat: r.groundingCaveat,
-      speed: r.speed,
       tok: r.tok,
+      weights: r.weights,
+      loadS: r.loadS,
+      docs: r.docs ?? 15,
       metrics: { quality: r.quality, recall: r.recall, precision: r.precision, numeric: r.numeric, page: r.page, grounding: r.grounding, auditS: r.auditS, cost: r.cost },
     })),
-    techniques: d.techniques.map((t) => ({ id: t.id, label: t.label[locale], verdict: t.verdict[locale], deltas: t.deltas.map((x) => ({ metric: x.metric[locale], value: x.value, unit: x.unit, better: x.better })) })),
-    ab: d.ab.map((a) => ({ candidate: a.candidate, baseline: a.baseline, verdict: a.verdict, metric: a.metric[locale], delta: a.delta, lo: a.lo, hi: a.hi, unit: a.unit, p: a.p })),
+    curves: CURVE_ORDER.filter((cid) => d.curves?.[cid]).map((cid, i) => {
+      const r = d.runs.find((x) => x.id === cid);
+      return { id: cid, label: r?.label ?? cid, pick: r?.pick, on: i < 5, pts: d.curves![cid] };
+    }),
+    techniques: d.techniques.map((t) => ({ id: t.id, base: t.base, cand: t.cand || undefined, label: t.label[locale], verdict: t.verdict[locale], deltas: t.deltas.map((x) => ({ metric: x.metric[locale], value: x.value, unit: x.unit, better: x.better })) })),
+    ab: d.ab.map((a) => ({ candidate: a.candidate, baseline: a.baseline, verdict: a.verdict, metric: a.metric[locale], delta: a.delta, lo: a.lo, hi: a.hi, unit: a.unit, p: a.p, n: a.n, reps: a.reps, prec: a.prec })),
     s: {
       tabs: { cost: b.tabCost, speed: b.tabSpeed, metric: b.tabMetric, tech: b.tabTech, ab: b.tabAb },
-      costX: b.costX, costY: b.costY, speedX: b.speedX, speedY: b.speedY, hint: b.hint, better: b.better, notMeasured: b.notMeasured, verdict: b.verdict, ci: b.ci, caveat: b.caveat, showAll: b.showAll, showTop: b.showTop, abNote: b.abNote,
+      costX: b.costX, costY: b.costY, speedX: b.speedX, hint: b.hint,
+      load: { tok: b.lTok, user: b.lUser, ttft: b.lTtft, ttft95: b.lTtft95, itl: b.lItl, e2e: b.lE2e },
+      loadNote: b.loadNote, users: b.users, weights: b.weights, coldStart: b.coldStart, docs: b.docs, tokAt: b.tokAt, precision: b.mPrecision, paired: b.paired, reps: b.reps, holm: b.holm, better: b.better, notMeasured: b.notMeasured, verdict: b.verdict, ci: b.ci, caveat: b.caveat, showAll: b.showAll, showTop: b.showTop, abNote: b.abNote,
     },
   };
   const cell = (v: number | undefined, unit: string) => (v === undefined ? '–' : unit === '$' ? `$${v.toFixed(2)}` : unit === '%' ? `${v.toFixed(1)}%` : unit === 's' ? `${Math.round(v)} s` : v.toFixed(1));
@@ -50,7 +60,7 @@ export function Bench({ id, caption, locale }: { id: string; caption?: string; l
       <div className="bch-nojs">
         <div className="tblwrap">
           <table>
-            <thead><tr><th scope="col">{b.run}</th>{metrics.map((m) => <th key={m.id} scope="col">{m.label}</th>)}<th scope="col">{b.speedY} (4)</th></tr></thead>
+            <thead><tr><th scope="col">{b.run}</th>{metrics.map((m) => <th key={m.id} scope="col">{m.label}</th>)}<th scope="col">{b.lTok} (4)</th></tr></thead>
             <tbody>
               {view.runs.map((r) => (
                 <tr key={r.id}><th scope="row">{r.label}{r.pickLabel ? ` (${r.pickLabel})` : ''}</th>{metrics.map((m) => <td key={m.id}>{cell(r.metrics[m.id], m.unit)}</td>)}<td>{r.tok[4] ?? '–'}</td></tr>

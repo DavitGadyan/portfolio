@@ -58,7 +58,7 @@ test.describe('project showcase', () => {
     await expect(chip('Next.js 15')).toHaveAttribute('src', /\/logos\/nextjs\.png$/);
     await expect(chip('Docker Compose')).toHaveAttribute('src', /\/logos\/docker\.png$/); // not the Postgres named inside its brackets
     await expect(chip('MLflow model registry')).toHaveAttribute('src', /\/logos\/mlflow\.svg$/);
-    await expect(page.locator('.tchip', { hasText: 'LambdaRank' }).locator('img')).toHaveCount(0); // a monogram, not the AWS mark
+    await expect(page.locator('.tchip', { hasText: 'LambdaRank' }).locator('img')).toHaveCount(0); // no known mark: listed for screen readers only, never the AWS mark
     for (const img of await page.locator('.tchip img').all()) {
       await img.scrollIntoViewIfNeeded();
       await expect.poll(() => img.evaluate((i: HTMLImageElement) => i.naturalWidth)).toBeGreaterThan(0);
@@ -66,9 +66,11 @@ test.describe('project showcase', () => {
     await expect(chip('GitHub Actions')).toHaveAttribute('data-mono', '');
     expect(await chip('GitHub Actions').evaluate((i) => getComputedStyle(i).filter)).toBe('brightness(0)');
     await expect(chip('Next.js 15')).not.toHaveAttribute('data-mono', '');
-    // every tool named in an entry gets its own mark, and hovering a mark shows the tool's name
+    // each logo appears once per project: Postgres, Redis and MLflow already showed in earlier layers, so Docker Compose keeps only Docker
     const docker = page.locator('.tchip', { hasText: 'Docker Compose' });
-    await expect(docker.locator('.tchip__disc')).toHaveCount(4);
-    await expect(docker.locator('.tchip__disc').nth(1)).toHaveAttribute('data-tip', 'PostgreSQL');
+    await expect(docker.locator('.tchip__disc')).toHaveCount(1);
+    await expect(docker.locator('.tchip__disc').first()).toHaveAttribute('data-tip', 'Docker');
+    const srcs = await page.locator('.tchip img').evaluateAll((els) => els.map((e) => e.getAttribute('src')));
+    expect(new Set(srcs).size).toBe(srcs.length);
   });
 });

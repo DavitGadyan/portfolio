@@ -210,6 +210,28 @@ body {
   .bch p.bch__note { margin: .5rem 0 .7rem; font-size: .78rem; line-height: 1.45; color: var(--color-ink-300); }
   .bch__more { margin-top: .7rem; padding: .3rem .8rem; border-radius: 9999px; border: 1px solid rgba(255,255,255,.2); background: transparent; color: #fff; font: inherit; font-size: .8rem; cursor: pointer; }
   .bch p.bch__hint { margin: .7rem 0 0; font-size: .76rem; color: var(--color-ink-300); }
+  .bch__plot { position: relative; }
+  .bch__tip { position: absolute; z-index: 3; transform: translateY(-50%); display: grid; gap: .15rem; max-width: min(24rem, 92%); padding: .55rem .7rem; border-radius: .6rem; background: rgba(20,20,22,.96); border: 1px solid rgba(255,255,255,.18); box-shadow: 0 12px 28px -12px rgba(0,0,0,.7); font-size: .76rem; line-height: 1.35; color: var(--color-ink-200); pointer-events: none; }
+  .bch__tip strong { font-size: .8rem; }
+  .bch__tip b { color: #fff; }
+  .bch__tt { border-collapse: collapse; margin: .2rem 0 0; font-variant-numeric: tabular-nums; }
+  .bch__tip--top { transform: none; }
+  .bch .bch__tt th, .bch .bch__tt td { padding: .1rem .45rem .1rem 0; border: 0; background: transparent; text-align: left; font-weight: 400; font-size: .74rem; white-space: nowrap; }
+  .bch .bch__tt th { color: var(--color-ink-100); max-width: 11rem; overflow: hidden; text-overflow: ellipsis; }
+  .bch .bch__tt td { text-align: right; color: var(--color-ink-300); }
+  .bch__tt i { display: inline-block; width: .55rem; height: .55rem; margin-right: .35rem; border-radius: 50%; }
+  .bch__guide { stroke: rgba(255,255,255,.35); stroke-dasharray: 3 4; }
+  .bch__hit { fill: transparent; cursor: crosshair; outline: none; }
+  .bch__hit:focus-visible { fill: rgba(255,255,255,.05); }
+  .bch__legend--runs { margin: .8rem 0 0; }
+  .bch__bars li, .bch__ab li { cursor: default; outline: none; border-radius: .4rem; }
+  .bch__bars li[data-open], .bch__ab li[data-open] { background: rgba(255,255,255,.04); }
+  .bch__bars li:focus-visible, .bch__ab li:focus-visible, .bch__tech section:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+  .bch__more-row { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: .2rem .9rem; padding: 0 0 .3rem; font-size: .74rem; color: var(--color-ink-300); }
+  .bch__more-row b { color: #fff; }
+  .bch__tech section { outline: none; }
+  .bch p.bch__runs { margin: .6rem 0 0; font-variant-numeric: tabular-nums; }
+  @media (max-width: 40rem) { .bch__tip { top: 0 !important; left: 0 !important; right: 0 !important; max-width: none; transform: none; } }
   @media (max-width: 40rem) { .bch__bars li, .bch__delta li, .bch__ab li { grid-template-columns: minmax(0, 1fr) 4.5rem; } .bch__bars .bch__blabel, .bch__delta .bch__blabel, .bch__ab .bch__blabel { grid-column: 1 / -1; } .bch__axes text, .bch__pt text { font-size: 15px; } }
   @media (scripting: enabled) and (prefers-reduced-motion: no-preference) { .bch__panel { animation: tgin .3s ease-out both; } }
   .prose-dg hr { border: 0; border-top: 1px solid var(--color-ink-100); }
@@ -352,17 +374,15 @@ body {
   /* project page: back icon, glass stack chips, metrics */
   .pback { display: inline-grid; place-items: center; width: 2.25rem; height: 2.25rem; border-radius: 9999px; border: 2px solid var(--color-ink-200); color: var(--color-ink-500); transition: background-color .2s, color .2s, border-color .2s; }
   .pback:hover { background: var(--color-ink-500); border-color: var(--color-ink-500); color: #fff; }
-  .tchip { display: inline-flex; align-items: center; gap: .5rem; padding: .25rem .75rem .25rem .25rem; border-radius: 9999px; background: rgba(255,255,255,.7); border: 1px solid rgba(43,44,47,.12); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); box-shadow: 0 10px 24px -16px rgba(33,33,33,.5), inset 0 1px 0 #fff; font-size: .85rem; color: var(--color-ink-700); }
-  .tchip__disc { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 9999px; background: #fff; box-shadow: inset 0 0 0 1px rgba(43,44,47,.1), 0 4px 10px -6px rgba(33,33,33,.5); }
-  .tchip__disc img { width: 22px; height: 22px; object-fit: contain; }
-  .tchip__disc img[data-mono] { filter: brightness(0); } /* white or pale marks (GitHub, Grok, MySQL, Kali) would vanish on the white disc */
-  .tchip__disc span { font-size: .62rem; font-weight: 700; letter-spacing: .04em; color: var(--color-ink-500); }
-  .tchip__marks { display: inline-flex; align-items: center; }
-  .tchip__marks .tchip__disc { position: relative; }
-  .tchip__marks .tchip__disc + .tchip__disc { margin-left: -8px; }
-  .tchip__marks .tchip__disc:hover { z-index: 2; }
-  .tchip__disc[data-tip]::after { content: attr(data-tip); position: absolute; left: 0; bottom: calc(100% + 6px); transform: translateY(4px); white-space: nowrap; padding: .2rem .5rem; border-radius: .4rem; background: var(--color-ink-900, #1b1c1f); color: #fff; font-size: .72rem; font-weight: 600; opacity: 0; pointer-events: none; transition: opacity .15s ease, transform .15s ease; }
-  .tchip__disc[data-tip]:hover::after { opacity: 1; transform: none; }
+  /* Stack by layer: bare brand icons, spaced out, no card or disc behind them; the tool's name shows on hover */
+  .tchip { display: contents; }
+  .tchip__marks { display: contents; }
+  .tchip__disc { position: relative; display: grid; place-items: center; width: 28px; height: 28px; }
+  .tchip__disc img { width: 28px; height: 28px; object-fit: contain; }
+  .tchip__disc img[data-mono] { filter: brightness(0); } /* white or pale marks (GitHub, Grok, MySQL, Kali) would vanish on the white page */
+  .tchip__disc:hover { z-index: 2; }
+  .tchip__disc[data-tip]::after { content: attr(data-tip); position: absolute; left: 50%; bottom: calc(100% + 6px); transform: translate(-50%, 4px); white-space: nowrap; padding: .2rem .5rem; border-radius: .4rem; background: var(--color-ink-900, #1b1c1f); color: #fff; font-size: .72rem; font-weight: 600; opacity: 0; pointer-events: none; transition: opacity .15s ease, transform .15s ease; }
+  .tchip__disc[data-tip]:hover::after { opacity: 1; transform: translate(-50%, 0); }
   .metrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; margin: 0; }
   .metrics__item { padding: .8rem .9rem; border-radius: .75rem; background: var(--color-paper-50); border: 1px solid var(--color-ink-100); }
   .metrics__value { margin: 0; font-size: 1.25rem; font-weight: 700; line-height: 1.15; color: var(--color-ink-700); }
