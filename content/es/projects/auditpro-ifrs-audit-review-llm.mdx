@@ -1,21 +1,21 @@
 ---
 title: "Audit Pro: LLM con inferencia optimizada para revisar informes NIIF"
-coverAlt: "Portada de Audit Pro: el título Audit Pro, la línea An LLM first pass on financial reports, the errors and points an auditor should check first, y tres puntos (errores entre páginas con evidencia, referencias NIIF y puntos de interés, 57 configuraciones de modelo medidas) junto a una foto generada con IA de un escritorio al atardecer: un balance impreso de una empresa inventada con dos totales rodeados en rojo, un bolígrafo rojo y un portátil con las puntuaciones de Qwen3-14B AWQ en ese informe (4 de 4 errores inyectados encontrados, 3 de 5 hallazgos reales, 42,8 s)"
-summary: "Un asistente que da a los auditores una primera revisión del informe financiero NIIF de un cliente. Lee un PDF, un enlace o texto pegado y redacta los errores (cifras que no cuadran entre páginas, totales que no suman, desviaciones de las NIIF) y los puntos de interés que conviene comprobar, cada uno con su página, la evidencia citada, la referencia NIIF y un procedimiento sugerido, siempre en un único esquema JSON fijo. Un verificador determinista y un paso de anclaje impiden que el modelo invente hallazgos, y todo se ejecuta en la GPU de la propia firma, así que ningún informe sale de ella. Un laboratorio de benchmarks eligió el modelo: 57 configuraciones de 19 modelos abiertos medidas en una RTX 4090 por calidad, latencia, rendimiento y coste, con pruebas A/B de cada técnica. FastAPI, un laboratorio en Next.js, Docker y Helm, imágenes firmadas en CI."
-description: "Un LLM que da a los auditores una primera revisión de informes NIIF: errores entre páginas, puntos de interés y referencias NIIF, en la GPU de la firma, con 57 configuraciones medidas."
+coverAlt: "Portada de Audit Pro: el título Audit Pro, la línea An LLM first pass on financial reports, the errors and points an auditor should check first, y tres puntos (errores entre páginas con evidencia, referencias NIIF y puntos de interés, 76 configuraciones de modelo medidas) junto a una foto generada con IA de un escritorio al atardecer: un balance impreso de una empresa inventada con dos totales rodeados en rojo, un bolígrafo rojo y un portátil con las puntuaciones de Qwen3-14B AWQ en ese informe (4 de 4 errores inyectados encontrados, 3 de 5 hallazgos reales, 42,8 s)"
+summary: "Un asistente que da a los auditores una primera revisión del informe financiero NIIF de un cliente. Lee un PDF, un enlace o texto pegado y redacta los errores (cifras que no cuadran entre páginas, totales que no suman, desviaciones de las NIIF) y los puntos de interés que conviene comprobar, cada uno con su página, la evidencia citada, la referencia NIIF y un procedimiento sugerido, siempre en un único esquema JSON fijo. Un verificador determinista y un paso de anclaje impiden que el modelo invente hallazgos, y todo se ejecuta en la GPU de la propia firma, así que ningún informe sale de ella. Un laboratorio de benchmarks eligió el modelo: 76 configuraciones de 19 modelos abiertos medidas en una RTX 4090 por calidad, latencia, rendimiento y coste, con pruebas A/B de cada técnica. Producción sirve ya Qwen3-14B FP8 con una API compatible con OpenAI. FastAPI, un laboratorio en Next.js, Docker y Helm, imágenes firmadas en CI."
+description: "Un LLM que da a los auditores una primera revisión de informes NIIF: errores entre páginas, puntos de interés y referencias NIIF, en la GPU de la firma, con 76 configuraciones medidas."
 outcomes:
   - "Un primer borrador para el auditor: cada hallazgo con su página, cifras, evidencia citada y referencia NIIF."
   - "Sin cifras inventadas: comprobaciones decimales exactas, y una cifra o cita que no está en su página se descarta."
   - "Los informes del cliente no salen de la firma: la inferencia corre en su GPU, sin API externa de LLM."
-  - "57 configuraciones de 19 modelos abiertos medidas por calidad, latencia, rendimiento y coste en una RTX 4090."
-  - "Mejor calidad: Qwen3-14B AWQ, contexto de 8k (69,1). Mejor coste: KV FP8 + n-gram, 0,97 $ por 1.000 auditorías."
+  - "76 configuraciones de 19 modelos abiertos medidas por calidad, latencia, rendimiento y coste en una RTX 4090."
+  - "En producción: Qwen3-14B FP8 + KV FP8 (calidad 70,8). Decodificación por sufijos: 23,5 s por auditoría, 0,69 $ por 1.000."
 metrics:
   - label: Configuraciones medidas (19 modelos)
-    value: "57"
-  - label: Mejor recall de errores (Qwen3-30B-A3B)
-    value: "83,8 %"
-  - label: Coste por 1.000 auditorías (mejor coste)
-    value: "0,97 $"
+    value: "76"
+  - label: Tiempo de auditoría con decodificación por sufijos
+    value: "−47 %"
+  - label: Coste por 1.000 auditorías (decodificación por sufijos)
+    value: "0,69 $"
   - label: Datos de informes enviados a API externas de LLM
     value: "0"
 ---
@@ -42,7 +42,7 @@ Un auditor abre el informe anual de un cliente y lo primero es encontrar lo que 
 
 Cada llamada al modelo pide a vLLM JSON restringido por esquema con temperatura 0, y los ficheros de prompts se resumen con un hash en los metadatos de la respuesta, así que cada resultado dice qué modelo, revisión y versión de prompt lo produjo.
 
-## Elegir el modelo: 57 configuraciones en una GPU
+## Elegir el modelo: 76 configuraciones en una GPU
 
 Una firma de auditoría lo ejecuta en su propio hardware, así que la pregunta es qué modelo abierto, cuantización y configuración de servicio dan los hallazgos más fiables en una tarjeta de 24 GB con una velocidad y un coste aceptables. Construí un laboratorio de benchmarks para responderla con mediciones.
 
@@ -50,37 +50,92 @@ Una firma de auditoría lo ejecuta en su propio hardware, así que la pregunta e
 
 **Qué se puntúa.** Recall (errores inyectados encontrados), precisión (hallazgos que son errores reales), exactitud numérica (las dos cifras que no cuadran, correctas), exactitud de página (la página citada contiene de verdad un error), anclaje (la evidencia citada está de verdad en la página) y validez del esquema. La puntuación de calidad es 30 % recall, 20 % precisión, 20 % numérica, 15 % página y 15 % anclaje.
 
-**Hasta ahora** hay 89 configuraciones definidas y 57 han terminado con datos completos: 19 modelos abiertos de Qwen, DeepSeek, Meta, Microsoft, OpenAI, IBM, Liquid AI y AllenAI (10 de ellos mezclas de expertos), en AWQ y GPTQ de 4 bits, FP8, MXFP4 y BF16, con y sin caché KV en FP8, decodificación especulativa n-gram o con modelo borrador, caché de prefijos y distintas longitudes de contexto. El resto se está repitiendo tras un fallo. Estas son las elegidas:
+**El estudio.** Se definieron 89 configuraciones y 76 terminaron con datos completos: 19 modelos abiertos en 27 checkpoints de 12 publicadores (Qwen, DeepSeek, Meta, Microsoft, OpenAI, IBM, Liquid AI, AllenAI y cuantizadores de la comunidad), 10 de ellos mezclas de expertos, en AWQ y GPTQ de 4 bits, FP8, MXFP4 y BF16, con y sin caché KV en FP8, con decodificación especulativa n-gram, por sufijos, EAGLE-3 y con modelo borrador, y variando los CUDA graphs, el prefill por fragmentos, el límite de secuencias, la caché de prefijos y la longitud de contexto. Trece no terminaron: los modelos de 32B no arrancaron en 24 GB y el resto se perdió en un fallo temprano del pipeline. Estas son las elegidas:
 
 | Configuración | Elegida por | Calidad | Recall | Por informe | $ / 1.000 auditorías |
 |---|---|---|---|---|---|
-| Qwen3-14B AWQ, contexto de 8k | Calidad | 69,1 | 70,7 % | 46 s | 1,36 |
-| Qwen3-14B AWQ, KV FP8, n-gram | Mejor coste | 66,6 | 70,3 % | 32 s | 0,97 |
-| Qwen3-14B AWQ, modelo borrador | Velocidad, misma calidad | 68,6 | 69,3 % | 34 s | 0,99 |
+| Qwen3-14B FP8, caché KV FP8 | Producción: mejor calidad | 70,8 | 72,0 % | 61 s | 1,83 |
+| Qwen3-14B AWQ, decodificación por sufijos | Más rápida y barata con calidad alta | 68,6 | 69,3 % | 24 s | 0,69 |
+| Qwen3-14B AWQ, EAGLE-3 | Velocidad, mismas respuestas | 68,6 | 69,3 % | 30 s | 0,88 |
 | Phi-4 FP8 | Mejor aritmética (88,3 %) | 68,5 | 70,7 % | 153 s | 4,53 |
 | Qwen3-30B-A3B GPTQ (MoE) | Más errores encontrados | 64,3 | 83,8 % | 50 s | 1,57 |
 | Qwen2.5-7B BF16, sin caché de prefijos | Rendimiento (484 tokens/s) | 48,7 | 40,0 % | 53 s | 1,56 |
 
-El tiempo por informe es la media de una auditoría completa por el pipeline (varias llamadas al modelo, unos 14.000 tokens), con cuatro informes en curso a la vez. El coste es solo el alquiler de la GPU: 0,415 $ la hora sobre el tiempo real de la evaluación, dividido entre los informes auditados. Con la configuración de mejor coste sale a un dólar por 1.000 auditorías, o 1,5 céntimos por auditoría que superó el listón de aceptación (al menos el 95 % de los errores inyectados encontrados y al menos el 90 % de sus hallazgos ciertos). Qwen2.5-7B llega a 484 tokens por segundo con 16 usuarios a la vez en BF16 y a 671 en AWQ de 4 bits, pero encuentra demasiado pocos errores para auditar (40 % y 12 %), así que solo cuenta como resultado de velocidad.
+El tiempo por informe es la media de una auditoría completa por el pipeline (varias llamadas al modelo, unos 14.000 tokens), con cuatro informes en curso a la vez. El coste es solo el alquiler de la GPU: 0,415 $ la hora sobre el tiempo real de la evaluación, dividido entre los informes auditados. La decodificación por sufijos lo deja en 0,69 $ por 1.000 auditorías; producción paga 1,83 $ por FP8, el precio de acertar más cifras. Qwen2.5-7B llega a 484 tokens por segundo con 16 usuarios a la vez en BF16 y a 671 en AWQ de 4 bits, pero encuentra demasiado pocos errores para auditar (40 % y 12 %), así que solo cuenta como resultado de velocidad.
 
-<Bench id="auditpro" caption="Las 52 ejecuciones válidas en una RTX 4090 con informes NIIF sintéticos (se omiten cinco con artefactos de puntuación). Cambia de vista para ver calidad frente a coste, las curvas de carga, cualquier métrica por separado, lo que cambió cada técnica y los veredictos A/B; los gráficos empiezan con las mejores ejecuciones y algunas de contraste." />
+<Bench id="auditpro" caption="Las 71 ejecuciones válidas en una RTX 4090 con informes NIIF sintéticos (se omiten cinco con artefactos de puntuación). Cambia de vista para ver calidad frente a coste, las curvas de carga, cualquier métrica por separado, lo que cambió cada técnica y los veredictos A/B; los gráficos empiezan con las mejores ejecuciones y algunas de contraste." />
 
-**Bajo carga.** Las curvas de carga muestran dónde se queda corta una tarjeta de 24 GB. Los modelos de 14B se aplanan a partir de 8 peticiones simultáneas: Qwen3-14B AWQ pasa de 272 a 301 tokens por segundo entre 8 y 16, y su tiempo hasta el primer token en el percentil 95 sube a 17,6 s porque las peticiones esperan memoria de caché KV; Phi-4 FP8 espera 39 s con 16. Los modelos de 7B y 8B siguen escalando hasta 16: Qwen2.5-7B AWQ con caché KV en FP8 llega a 963 tokens por segundo, Llama 3.1 8B a 528 y Qwen3-8B a 500. Para un auditor cada vez, un modelo de 14B responde cada llamada en unos 8 s; un equipo de ocho compartiendo la tarjeta es donde una segunda GPU o una caché KV más pequeña empiezan a compensar.
+**Bajo carga.** Las curvas de carga muestran dónde se queda corta una tarjeta de 24 GB. Los modelos de 14B se aplanan a partir de unas 8 peticiones simultáneas: el modelo de producción pasa de 213 a 216 tokens por segundo entre 8 y 16, y su tiempo hasta el primer token en el percentil 95 sube de 2,6 s con 4 a 35 s con 16 porque las peticiones esperan memoria de caché KV (caben 101.888 tokens con un contexto de 16k); Phi-4 FP8 espera 39 s con 16. Los modelos de 7B y 8B siguen escalando hasta 16: Qwen2.5-7B AWQ con caché KV en FP8 llega a 963 tokens por segundo, Llama 3.1 8B a 528 y Qwen3-8B a 500. Para un auditor cada vez, un modelo de 14B responde cada llamada en unos 8 s; un equipo de ocho compartiendo la tarjeta es donde una segunda GPU o una caché KV más pequeña empiezan a compensar.
+
+**Goodput, no rendimiento máximo.** Cada variante se midió en bucle cerrado con 1 a 16 peticiones simultáneas y una vez en bucle abierto con llegadas de Poisson, registrando el tiempo hasta el primer token (TTFT), la latencia entre tokens (ITL) y el tiempo de petición. El goodput solo cuenta las llamadas que cumplen un SLO de latencia, aquí TTFT p95 por debajo de 2 s e ITL p50 por debajo de 50 ms. Con ese SLO el modelo FP8 de producción sirve 0,15 llamadas por segundo (2 peticiones simultáneas), la versión Qwen3-14B AWQ con decodificación por sufijos 0,30 (4 simultáneas) y Phi-4 FP8 0,24. Los tokens por segundo máximos las ordenarían de otra forma: los modelos de 14B llegan a 216–309 tokens por segundo con 16 usuarios, pero para entonces el primer token tarda de 10 a 40 s.
+
+**Goodput en el modelo de producción en directo.** Un barrido en bucle abierto con llegadas de Poisson contra producción (90 s por tasa, las mismas peticiones de 4.000 tokens de entrada y 600 de salida, métricas de la GPU y de vLLM cada segundo) muestra el codo:
+
+| Req/s ofrecidas | Goodput req/s | Dentro del SLO | TTFT p90 | Pico de caché KV | Expulsiones | Cola media | Potencia GPU |
+|---|---|---|---|---|---|---|---|
+| 0,1 | 0,067 | 100 % | 0,08 s | 31 % | 0 | 0 s | 103 W |
+| 0,2 | 0,133 | 100 % | 1,1 s | 42 % | 0 | 0 s | 155 W |
+| 0,3 | 0,201 | 100 % | 1,2 s | 72 % | 0 | 0 s | 176 W |
+| 0,4 | 0,260 | 90 % | 2,0 s | 99 % | 1 | 0,2 s | 195 W |
+| 0,6 | 0,125 | 39 % | 13,9 s | 100 % | 14 | 4,9 s | 216 W |
+
+El goodput llega a su máximo en unas 0,26 peticiones por segundo; a partir de ahí la caché KV se llena, las peticiones se expulsan y esperan, y el goodput cae a la mitad aunque el rendimiento bruto aún sube un poco. Por eso la capacidad se planifica con el goodput, y por eso la API admite como mucho cuatro auditorías a la vez, antes del codo. La decodificación sigue limitada por la memoria: uso del controlador de memoria del 45–81 %, como máximo 263 W de 450 W y sin limitación térmica. (Las cifras de la GPU son muestras de nvidia-smi, no contadores de Nsight ni de DCGM; las tasas conseguidas quedan por debajo de las ofrecidas porque no se cuentan las peticiones aún en curso al corte de 90 s.)
+
+**Conformidad con OpenAI.** Los tests unitarios y una prueba de humo de ocho comprobaciones en producción cubren contenido de texto y por partes, archivos PDF, el objeto `chat.completion` con `system_fingerprint` y uso, fragmentos de streaming que terminan en `[DONE]` con un fragmento de uso opcional, el sobre de error de OpenAI para 401, 400, 415 y 422, `/v1/models` y tres auditorías simultáneas. Aún no cubiertos: cancelar el pipeline cuando el cliente se desconecta, llamadas a herramientas y contenido de razonamiento (es una tarea de auditoría fija, no un modelo de chat general) y los parámetros de muestreo, que se aceptan pero se ignoran. Las tasas de aceptación de la decodificación especulativa no se midieron; la página solo muestra su efecto de extremo a extremo en auditorías reales.
 
 **Qué hicieron las técnicas.** Frente a Qwen3-14B AWQ sin cambios, ejecuciones únicas con los mismos informes:
 
-- **Caché KV en FP8 más decodificación especulativa n-gram** dio el mejor resultado de velocidad y coste: cada informe tardó un 26 % menos y costó un 31 % menos, con el mismo recall y 1,9 puntos menos de calidad.
-- **Un modelo borrador funciona igual de bien.** Qwen3-0.6B proponiendo cinco tokens cada vez para Qwen3-14B AWQ redujo cada informe un 24 % con la misma calidad (68,6 frente a 68,5) por 0,99 $ cada 1.000 auditorías, y como n-gram es más lento con los tokens aleatorios de la prueba de carga.
-- **La decodificación especulativa n-gram sola** redujo el tiempo de auditoría un 12,5 %, pero hizo la prueba de carga con tokens aleatorios un 32 % más lenta. Los informes repiten cifras y etiquetas que el borrador n-gram puede adivinar; los tokens aleatorios no le dan nada que adivinar y la verificación cuesta más de lo que ahorra. La lección: mide la decodificación especulativa con tu propio tráfico, no con una carga sintética.
-- **La caché KV en FP8 sola** dio un 9 % más de rendimiento bajo carga y sitio para más usuarios, pero no acortó ninguna auditoría. En Phi-4 FP8 dio un 49 % más de rendimiento con 16 usuarios y redujo la espera a la mitad, con la misma calidad. En Qwen2.5-7B rompió por completo la salida JSON, así que se prueba modelo a modelo y nunca se activa por defecto.
+- **La decodificación por sufijos fue la mayor mejora.** Redujo una auditoría de 44,0 s a 23,5 s (−47 %, 0,69 $ por 1.000 auditorías); una cabeza EAGLE-3 llegó a 29,9 s (−32 %), un modelo borrador Qwen3-0.6B a 33,5 s (−24 %) y n-gram a 38,5 s con profundidad 4, 41,3 s con 2 y 46,4 s con 8, donde proponer más tokens deja de ayudar. Todas devolvieron los mismos hallazgos en cada informe emparejado. En la prueba de carga con tokens aleatorios los mismos métodos parecen un 25–50 % más lentos: los informes repiten cifras y etiquetas que un borrador puede adivinar, los tokens aleatorios no. La decodificación especulativa hay que medirla con prompts reales.
+- **Los 4 bits cuestan exactitud.** Qwen3-14B AWQ encuentra los mismos errores que la versión FP8 y es un tercio más rápido, pero la prueba A/B emparejada lo rechazó por exactitud numérica: 21 puntos menos (IC del 95 % de −40 a −6). Un benchmark de rendimiento nunca lo mostraría, y por eso producción sirve FP8.
+- **Caché KV en FP8 más n-gram** hizo cada informe un 26 % más rápido y un 31 % más barato con el mismo recall, el mejor resultado antes de la decodificación por sufijos.
+- **La caché KV en FP8 sola** dio entre un 9 % y un 24 % más de rendimiento bajo carga y sitio para más usuarios, pero no acortó ninguna auditoría. En Phi-4 FP8 dio un 49 % más de rendimiento con 16 usuarios y redujo la espera a la mitad, con la misma calidad. En Qwen2.5-7B rompió por completo la salida JSON, así que se prueba modelo a modelo y nunca se activa por defecto.
+- **Los CUDA graphs no son opcionales.** En modo eager una auditoría tardó 114 s, 2,6 veces más. El prefill por fragmentos de 1.024 u 8.192 tokens, un límite de 64 secuencias y un contexto de 8k, 16k o 32k no cambiaron nada medible con esta carga.
 - **La caché de prefijos** conviene mantenerla: los agentes comparten prompts de sistema largos y sin ella las auditorías tardaron un 5 % más. Un contexto de 32k en lugar de 16k no cambió nada medible.
 - **Quién cuantizó el modelo importa tanto como los bits.** La versión GPTQ de 4 bits de Qwen3-30B-A3B encontró el 84 % de los errores; cuatro versiones AWQ de 4 bits de la comunidad, de la misma familia, encontraron entre el 16 % y el 62 %.
 - **Una mezcla de expertos es rápida por llamada, no por auditoría.** Qwen3-30B-A3B activa unos 3,4B de sus 30,5B parámetros por token, así que una llamada tarda 4,0 s frente a 8,1 s del 14B denso y el rendimiento es unas 1,7 veces mayor, pero escribe más por informe, así que una auditoría completa tarda más. Su anclaje, por debajo del 25 % como el de DeepSeek-R1 y Phi-4, parece un problema de medición que falta investigar.
 - **La GPU está limitada por la memoria.** Con el modelo de 8B el laboratorio midió 947 GB/s de ancho de banda, lo que limita la decodificación a unos 155 tokens por segundo con 6,1 GB de pesos; el motor llegó a 113, el 73 % de ese techo.
 
-**Qué dijeron las pruebas A/B.** El framework hizo 37 comparaciones emparejadas. Rechazó cuatro versiones AWQ de Qwen3-30B-A3B, cuyo intervalo de confianza de recall quedó entero por debajo del margen de 2 puntos (por ejemplo −70 puntos, de −86 a −51). Todo lo demás fue no concluyente, también las opciones de mejor coste y de modelo borrador: el recall no cambió, pero con 15 a 30 documentos por ejecución el propio framework estima que harían falta entre 75 y 2.000 documentos emparejados para demostrar las diferencias más pequeñas. Ninguna se aceptó, y la página lo dice en lugar de declarar ganadores.
+**Qué dijeron las pruebas A/B.** El framework hizo 53 comparaciones emparejadas con corrección de Holm y un margen de no inferioridad de 2 puntos. Rechazó cinco: Qwen3-14B AWQ frente a FP8 por exactitud numérica, y cuatro versiones AWQ de la comunidad de Qwen3-30B-A3B cuyo intervalo de confianza de recall quedó entero por debajo del margen (por ejemplo −70 puntos, de −86 a −51). Las otras 48 fueron no concluyentes: cada variante de decodificación especulativa y del motor dio respuestas idénticas, lo que cambia la velocidad, no los hallazgos, y con 15 a 30 documentos por ejecución no se pueden demostrar diferencias de calidad pequeñas. Ninguna se aceptó, y la página lo dice en lugar de declarar ganadores. La propia velocidad varía un 1,7 % en tokens por segundo y un 9 % en el primer token del percentil 95 entre ejecuciones en la misma máquina, así que el siguiente paso son pruebas A/B adaptativas en el hardware de destino: ejecuciones intercaladas en una GPU, al menos tres réplicas de rendimiento, parada secuencial y eliminación sucesiva entre variantes.
 
 **Límites, sin adornos.** Ninguna configuración cumple todavía los umbrales de calidad que fijé para producción (exactitud numérica 98 %, exactitud de página 95 %, anclaje 95 %, recall 85 %, validez del esquema 99 %), así que son los mejores resultados hasta ahora, no un modelo certificado. Las puntuaciones salen de informes sintéticos en inglés (15 o 30 documentos por ejecución), no de un conjunto de referencia revisado por contables, y casi todas las filas son ejecuciones únicas. Un campeón nuevo solo sustituye al anterior si gana por al menos 2 puntos.
+
+## En producción
+
+La firma sirve ya Qwen3-14B FP8 con caché KV en FP8: la mejor puntuación de calidad (70,8, recall 72 %, exactitud numérica 70 %) y las cifras que la versión AWQ falla. vLLM lo carga sin conexión desde un almacén de modelos verificado con SHA-256 detrás de la API de auditoría, que habla el formato chat-completions de OpenAI: `POST /v1/chat/completions` con el informe como texto o como un PDF en base64 devuelve el JSON de la auditoría como contenido del mensaje, con streaming, un bloque de uso, errores al estilo de OpenAI y `GET /v1/models`. Qwen3-14B AWQ y Phi-4 FP8 están en disco como respaldo, a un minuto de cambio.
+
+<Video src="/videos/auditpro-api-demo.mp4" poster="/videos/auditpro-api-demo.jpg" ratio="16 / 9" title="API de Audit Pro: una llamada real desde un portátil" caption="Una llamada real desde un portátil a la API pública de producción: la comprobación de salud, la lista de modelos, un 401 sin clave, un PDF sintético de siete páginas enviado como archivo en base64 con streaming (53,5 s, 13.763 tokens), el JSON de la auditoría y los errores inyectados para comparar. Detectó los cuatro errores inyectados, el del balance por el lado equivocado, y añadió cuatro hallazgos que no estaban inyectados. La espera está acortada; la clave y la dirección solo aparecen como variables." />
+
+En la prueba de humo de producción, un PDF sintético de siete páginas de una empresa inventada, Tavush Timber LLC, tardó 54,6 s y 13.617 tokens entre todas las llamadas del pipeline; el mismo informe como texto tardó 52,4 s, y tres PDF enviados a la vez terminaron en 56,2 s. Encontró los cuatro errores inyectados en las páginas correctas: reservas que no cuadran entre las páginas 5 y 2, con las dos cifras exactas; el total del activo corriente, con la cifra impresa correcta pero una esperada equivocada; el balance descuadrado, culpando al total del activo en lugar del total de patrimonio neto y pasivo; y una política de ingresos con criterio de caja contraria a la NIIF 15, señalada tres veces. Seis hallazgos para cuatro problemas reales, más un punto de interés (el resultado antes de impuestos baja de 72.740 a 10.089): la detección es sólida y las cifras son el punto débil, la misma imagen que el benchmark.
+
+La API también funciona en un endpoint público de demostración en la RTX 4090 alquilada (acceso bajo petición). Doce informes anuales sintéticos nuevos, fuera de todos los conjuntos del benchmark, pasaron por él desde un portátil a través de internet, cuatro a la vez: 12 de 12 terminaron con respuestas válidas según el esquema en 58,6 s por auditoría (de 56,1 a 61,8 s), unas 245 auditorías por hora en una sola tarjeta y 13.500 tokens por auditoría. Encontraron el 74 % de los errores inyectados (31 de 42), el 70 % de los 83 hallazgos eran reales y el 64 % de las cifras eran exactas, en línea con el benchmark sin conexión de este modelo (recall 72 %, exactitud numérica 70 %): el sistema desplegado reproduce la calidad medida.
+
+### Probar la API
+
+El endpoint habla el formato chat-completions de OpenAI, así que sirve cualquier cliente de OpenAI. Envía un informe en PDF o como texto y recibe la auditoría (errores, cifras, referencias NIIF y puntos de interés) como JSON dentro de una respuesta de chat estándar. La demo en directo funciona en una RTX 4090 alquilada; el endpoint y una clave de acceso se dan bajo petición.
+
+```bash
+export BASE=<endpoint, bajo petición>
+export AUDITPRO_API_KEY=<clave, bajo petición>
+B64=$(base64 < report.pdf | tr -d '\n')
+curl -s $BASE/v1/chat/completions \
+  -H "Authorization: Bearer $AUDITPRO_API_KEY" -H "Content-Type: application/json" \
+  -d "{\"model\":\"auditpro\",\"messages\":[{\"role\":\"user\",\"content\":[{\"type\":\"file\",\"file\":{\"filename\":\"report.pdf\",\"file_data\":\"data:application/pdf;base64,$B64\"}}]}]}" \
+  | jq -r '.choices[0].message.content' | jq
+```
+
+```python
+from openai import OpenAI
+import base64, json, os
+
+client = OpenAI(base_url=os.environ["BASE"] + "/v1", api_key=os.environ["AUDITPRO_API_KEY"], timeout=900)
+pdf = base64.b64encode(open("report.pdf", "rb").read()).decode()
+r = client.chat.completions.create(model="auditpro", messages=[{"role": "user", "content": [
+    {"type": "file", "file": {"filename": "report.pdf", "file_data": "data:application/pdf;base64," + pdf}}]}])
+audit = json.loads(r.choices[0].message.content)
+print(audit["company_name"], len(audit["errors"]), "errors", r.usage)
+```
+
+Para texto, envía `"content": "...texto completo del informe..."` en lugar de la parte de archivo. Una auditoría tarda alrededor de un minuto, porque el pipeline hace varias llamadas al modelo con JSON restringido por esquema; `stream: true` devuelve Server-Sent Events, `GET /v1/models` lista el modelo y los errores siguen el formato de OpenAI (401 clave incorrecta, 415 no es un PDF, 422 documento vacío o ilegible). En la demo usa informes sintéticos o publicados: los documentos de clientes van en el hardware de la propia firma.
 
 ## Un informe, de principio a fin
 
@@ -101,10 +156,10 @@ La aplicación Next.js es donde se elige y se sirve el modelo.
 
 ## Despliegue y seguridad
 
-Una sola imagen de contenedor reúne vLLM, la API, el dashboard, Prometheus y Grafana para un servidor con una GPU; un chart de Helm los ejecuta como pods separados con políticas de red, contenedores sin root, sistemas de ficheros de solo lectura y autoescalado con KEDA. Los pesos del modelo se descargan una vez a un volumen, se comprueban con los hashes SHA-256 de Hugging Face y después el motor funciona sin conexión. GitHub Actions construye las imágenes, las firma por digest con cosign, las escanea y empaqueta y firma el chart de Helm. 246 tests (149 de la API y el pipeline, 97 de puntuación, selección y el laboratorio) se ejecutan sin GPU contra un motor simulado; en 40 informes sintéticos las comprobaciones deterministas encuentran todos los errores que buscan, y en 20 informes limpios no señalan nada.
+Una sola imagen de contenedor reúne vLLM, la API, el dashboard, Prometheus y Grafana para un servidor con una GPU; un chart de Helm los ejecuta como pods separados con políticas de red, contenedores sin root, sistemas de ficheros de solo lectura y autoescalado con KEDA. Los pesos del modelo se descargan una vez a un volumen, se comprueban con los hashes SHA-256 de Hugging Face y después el motor funciona sin conexión. GitHub Actions construye las imágenes, las firma por digest con cosign, las escanea y empaqueta y firma el chart de Helm. 251 tests (154 de la API y el pipeline, 97 de puntuación, selección y el laboratorio) se ejecutan sin GPU contra un motor simulado; en 40 informes sintéticos las comprobaciones deterministas encuentran todos los errores que buscan, y en 20 informes limpios no señalan nada.
 
 La API pide una clave en cada ruta de auditoría y de métricas; el dashboard usa autenticación básica y guarda la clave en el servidor. Nunca se registran los cuerpos de las peticiones ni los prompts, cada respuesta se valida contra el esquema antes de devolverla, y el controlador de despliegue solo acepta imágenes de la lista permitida, fijadas por digest y firmadas. Los benchmarks en GPU alquiladas de un marketplace usan solo informes sintéticos; los documentos reales de clientes se procesan en el hardware de la propia firma.
 
 ## Próximos pasos
 
-Un conjunto de referencia revisado por contables que sustituya al sintético, la prueba con 8 y 16 usuarios para cada configuración (21 de 57 la tienen), OCR para PDF escaneados, informes en armenio y ruso, y acceso por usuario con aislamiento por cliente.
+Un conjunto de referencia revisado por contables que sustituya al sintético, pruebas A/B adaptativas con ejecuciones de rendimiento repetidas, decodificación por sufijos en el modelo FP8 de producción, OCR para PDF escaneados, informes en armenio y ruso, y acceso por usuario con aislamiento por cliente.

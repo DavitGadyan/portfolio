@@ -14,6 +14,7 @@ export type BenchViewRun = {
   weights?: number;
   loadS?: number;
   docs: number;
+  gp?: { cap: number; rps: number; tok: number; ttft95?: number; itl?: number; cs: number[] };
 };
 export type BenchViewPoint = { c: number; tok: number; user: number; rps: number; ttft: number; ttft95: number; itl: number; e2e: number; e2e95: number };
 export type BenchViewCurve = { id: string; label: string; pick?: string; on: boolean; pts: BenchViewPoint[] };
@@ -21,7 +22,11 @@ export type BenchViewTech = { id: string; label: string; verdict: string; base?:
 export type BenchViewAb = { candidate: string; baseline: string; verdict: string; metric: string; delta: number; lo: number; hi: number; unit: string; p?: number; n?: number; reps?: [number, number]; prec?: [number, number, number] };
 export type BenchViewMetric = { id: string; label: string; unit: '%' | 's' | '$' | ''; better: 'up' | 'down' };
 export type BenchViewStrings = {
-  tabs: { cost: string; speed: string; metric: string; tech: string; ab: string };
+  tabs: { cost: string; speed: string; goodput: string; metric: string; tech: string; ab: string };
+  gpNote: string;
+  gpUnit: string;
+  gpNone: string;
+  gpTested: string;
   costX: string;
   costY: string;
   speedX: string;
@@ -48,7 +53,7 @@ export type BenchViewStrings = {
 };
 export type BenchViewData = { id: string; runs: BenchViewRun[]; curves: BenchViewCurve[]; metrics: BenchViewMetric[]; techniques: BenchViewTech[]; ab: BenchViewAb[]; s: BenchViewStrings };
 
-type Tab = 'cost' | 'speed' | 'metric' | 'tech' | 'ab';
+type Tab = 'cost' | 'speed' | 'goodput' | 'metric' | 'tech' | 'ab';
 type LoadKey = keyof BenchViewStrings['load'];
 const PICK_COLOR: Record<string, string> = { quality: '#1faa55', balanced: '#38bdf8', cost: '#38bdf8', recall: '#a78bfa', throughput: '#f59e0b', numeric: '#f472b6' };
 const LINE_COLOR = ['#2dd4bf', '#f87171', '#facc15', '#93c5fd', '#fdba74'];
@@ -61,7 +66,7 @@ const signed = (v: number) => `${v > 0 ? '+' : ''}${v}`;
 /** Interactive charts for a measured benchmark (Bench.tsx renders the tables for readers without JavaScript). Plain SVG, no chart library. */
 export function BenchView({ data }: { data: BenchViewData }) {
   const { runs, curves, metrics, techniques, ab, s } = data;
-  const tabs: Tab[] = ['cost', ...(curves.length ? (['speed'] as Tab[]) : []), 'metric', 'tech', ...(ab.length ? (['ab'] as Tab[]) : [])];
+  const tabs: Tab[] = ['cost', ...(curves.length ? (['speed'] as Tab[]) : []), ...(runs.some((r) => r.gp) ? (['goodput'] as Tab[]) : []), 'metric', 'tech', ...(ab.length ? (['ab'] as Tab[]) : [])];
   const [tab, setTab] = useState<Tab>('cost');
   const [sel, setSel] = useState<string>(runs.find((r) => r.pick === 'quality')?.id ?? runs[0]?.id ?? '');
   const [metric, setMetric] = useState<string>(metrics[0]?.id ?? '');
@@ -77,6 +82,7 @@ export function BenchView({ data }: { data: BenchViewData }) {
       <div className="bch__panel" role="tabpanel">
         {tab === 'cost' && <CostChart runs={runs} s={s} sel={sel} onSel={setSel} />}
         {tab === 'speed' && <LoadChart curves={curves} s={s} />}
+        {tab === 'goodput' && <GoodputChart runs={runs} s={s} />}
         {tab === 'metric' && <MetricChart runs={runs} metrics={metrics} metric={metric} onMetric={setMetric} s={s} />}
         {tab === 'tech' && <TechChart techniques={techniques} runs={runs} s={s} />}
         {tab === 'ab' && <AbChart ab={ab} s={s} />}
@@ -250,6 +256,42 @@ function LoadChart({ curves, s }: { curves: BenchViewCurve[]; s: BenchViewString
   );
 }
 
+/** Goodput: requests per second served within the latency SLO, best runs first; useful (quality >= 60) runs and the picks by default. */
+function GoodputChart({ runs, s }: { runs: BenchViewRun[]; s: BenchViewStrings }) {
+  const [all, setAll] = useState(false);
+  const [open, setOpen] = useState<string | null>(null);
+  const withGp = runs.filter((r) => r.gp).sort((a, b) => b.gp!.rps - a.gp!.rps);
+  const useful = withGp.filter((r) => r.pick || (r.metrics.quality ?? 0) >= 60);
+  const rows = all ? withGp : useful;
+  const max = Math.max(...rows.map((r) => r.gp!.rps), 0.01);
+  return (
+    <>
+      <p className="bch__note">{s.gpNote}</p>
+      <ul className="bch__bars" onMouseLeave={() => setOpen(null)}>
+        {rows.map((r) => (
+          <li key={r.id} data-open={r.id === open || undefined} tabIndex={0} onMouseEnter={() => setOpen(r.id)} onFocus={() => setOpen(r.id)} onClick={() => setOpen(r.id)}>
+            <span className="bch__blabel">{r.label}</span>
+            <span className="bch__btrack"><span className="bch__bfill" style={{ width: `${(r.gp!.rps / max) * 100}%`, background: color(r) }} /></span>
+            <span className="bch__bval">{r.gp!.cap ? `${r.gp!.rps.toFixed(2)} · ${r.gp!.cap}×` : s.gpNone}</span>
+            {r.id === open && (
+              <span className="bch__more-row">
+                <span>{s.load.tok} <b>{Math.round(r.gp!.tok)}</b></span>
+                {r.gp!.ttft95 !== undefined && <span>{s.load.ttft95} <b>{fmtL(r.gp!.ttft95, 'ttft95')}</b></span>}
+                {r.gp!.itl !== undefined && <span>{s.load.itl} <b>{r.gp!.itl.toFixed(1)} ms</b></span>}
+                <span>{s.gpTested} <b>{r.gp!.cs.join(', ')}</b></span>
+                {r.metrics.quality !== undefined && <span>Q <b>{r.metrics.quality.toFixed(1)}</b></span>}
+                {r.pickLabel && <span className="bch__pick">{r.pickLabel}</span>}
+              </span>
+            )}
+          </li>
+        ))}
+      </ul>
+      {withGp.length > useful.length && <button type="button" className="bch__more" onClick={() => setAll((a) => !a)}>{all ? s.showTop.replace(/\d+/, String(useful.length)) : `${s.showAll} (${withGp.length})`}</button>}
+      <p className="bch__note">{s.gpUnit}</p>
+    </>
+  );
+}
+
 function MetricChart({ runs, metrics, metric, onMetric, s }: { runs: BenchViewRun[]; metrics: BenchViewMetric[]; metric: string; onMetric: (id: string) => void; s: BenchViewStrings }) {
   const [all, setAll] = useState(false);
   const [open, setOpen] = useState<string | null>(null);
@@ -335,7 +377,7 @@ function AbChart({ ab, s }: { ab: BenchViewAb[]; s: BenchViewStrings }) {
           const key = `${a.candidate}-${a.baseline}`;
           return (
             <li key={key} data-v={a.verdict} data-open={key === open || undefined} tabIndex={0} onMouseEnter={() => setOpen(key)} onFocus={() => setOpen(key)} onClick={() => setOpen(key)}>
-              <span className="bch__blabel">{a.candidate} <em>vs {a.baseline}</em></span>
+              <span className="bch__blabel">{a.candidate} <em>vs {a.baseline}</em>{a.metric !== ab[ab.length - 1]?.metric && <><br /><small>{a.metric}</small></>}</span>
               <span className="bch__citrack" aria-label={`${s.ci} ${a.lo} … ${a.hi}`}>
                 <span className="bch__ci" style={{ left: pos(Math.min(a.lo, a.hi)), right: `calc(100% - ${pos(Math.max(a.lo, a.hi))})` }} />
                 <span className="bch__cidot" style={{ left: pos(a.delta) }} />

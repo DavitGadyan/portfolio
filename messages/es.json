@@ -396,7 +396,7 @@
     "mGrounding": "Anclaje",
     "mTime": "Tiempo por informe",
     "mCost": "$ por 1.000 auditorías",
-    "pickQuality": "opción de calidad",
+    "pickQuality": "elegido para producción",
     "pickBalanced": "opción equilibrada",
     "pickRecall": "más errores encontrados",
     "pickThroughput": "opción de rendimiento",
@@ -404,7 +404,7 @@
     "caveat": "Un grounding por debajo del 30 % en esta ejecución parece un problema de medición que aún no se ha investigado.",
     "showAll": "Ver todas",
     "showTop": "Ver las 12 primeras",
-    "abNote": "Cambio de recall frente a la referencia, con su intervalo de confianza del 95 %; la línea marca sin cambio. Se hicieron 37 comparaciones emparejadas: 4 rechazadas, 33 no concluyentes (de 15 a 30 informes por ejecución son pocos) y ninguna aceptada. Las tres con ejecuciones rotas no se muestran.",
+    "abNote": "Cambio frente a la referencia, con su intervalo de confianza del 95 %; la línea marca sin cambio. Se hicieron 53 comparaciones emparejadas: 5 rechazadas, 48 no concluyentes (de 15 a 30 informes por ejecución son pocos) y ninguna aceptada. Qwen3-14B AWQ frente a FP8 muestra la exactitud numérica, la métrica por la que se rechazó; el resto muestra el recall. Las tres con ejecuciones rotas no se muestran.",
     "pickNumeric": "mejor aritmética",
     "lTok": "Tokens/s, total",
     "lUser": "Tokens/s por usuario",
@@ -420,6 +420,11 @@
     "tokAt": "Tokens/s con",
     "paired": "Informes emparejados",
     "reps": "Ejecuciones por grupo",
-    "holm": "p de Holm"
+    "holm": "p de Holm",
+    "tabGoodput": "Goodput",
+    "gpNote": "Goodput: llamadas al modelo por segundo servidas mientras cada llamada cumple el SLO de latencia (primer token p95 ≤ 2 s, tiempo entre tokens p50 ≤ 50 ms), tomado en la mayor concurrencia probada que aún lo cumple. Primero se muestran las ejecuciones con calidad de 60 o más y las elegidas.",
+    "gpUnit": "Barras: peticiones/s dentro del SLO · el número de peticiones simultáneas en ese punto. Calculado a partir de los barridos en bucle cerrado (4.000 tokens de entrada, 600 de salida); las ejecuciones probadas solo con 1 y 4 no pueden mostrar más de 4.",
+    "gpNone": "ninguna",
+    "gpTested": "Concurrencia probada"
   }
 }

@@ -396,7 +396,7 @@
     "mGrounding": "Grounding",
     "mTime": "Time per report",
     "mCost": "$ per 1,000 audits",
-    "pickQuality": "quality pick",
+    "pickQuality": "production pick",
     "pickBalanced": "balanced pick",
     "pickRecall": "most errors found",
     "pickThroughput": "throughput pick",
@@ -404,7 +404,7 @@
     "caveat": "Grounding under 30% on this run looks like a measurement issue that has not been investigated yet.",
     "showAll": "Show all",
     "showTop": "Show the top 12",
-    "abNote": "Recall change against the baseline, with its 95% confidence interval; the line marks no change. 37 paired comparisons ran: 4 rejected, 33 inconclusive (15 to 30 reports per run is too few), none accepted. The three with broken runs are not shown.",
+    "abNote": "Change against the baseline, with its 95% confidence interval; the line marks no change. 53 paired comparisons ran: 5 rejected, 48 inconclusive (15 to 30 reports per run is too few), none accepted. Qwen3-14B AWQ against FP8 shows numeric accuracy, the metric it was rejected on; the rest show recall. The three with broken runs are not shown.",
     "pickNumeric": "best arithmetic",
     "lTok": "Tokens/s, total",
     "lUser": "Tokens/s per user",
@@ -420,6 +420,11 @@
     "tokAt": "Tokens/s at",
     "paired": "Paired reports",
     "reps": "Runs per arm",
-    "holm": "Holm p"
+    "holm": "Holm p",
+    "tabGoodput": "Goodput",
+    "gpNote": "Goodput: model calls per second served while every call meets the latency SLO (first token p95 ≤ 2 s, time between tokens p50 ≤ 50 ms), taken at the highest tested concurrency that still meets it. Runs with quality 60+ and the picks are shown first.",
+    "gpUnit": "Bars: requests/s within the SLO · the number of concurrent requests at that point. Derived from the closed-loop sweeps (4,000 tokens in, 600 out); runs tested only at 1 and 4 cannot show more than 4.",
+    "gpNone": "none",
+    "gpTested": "Concurrency tested"
   }
 }
