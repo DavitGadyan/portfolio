@@ -145,34 +145,6 @@ In the production smoke test a seven-page synthetic PDF for an invented company,
 
 The API also runs on a public demo endpoint on the rented RTX 4090 (access on request). Twelve new synthetic annual reports, held out from every benchmark set, went through it from a laptop over the internet, four at a time: 12 of 12 succeeded with schema-valid answers in 58.6 s per audit (56.1 to 61.8 s), about 245 audits an hour on one card and 13,500 tokens per audit. They found 74% of the planted errors (31 of 42), 70% of the 83 findings were real, and 64% of the figures were exact, in line with the offline benchmark for this model (recall 72%, numeric accuracy 70%): the deployed system reproduces the measured quality.
 
-### Try the API
-
-The endpoint speaks the OpenAI chat-completions format, so any OpenAI client works. Send a report as a PDF or as text and get back the audit (errors, figures, IFRS references, points of interest) as JSON inside a standard chat completion. The live demo runs on a rented RTX 4090; the endpoint and an access key are given on request.
-
-```bash
-export BASE=<endpoint, on request>
-export AUDITPRO_API_KEY=<key, on request>
-B64=$(base64 < report.pdf | tr -d '\n')
-curl -s $BASE/v1/chat/completions \
-  -H "Authorization: Bearer $AUDITPRO_API_KEY" -H "Content-Type: application/json" \
-  -d "{\"model\":\"auditpro\",\"messages\":[{\"role\":\"user\",\"content\":[{\"type\":\"file\",\"file\":{\"filename\":\"report.pdf\",\"file_data\":\"data:application/pdf;base64,$B64\"}}]}]}" \
-  | jq -r '.choices[0].message.content' | jq
-```
-
-```python
-from openai import OpenAI
-import base64, json, os
-
-client = OpenAI(base_url=os.environ["BASE"] + "/v1", api_key=os.environ["AUDITPRO_API_KEY"], timeout=900)
-pdf = base64.b64encode(open("report.pdf", "rb").read()).decode()
-r = client.chat.completions.create(model="auditpro", messages=[{"role": "user", "content": [
-    {"type": "file", "file": {"filename": "report.pdf", "file_data": "data:application/pdf;base64," + pdf}}]}])
-audit = json.loads(r.choices[0].message.content)
-print(audit["company_name"], len(audit["errors"]), "errors", r.usage)
-```
-
-For plain text, send `"content": "...full report text..."` instead of the file part. An audit takes about a minute, because the pipeline makes several schema-constrained model calls; `stream: true` returns Server-Sent Events, `GET /v1/models` lists the model, and errors use the OpenAI format (401 bad key, 415 not a PDF, 422 empty or unreadable document). Use synthetic or published reports on the demo: client documents belong on the firm's own hardware.
-
 ## One report, start to finish
 
 ![A page of the synthetic input report and Qwen3-14B AWQ's result on it](/images/portfolio/auditpro-example.jpg)

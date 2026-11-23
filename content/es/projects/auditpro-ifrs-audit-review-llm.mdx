@@ -109,34 +109,6 @@ En la prueba de humo de producción, un PDF sintético de siete páginas de una 
 
 La API también funciona en un endpoint público de demostración en la RTX 4090 alquilada (acceso bajo petición). Doce informes anuales sintéticos nuevos, fuera de todos los conjuntos del benchmark, pasaron por él desde un portátil a través de internet, cuatro a la vez: 12 de 12 terminaron con respuestas válidas según el esquema en 58,6 s por auditoría (de 56,1 a 61,8 s), unas 245 auditorías por hora en una sola tarjeta y 13.500 tokens por auditoría. Encontraron el 74 % de los errores inyectados (31 de 42), el 70 % de los 83 hallazgos eran reales y el 64 % de las cifras eran exactas, en línea con el benchmark sin conexión de este modelo (recall 72 %, exactitud numérica 70 %): el sistema desplegado reproduce la calidad medida.
 
-### Probar la API
-
-El endpoint habla el formato chat-completions de OpenAI, así que sirve cualquier cliente de OpenAI. Envía un informe en PDF o como texto y recibe la auditoría (errores, cifras, referencias NIIF y puntos de interés) como JSON dentro de una respuesta de chat estándar. La demo en directo funciona en una RTX 4090 alquilada; el endpoint y una clave de acceso se dan bajo petición.
-
-```bash
-export BASE=<endpoint, bajo petición>
-export AUDITPRO_API_KEY=<clave, bajo petición>
-B64=$(base64 < report.pdf | tr -d '\n')
-curl -s $BASE/v1/chat/completions \
-  -H "Authorization: Bearer $AUDITPRO_API_KEY" -H "Content-Type: application/json" \
-  -d "{\"model\":\"auditpro\",\"messages\":[{\"role\":\"user\",\"content\":[{\"type\":\"file\",\"file\":{\"filename\":\"report.pdf\",\"file_data\":\"data:application/pdf;base64,$B64\"}}]}]}" \
-  | jq -r '.choices[0].message.content' | jq
-```
-
-```python
-from openai import OpenAI
-import base64, json, os
-
-client = OpenAI(base_url=os.environ["BASE"] + "/v1", api_key=os.environ["AUDITPRO_API_KEY"], timeout=900)
-pdf = base64.b64encode(open("report.pdf", "rb").read()).decode()
-r = client.chat.completions.create(model="auditpro", messages=[{"role": "user", "content": [
-    {"type": "file", "file": {"filename": "report.pdf", "file_data": "data:application/pdf;base64," + pdf}}]}])
-audit = json.loads(r.choices[0].message.content)
-print(audit["company_name"], len(audit["errors"]), "errors", r.usage)
-```
-
-Para texto, envía `"content": "...texto completo del informe..."` en lugar de la parte de archivo. Una auditoría tarda alrededor de un minuto, porque el pipeline hace varias llamadas al modelo con JSON restringido por esquema; `stream: true` devuelve Server-Sent Events, `GET /v1/models` lista el modelo y los errores siguen el formato de OpenAI (401 clave incorrecta, 415 no es un PDF, 422 documento vacío o ilegible). En la demo usa informes sintéticos o publicados: los documentos de clientes van en el hardware de la propia firma.
-
 ## Un informe, de principio a fin
 
 ![Una página del informe sintético de entrada y el resultado de Qwen3-14B AWQ sobre él](/images/portfolio/auditpro-example.jpg)
