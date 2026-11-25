@@ -64,13 +64,14 @@ export function parseProjectLocalized(d: Record<string, unknown>, file: string, 
   if (locale === 'es') {
     for (const k of PROJECT_INVARIANTS) if (d[k] !== undefined) fail(file, `ES file must not declare invariant "${k}"`);
   }
-  let metrics: { label: string; value: string }[] | undefined;
+  let metrics: { label: string; value: string; before?: string }[] | undefined;
   if (d.metrics !== undefined) {
     if (!Array.isArray(d.metrics) || d.metrics.length > 6) fail(file, 'metrics must be a list of at most 6 items');
     metrics = (d.metrics as unknown[]).map((it, i) => {
       const o = (it ?? {}) as Record<string, unknown>;
       if (typeof o.label !== 'string' || typeof o.value !== 'string' || !o.label.trim() || !String(o.value).trim()) fail(file, `metrics[${i}] needs string label and value`);
-      return { label: String(o.label).trim(), value: String(o.value).trim() };
+      if (o.before !== undefined && (typeof o.before !== 'string' || !o.before.trim())) fail(file, `metrics[${i}].before must be a non-empty string`);
+      return { label: String(o.label).trim(), value: String(o.value).trim(), ...(typeof o.before === 'string' ? { before: o.before.trim() } : {}) };
     });
   }
   return { title, description, summary, coverAlt, outcomes, metrics, clientNote: typeof d.clientNote === 'string' ? d.clientNote : undefined };

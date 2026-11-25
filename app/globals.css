@@ -375,6 +375,69 @@ body {
   .pback { display: inline-grid; place-items: center; width: 2.25rem; height: 2.25rem; border-radius: 9999px; border: 2px solid var(--color-ink-200); color: var(--color-ink-500); transition: background-color .2s, color .2s, border-color .2s; }
   .pback:hover { background: var(--color-ink-500); border-color: var(--color-ink-500); color: #fff; }
   /* Stack by layer: bare brand icons, spaced out, no card or disc behind them; the tool's name shows on hover */
+  /* Architecture design on project pages (components/content/ArchDiagram.tsx): cards on a pipeline, links with flowing dots */
+  .arch { --ag-user: #6f6f6f; --ag-frontend: #2f7cf6; --ag-backend: #7a5af8; --ag-ai: #1faa55; --ag-data: #e8890c; --ag-infra: #0e9fb3; --ag-security: #d94848;
+    margin: 2.5rem 0; padding: 1.1rem 1.1rem 1rem; border: 1px solid rgba(0,0,0,.08); border-radius: 1.25rem; background: linear-gradient(180deg, #fbfbfb, #f3f4f3); }
+  .arch__head { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin-bottom: .75rem; }
+  .arch__title { margin: 0; font-size: 1.15rem; font-weight: 700; color: var(--color-ink-700); }
+  .arch__hint { margin: .2rem 0 0; font-size: .85rem; color: var(--color-ink-400); }
+  .arch__tools { display: flex; gap: .4rem; flex-shrink: 0; }
+  .arch__btn { display: inline-flex; align-items: center; gap: .35rem; height: 2.1rem; min-width: 2.1rem; justify-content: center; padding: 0 .6rem; border: 1px solid rgba(0,0,0,.14); border-radius: 9999px; background: #fff; color: var(--color-ink-700); font-size: .82rem; font-weight: 600; cursor: pointer; }
+  .arch__btn:hover { border-color: var(--color-accent); }
+  .arch__btn:focus-visible, .arch__node:focus-visible { outline: 3px solid var(--color-focus, #1faa55); outline-offset: 2px; }
+  .arch__btn--expand { display: none; }
+  @media (scripting: enabled) { .arch__btn--expand { display: inline-flex; } }
+  .arch__view { overflow: auto; overscroll-behavior-x: contain; scrollbar-width: thin; }
+  .arch__view[data-scroll]:not([data-end]) { mask-image: linear-gradient(90deg, #000 88%, transparent); }
+  .arch__fit { --W: var(--hw); --H: var(--hh); width: calc(var(--W) * var(--s) * 1px); height: calc(var(--H) * var(--s) * 1px); margin: 0 auto; }
+  .arch__stage { position: relative; width: calc(var(--W) * 1px); height: calc(var(--H) * 1px); transform: scale(var(--s)); transform-origin: 0 0; }
+  .arch__edges { position: absolute; inset: 0; overflow: visible; }
+  .arch__edges--v { display: none; }
+  .arch__lane rect { fill: rgba(255,255,255,.6); stroke: color-mix(in srgb, var(--lc) 45%, transparent); stroke-dasharray: 5 5; }
+  .arch__lane text { fill: var(--lc); font-size: 10.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+  .arch__lane[data-group="infra"] { --lc: var(--ag-infra); } .arch__lane[data-group="security"] { --lc: var(--ag-security); }
+  .arch__edges--v .arch__edge path { stroke-width: 2; stroke-dasharray: 2 5; stroke-linecap: round; }
+  .arch__edge path { fill: none; stroke: #c3c7c4; stroke-width: 1.6; transition: stroke .2s, stroke-width .2s, opacity .2s; }
+  .arch__edge[data-on] path { stroke: var(--color-accent); stroke-width: 2.4; }
+  .arch__stage[data-active] .arch__edge:not([data-on]) { opacity: .25; }
+  .arch__elabel { fill: var(--color-ink-400); font-size: 10.5px; font-weight: 600; paint-order: stroke; stroke: #f7f8f7; stroke-width: 4px; }
+  .arch__dot { display: none; fill: var(--color-accent); }
+  .arch__node { --gc: var(--ag-user); position: absolute; left: calc(var(--hx) * 1px); top: calc(var(--hy) * 1px); width: 176px; height: 60px; display: flex; align-items: center; gap: .55rem; padding: 0 .7rem 0 .8rem;
+    border: 1px solid rgba(0,0,0,.1); border-left: 3px solid var(--gc); border-radius: .8rem; background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.05), 0 6px 16px -8px rgba(0,0,0,.18);
+    text-align: left; font: inherit; color: var(--color-ink-700); cursor: pointer; transition: opacity .2s, box-shadow .2s, translate .2s; }
+  .arch__node[data-group="frontend"] { --gc: var(--ag-frontend); } .arch__node[data-group="backend"] { --gc: var(--ag-backend); } .arch__node[data-group="ai"] { --gc: var(--ag-ai); }
+  .arch__node[data-group="data"] { --gc: var(--ag-data); } .arch__node[data-group="infra"] { --gc: var(--ag-infra); } .arch__node[data-group="security"] { --gc: var(--ag-security); }
+  .arch__node[data-current] { box-shadow: 0 0 0 2px var(--gc), 0 10px 24px -10px rgba(0,0,0,.3); }
+  .arch__stage[data-active] .arch__node:not([data-near]) { opacity: .4; }
+  .arch__marks { display: flex; flex-shrink: 0; gap: 3px; color: var(--gc); }
+  .arch__marks img { width: 22px; height: 22px; object-fit: contain; }
+  .arch__marks img[data-mono] { filter: brightness(0); }
+  .arch__label { font-size: .8rem; font-weight: 600; line-height: 1.2; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .arch__card { position: absolute; z-index: 5; padding: .75rem .85rem; border-radius: .8rem; background: rgba(33,33,33,.96); color: #fff; box-shadow: 0 14px 30px -12px rgba(0,0,0,.5); pointer-events: none; font-size: .8rem; line-height: 1.4; }
+  .arch__card-group { margin: 0; font-size: .66rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: color-mix(in srgb, var(--gc, #1faa55) 60%, #fff); }
+  .arch__card[data-group="user"] { --gc: #bbb; } .arch__card[data-group="frontend"] { --gc: var(--ag-frontend); } .arch__card[data-group="backend"] { --gc: var(--ag-backend); } .arch__card[data-group="ai"] { --gc: var(--ag-ai); }
+  .arch__card[data-group="data"] { --gc: var(--ag-data); } .arch__card[data-group="infra"] { --gc: var(--ag-infra); } .arch__card[data-group="security"] { --gc: var(--ag-security); }
+  .arch__card-title { margin: .15rem 0 .35rem; font-weight: 700; font-size: .9rem; }
+  .arch__card ul { margin: 0 0 .4rem; padding-left: 1rem; list-style: disc; }
+  .arch__card li { margin: .1rem 0; }
+  .arch__card-role { margin: 0; color: rgba(255,255,255,.65); font-size: .74rem; }
+  @media (max-width: 40rem) {
+    .arch { padding: .9rem .6rem .8rem; }
+    .arch__fit { --W: var(--vw); --H: var(--vh); }
+    .arch__edges--h { display: none; } .arch__edges--v { display: block; }
+    .arch__node { left: calc(var(--vx) * 1px); top: calc(var(--vy) * 1px); width: 146px; padding: 0 .5rem 0 .6rem; gap: .4rem; }
+    .arch__label { font-size: .74rem; }
+  }
+  .arch[data-expanded] { position: fixed; inset: 0; z-index: 80; margin: 0; border-radius: 0; display: flex; flex-direction: column; padding: 1rem; }
+  .arch[data-expanded] .arch__view { flex: 1; min-height: 0; }
+  @media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+    .arch__dot { display: block; }
+    .arch__stage[data-active] .arch__edge:not([data-on]) .arch__dot { display: none; }
+    .arch__node:hover { translate: 0 -2px; }
+    .arch__card { animation: tgin .18s ease-out both; }
+    .arch__node { animation: archin .45s cubic-bezier(.2,.7,.2,1) both; }
+  }
+  @keyframes archin { from { opacity: 0; scale: .94; } }
   .tchip { display: contents; }
   .tchip__marks { display: contents; }
   .tchip__disc { position: relative; display: grid; place-items: center; width: 28px; height: 28px; }
@@ -386,6 +449,8 @@ body {
   .metrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; margin: 0; }
   .metrics__item { padding: .8rem .9rem; border-radius: .75rem; background: var(--color-paper-50); border: 1px solid var(--color-ink-100); }
   .metrics__value { margin: 0; font-size: 1.25rem; font-weight: 700; line-height: 1.15; color: var(--color-ink-700); }
+  .metrics__before { margin: .2rem 0 0; font-size: .78rem; color: var(--color-ink-400); }
+  .metrics__before span { font-weight: 600; }
   .metrics__label { margin: .25rem 0 0; font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; color: var(--color-ink-400); }
   .pcard__cap { position: absolute; inset: auto 0 0 0; padding: 1rem 1.1rem 1.1rem; background: rgba(49,49,49,.94); color: #fff; transform: translateY(100%); transition: transform .35s ease; }
   .pcard:hover .pcard__cap, .pcard:focus-within .pcard__cap { transform: none; }

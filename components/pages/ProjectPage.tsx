@@ -12,9 +12,18 @@ import { SiteFrame } from '@/components/layout/SiteFrame';
 import { Breadcrumbs } from '@/components/content/Breadcrumbs';
 import { Markdown } from '@/components/content/Markdown';
 import { StackTable } from '@/components/content/StackTable';
+import { Architecture } from '@/components/content/Architecture';
 import { ProjectCard } from '@/components/home/PortfolioGrid';
 import { Img } from '@/components/ui/Img';
 import { JsonLd } from '@/components/seo/JsonLd';
+
+/** The body up to the end of its "What I built" section, and the rest: the architecture diagram goes between the two. */
+function splitBody(body: string): [string, string] {
+  const at = body.search(/^## (What I built|Qué construí)\s*$/m);
+  if (at < 0) return [body, ''];
+  const next = body.slice(at + 3).search(/^## /m);
+  return next < 0 ? [body, ''] : [body.slice(0, at + 3 + next), body.slice(at + 3 + next)];
+}
 
 function fmtDate(d: string, locale: Locale) {
   return new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'long', year: 'numeric' }).format(new Date(`${d}T00:00:00Z`));
@@ -36,6 +45,7 @@ export function ProjectPage({ locale, slug }: { locale: Locale; slug: string }) 
   const p = getProject(locale, slug);
   const related = getRelatedProjects(locale, p, 3);
   const links = p.links;
+  const [head, tail] = splitBody(p.body);
   return (
     <SiteFrame locale={locale}>
       <JsonLd data={projectGraph(locale, p)} />
@@ -65,7 +75,11 @@ export function ProjectPage({ locale, slug }: { locale: Locale; slug: string }) 
             <div className="min-w-0">
               <p className="lead font-medium text-ink-700">{p.summary}</p>
               <div className="prose-dg mt-8">
-                <Markdown source={p.body} playLabel={fmt(m.a11y.playVideo, { title: p.title })} locale={locale} />
+                <Markdown source={head} playLabel={fmt(m.a11y.playVideo, { title: p.title })} locale={locale} />
+              </div>
+              <Architecture slug={slug} stack={p.stack} locale={locale} />
+              <div className="prose-dg">
+                {tail && <Markdown source={tail} playLabel={fmt(m.a11y.playVideo, { title: p.title })} locale={locale} />}
               </div>
               {p.clientNote && <p className="mt-8 text-sm italic text-ink-400">{p.clientNote}</p>}
             </div>
@@ -86,7 +100,13 @@ export function ProjectPage({ locale, slug }: { locale: Locale; slug: string }) 
                 <section>
                   <h2 className="eyebrow mb-3">{m.project.metrics}</h2>
                   <dl className="metrics">
-                    {p.metrics.map((x) => <div key={x.label} className="metrics__item"><dd className="metrics__value">{x.value}</dd><dt className="metrics__label">{x.label}</dt></div>)}
+                    {p.metrics.map((x) => (
+                      <div key={x.label} className="metrics__item">
+                        <dd className="metrics__value">{x.value}</dd>
+                        {x.before && <dd className="metrics__before"><span>{m.project.before}</span> {x.before}</dd>}
+                        <dt className="metrics__label">{x.label}</dt>
+                      </div>
+                    ))}
                   </dl>
                 </section>
               )}

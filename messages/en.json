@@ -93,6 +93,7 @@
   "project": {
     "client": "Client",
     "metrics": "By the numbers",
+    "before": "was",
     "stack": "Stack by layer",
     "outcome": "Outcome",
     "links": "Links",
@@ -113,6 +114,25 @@
       "data": "Data",
       "infra": "Infrastructure",
       "security": "Security"
+    },
+    "arch": {
+      "title": "Architecture design",
+      "hint": "Hover or tap a component to light its path and see what it does.",
+      "auto": "Built from this project's stack.",
+      "expand": "Expand",
+      "close": "Close the expanded view",
+      "zoomIn": "Zoom in",
+      "zoomOut": "Zoom out",
+      "user": "Users",
+      "roles": {
+        "user": "The people who use the product.",
+        "frontend": "Front end: what users see and work with.",
+        "backend": "Back end: the logic and APIs between the interface, the models and the data.",
+        "ai": "AI: the models and the logic that decide or generate the output.",
+        "data": "Data: where information is stored, prepared or indexed.",
+        "infra": "Infrastructure: where it runs and how it ships.",
+        "security": "Security: how access and data are protected."
+      }
     }
   },
   "blog": {

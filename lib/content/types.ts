@@ -52,7 +52,8 @@ export interface ProjectLocalized {
   coverAlt: string;
   outcomes: string[];
   /** Measurable results: short label + value, e.g. { label: 'Underwriting time', value: 'days → minutes' }. */
-  metrics?: { label: string; value: string }[];
+  /** measured results; `before` is the value the project replaced (rendered as before → value) when the case study states it */
+  metrics?: { label: string; value: string; before?: string }[];
   clientNote?: string;
 }
 
