@@ -17,7 +17,7 @@ test.describe('skills map', () => {
     await ai.click({ force: true }); // force: the gentle float animation never lets Playwright's stability check pass
     await expect(ai).toHaveAttribute('aria-expanded', 'true');
     const icons = b.locator('.brain__icon');
-    await expect(icons).toHaveCount(21); // the LLM vendors (Mistral, Meta Llama, Qwen, DeepSeek, Microsoft Decision-1) and Microsoft Foundry joined the agent tools
+    await expect(icons).toHaveCount(23); // the LLM vendors (Mistral, Meta Llama, Qwen, DeepSeek, Microsoft Decision-1, Phi, IBM Granite) and Microsoft Foundry joined the agent tools
     await expect(b.locator('.brain__icon[aria-label="LangGraph"]')).toBeVisible();
     await expect(b.locator('.brain__icon[aria-label="Grok (xAI)"]')).toBeVisible();
     await expect(b.locator('.brain__icon[aria-label="Meta Llama"]')).toBeVisible();
@@ -53,6 +53,19 @@ test.describe('skills map', () => {
     await expect(b.locator('.brain__icon[aria-label="Databricks"]')).toBeVisible();
     await expect(b.locator('.brain__icon[aria-label="Microsoft Fabric"]')).toBeVisible();
     await expect(b.locator('.brain__icon[aria-label="Azure AI Search"]')).toBeVisible();
+    await page.keyboard.press('Escape');
+    await expect(icons).toHaveCount(0);
+    const deploy = b.locator('.brain__node[data-id="deploy"]');
+    await expect(deploy).toContainText('DevOps/MLOps');
+    await deploy.click({ force: true }); // queues, GPU serving and monitoring: thirty-two tools on two rings
+    await expect(icons).toHaveCount(32);
+    for (const l of ['RabbitMQ', 'Celery', 'Apache Kafka', 'vLLM', 'SGLang', 'NVIDIA TensorRT-LLM', 'NVIDIA DCGM', 'Grafana Loki']) await expect(b.locator(`.brain__icon[aria-label="${l}"]`)).toBeVisible();
+    await expect.poll(() => icons.locator('img').evaluateAll((imgs) => imgs.every((i) => (i as HTMLImageElement).naturalWidth > 0)), { timeout: 10000 }).toBe(true);
+    await page.waitForTimeout(600);
+    const dboxes = await icons.evaluateAll((els) => els.map((e) => e.getBoundingClientRect()).map((r) => [r.x + r.width / 2, r.y + r.height / 2, r.width]));
+    for (let i = 0; i < dboxes.length; i++) for (let j = i + 1; j < dboxes.length; j++) {
+      expect(Math.hypot(dboxes[i][0] - dboxes[j][0], dboxes[i][1] - dboxes[j][1]), `DevOps marks ${i} and ${j} overlap`).toBeGreaterThan((dboxes[i][2] + dboxes[j][2]) / 2 * 0.9);
+    }
     await page.keyboard.press('Escape'); // collapse before the next click: a forced click on a node still gliding can miss it on phones
     await expect(icons).toHaveCount(0);
     await b.locator('.brain__node[data-id="security"]').click({ force: true });

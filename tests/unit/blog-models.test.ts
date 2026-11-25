@@ -54,11 +54,16 @@ describe('model posts (which LLM, Microsoft Decision-1)', () => {
   });
 
   it('the new marks exist on disk and sit in the right skills-map nodes', () => {
-    const ids: LogoId[] = ['fabric', 'foundry', 'aisearch', 'datafactory', 'docintel', 'decision1', 'qwen', 'deepseek', 'llama', 'ollama', 'nvidia', 'cohere'];
+    const ids: LogoId[] = ['fabric', 'foundry', 'aisearch', 'datafactory', 'docintel', 'decision1', 'qwen', 'deepseek', 'llama', 'ollama', 'nvidia', 'cohere',
+      'celery', 'cuda', 'vllm', 'sglang', 'tensorrt', 'triton', 'ray', 'deepspeed', 'nccl', 'llmd', 'loki', 'datadog', 'sentry', 'dcgm', 'phi', 'granite'];
     for (const id of ids) expect(existsSync(join('public/logos', logos[id][0])), id).toBe(true);
     const ai = capabilityStages.find((s) => s.id === 'ai')!, data = capabilityStages.find((s) => s.id === 'data')!;
-    expect(ai.skills).toHaveLength(21);
-    expect(ai.skills).toEqual(expect.arrayContaining(['mistral', 'llama', 'qwen', 'deepseek', 'decision1', 'foundry']));
+    expect(ai.skills).toHaveLength(23);
+    expect(ai.skills).toEqual(expect.arrayContaining(['mistral', 'llama', 'qwen', 'deepseek', 'decision1', 'phi', 'granite', 'foundry']));
+    const deploy = capabilityStages.find((s) => s.id === 'deploy')!;
+    expect(deploy.short.en).toBe('DevOps/MLOps');
+    expect(deploy.skills).toHaveLength(32);
+    expect(deploy.skills).toEqual(expect.arrayContaining(['rabbitmq', 'celery', 'kafka', 'nvidia', 'cuda', 'vllm', 'sglang', 'tensorrt', 'triton', 'ray', 'deepspeed', 'nccl', 'llmd', 'prometheus', 'grafana', 'opentelemetry', 'loki', 'datadog', 'sentry', 'dcgm']));
     expect(data.skills).toHaveLength(24);
     expect(data.skills).toEqual(expect.arrayContaining(['fabric', 'datafactory', 'foundry', 'aisearch', 'docintel']));
     for (const s of capabilityStages) expect(new Set(s.skills).size).toBe(s.skills.length);

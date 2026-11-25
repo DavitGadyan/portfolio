@@ -36,7 +36,9 @@ const svgs = { 'kali-linux': 'kalilinux/557C94', owasp: 'owasp/000000', 'burp-su
   // AI Gateways mind map (data/mindmaps/gateway.ts): no Simple Icons mark exists for LiteLLM, Bifrost, Portkey, Apache APISIX or Langfuse; those cards use line icons
   cloudflare: 'cloudflare/F38020', kong: 'kong/003459', envoy: 'envoyproxy/AC6199', vault: 'vault/000000', opentelemetry: 'opentelemetry/425CC7', openrouter: 'openrouter/6566F1',
   // project stack chips (lib/content/techLogos.ts), brand colours
-  threejs: 'threedotjs', keycloak: 'keycloak', terraform: 'terraform', prometheus: 'prometheus', grafana: 'grafana', argo: 'argo', opencv: 'opencv', scrapy: 'scrapy', sqlalchemy: 'sqlalchemy', firebase: 'firebase', vue: 'vuedotjs', hubspot: 'hubspot', duckdb: 'duckdb', rabbitmq: 'rabbitmq', ffmpeg: 'ffmpeg', onnx: 'onnx', gcal: 'googlecalendar', gmail: 'gmail', gsheets: 'googlesheets', x: 'x', reddit: 'reddit', kaggle: 'kaggle', digitalocean: 'digitalocean', helm: 'helm', tanstack: 'tanstack', pydantic: 'pydantic', zoho: 'zoho', resend: 'resend', apple: 'apple', trivy: 'trivy', intel: 'intel', whatsapp: 'whatsapp', pytest: 'pytest', ruff: 'ruff', sqlite: 'sqlite', paperspace: 'paperspace', mqtt: 'mqtt' };
+  threejs: 'threedotjs', keycloak: 'keycloak', terraform: 'terraform', prometheus: 'prometheus', grafana: 'grafana', argo: 'argo', opencv: 'opencv', scrapy: 'scrapy', sqlalchemy: 'sqlalchemy', firebase: 'firebase', vue: 'vuedotjs', hubspot: 'hubspot', duckdb: 'duckdb', rabbitmq: 'rabbitmq', ffmpeg: 'ffmpeg', onnx: 'onnx', gcal: 'googlecalendar', gmail: 'gmail', gsheets: 'googlesheets', x: 'x', reddit: 'reddit', kaggle: 'kaggle', digitalocean: 'digitalocean', helm: 'helm', tanstack: 'tanstack', pydantic: 'pydantic', zoho: 'zoho', resend: 'resend', apple: 'apple', trivy: 'trivy', intel: 'intel', whatsapp: 'whatsapp', pytest: 'pytest', ruff: 'ruff', sqlite: 'sqlite', paperspace: 'paperspace', mqtt: 'mqtt',
+  // DevOps/MLOps node: queues, GPU serving and monitoring (Nov 25 2026)
+  celery: 'celery', ray: 'ray', datadog: 'datadog', sentry: 'sentry' };
 // marks the simpleicons.org CDN no longer serves but the npm package still ships (pinned version): fetched from jsDelivr and tinted with the brand colour
 const jsd = { powerbi: ['powerbi', 'F2C811'], sharepoint: ['microsoftsharepoint', '0078D4'] };
 // official marks served by the brands themselves or by svgl.app (no Simple Icons entry): name → URL. Microsoft Fabric comes from Microsoft's own
@@ -44,7 +46,11 @@ const jsd = { powerbi: ['powerbi', 'F2C811'], sharepoint: ['microsoftsharepoint'
 const direct = { grok: 'https://svgl.app/library/grok-dark.svg', base44: 'https://base44.com/logo_v2.svg', 'react-native': 'https://reactnative.dev/img/header_logo.svg',
   fabric: 'https://unpkg.com/@fabric-msft/svg-icons@6.1.0/dist/svg/fabric_28_color.svg',
   qwen: 'https://svgl.app/library/qwen_light.svg', deepseek: 'https://svgl.app/library/deepseek.svg', meta: 'https://svgl.app/library/meta.svg', ollama: 'https://svgl.app/library/ollama_light.svg',
-  nvidia: 'https://svgl.app/library/nvidia-icon-light.svg', cohere: 'https://svgl.app/library/cohere.svg' };
+  nvidia: 'https://svgl.app/library/nvidia-icon-light.svg', cohere: 'https://svgl.app/library/cohere.svg',
+  // GPU serving marks the projects publish themselves (vLLM via the MIT @lobehub icon set) and IBM (Granite), tinted IBM blue below.
+  // SGLang (rasterised from its repo's logo_square.svg), DeepSpeed, llm-d and Loki are PNGs in assets/logos cropped to the symbol from their repos' wordmarks
+  vllm: 'https://unpkg.com/@lobehub/icons-static-svg@1.106.0/icons/vllm-color.svg',
+  ibm: 'https://unpkg.com/@lobehub/icons-static-svg@1.106.0/icons/ibm.svg' };
 // official Azure architecture icons (assets/logos/azure/README.md has the provenance and Microsoft's terms): copied as they are
 const azure = fs.readdirSync('assets/logos/azure').filter((f) => f.endsWith('.svg'));
 for (const f of azure) fs.copyFileSync(path.join('assets/logos/azure', f), path.join(DST, f));
@@ -56,7 +62,7 @@ for (const [name, url] of all) {
   const res = await fetch(url);
   const text = await res.text();
   if (!res.ok || !text.trimStart().startsWith('<svg')) { console.error('svg fetch failed for', url, res.status); continue; }
-  fs.writeFileSync(out, text); fetched++;
+  fs.writeFileSync(out, name === 'ibm' ? text.replace('fill="currentColor"', 'fill="#0F62FE"') : text); fetched++;
 }
 for (const [name, [slug, hex]] of Object.entries(jsd)) {
   const out = path.join(DST, name + '.svg');

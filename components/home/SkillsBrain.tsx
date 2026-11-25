@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useRef, useState, type CSSProperties } from 'react';
+import { Fragment, useEffect, useRef, useState, type CSSProperties } from 'react';
 import { Img } from '@/components/ui/Img';
 import { CertDialog, type CertInfo, type CertStrings } from './CertDialog';
 import brain from '@/assets/images/my-logo.png';
@@ -49,7 +49,7 @@ export function SkillsBrain({ nodes, locale, t }: { nodes: BrainNode[]; locale: 
             aria-expanded={open === n.id} aria-label={open === n.id ? `${n.title}. ${t.close}` : n.title}
             onClick={() => setOpen((o) => (o === n.id ? null : n.id))}
           >
-            <span className="brain__lbl" aria-hidden="true">{n.short}</span>
+            <span className="brain__lbl" aria-hidden="true">{n.short.split('/').map((part, i) => (i ? <Fragment key={i}>/<wbr />{part}</Fragment> : part))}</span>
           </button>
         );
       })}
