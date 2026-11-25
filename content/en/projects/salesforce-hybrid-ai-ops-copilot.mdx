@@ -37,20 +37,20 @@ stack:
 links:
   github: https://github.com/DavitGadyan/Salesforce
 outcomes:
-  - Each request is routed by sensitivity, stakes and cost; a pipeline question is answered by Salesforce itself for $0, and the same deal-risk assessment cost $0.007 on Claude Opus, $0.0001 on Claude Haiku and nothing per call on the private model.
-  - Medical and card data goes only to a model inside the network; names, e-mails and phones are tokenised before an outside model sees them and restored in the answer.
-  - On a sample payment class the rules found 8 issues and Claude confirmed them and found 4 more, including a callout-after-DML error, then returned corrected code and a bulk test class.
-  - Agents only propose; every CRM update, e-mail and merge waits for a person, and every run, model call, tool call and decision is logged with tokens and cost.
+  - "To cut model spend, each request is routed by sensitivity, stakes and cost: a pipeline question is answered by Salesforce itself for $0, and the same deal-risk assessment cost $0.007 on Claude Opus against $0.0001 on Claude Haiku and nothing per call on the private model."
+  - "So CRM data cannot leak, medical and card data goes only to a model inside the network, and names, e-mails and phones are tokenised before any outside model sees them and restored in the answer."
+  - "To stop AI-written Apex breaking in production, the rules found 8 issues on a sample payment class and Claude found 4 more, including a callout-after-DML error that stops the job after the first record, then returned corrected code and a bulk test class."
+  - "Dormant leads get a score, a next best action and a draft e-mail whose every fact is checked against the record, and a sandbox refresh gets a checklist built from the org's own metadata instead of from memory."
+  - "Agents only propose, so 0 writes reach Salesforce without a person's approval, and every model call and decision is logged with tokens and cost."
 metrics:
-  - label: Modules
-    value: "5"
-  - label: Model routes
-    value: "5"
-  - label: Deal-risk assessment on Claude Haiku
+  - label: "Deal-risk assessment, Opus vs Haiku"
+    before: "$0.007"
     value: "$0.0001"
-  - label: Apex findings on one class (rules + Claude)
+  - label: "Medical/card data leaving the network"
+    value: "None"
+  - label: "Apex issues on one class, rules + Claude"
     value: "8 + 4"
-  - label: Writes without a human approval
+  - label: "Writes without human approval"
     value: "0"
 featured: true
 order: 9

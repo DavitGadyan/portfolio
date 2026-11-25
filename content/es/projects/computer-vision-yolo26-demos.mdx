@@ -4,16 +4,21 @@ coverAlt: "Monitor de seguridad en celda robótica: un operario junto a un brazo
 summary: "Tres demos de visión artificial de nivel producción sobre Ultralytics YOLO26, todas en tiempo real en la CPU de un portátil: un monitor de entrenamiento que cuenta repeticiones y corrige la técnica a partir de la estimación de pose, un sistema de ocupación de aparcamiento desde dron con cajas orientadas y compensación de deriva, y un monitor de seguridad persona-robot que combina pose con segmentación de vocabulario abierto. Cada una se exporta a Raspberry Pi, a la Pi AI Camera, a Jetson o a móvil."
 description: "Tres demos de visión artificial con YOLO26: conteo de repeticiones por pose, ocupación de aparcamiento desde dron con cajas orientadas y seguridad persona-robot. Tiempo real en CPU."
 outcomes:
-  - "Monitor de entrenamiento: 4/4 flexiones y 7/7 sentadillas contadas correctamente en los clips de prueba, ejercicio detectado automáticamente, unos 15 FPS en la CPU de un portátil."
-  - "Aparcamiento desde dron: 34 plazas en ángulo vigiladas con cajas rotadas; la compensación de deriva redujo los falsos eventos de plaza de 32 a 3 en un clip de 35 segundos."
-  - "Celda robótica: robots segmentados a partir de prompts de texto sin datos de entrenamiento; la separación a nivel de mano en metros genera órdenes SAFE, SLOW y STOP y un registro de eventos con marca de tiempo a unos 9 FPS en CPU."
-  - Las tres se exportan a dispositivos edge (NCNN, IMX500, TensorRT, OpenVINO, TFLite/CoreML) porque el grafo de YOLO26 no necesita NMS de extremo a extremo.
+  - "Monitor de entrenamiento: repeticiones contadas con una cámara corriente, 4/4 flexiones y 7/7 sentadillas correctas en los clips de prueba, ejercicio detectado automáticamente, a unos 15 FPS en la CPU de un portátil."
+  - "Aparcamiento desde dron: ocupación en vivo de 34 plazas en ángulo a partir de vídeo aéreo en lugar de sensores enterrados de 200–400 $ por plaza; la compensación de deriva redujo los falsos eventos de plaza de 32 a 3 en un clip de 35 segundos."
+  - "Celda robótica: la separación a nivel de mano en metros con una sola cámara, con robots segmentados a partir de prompts de texto y sin ningún conjunto de datos de robots, fija una velocidad del robot del 100, 30 o 0 % y un registro de eventos con marca de tiempo a unos 9 FPS en CPU."
+  - "Las tres funcionan en tiempo real sin GPU y se exportan a hardware edge barato (NCNN, IMX500, TensorRT, OpenVINO, TFLite/CoreML) porque el grafo de YOLO26 no necesita NMS de extremo a extremo."
 metrics:
-  - label: Repeticiones contadas en los clips de prueba
-    value: "4/4 flexiones, 7/7 sentadillas"
-  - label: Falsos eventos de plaza, clip de dron de 35 s
-    value: "32 → 3"
-  - label: Rendimiento en CPU, sin GPU
+  - label: "Repeticiones, flexiones y sentadillas"
+    value: "4/4 y 7/7"
+  - label: "Falsos eventos de plaza, clip de 35 s"
+    before: "32"
+    value: "3"
+  - label: "Sensores de aparcamiento enterrados"
+    value: "ninguno"
+  - label: "Datos de entrenamiento de robots"
+    value: "ninguno"
+  - label: "Rendimiento en CPU, sin GPU"
     value: "5,5–15 FPS"
 ---
 

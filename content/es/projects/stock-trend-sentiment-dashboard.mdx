@@ -4,16 +4,15 @@ coverAlt: "Dashboard bursátil de Equeum: selector de ticker, rango de fechas, c
 summary: "Dashboard web para Equeum (antes Machina Software) que permite a un analista elegir un ticker y comparar su interés de búsqueda en Google Trends con las puntuaciones de sentimiento de varias API, con gráficos de correlaciones y patrones entre ambas series. Construido en Python como dos aplicaciones enlazadas y ampliado con un análisis de sentimiento en Reddit frente a cambios de precio y rentabilidades durante el episodio de GameStop."
 description: "Dashboard bursátil de tendencias y sentimiento para Equeum: app web en Python que une la API de Google Trends, API de sentimiento y datos de Reddit con gráficos de correlación."
 outcomes:
-  - Dos aplicaciones enlazadas que muestran las series de Google Trends y de sentimiento por ticker, con gráficos de correlación.
-  - Sentimiento de Reddit analizado frente a cambios de precio y rentabilidades de meme stocks como GameStop.
-  - El analista elige un ticker de una lista y obtiene la última foto de tendencia y sentimiento sin ejecutar código.
+  - "El interés de búsqueda y el sentimiento vivían en API distintas que el analista tenía que extraer a mano; ahora, al elegir un ticker, se consultan Google Trends y varias API de sentimiento y ambos se ven de inmediato."
+  - "Los gráficos alinean las series de tendencia y sentimiento y muestran correlaciones y patrones recurrentes, de modo que el analista ve si la atención se mueve con el precio sin ejecutar código."
+  - "Un estudio de Reddit relaciona los cambios de precio y las rentabilidades con el sentimiento público de meme stocks como GameStop."
 metrics:
-  - label: Aplicaciones enlazadas
-    value: "2 (tendencias + sentimiento)"
-  - label: Fuentes unidas por ticker
-    value: "4 tipos de fuente"
-  - label: Recogida de datos
-    value: "a mano → elegir un ticker"
+  - label: "Obtener tendencia y sentimiento"
+    before: "A mano"
+    value: "Un ticker"
+  - label: "Código que ejecuta el analista"
+    value: "Ninguno"
 ---
 
 ## El problema

@@ -4,16 +4,12 @@ coverAlt: "Casa en miniatura y lupa sobre planos de vivienda con una hucha de ce
 summary: "Modelo de valoración automatizada para el mercado inmobiliario australiano más un bot de evaluación al estilo de un agente, desarrollados para un cliente particular. Recopilé anuncios a través de la API de Domain.com.au y mediante scraping de portales inmobiliarios, entrené un modelo XGBoost en Python que alcanzó en torno al 84 % de R² y superó a los demás algoritmos probados, y después prototipé la lógica de evaluación del cliente para maximizar el beneficio."
 description: "Modelo de valoración automatizada para inmuebles en Australia: datos de la API de Domain.com.au y web scraping, XGBoost en Python con un 84 % de R² y un bot de evaluación en alfa."
 outcomes:
-  - "El AVM con XGBoost alcanzó en torno al 84 % de R² sobre precios de inmuebles australianos, superando a los demás algoritmos probados."
-  - "Datos de entrenamiento reunidos a partir de la API de Domain.com.au y del scraping directo de portales inmobiliarios."
-  - "Bot en alfa que implementa el algoritmo de evaluación del agente definido por el cliente, completo en funciones y a la espera de cobertura de datos."
+  - "Precios de inmuebles predichos con un R² en torno al 84 % por un modelo XGBoost, que superó a los demás algoritmos probados sobre los mismos datos."
+  - "Los datos inmobiliarios que le faltaban al cliente se recopilaron mediante la API de Domain.com.au y el scraping de portales inmobiliarios."
+  - "La evaluación del agente del cliente para maximizar el beneficio funciona ya como un bot en alfa completo en funciones; lo pendiente es cobertura de datos, no código."
 metrics:
-  - label: R² del modelo de valoración
+  - label: "Precisión al predecir el precio (R²)"
     value: "≈ 84 %"
-  - label: Comparativa de algoritmos
-    value: "XGBoost superó a todas las alternativas probadas"
-  - label: Funciones del bot de agente
-    value: "todas implementadas (alfa)"
 ---
 
 ## El problema

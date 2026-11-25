@@ -4,16 +4,19 @@ coverAlt: "Ilustración de análisis de componentes principales con tickers burs
 summary: "Pipeline cuantitativo en Python que extrae la curva de tipos por sectores de Bloomberg vía xbbg, la estandariza con pandas, numpy y StandardScaler y aplica PCA de scikit-learn para obtener los movimientos dominantes. Los residuos de reconstrucción señalan automáticamente los sectores caros o baratos, un KMeans opcional agrupa patrones similares y gráficos de Matplotlib y Plotly permiten la revisión interactiva."
 description: "Pipeline cuantitativo en Python: curva de tipos de Bloomberg vía xbbg, PCA de scikit-learn por sectores, señales de caro/barato por residuos, KMeans opcional y gráficos Plotly."
 outcomes:
-  - "Movimientos dominantes de la curva extraídos con PCA; los residuos de reconstrucción señalan automáticamente los sectores mal valorados."
-  - "Clustering opcional con KMeans que agrupa sectores con patrones de residuos similares."
-  - "Salida interactiva en Plotly y estática en Matplotlib para la revisión del analista."
+  - "Detectar a ojo los sectores mal valorados era lento e inconsistente; ahora los residuos de reconstruir cada sector con los componentes principales más importantes señalan automáticamente los segmentos caros o baratos."
+  - "Todo el flujo, desde descargar las curvas de Bloomberg vía xbbg hasta señalar los sectores, se ejecuta como un único programa en Python y no como una cadena de exportaciones manuales y hojas de cálculo."
+  - "El analista profundiza en cada señal con gráficos interactivos de Plotly en lugar de leer tablas, y un KMeans opcional agrupa los sectores con patrones de residuos similares."
 metrics:
-  - label: Señalización caro/barato
-    value: "a ojo → automática"
-  - label: Flujo de trabajo
-    value: "exportaciones manuales → 1 programa Python"
-  - label: Salida para el analista
-    value: "tablas → gráficos interactivos"
+  - label: "Señales de sector caro o barato"
+    before: "A ojo"
+    value: "Automáticas"
+  - label: "Flujo de Bloomberg a señales"
+    before: "Manual"
+    value: "1 programa"
+  - label: "Revisión del analista"
+    before: "Tablas"
+    value: "Interactiva"
 ---
 
 ## El problema

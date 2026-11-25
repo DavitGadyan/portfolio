@@ -4,16 +4,19 @@ coverAlt: "Logotipo del lenguaje R junto a un perfil humano de circuitos sobre f
 summary: "API REST en R que pone en producción un algoritmo de KPIs para expertos en imagen médica CTE dentro de una plataforma de evaluación de expertos existente en Vue.js, con gráficos interactivos en R Plotly construidos según la especificación del cliente. Entregado como único desarrollador en tres contratos consecutivos, cada uno ampliando el anterior con mejoras y nuevas funciones."
 description: "API REST en R que sirve un algoritmo de KPIs para expertos en imagen médica CTE, integrada en una plataforma Vue.js con gráficos interactivos en R Plotly, en tres contratos."
 outcomes:
-  - "Algoritmo de KPIs para expertos en imagen médica CTE en producción, servido por REST desde R."
-  - "Gráficos interactivos en Plotly construidos según la especificación del cliente dentro de la app Vue.js existente."
-  - "Tres contratos consecutivos, cada uno ampliando el anterior."
+  - "El algoritmo de KPIs en R para expertos en imagen médica CTE pasó de ser un script aislado a un servicio de producción detrás de una API REST en R que llama la aplicación Vue.js."
+  - "Los usuarios ven los resultados de KPIs como gráficos interactivos en R Plotly, construidos según la especificación del cliente, y no como números en bruto."
+  - "El servicio en R y los gráficos pasaron a formar parte de la plataforma Vue.js existente en lugar de ser una herramienta aparte."
+  - "El trabajo continuó durante tres contratos consecutivos, cada uno ampliando la API y las visualizaciones entregadas en el anterior."
 metrics:
-  - label: Contratos consecutivos
+  - label: "Cómo funciona el algoritmo de KPIs"
+    before: "script"
+    value: "API REST"
+  - label: "Resultados de KPIs mostrados como"
+    before: "números"
+    value: "gráficos"
+  - label: "Contratos consecutivos"
     value: "3"
-  - label: Algoritmo de KPIs
-    value: "script aislado → API REST en producción"
-  - label: Resultados para los usuarios
-    value: "números en bruto → gráficos interactivos"
 ---
 
 ## El problema

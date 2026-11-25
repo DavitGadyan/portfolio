@@ -4,20 +4,23 @@ coverAlt: "Ilustración que une Google Gemini, una etiqueta MultiAgent y LangGra
 summary: "API multiagente de revisión de documentos para la due diligence de un bufete, con LangChain y LangGraph sobre Google Gemini. Verifica con IA referencias cruzadas, números de página, direcciones de partes, bloques de firma e identificadores ABN/ACN, valida ABN/ACN con una API externa, acepta preguntas y recomendaciones configurables desde la web, procesa contratos largos y genera informes en Word."
 description: "API multiagente de revisión de documentos legales con LangChain, LangGraph y Google Gemini: verificaciones dinámicas, validación de ABN/ACN, contratos largos e informes en Word."
 outcomes:
-  - "Comprobaciones con IA de referencias cruzadas, números de página, direcciones de las partes, bloques de firma y formato de ABN/ACN."
-  - "Autenticidad y número de dígitos de los ABN/ACN verificados contra una API externa."
-  - "Prompts fijos sustituidos por preguntas y variables arbitrarias del usuario, más un número de recomendaciones configurable."
-  - "Contratos largos procesados de principio a fin mediante un flujo multiagente sobre la ventana de contexto ampliada de Gemini."
-  - "Informes de revisión en Word listos para usar, generados automáticamente."
+  - "Los revisores eligen cuántas recomendaciones reciben, en lugar de una lista cerrada de diez."
+  - "Los prompts fijos dieron paso a listas arbitrarias de preguntas y variables desde la aplicación web, de modo que el bufete define sus propias comprobaciones."
+  - "Cada ABN/ACN se contrasta con una API externa para confirmar su autenticidad y su número de dígitos, así que un identificador mal escrito o inventado se detecta antes de que alguien se fíe de él."
+  - "Los contratos largos y los materiales de due diligence, para los que la API anterior no tenía espacio, se procesan de principio a fin y vuelven como un informe de revisión en Word listo para usar."
 metrics:
-  - label: Número de recomendaciones
-    value: "10 fijas → configurable"
-  - label: Prompts de revisión
-    value: "fijos → definidos por el usuario"
-  - label: Tipos de comprobación
-    value: "5 (referencias, páginas, direcciones, firmas, ABN/ACN)"
-  - label: Identificadores ABN/ACN
-    value: "asumidos → verificados con API externa"
+  - label: "Recomendaciones por revisión"
+    before: "10 fijas"
+    value: "configurable"
+  - label: "Preguntas de revisión"
+    before: "fijas"
+    value: "del usuario"
+  - label: "Identificadores ABN/ACN"
+    before: "asumidos"
+    value: "verificados"
+  - label: "Contratos largos"
+    before: "sin espacio"
+    value: "procesados"
 ---
 
 ## El problema

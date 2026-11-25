@@ -4,18 +4,14 @@ coverAlt: "Comparativa de una valla publicitaria fotografiada en carretera y su 
 summary: "Pipeline de visión artificial e IA generativa que localiza una valla publicitaria en una foto de calle, la recorta y la regenera a mayor resolución con nuevos detalles. Grounding DINO hace la detección zero-shot, OpenCV extrae el recuadro delimitador y Stable Diffusion con ControlNet tile_resample y Ultimate SD Upscale reconstruye el anuncio, con todos los parámetros documentados."
 description: "Recreación de vallas con IA: detección zero-shot con Grounding DINO, extracción con OpenCV y Stable Diffusion con ControlNet tile_resample y Ultimate SD Upscale para regenerarla."
 outcomes:
-  - "Detección zero-shot de la valla con Grounding DINO que alimenta una cadena de inpainting y ampliación con Stable Diffusion."
-  - "Anuncio regenerado in situ a 1.280 × 1.664 con nuevos detalles conservando la composición original."
-  - "Parámetros de generación documentados al completo, para reproducir el resultado con exactitud."
+  - "Grounding DINO localiza la valla a partir de un prompt de texto sin datos de entrenamiento de vallas y OpenCV la recorta, así que solo se regenera el anuncio y no toda la escena."
+  - "El anuncio se regenera a 1.280 × 1.664 con nuevos detalles, con ControlNet manteniendo la estructura original y una fuerza de denoising de 0,4 para que solo cambien los detalles."
+  - "Todos los parámetros de generación, semilla incluida, quedan registrados, así que el cliente puede repetir o ajustar el resultado en lugar de depender de una semilla afortunada."
 metrics:
-  - label: Resolución de salida
-    value: "1.280 × 1.664 px"
-  - label: Ampliador
-    value: "4x-UltraSharp, mosaicos de 512 px"
-  - label: Fuerza de denoising
-    value: "0,4 (solo detalles)"
-  - label: Datos de entrenamiento del detector
-    value: "zero-shot, ninguno"
+  - label: "Datos de entrenamiento de vallas"
+    value: "ninguno"
+  - label: "Resolución de salida (px)"
+    value: "1.280×1.664"
 ---
 
 ## El problema

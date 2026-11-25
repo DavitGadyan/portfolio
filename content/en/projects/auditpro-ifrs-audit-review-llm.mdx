@@ -38,19 +38,20 @@ stack:
     - API key, basic auth, NetworkPolicy, non-root
     - Model weights pinned and SHA-256 verified
 outcomes:
-  - "A first draft for the auditor: each finding with its page, figures, quoted evidence and IFRS reference."
+  - "Suffix decoding cut one audit from 44.0 s to 23.5 s (−47%), at $0.69 per 1,000 audits in GPU rental."
+  - "Through the production API on one RTX 4090, 12 of 12 unseen reports were audited in 58.6 s each, about 245 audits an hour."
+  - "On those 12 reports it found 74% of the planted errors (31 of 42), each finding with its page, quoted evidence and IFRS reference for the auditor to verify."
   - "No invented numbers: exact decimal checks, and a figure or quote not on its cited page is dropped."
   - "Client reports never leave the firm: inference runs on its own GPU, with no external LLM API."
-  - "76 setups of 19 open models measured for quality, latency, throughput and cost on one RTX 4090."
-  - "In production: Qwen3-14B FP8 + FP8 KV (quality 70.8). Suffix decoding: 23.5 s per audit, $0.69 per 1,000."
 metrics:
-  - label: Model setups measured (19 models)
-    value: "76"
-  - label: Audit time with suffix decoding
-    value: "−47%"
-  - label: Cost per 1,000 audits (suffix decoding)
+  - label: "Time per audit, suffix decoding"
+    before: "44.0 s"
+    value: "23.5 s"
+  - label: "Cost per 1,000 audits, suffix decoding"
     value: "$0.69"
-  - label: Report data sent to external LLM APIs
+  - label: "Planted errors found on unseen reports"
+    value: "31 of 42"
+  - label: "Report data sent to external LLM APIs"
     value: "0"
 featured: true
 order: 2

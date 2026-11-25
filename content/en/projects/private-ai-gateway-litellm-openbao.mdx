@@ -34,20 +34,24 @@ stack:
     - Keycloak SSO, roles and audited approvals
     - AWS Cedar policies, Postgres RLS
 outcomes:
-  - Provider keys live only in the OpenBao vault. Each project's apps can read only their own gateway key, and a read of another team's key or a provider key is refused with 403, which the end-to-end suite checks.
-  - Spend stops at the cap. Budgets and RPM/TPM limits apply per project, app and user, plus per-model limits per project; an over-limit call gets 429, for example the fourth premium call in a minute.
-  - Staff can use AI without sending customer data out. E-mails, phone numbers and card numbers are masked before the model sees them, and leaked secrets and prompt-injection attempts are blocked, on the company's own servers.
-  - Every call, allowed or blocked, is logged with project, app, model, tokens, cost and the guardrail result, so finance gets cost per team and a CSV export for chargeback.
-  - The same design runs on AWS. A company copilot on Bedrock AgentCore checks every tool call three times, at the gateway, in the database grants and in row-level security, so each employee sees only their own tables, columns and rows.
+  - "Provider keys moved from code and chat into the OpenBao vault only: each project's apps read only their own gateway key, another team's key returns 403, and a revoked key stops everywhere within 5 seconds."
+  - "AI spend no longer waits for the invoice: the dashboard shows requests, tokens and cost live, and every call is logged per team with a CSV export for chargeback."
+  - "Spend stops at the cap: budgets and RPM/TPM limits apply per project, app and user, and an over-limit call gets 429."
+  - "Customer e-mails, phone numbers and card numbers are masked before the model sees them, and leaked secrets and prompt-injection attempts are blocked, on the company's own servers."
+  - "Switching models no longer means changing every app: apps call stable names such as chat-default through the standard OpenAI SDK, and the platform team decides which model sits behind each name."
 metrics:
-  - label: Automated tests (self-hosted)
-    value: "44"
-  - label: Other teams' keys readable
-    value: "0 (403)"
-  - label: Revoked key stops working
-    value: "≤ 5 s"
-  - label: Restarts to rotate a key
-    value: "0"
+  - label: "Where provider keys live"
+    before: "code, chat"
+    value: "vault only"
+  - label: "When AI spend is known"
+    before: "on invoice"
+    value: "live"
+  - label: "Customer e-mails, phones, cards"
+    before: "in prompts"
+    value: "masked"
+  - label: "App changes to switch model"
+    before: "every app"
+    value: "none"
 featured: true
 order: 17
 ---

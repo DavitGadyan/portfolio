@@ -4,22 +4,22 @@ coverAlt: "Portada de SmartSearch: el título SmartSearch y la línea Ecommerce 
 summary: "Un buscador para ecommerce construido de principio a fin: los compradores buscan entre 42.994 productos reales de muebles y decoración, la recuperación por palabras clave y la semántica se fusionan, un modelo LightGBM ordena los resultados y cada resultado explica su puntuación. Un motor de experimentación reparte a los compradores al 50/50 y dicta lanzar, seguir midiendo o rechazar, y un asistente con Claude compra y paga por el Agentic Commerce Protocol. El NDCG@10 offline sube de 0,688 a 0,722 sobre 233.000 valoraciones humanas de relevancia; el comportamiento de los compradores es simulado y así se indica. Python, FastAPI, PostgreSQL con pgvector, LightGBM, Next.js, 48 tests de backend."
 description: "Buscador para ecommerce: recuperación híbrida, learning to rank con LightGBM, tests A/B con veredictos honestos y un asistente Claude que compra por el Agentic Commerce Protocol."
 outcomes:
-  - La calidad del ranking sobre 233.000 valoraciones humanas de relevancia sube de un NDCG@10 de 0,688 con búsqueda por palabras clave a 0,705 con recuperación híbrida y a 0,722 con el modelo de ranking aprendido, en validación cruzada de 5 particiones y con las variables de comportamiento a cero para que ningún clic se filtre.
-  - En el test A/B online el nuevo ranking sube el CTR de búsqueda un 4,3 % (p = 0,0004) y reduce un 7,1 % las búsquedas sin clic. La conversión sube un 4,2 % pero no es significativa con 7.000 compradores por grupo, así que el veredicto del motor es seguir midiendo, no lanzar.
-  - Cada resultado de búsqueda explica su posición, con la puntuación del modelo, el término de personalización y las variables que más pesan en un panel junto a los resultados.
-  - Un asistente con Claude busca, explica cada elección, añade al carrito y paga por el Agentic Commerce Protocol, los mismos endpoints que usaría un agente de IA externo, y solo puede presentar productos que devolvieron las herramientas de la propia tienda.
-  - El comerciante describe un cambio de la tienda en una frase y obtiene un test A/B con los dos grupos en vista previa, un plan de tamaño de muestra y un veredicto de rechazar o no rechazar la hipótesis nula. 48 tests de backend cubren la plataforma, con la estadística verificada contra scipy y statsmodels.
+  - "Para probar el modelo con juicios humanos y sin fugas, el NDCG@10 sobre 233.000 valoraciones de relevancia sube de 0,688 con búsqueda por palabras clave a 0,705 con recuperación híbrida y a 0,722 con el modelo de ranking aprendido, con las variables de comportamiento a cero para que ningún clic se filtre."
+  - "En las 96 consultas de prueba que nunca se buscaron durante el calentamiento, la calidad del ranking sube de 0,584 con BM25 y un impulso de popularidad a 0,729 con la lista fusionada."
+  - "En el test A/B online simulado el nuevo ranking sube el CTR de búsqueda un 4,3 % (p = 0,0004) y reduce un 7,1 % las búsquedas sin clic; la conversión sube un 4,2 % pero no es significativa con 7.000 compradores por grupo, así que el veredicto del motor es seguir midiendo, no lanzar."
+  - "El test en vivo también frenó un mal lanzamiento: un bandit contextual que parecía un 4 % mejor en la evaluación off-policy mostró un −6,2 % de conversión en vivo (p = 0,27), así que no se lanzó fiándose de la estimación."
+  - "Un solo pago por el Agentic Commerce Protocol sirve a compradores y a agentes de IA, y el asistente con Claude solo puede presentar productos que devolvieron las herramientas de la propia tienda."
 metrics:
-  - label: Productos reales en el buscador
-    value: "42.994"
-  - label: Valoraciones humanas de relevancia
-    value: "233 mil"
-  - label: Calidad del ranking, NDCG@10
-    value: "0,688 → 0,722"
-  - label: CTR de búsqueda en el test A/B
+  - label: "Calidad del ranking offline, NDCG@10"
+    before: "0,688"
+    value: "0,722"
+  - label: "NDCG@10 en consultas no vistas"
+    before: "0,584"
+    value: "0,729"
+  - label: "CTR de búsqueda, test A/B simulado"
     value: "+4,3 %"
-  - label: Tests de backend
-    value: "48"
+  - label: "Búsquedas sin clic, test A/B simulado"
+    value: "−7,1 %"
 ---
 
 ## El problema

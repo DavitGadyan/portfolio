@@ -4,13 +4,13 @@ coverAlt: "Antes y después: zapatillas azules fotografiadas sobre piedra y lueg
 summary: "Servicio de eliminación de fondos para fotografía de moda, construido para Rashed Buqaraa: una red de segmentación U-Net con estructura encoder-decoder en Python que separa la prenda de su fondo, desplegada en una instancia de AWS EC2 como servicio web que recibe la URL de una imagen y devuelve el recorte. Los resultados fueron de alta calidad y el servicio podía demostrarse en directo desde el navegador."
 description: "Servicio de segmentación de imágenes con U-Net en Python que elimina el fondo de fotos de moda, desplegado en AWS EC2 como endpoint web que recibe la URL de una imagen."
 outcomes:
-  - Eliminación de fondos de alta calidad en fotografía de moda.
-  - Desplegado como servicio web en AWS EC2 y demostrable desde el navegador con cualquier URL de imagen.
+  - "Los recortes de prendas, que a mano no escalan, los produce automáticamente un modelo de segmentación U-Net, con muy buenos resultados en fotografía de moda."
+  - "Desplegado como servicio web en AWS EC2 que recibe la URL de cualquier imagen y devuelve la imagen sin fondo."
+  - "El cliente pudo validar la calidad con fotos reales de catálogo desde el navegador antes de integrar el servicio en ningún sitio."
 metrics:
-  - label: Recortes de prendas
-    value: "retoque manual → automatizado"
-  - label: Entrega del modelo
-    value: "notebook → endpoint HTTP alojado"
+  - label: "Recorte de prendas"
+    before: "A mano"
+    value: "Automático"
 ---
 
 ## El problema

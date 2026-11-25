@@ -33,20 +33,23 @@ stack:
     - Read-only market data, server-side API key
     - Look-ahead tests, frozen data splits
 outcomes:
-  - The self-learning loop's first accepted change cut the loss per trade from −0.37R to −0.14R (63% lower) and the maximum drawdown from −10.3% to −5.2% on five coins over 2022–2024, and the gain held on 2025 data it had never seen (−0.19R to −0.06R).
-  - Decision models are wired in safely. Jev 1.14 and Microsoft Decision-1.1 see an anonymised market state (no symbol, dates or prices), every answer is cached, spend has a hard cap and a refusal counts as no. 1,826 model calls cost $0.12.
-  - Every idea meets the same test. A 1-minute backtester charges 0.10% fees plus slippage per side and compares each run with buy-and-hold, random entries and trend-filtered random entries, and frozen data splits with a trial ledger stop over-fitting.
-  - The research is reported as measured. Both decision models confirmed all 197 setups they judged and picked winners no better than chance (AUC 0.47–0.48), and the day-trading entries had no edge after costs. Slow trend following was the one strategy positive in every period, at about 29% a year.
-  - That trend rule now trades on paper inside the API with the backtest's own code. From 12 September 2026, a period research never touched, it returned −1.9% over 67 days while buy-and-hold lost 24.2%, with a −9% maximum drawdown.
+  - "The self-learning loop's first accepted change cut the loss per trade from −0.37R to −0.14R (63% lower) and the maximum drawdown from −10.3% to −5.2% on five coins over 2022–2024."
+  - "The gain held on 2025 data it had never seen, moving the result per trade from −0.19R to −0.06R."
+  - "Decision models are wired in safely and cheaply: they see an anonymised state with no symbol, dates or prices, spend has a hard cap, and 1,826 model calls cost $0.12."
+  - "The 1-minute backtester charges 0.10% fees plus slippage per side and compares every run with buy-and-hold and random entries, which showed that both models picked winners no better than chance (AUC 0.47–0.48)."
+  - "The trend rule now trades on paper inside the API with the backtest's own code and returned −1.9% over 67 days from 12 September 2026, while buy-and-hold lost 24.2%."
 metrics:
-  - label: Loss per trade after the learning loop
-    value: "−63%"
-  - label: Maximum drawdown
-    value: "−10.3% → −5.2%"
-  - label: Decision-model calls, total cost
-    value: "1,826 · $0.12"
-  - label: Automated tests
-    value: "837"
+  - label: "Loss per trade, 2022–2024"
+    before: "−0.37R"
+    value: "−0.14R"
+  - label: "Maximum drawdown, 2022–2024"
+    before: "−10.3%"
+    value: "−5.2%"
+  - label: "Loss per trade, unseen 2025"
+    before: "−0.19R"
+    value: "−0.06R"
+  - label: "Cost of 1,826 decision-model calls"
+    value: "$0.12"
 featured: true
 order: 6
 ---

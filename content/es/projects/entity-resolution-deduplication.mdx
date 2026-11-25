@@ -4,16 +4,14 @@ coverAlt: "Render 3D de stock de una lupa que destaca una figura roja entre figu
 summary: "Trabajo de resolución de entidades para Dave Imrem para encontrar y eliminar registros duplicados que se refieren al mismo cliente real, entre conjuntos de datos y dentro de ellos. Evalué el toolkit JedAI, lo descarté por su tiempo de cómputo y entrené la librería Python dedupe, basada en machine learning, con un conjunto etiquetado; el análisis de la salida confirmó que detectaba los duplicados con calidad suficiente para adoptarla como solución."
 description: "Resolución de entidades y deduplicación de registros en Python: JedAI evaluado y descartado por coste de cómputo; librería dedupe basada en ML entrenada con un conjunto etiquetado."
 outcomes:
-  - JedAI evaluado y descartado porque su tiempo de cómputo era demasiado alto.
-  - Librería dedupe, basada en machine learning, seleccionada y entrenada con un conjunto de entrenamiento etiquetado.
-  - El análisis de la salida confirmó la calidad de los emparejamientos y dedupe se adoptó como solución.
+  - "Los registros duplicados que se refieren al mismo cliente se emparejan y se eliminan, así que cada análisis posterior cuenta a cada cliente una sola vez."
+  - "JedAI se descartó porque su tiempo de cómputo era demasiado alto para los datos del cliente, y dedupe emparejó los duplicados con un coste de cómputo que JedAI no podía alcanzar."
+  - "dedupe aprendió qué registros coinciden a partir de un conjunto etiquetado de pares reales coincidentes y no coincidentes, y el análisis de la salida confirmó que encontraba los duplicados correctos antes de adoptarlo."
 metrics:
-  - label: Toolkits evaluados
-    value: "2 (JedAI, dedupe)"
-  - label: Reglas de emparejamiento
-    value: "escritas a mano → aprendidas"
-  - label: Filas por cliente
-    value: "duplicados → 1"
+  - label: "Veces que se cuenta a cada cliente"
+    value: "Una"
+  - label: "Coste de cómputo frente a JedAI"
+    value: "Menor"
 ---
 
 ## El problema

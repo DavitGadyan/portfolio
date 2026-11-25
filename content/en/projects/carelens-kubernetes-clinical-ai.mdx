@@ -40,21 +40,20 @@ stack:
 links:
   github: https://github.com/DavitGadyan/k8s
 outcomes:
-  - PHI is replaced with stable placeholders before any model call and the result is re-scanned; a residual identifier blocks the call and routes the document to a human.
-  - Every login (including failures), PHI view, upload, review, erasure and Copilot tool call lands in an append-only SHA-256 hash-chained audit table, verified every 30 minutes with an alert on tampering.
-  - Fifteen Kubernetes platform projects implemented as real features, from CI/CD with a Trivy gate and cosign signing to canary releases with automatic rollback, GitOps across three environments, CronJobs, StatefulSets and indexed batch Jobs.
-  - Gates at the time of writing, 23 backend tests, Helm renders 162/162 valid under kubeconform strict, Checkov 0 failed of 2,140 checks, Trivy 0 fixable HIGH/CRITICAL, Gitleaks clean and Terraform valid for dev, staging and prod.
+  - "PHI is replaced with stable placeholders and re-scanned before any model call; a residual identifier blocks the call and routes the document to a human."
+  - "Every login (including failures), PHI view, upload, review, erasure and Copilot tool call lands in a SHA-256 hash-chained audit table verified every 30 minutes, with an alert on tampering."
+  - "Updates ship safely: the API canary steps through 10, 30, 60 and 100 % and aborts and rolls back on its own unless 5xx stays under 2 % and p95 under 1 s."
+  - "Security gates at the time of writing: Checkov 0 failed of 2,140 checks, Trivy 0 fixable HIGH/CRITICAL, Gitleaks clean, and no long-lived cloud credential anywhere thanks to workload identity and OIDC federation."
+  - "Each HIPAA technical safeguard, SOC 2 criterion and GDPR article is mapped to the code or configuration that implements it (HIPAA-ready, not a certification)."
 metrics:
-  - label: Checkov checks
-    value: "2,140 passed, 0 failed"
-  - label: Helm manifests valid (kubeconform strict)
-    value: "162/162"
-  - label: Fixable HIGH/CRITICAL findings (Trivy)
+  - label: "Audit-chain integrity check"
+    value: "every 30 min"
+  - label: "Canary auto-rollback gate (5xx, p95)"
+    value: "2 %, 1 s"
+  - label: "Failed Checkov checks (of 2,140)"
     value: "0"
-  - label: Kubernetes platform projects
-    value: "15"
-  - label: Canary gate
-    value: "5xx < 2 %, p95 < 1 s"
+  - label: "Long-lived cloud credentials"
+    value: "none"
 featured: true
 order: 18
 ---

@@ -38,16 +38,15 @@ stack:
   security: []
 links: {}
 outcomes:
-  - Marketing effort concentrated on accounts most likely to convert again and those at risk of churn.
-  - "One scoring engine, CRM-agnostic: HubSpot, Monday and Zoho through MCP connectors."
-  - "Runs against the client's existing database: Postgres, MySQL, Supabase or MongoDB."
+  - "Instead of a budget spread evenly across the CRM, marketing effort now concentrates on the accounts most likely to convert again and those at risk of churn."
+  - "Every contact gets two signals, repeat-conversion likelihood and churn risk, and the dashboard shows the reasoning behind each one."
+  - "Scores come from the data the client already had: HubSpot, Monday and Zoho through MCP connectors, and Postgres, MySQL, Supabase or MongoDB, with tools in place of bespoke glue code."
+  - "Results go back into the CRM as well as to the dashboard, so campaigns can act on them where the contacts live."
 metrics:
-  - label: CRMs supported
-    value: "3 (HubSpot, Monday, Zoho)"
-  - label: Databases supported
-    value: "4 (Postgres, MySQL, Supabase, MongoDB)"
-  - label: Signals per account
-    value: "2 (conversion likelihood, churn risk)"
+  - label: "CRMs connected through MCP"
+    value: "3"
+  - label: "Client databases used in place"
+    value: "4"
 featured: false
 ---
 

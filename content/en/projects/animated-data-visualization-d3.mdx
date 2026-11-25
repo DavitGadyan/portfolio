@@ -28,16 +28,17 @@ stack:
   security: []
 links: {}
 outcomes:
-  - "Race chart rebuilt in D3.js after Plotly Dash could not reach the required smoothness and styling control."
-  - "Video export pipeline via FFmpeg and Python for shareable video and embeddable web components."
-  - "Reports delivered with static graphics, animated sequences and a documented, reproducible toolchain."
+  - "The race chart reaches the required smoothness and styling after moving from a Plotly Dash prototype, which fell short, to D3.js with custom animation and better frame rates."
+  - "The animation is shareable as video and embeddable on the web through an FFmpeg and Python export pipeline."
+  - "Chart and report data come straight from the client's relational databases through a pandas and SQLAlchemy ETL layer rather than a hand-prepared file."
+  - "Reports combine static graphics and animated sequences on a documented, reproducible toolchain."
 metrics:
-  - label: Race-chart engine
-    value: "Plotly Dash → D3.js"
-  - label: Output formats
-    value: "2 (video + embeddable web component)"
-  - label: Data source
-    value: "hand-prepared file → live ETL"
+  - label: "Race-chart engine"
+    before: "Plotly Dash"
+    value: "D3.js"
+  - label: "Chart data source"
+    before: "manual file"
+    value: "ETL from DB"
 featured: false
 ---
 

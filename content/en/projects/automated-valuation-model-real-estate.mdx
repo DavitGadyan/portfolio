@@ -25,16 +25,12 @@ stack:
   security: []
 links: {}
 outcomes:
-  - "XGBoost AVM reached around 84% R² on Australian property prices, outperforming the other algorithms tested."
-  - "Training data assembled from the Domain.com.au API and direct scraping of real-estate websites."
-  - "Alpha bot implementing the client's broker evaluation algorithm, feature-complete and waiting on data coverage."
+  - "Property prices predicted at around 84% R² by an XGBoost model, which outperformed the other algorithms tested on the same data."
+  - "The property data the client lacked was collected through the Domain.com.au API and by scraping real-estate websites."
+  - "The client's profit-maximising broker evaluation now runs as a feature-complete alpha bot; the remaining work is data coverage rather than code."
 metrics:
-  - label: Valuation model R²
+  - label: "Price prediction accuracy (R²)"
     value: "~84%"
-  - label: Algorithm benchmark
-    value: "XGBoost beat all alternatives tested"
-  - label: Broker bot features
-    value: "all implemented (alpha)"
 featured: false
 ---
 

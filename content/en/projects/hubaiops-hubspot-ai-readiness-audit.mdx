@@ -39,21 +39,19 @@ stack:
 links:
   live: https://davitgadyan.github.io/HubSpot/
 outcomes:
-  - 7 AI use cases and 31 checks, 15 of them measured live against the HubSpot API, each with its own "why it matters" and "first step".
-  - Claude writes the plan as schema-validated JSON, with prompt caching and a deterministic rubric plan if the model is unavailable.
-  - Read-only by design; tokens are encrypted and destroyed after the scan, and no personal data reaches the model.
-  - One codebase ships the full app for a Node host and a static site for GitHub Pages; lint, typecheck, 24 tests and both builds run on every push.
+  - "The audit measures the portal instead of asking about it: a read-only HubSpot scan measures 15 of the 31 checks directly, such as duplicate contacts, missing lifecycle stages and association gaps."
+  - "Each of the 7 AI use cases gets a severity-weighted 0 to 100 score, so the first strategy call starts from a diagnosis."
+  - "Claude turns the findings into a Do Now / Do Next / Do Later plan validated against a schema, and a deterministic rubric plan takes over if the model is unavailable."
+  - "Read-only scopes, AES-256-GCM tokens deleted after the scan and no contact records sent to the model; only counts and percentages are stored."
 metrics:
-  - label: AI use cases scored
+  - label: "Checks measured live, not asked"
+    value: "15 of 31"
+  - label: "AI use cases scored 0 to 100"
     value: "7"
-  - label: Audit checks
-    value: "31"
-  - label: Measured live via HubSpot API
-    value: "15"
-  - label: Case studies
-    value: "25"
-  - label: Automated tests
-    value: "24"
+  - label: "Contact records sent to the model"
+    value: "None"
+  - label: "OAuth tokens after the scan"
+    value: "Deleted"
 featured: true
 order: 8
 ---

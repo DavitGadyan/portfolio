@@ -25,16 +25,18 @@ stack:
   security: []
 links: {}
 outcomes:
-  - "BigQuery-in, BigQuery-out scraping pipeline running 24/7 in the cloud."
-  - "Damaged-car listings extracted from a site that offered no usable API."
-  - "Scrapy pipelines write the results into several BigQuery tables for downstream use."
+  - "The site offered no usable API, so a Scrapy spider extracts the damaged-car listings and writes them into several BigQuery tables the client already uses."
+  - "The bot runs 24/7 in the cloud instead of from a laptop, so no one has to start it by hand and the tables stay fresh."
+  - "Target URLs are read from a BigQuery table, so the list of pages can change without touching the code."
+  - "Results land straight in BigQuery, so the data is queryable the moment the spider finishes a page."
 metrics:
-  - label: Scraper uptime
-    value: "24/7 in the cloud"
-  - label: Source site API
-    value: "none → structured BigQuery tables"
-  - label: Manual runs
-    value: "started by hand → zero"
+  - label: "Where the scraper runs"
+    before: "Laptop"
+    value: "Cloud, 24/7"
+  - label: "Manual steps to run it"
+    value: "None"
+  - label: "Code changes to update target URLs"
+    value: "None"
 featured: false
 ---
 

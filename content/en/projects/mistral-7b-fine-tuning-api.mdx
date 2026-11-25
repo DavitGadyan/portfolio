@@ -30,16 +30,20 @@ stack:
   security: []
 links: {}
 outcomes:
-  - "Mistral 7B fine-tuned for the client's specific multilingual paraphrasing task."
-  - "Model served through a FastAPI REST API on rented GPU infrastructure."
-  - "Scope extended from one fine-tuning contract into two further serving and deployment contracts."
+  - "Material that hosted assistants such as ChatGPT refused is now paraphrased by a fine-tuned Mistral 7B that the client owns."
+  - "The model is served as a FastAPI REST API, so the client's own systems call it like any other service and automate the multilingual paraphrasing at volume."
+  - "Deployed on rented GPUs from Paperspace, DigitalOcean, Kaggle and GCP, so the client pays for GPU time rather than owning hardware."
+  - "The first contract's results extended the engagement from 1 to 3 contracts, taking the model from an experiment to a deployed API."
 metrics:
-  - label: Engagement scope
-    value: "1 → 3 contracts"
-  - label: Model fine-tuned
-    value: "Mistral 7B (open source)"
-  - label: GPU providers deployed to
-    value: "4 (Paperspace, DigitalOcean, Kaggle, GCP)"
+  - label: "Restricted material paraphrased"
+    before: "refused"
+    value: "handled"
+  - label: "Who controls the model"
+    before: "third party"
+    value: "client-owned"
+  - label: "Contracts won on results"
+    before: "1"
+    value: "3"
 featured: false
 ---
 

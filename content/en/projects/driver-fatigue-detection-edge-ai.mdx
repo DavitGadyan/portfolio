@@ -27,19 +27,17 @@ stack:
   security: []
 links: {}
 outcomes:
-  - Research-led approach based on a published facial-motion-entropy fatigue algorithm.
-  - XGBoost over the current and 10 previous FFT/FFV values reads head position across a 3 to 5 second window.
-  - Rule-based yawn and eye-closure triggers layered on top of the model.
-  - Dockerised and deployed to Jetson Nano and Raspberry Pi 4 within edge compute limits.
+  - "Fatigue is detected entirely on-device, with no connection to a server, so the warning comes from inside the vehicle."
+  - "The XGBoost model reads head position over the last 3 to 5 seconds, so a driver whose head stays down triggers the alarm while one looking around at traffic does not."
+  - "Rule-based yawn and eye-closure detectors also raise the alarm, as a safety net on top of the model."
+  - "One Docker image deploys to both Raspberry Pi 4 and Jetson Nano, with inference kept within the limits of that hardware."
 metrics:
-  - label: Fatigue decision window
-    value: "3–5 s of head motion"
-  - label: FFT/FFV history per prediction
-    value: "current + 10 previous values"
-  - label: Target edge boards
-    value: "2 (Pi 4, Jetson Nano)"
-  - label: Inference
-    value: "server → on-device"
+  - label: "Server connection needed"
+    value: "None"
+  - label: "Head-motion window per decision"
+    value: "3–5 s"
+  - label: "Edge boards it runs on"
+    value: "Pi 4, Nano"
 featured: false
 ---
 

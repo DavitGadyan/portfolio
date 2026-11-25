@@ -25,16 +25,13 @@ stack:
 links:
   live: http://jacquelinemcshan.net
 outcomes:
-  - "Application hosted on an AWS EC2 instance with Route 53 routing to a custom domain."
-  - "Documentation revised and package versions pinned for reproducible hosting."
-  - "Site live at jacquelinemcshan.net."
+  - "The app moved from her machine to an AWS EC2 instance, so it runs as a hosted service instead of a local development server."
+  - "Route 53 routes requests for her own domain to the instance, and the site is live at jacquelinemcshan.net."
+  - "Pinned package versions and revised documentation mean the setup can be rebuilt from the docs, not only on a single machine."
 metrics:
-  - label: Hosting
-    value: "local machine → AWS EC2"
-  - label: Public domain
-    value: "jacquelinemcshan.net live"
-  - label: Dependency versions
-    value: "unpinned → pinned, reproducible"
+  - label: "Where the app runs"
+    before: "Her machine"
+    value: "AWS EC2"
 featured: false
 ---
 

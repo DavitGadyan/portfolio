@@ -4,20 +4,24 @@ coverAlt: "Portada de Private AI Gateway: el título Private AI Gateway y la lí
 summary: "Un gateway de IA autoalojado por el que pasan todas las aplicaciones y agentes de IA de la empresa para llegar a un modelo. Las claves de los proveedores se guardan en una bóveda OpenBao y cada equipo solo puede abrir la suya. Los presupuestos y límites de uso cortan el gasto al llegar al tope. Los guardarraíles enmascaran datos personales y bloquean secretos filtrados e inyecciones de prompts. Cada llamada se registra por equipo para repercutir costes, y las aplicaciones siguen usando el SDK de OpenAI mientras los modelos cambian detrás de alias estables. LiteLLM OSS con plugins propios, FastAPI, una consola Next.js con SSO de Keycloak, Docker y Helm, 44 tests. Una segunda versión aplica las mismas ideas en AWS con Bedrock AgentCore Gateway, políticas Cedar y seguridad a nivel de fila en Postgres."
 description: "Gateway de IA autoalojado: claves en una bóveda OpenBao por equipo, presupuestos y límites, guardarraíles de PII e inyección de prompts, coste por equipo y versión en AWS."
 outcomes:
-  - Las claves de los proveedores solo viven en la bóveda OpenBao. Las aplicaciones de cada proyecto solo pueden leer su propia clave del gateway, y leer la clave de otro equipo o una clave de proveedor se rechaza con un 403, algo que comprueba la suite de extremo a extremo.
-  - El gasto se detiene en el tope. Los presupuestos y límites RPM/TPM se aplican por proyecto, aplicación y usuario, además de límites por modelo en cada proyecto; una llamada por encima del límite recibe un 429, por ejemplo la cuarta llamada premium en un minuto.
-  - La plantilla puede usar IA sin enviar fuera datos de clientes. Los correos, teléfonos y números de tarjeta se enmascaran antes de que el modelo los vea, y los secretos filtrados y los intentos de inyección de prompts se bloquean, en los propios servidores de la empresa.
-  - Cada llamada, permitida o bloqueada, queda registrada con proyecto, aplicación, modelo, tokens, coste y resultado de los guardarraíles, así que finanzas obtiene el coste por equipo y una exportación CSV para repercutirlo.
-  - El mismo diseño funciona en AWS. Un copiloto corporativo sobre Bedrock AgentCore comprueba cada llamada a herramientas tres veces, en el gateway, en los permisos de la base de datos y en la seguridad a nivel de fila, así que cada empleado solo ve sus propias tablas, columnas y filas.
+  - "Las claves de los proveedores pasaron del código y los chats a vivir solo en la bóveda OpenBao: las aplicaciones de cada proyecto solo leen su propia clave del gateway, la clave de otro equipo devuelve 403 y una clave revocada deja de funcionar en todas partes en 5 segundos como máximo."
+  - "El gasto en IA ya no espera a la factura: el panel muestra peticiones, tokens y coste en tiempo real, y cada llamada queda registrada por equipo con una exportación CSV para repercutir costes."
+  - "El gasto se detiene en el tope: los presupuestos y límites RPM/TPM se aplican por proyecto, aplicación y usuario, y una llamada por encima del límite recibe un 429."
+  - "Los correos, teléfonos y números de tarjeta de clientes se enmascaran antes de que el modelo los vea, y los secretos filtrados y los intentos de inyección de prompts se bloquean, en los propios servidores de la empresa."
+  - "Cambiar de modelo ya no obliga a tocar cada aplicación: las aplicaciones llaman a nombres estables como chat-default con el SDK estándar de OpenAI, y el equipo de plataforma decide qué modelo hay detrás de cada nombre."
 metrics:
-  - label: Tests automáticos (autoalojado)
-    value: "44"
-  - label: Claves de otros equipos legibles
-    value: "0 (403)"
-  - label: Una clave revocada deja de funcionar
-    value: "≤ 5 s"
-  - label: Reinicios para rotar una clave
-    value: "0"
+  - label: "Dónde viven las claves"
+    before: "código, chat"
+    value: "solo bóveda"
+  - label: "Cuándo se conoce el gasto"
+    before: "con factura"
+    value: "tiempo real"
+  - label: "Correos, teléfonos y tarjetas"
+    before: "en prompts"
+    value: "enmascarados"
+  - label: "Cambios en apps al cambiar modelo"
+    before: "cada app"
+    value: "ninguno"
 ---
 
 ## El problema

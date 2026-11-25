@@ -4,17 +4,17 @@ coverAlt: "Diagrama RAG: fuentes de datos y base vectorial Pinecone, ChatGPT-4, 
 summary: "Asistente de investigación RAG sobre la regulación de blockchain y criptoactivos de 2024 en varias jurisdicciones. Pipelines en LangChain convierten PDF, CSV, HTML y texto plano en vectores dentro de una base de datos vectorial Pinecone, GPT-4 responde preguntas legales por jurisdicción con citas de las fuentes en una interfaz Streamlit, y todo se entrega con configuración Docker y scripts de despliegue para que otros equipos lo adapten."
 description: "Chatbot RAG sobre regulación cripto: LangChain, GPT-4, base de datos vectorial Pinecone, interfaz Streamlit, OCR para PDF escaneados, despliegue con Docker y Streamlit Cloud."
 outcomes:
-  - Recuperación en menos de un segundo sobre textos legales indexados en Pinecone.
-  - Ingesta multiformato (PDF, CSV, HTML, texto plano) con OCR automático para PDF escaneados.
-  - Cada respuesta cita sus fuentes en línea, por jurisdicción.
-  - Entregado con scripts de despliegue, configuración Docker y README para que otros equipos lo adapten a sus propios datos.
+  - "En lugar de leer PDF escaneados, tablas CSV, páginas HTML y notas, una pregunta por jurisdicción se responde desde un único índice de Pinecone con recuperación en menos de un segundo."
+  - "Cada respuesta cita sus fuentes en línea, así que cada afirmación se puede rastrear hasta el documento del que sale."
+  - "Los PDF escaneados se leen con OCR automático, así que se pueden buscar junto a las fuentes CSV, HTML y de texto plano."
+  - "Entregado como un paquete documentado y en contenedores con una capa de conectores, para que otros equipos lo apunten a sus propios documentos legales o de políticas en lugar de empezar de cero."
 metrics:
-  - label: Latencia de recuperación
+  - label: "Latencia de recuperación"
     value: "< 1 s"
-  - label: Formatos de documento ingeridos
-    value: "4 (PDF, CSV, HTML, texto)"
-  - label: Citas de fuentes
-    value: "en línea, en cada respuesta"
+  - label: "Respuestas que citan sus fuentes"
+    value: "todas"
+  - label: "Formatos de fuente en un índice"
+    value: "4"
 ---
 
 ## El problema

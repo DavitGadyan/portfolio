@@ -37,16 +37,21 @@ stack:
 links:
   github: https://github.com/DavitGadyan/Computer_Vision/tree/master/Yolo26
 outcomes:
-  - "Workout monitor: 4/4 push-ups and 7/7 squats counted correctly on the test clips, exercise detected automatically, about 15 FPS on a laptop CPU."
-  - "Drone parking: 34 angled slots monitored with rotated boxes; drift compensation cut false slot events from 32 to 3 over a 35-second clip."
-  - "Robot cell: robots segmented from text prompts with no training data; hand-level separation in metres drives SAFE, SLOW and STOP commands and a timestamped event log at about 9 FPS on CPU."
-  - All three export to edge targets (NCNN, IMX500, TensorRT, OpenVINO, TFLite/CoreML) because the YOLO26 graph is NMS-free end to end.
+  - "Workout monitor: reps counted from an ordinary camera, 4/4 push-ups and 7/7 squats correct on the test clips, exercise detected automatically, at about 15 FPS on a laptop CPU."
+  - "Drone parking: live occupancy of 34 angled slots from aerial video instead of $200–400 in-ground sensors per space; drift compensation cut false slot events from 32 to 3 over a 35-second clip."
+  - "Robot cell: hand-level separation in metres from a single camera, with robots segmented from text prompts and no robot dataset, drives a 100, 30 or 0 % robot speed and a timestamped event log at about 9 FPS on CPU."
+  - "All three run in real time without a GPU and export to cheap edge hardware (NCNN, IMX500, TensorRT, OpenVINO, TFLite/CoreML) because the YOLO26 graph is NMS-free end to end."
 metrics:
-  - label: Reps counted on test clips
-    value: "4/4 push-ups, 7/7 squats"
-  - label: False parking events, 35 s drone clip
-    value: "32 → 3"
-  - label: CPU throughput, no GPU
+  - label: "Reps counted, push-ups and squats"
+    value: "4/4 and 7/7"
+  - label: "False parking events, 35 s clip"
+    before: "32"
+    value: "3"
+  - label: "In-ground parking sensors needed"
+    value: "none"
+  - label: "Robot training data needed"
+    value: "none"
+  - label: "CPU throughput, no GPU"
     value: "5.5–15 FPS"
 featured: true
 order: 4

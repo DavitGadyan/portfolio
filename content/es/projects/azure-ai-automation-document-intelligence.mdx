@@ -4,21 +4,21 @@ coverAlt: "Portada de Azure AI Automation: «De PDF desordenados a operaciones d
 summary: "Plataforma Azure + LLM de principio a fin para el back office de construcción y fabricación. Convierte facturas, informes de inspección, certificados y planos (en inglés y alemán) en registros validados con una cita de origen por cada campo, responde a las preguntas del personal solo a partir de los documentos de la empresa, con citas y una abstención explícita, y ejecuta un agente con herramientas cuya acción de escritura siempre espera la aprobación de una persona. Cada llamada es una traza de OpenTelemetry con su coste, y las versiones de los prompts se miden sobre conjuntos de referencia. Funciona en local con Docker Compose y se despliega en Azure Container Apps con identidad administrada, Key Vault, almacenamiento Blob y Queue, PostgreSQL + pgvector y Application Insights."
 description: "Plataforma Azure + LLM: de PDF a registros validados con procedencia, respuestas RAG citadas que se abstienen, agentes con aprobación humana, trazas, coste y evals. Python y pgvector."
 outcomes:
-  - Recall@5 de 1,00 y MRR de 1,00 en el conjunto de referencia bilingüe del manual de obra.
-  - La corrección de las respuestas y la precisión de la abstención subieron de 0,875 a 1,00 al cambiar al modelo de embeddings multilingüe bge-m3, una diferencia que la vista de evals hizo visible.
-  - Precisión de 0,97 por campo en la extracción de seis PDF en inglés y alemán; las 30 citas de procedencia de un certificado localizadas en la página.
-  - Cada acción de escritura del agente espera a una persona, también cuando se invoca por MCP, y cada ejecución es una traza de OpenTelemetry con su coste.
+  - "Los cambios de prompt y de embeddings se deciden con los números de los conjuntos de referencia: al cambiar al modelo multilingüe bge-m3, la corrección de QA y la precisión de la abstención pasaron de 0,875 a 1,00."
+  - "Recall@5 de 1,00 y MRR de 1,00 en el conjunto de referencia bilingüe del manual de obra, con una abstención explícita cuando los documentos no cubren la pregunta."
+  - "Precisión de 0,97 por campo en la extracción de seis PDF en inglés y alemán; las 30 citas de procedencia de un certificado localizadas en la página, y una factura cuyas líneas no suman el importe neto se marca para revisión en lugar de contabilizarse."
+  - "Cada acción de escritura del agente espera a una persona que la apruebe, también cuando se invoca por MCP, y los errores de herramienta vuelven al modelo en lugar de romper el bucle."
+  - "Cada ejecución es una traza de OpenTelemetry con los tokens y el coste de cada llamada al modelo."
 metrics:
-  - label: Recall@5 de la recuperación
+  - label: "Corrección de QA y abstención"
+    before: "0,875"
     value: "1,00"
-  - label: Corrección de QA con bge-m3
+  - label: "Recall@5 de la recuperación, bilingüe"
     value: "1,00"
-  - label: Precisión por campo en la extracción
+  - label: "Precisión por campo en la extracción"
     value: "0,97"
-  - label: Citas de procedencia localizadas
-    value: "30/30"
-  - label: Idiomas de los documentos
-    value: "EN + DE"
+  - label: "Escrituras del agente con aprobación"
+    value: "todas"
 ---
 
 ## El problema

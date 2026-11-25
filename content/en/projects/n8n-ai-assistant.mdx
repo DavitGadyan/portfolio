@@ -25,16 +25,17 @@ stack:
 links:
   github: https://github.com/DavidGadyan/n8n_projects/tree/main/ai_assistant
 outcomes:
-  - One assistant covers web research, calendar CRUD, email sending, contact capture and X post generation.
-  - Built low-code in n8n, so each capability is a visible tool node rather than custom application code.
-  - Published as an open, reusable workflow on GitHub.
+  - "Admin that was spread across five tools (search, calendar, email, contacts and X) now starts with one plain-language request to one assistant."
+  - "From that request the agent researches the web, creates, updates and deletes Google Calendar events, sends Gmail, saves contacts to Google Sheets and drafts X posts, so the user stops switching between tools."
+  - "Built in n8n with no custom back end, so every capability is a visible tool node and a new capability is a new node rather than a code change."
+  - "Published as an open workflow on GitHub that others import and connect to their own Google and X accounts."
 metrics:
-  - label: Capabilities in one agent
-    value: "5"
-  - label: Calendar event operations
-    value: "create / update / delete"
-  - label: Custom back-end code
-    value: "none (low-code n8n)"
+  - label: "Tools to switch between"
+    before: "5 tools"
+    value: "1 request"
+  - label: "Adding a capability"
+    before: "code change"
+    value: "new node"
 featured: false
 ---
 

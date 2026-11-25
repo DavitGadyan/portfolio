@@ -4,17 +4,21 @@ coverAlt: "Asistente de alta de Virgil.ai: pantalla de inscripción tipo chat pa
 summary: "Sistema de IA agéntica que da de alta a usuarios de EE. UU. y les encuentra el mejor plan de seguro de salud, con consulta de cobertura de medicamentos y suscripción en minutos en lugar de días. Backend en LangChain y FastAPI, Docker y Kubernetes en AWS, tratamiento de datos conforme a HIPAA."
 description: "Virgil.ai: asistente de IA agéntica que da de alta a usuarios y selecciona planes de seguro de salud en EE. UU. LangChain, FastAPI, Docker, Kubernetes en AWS, datos conforme a HIPAA."
 outcomes:
-  - Suscripción (underwriting) completada en minutos en lugar de días.
-  - Cobertura de medicamentos comprobada automáticamente en los planes candidatos.
-  - Alta automatizada de principio a fin para un bróker asociado (One Health).
-  - Datos de IA y de solicitantes almacenados y transmitidos bajo controles guiados por HIPAA.
+  - "La suscripción, que antes llevaba días, ahora devuelve una decisión en minutos."
+  - "La cobertura de medicamentos se comprueba automáticamente en los planes candidatos, en lugar de que el solicitante la verifique y compare planes línea a línea."
+  - "Para el bróker asociado One Health, el alta está automatizada de principio a fin, de modo que un solicitante se da de alta, es evaluado y recibe una oferta en una sola sesión sin formularios que rellenar a mano."
+  - "Los datos de los solicitantes se almacenan y transmiten bajo controles guiados por HIPAA, lo que hizo el producto utilizable por un bróker autorizado y no solo una demo."
 metrics:
-  - label: Tiempo de suscripción
-    value: "días → minutos"
-  - label: Consulta de cobertura de medicamentos
-    value: "manual → automatizada"
-  - label: Alta del solicitante
-    value: "automatizada de principio a fin"
+  - label: "Tiempo de suscripción"
+    before: "Días"
+    value: "Minutos"
+  - label: "Cobertura de medicamentos"
+    before: "Manual"
+    value: "Automática"
+  - label: "Sesiones para alta, evaluación y oferta"
+    value: "1"
+  - label: "Formularios rellenados a mano"
+    value: "Ninguno"
 ---
 
 ## El problema

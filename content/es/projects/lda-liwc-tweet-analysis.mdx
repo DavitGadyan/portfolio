@@ -4,8 +4,15 @@ coverAlt: "Pantalla de pyLDAvis: mapa de distancia entre cuatro temas y gráfico
 summary: "Estudio de analítica de texto para Hamad S. sobre los tuits de Trump acerca de la Covid y algunos otros temas. Tras un análisis exploratorio y el preprocesado en Python, ejecuté un modelado de temas con LDA y entregué los clústeres descubiertos como archivos HTML interactivos de pyLDAvis; después puntué el corpus con el diccionario LIWC2015, tras resolver un problema de codificación del diccionario con su autor, el Dr. James W. Pennebaker."
 description: "Modelado de temas con LDA y pyLDAvis y análisis psicolingüístico LIWC2015 de los tuits de Trump en la era Covid, en Python, entregado como visualizaciones HTML interactivas de temas."
 outcomes:
-  - Salidas HTML interactivas de pyLDAvis con los clústeres de temas descubiertos por LDA.
-  - Análisis LIWC completado en Python tras resolver la codificación del diccionario con su autor, el Dr. James W. Pennebaker.
+  - "Temas: los clústeres de LDA se entregaron como archivos HTML interactivos de pyLDAvis, para que el cliente explore en el navegador cada tema, sus términos principales y cómo se relacionan."
+  - "Psicolingüística: las puntuaciones LIWC2015 del corpus completo dan la lectura psicológica del lenguaje junto a la temática."
+  - "El diccionario LIWC2015 estaba codificado de un modo que las herramientas no podían leer; el Dr. James W. Pennebaker envió una versión decodificada, lo que desbloqueó la puntuación LIWC."
+metrics:
+  - label: "Corpus puntuado con LIWC2015"
+    value: "completo"
+  - label: "Archivo del diccionario LIWC2015"
+    before: "ilegible"
+    value: "decodificado"
 ---
 
 ## El problema

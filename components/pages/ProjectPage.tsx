@@ -25,6 +25,9 @@ function splitBody(body: string): [string, string] {
   return next < 0 ? [body, ''] : [body.slice(0, at + 3 + next), body.slice(at + 3 + next)];
 }
 
+/** "By hand" reads "was by hand"; acronyms (AWS, NDCG) keep their case. */
+const lowerFirst = (s: string) => (/^[A-Z][a-z]/.test(s) ? s[0].toLowerCase() + s.slice(1) : s);
+
 function fmtDate(d: string, locale: Locale) {
   return new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'long', year: 'numeric' }).format(new Date(`${d}T00:00:00Z`));
 }
@@ -103,7 +106,7 @@ export function ProjectPage({ locale, slug }: { locale: Locale; slug: string }) 
                     {p.metrics.map((x) => (
                       <div key={x.label} className="metrics__item">
                         <dd className="metrics__value">{x.value}</dd>
-                        {x.before && <dd className="metrics__before"><span>{m.project.before}</span> {x.before}</dd>}
+                        {x.before && <dd className="metrics__before"><span>{m.project.before}</span> {lowerFirst(x.before)}</dd>}
                         <dt className="metrics__label">{x.label}</dt>
                       </div>
                     ))}

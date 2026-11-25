@@ -4,17 +4,18 @@ coverAlt: "Aplicación web de clustering: CSV cargado, grafo de fuerzas D3 con c
 summary: "Herramienta de clustering sin código construida para Reuben Vandeventer (producto propiedad de SecondSight): los analistas suben un archivo CSV o XLSX, eligen una columna de registro y tres dimensiones, ejecutan DBSCAN, MeanShift o MST desde una aplicación web en Python, exploran el resultado en un grafo de fuerzas interactivo en D3 y exportan los IDs de clúster a Excel. Desplegada en Heroku."
 description: "Aplicación web de clustering autoservicio: carga CSV/XLSX, DBSCAN, MeanShift y MST en Python, grafo de fuerzas interactivo en D3, exportación a Excel, desplegada en Heroku."
 outcomes:
-  - "Utilizable tanto por perfiles sin programación como por ingenieros de ML: carga, normalización, elección de lentes X, Y y Z y ajuste de hiperparámetros."
-  - Grafo de fuerzas interactivo en D3 con selección de nodos y coloreado por dimensión.
-  - Resultados exportados de vuelta a CSV o Excel con los IDs de clúster añadidos para análisis posteriores.
-  - Desplegada como aplicación web en Heroku; los derechos del producto pertenecen a SecondSight.
+  - "Los analistas que entienden el clustering pero no Python ejecutan DBSCAN, MeanShift o MST y ajustan sus hiperparámetros en la interfaz, sin tocar código."
+  - "El ciclo completo, de la hoja de cálculo en bruto al grafo interactivo en D3 y a los IDs de clúster exportados, se resuelve dentro del navegador."
+  - "Los resultados vuelven a CSV o Excel con los IDs de clúster añadidos, así que el análisis continúa en una hoja de cálculo."
+  - "Alojada en Heroku, así que el cliente comparte un enlace en lugar de instalar nada."
 metrics:
-  - label: Algoritmos de clustering
-    value: "3 (DBSCAN, MeanShift, MST)"
-  - label: Dimensiones de análisis
-    value: "3 lentes (X, Y, Z)"
-  - label: Programación necesaria
-    value: "código → sin código"
+  - label: "Código necesario para el clustering"
+    before: "Python"
+    value: "ninguno"
+  - label: "Algoritmos a comparar en la interfaz"
+    value: "3"
+  - label: "Instalación local necesaria"
+    value: "ninguna"
 ---
 
 ## El problema

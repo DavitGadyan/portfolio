@@ -34,17 +34,17 @@ links:
     - label: Streamlit Cloud demo
       note: Private deployment, sign-in required
 outcomes:
-  - Sub-second retrieval over legal texts indexed in Pinecone.
-  - Multi-format ingestion (PDF, CSV, HTML, plain text) with automated OCR for scanned PDFs.
-  - Every answer cites its sources inline, per jurisdiction.
-  - Shipped with deployment scripts, Docker configuration and a README so other teams can adapt it to their own data.
+  - "Instead of reading across scanned PDFs, CSV tables, HTML pages and notes, a jurisdiction-specific question is answered from one Pinecone index with sub-second retrieval."
+  - "Every answer cites its sources inline, so each claim can be traced to the document it came from."
+  - "Scanned PDFs are read with automated OCR, so they are searchable alongside CSV, HTML and plain-text sources."
+  - "Shipped as a documented, containerised package with a connector layer, so other teams can point it at their own legal or policy documents instead of starting from scratch."
 metrics:
-  - label: Retrieval latency
-    value: "< 1 s (sub-second)"
-  - label: Document formats ingested
-    value: "4 (PDF, CSV, HTML, text)"
-  - label: Source citations
-    value: "inline, on every answer"
+  - label: "Retrieval latency"
+    value: "< 1 s"
+  - label: "Answers citing their sources"
+    value: "all"
+  - label: "Source formats in one index"
+    value: "4"
 featured: true
 order: 20
 ---

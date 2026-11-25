@@ -4,16 +4,18 @@ coverAlt: "Logotipo de Scrapy con anillo verde y espátula junto al logotipo de 
 summary: "Pipeline de web scraping con Scrapy que extrae anuncios de coches siniestrados de un sitio sin API utilizable, lee las URL objetivo de una tabla de BigQuery y escribe los registros extraídos en varias tablas de BigQuery. Desarrollado en Python para un cliente particular y desplegado en la nube como un bot que funciona 24/7."
 description: "Pipeline de web scraping con Scrapy en Python que lee URL objetivo de BigQuery y escribe anuncios de coches siniestrados en tablas de BigQuery, desplegado en la nube 24/7."
 outcomes:
-  - "Pipeline de scraping con BigQuery como entrada y salida, funcionando 24/7 en la nube."
-  - "Anuncios de coches siniestrados extraídos de un sitio que no ofrecía ninguna API utilizable."
-  - "Los pipelines de Scrapy escriben los resultados en varias tablas de BigQuery para su uso posterior."
+  - "El sitio no ofrecía una API utilizable, así que un spider de Scrapy extrae los anuncios de coches siniestrados y los escribe en varias tablas de BigQuery que el cliente ya usa."
+  - "El bot funciona 24/7 en la nube en lugar de desde un portátil, así que nadie tiene que arrancarlo a mano y las tablas se mantienen al día."
+  - "Las URL objetivo se leen de una tabla de BigQuery, así que la lista de páginas puede cambiar sin tocar el código."
+  - "Los resultados llegan directamente a BigQuery, así que los datos son consultables en cuanto el spider termina una página."
 metrics:
-  - label: Disponibilidad del scraper
-    value: "24/7 en la nube"
-  - label: API del sitio origen
-    value: "ninguna → tablas estructuradas en BigQuery"
-  - label: Ejecuciones manuales
-    value: "arranque a mano → cero"
+  - label: "Dónde se ejecuta el scraper"
+    before: "Portátil"
+    value: "Nube, 24/7"
+  - label: "Pasos manuales para ejecutarlo"
+    value: "Ninguno"
+  - label: "Cambios de código al cambiar las URL"
+    value: "Ninguno"
 ---
 
 ## El problema

@@ -39,19 +39,17 @@ stack:
 links:
   github: https://github.com/DavitGadyan/ai-jobs
 outcomes:
-  - Claude, Cursor or any MCP client can ask for AI job leads in plain language, for example the most recent AI jobs in Barcelona, and get live rows from Supabase back through five read-only tools.
-  - Anyone with a verified Google account can connect. The first connection shows a branded consent page, then Google sign-in, and clients refresh their tokens silently afterwards.
-  - The server can only read. It sends GET requests only, every tool carries a read-only annotation, and a test checks both.
-  - Abuse is capped at 2 tool calls per minute per IP, counted in DynamoDB so the limit holds across Lambda instances, while handshake and sign-in requests do not count.
-  - One command builds the arm64 package and deploys the SAM stack. The server runs inside the Lambda and DynamoDB free tiers at personal traffic, so it costs cents per month.
+  - "Job leads become answerable where people already work: Claude, Cursor or any MCP client asks in plain language, for example for the most recent AI jobs in Barcelona, and gets live rows from Supabase through five read-only tools."
+  - "Who may connect is settled by Google sign-in behind a branded consent page, with only the openid and email scopes, so any verified Google account gets access and the Google app needs no review."
+  - "What they may do is read only: the server sends GET requests only, every tool carries a read-only annotation and a test checks both."
+  - "Abuse is capped at 2 tool calls per minute per IP, counted in DynamoDB so the limit holds across Lambda instances."
+  - "Running cost stays at cents per month inside the Lambda and DynamoDB free tiers at personal traffic, and one command builds and deploys the stack."
 metrics:
-  - label: MCP tools, all read-only
-    value: "5"
-  - label: Tool calls per minute per IP
-    value: "2"
-  - label: Automated tests
-    value: "24"
-  - label: Deploy
+  - label: "Running cost at personal traffic"
+    value: "cents/month"
+  - label: "Tool calls allowed per IP"
+    value: "2 / min"
+  - label: "Build and deploy"
     value: "1 command"
 featured: true
 order: 16

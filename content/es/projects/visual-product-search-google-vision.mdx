@@ -4,15 +4,20 @@ coverAlt: "Cámara de móvil etiquetando jersey, vaqueros y zapatillas junto a u
 summary: "Servicio de emparejamiento visual de productos para un cliente de comercio electrónico, desarrollado en Python sobre Google Cloud. Recibe un lote de imágenes de ropa, consulta la API Vision Product Search de Google Cloud contra las imágenes de referencia de productos del cliente y devuelve un archivo Excel con los 10 productos visualmente más similares para cada imagen de entrada."
 description: "Servicio en Python sobre Google Cloud que pasa lotes de imágenes de ropa por la API Vision Product Search y devuelve los 10 productos visualmente más similares por imagen en Excel."
 outcomes:
-  - "El servicio devuelve los 10 productos visualmente más similares por imagen de entrada como exportación a Excel."
-  - "Procesa un lote completo de imágenes en una ejecución en lugar de una subida por consulta."
+  - "Emparejar fotos de ropa con un catálogo grande a ojo era lento; el servicio devuelve ahora los 10 productos del catálogo visualmente más similares para cada imagen de entrada."
+  - "Un lote completo de imágenes se procesa en una ejecución en lugar de una subida por consulta, y las coincidencias llegan en un archivo Excel para revisarlas en una hoja de cálculo."
+  - "Reutilizar la API Product Search de Google Cloud evitó construir y entrenar desde cero un modelo de similitud propio."
 metrics:
-  - label: Coincidencias por imagen
-    value: "10 productos más similares"
-  - label: Modo de consulta
-    value: "1 subida por consulta → lote"
-  - label: Modelos a medida entrenados
-    value: "ninguno (API reutilizada)"
+  - label: "Emparejamiento con el catálogo"
+    before: "A ojo"
+    value: "Automático"
+  - label: "Entrada por ejecución"
+    before: "1 subida"
+    value: "Lote entero"
+  - label: "Coincidencias por imagen"
+    value: "10 mejores"
+  - label: "Modelo propio entrenado"
+    value: "Ninguno"
 ---
 
 ## El problema

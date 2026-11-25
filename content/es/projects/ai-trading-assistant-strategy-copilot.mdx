@@ -4,23 +4,20 @@ coverAlt: "La pantalla de sesión del AI Trading Assistant: panel de pasos con c
 summary: "Un copiloto de trading con IA para un trader discrecional, construido bajo NDA. El método del propio trader se carga como pasos, reglas y documentos de referencia configurables, y el asistente razona estrictamente dentro de ellos: cada respuesta indica la decisión, las reglas aplicadas, las evidencias y la incertidumbre. El trader aprueba, cuestiona o corrige cada respuesta, y el feedback revisado solo se convierte en la siguiente versión del asistente cuando un modelo juez independiente lo aprueba."
 description: "Copiloto de trading con IA bajo NDA: el método del trader vive en una configuración editable y el asistente razona dentro de él, cita evidencias y aprende del feedback revisado."
 outcomes:
-  - Entregado en 25 horas entre el 21 de septiembre y el 12 de octubre de 2026; valorado con 5,0 en Upwork y con las insignias Reliable, Committed to Quality, Solution Oriented, Clear Communicator y Accountable for Outcomes.
-  - El método es configuración, no código; los pasos, las reglas y los documentos de referencia se editan en la app y se publican como versiones, de modo que la estrategia cambia sin un desarrollador.
-  - Cada respuesta lleva la decisión, los motivos, las reglas aplicadas, las evidencias y la incertidumbre; las afirmaciones sin evidencia se eliminan antes de que el trader las vea.
-  - Aprobar, cuestionar o corregir cualquier respuesta; el feedback revisado se convierte en un estado de aprendizaje candidato que un modelo juez independiente debe aprobar sobre un conjunto de validación congelado antes de entrar en producción. 52 tests automáticos de backend y 29 de frontend.
+  - "Cada respuesta se ciñe al plan del propio trader dentro del paso actual y lleva la decisión, las reglas aplicadas, las evidencias y la incertidumbre, de modo que cualquier desvío del plan se señala cada vez."
+  - "Las afirmaciones sin evidencia se eliminan antes de que el trader las vea, y un segundo modelo critica cada respuesta primero."
+  - "El método es configuración, no código: los pasos, las reglas y los documentos de referencia se editan en la app y se publican como versiones, de modo que la estrategia cambia sin un desarrollador."
+  - "El asistente solo mejora a través del feedback revisado: un estado de aprendizaje candidato debe aprobar ante un modelo juez independiente sobre un conjunto de validación congelado en diez dimensiones, cuatro de ellas eliminatorias, sin empeorar respecto a la versión en producción, y se puede revertir."
+  - "Entregado en 25 horas entre el 21 de septiembre y el 12 de octubre de 2026 por 2.000 $ en total, y valorado con 5,0 en Upwork."
 metrics:
-  - label: Entregado en
+  - label: "Cambios de estrategia con desarrollador"
+    value: "ninguno"
+  - label: "Afirmaciones sin evidencia mostradas"
+    value: "ninguna"
+  - label: "Dimensiones del juez (eliminatorias)"
+    value: "10 (4)"
+  - label: "Entregado en"
     value: "25 h"
-  - label: Tarifa
-    value: "80 $ / h"
-  - label: Valor del contrato
-    value: "2.000 $"
-  - label: Valoración en Upwork
-    value: "5,0 / 5"
-  - label: Tests automáticos
-    value: "81"
-  - label: Roles de modelo
-    value: "3 (principal, crítica, juez)"
 clientNote: "Reseña del cliente en Upwork (5,0): «Es raro encontrar a alguien capaz de tender un puente tan eficaz entre ideas ambiciosas y una implementación técnica compleja.»"
 ---
 

@@ -29,16 +29,15 @@ stack:
   security: []
 links: {}
 outcomes:
-  - Two linked apps surfacing Google Trends and sentiment series per ticker, with correlation charts.
-  - Reddit sentiment analysed against price changes and returns for meme stocks such as GameStop.
-  - Analysts pick a ticker from a list and get the latest trend and sentiment picture without running code.
+  - "Search interest and sentiment lived in different APIs that an analyst had to pull by hand; now picking a ticker fetches Google Trends and several sentiment APIs and shows both immediately."
+  - "Charts line up the trend and sentiment series and surface correlations and recurring patterns, so an analyst sees whether attention moves with price without running code."
+  - "A Reddit study relates price changes and returns to public sentiment for meme stocks such as GameStop."
 metrics:
-  - label: Linked apps
-    value: "2 (trends + sentiment)"
-  - label: Sources joined per ticker
-    value: "4 source types"
-  - label: Data collection
-    value: "by hand → one ticker pick"
+  - label: "Getting trends and sentiment per stock"
+    before: "By hand"
+    value: "One ticker"
+  - label: "Code the analyst has to run"
+    value: "None"
 featured: false
 ---
 

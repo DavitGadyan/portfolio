@@ -26,8 +26,15 @@ stack:
   security: []
 links: {}
 outcomes:
-  - Interactive pyLDAvis HTML outputs of the topic clusters discovered by LDA.
-  - LIWC analysis completed in Python after resolving the dictionary encoding with its author, Dr. James W. Pennebaker.
+  - "Themes: the LDA topic clusters arrived as interactive pyLDAvis HTML files, so the client can explore each topic, its top terms and how topics relate in a browser."
+  - "Psycholinguistics: LIWC2015 scores for the full corpus give the psychological read of the language alongside the thematic one."
+  - "The LIWC2015 dictionary was encoded in a way the tooling could not read; Dr. James W. Pennebaker sent a decoded version, which unblocked the LIWC scoring."
+metrics:
+  - label: "Tweets scored with LIWC2015"
+    value: "full corpus"
+  - label: "LIWC2015 dictionary file"
+    before: "unreadable"
+    value: "decoded"
 featured: false
 ---
 

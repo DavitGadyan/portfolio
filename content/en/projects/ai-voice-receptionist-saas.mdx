@@ -44,18 +44,21 @@ stack:
 links:
   github: https://github.com/DavitGadyan/AIVoiceReceptionist
 outcomes:
-  - One codebase serves seven industries; each business is configuration, not code.
-  - Onboarding in about an hour from a form or a price-list PDF, approved field by field.
-  - The receptionist only says "confirmed" once the booking tool succeeds, and every call records the profile version it ran with.
-  - "After each call: transcript, two-sentence summary, extracted fields, SMS/WhatsApp/email summary, signed webhooks and 2/5/10-day follow-ups."
-  - Estimated running cost of about $30 a month at 200 voice minutes (blended estimate of Vapi, Deepgram, GPT-4o-mini, ElevenLabs and Twilio).
+  - "Calls no longer end in voicemail: the receptionist answers 24/7, as overflow or after hours, books against a live calendar, triages emergencies and texts missed callers back."
+  - "One multi-tenant codebase serves seven industries instead of one bot per client; each business is configuration, not code."
+  - "A new business goes live in about an hour from a form or a price-list PDF, approved field by field."
+  - "Bookings are confirmed only once the booking tool succeeds, and every call ends with a transcript, a two-sentence summary, an SMS/WhatsApp/email summary and 2/5/10-day follow-ups to unconverted leads."
+  - "Estimated running cost of about $30 a month at 200 voice minutes (blended estimate), with a self-hosted pipeline as the path to roughly halve it."
 metrics:
-  - label: Industries covered by presets
+  - label: "Call coverage"
+    before: "voicemail"
+    value: "24/7"
+  - label: "Onboarding a new business"
+    value: "about 1 h"
+  - label: "Industries on one deployment"
     value: "7"
-  - label: Onboarding a new business
-    value: "about 1 hour"
-  - label: Receptionist tools (phone, chat, simulator)
-    value: "13"
+  - label: "Est. running cost, 200 voice min"
+    value: "~$30/month"
 featured: true
 order: 10
 ---

@@ -4,17 +4,16 @@ coverAlt: "Diagrama de flujo: empresas de Nueva York pasan por GPT-4 y BERT hast
 summary: "Pipeline que asigna códigos NAICS/SIC a empresas de Nueva York sin etiquetas. El emparejamiento difuso por nombre y ubicación con registros recupera códigos conocidos, el etiquetado few-shot con GPT-4 amplía el conjunto de entrenamiento sin anotación manual y un clasificador BERT, comparado con SVM y Random Forest, predice los códigos del resto, con revisiones de calidad y paquete de replicación."
 description: "Clasificación NAICS/SIC de empresas de Nueva York sin etiquetas: emparejamiento difuso con registros, etiquetado few-shot con GPT-4 y clasificador BERT, con control de calidad."
 outcomes:
-  - "Conjunto de entrenamiento etiquetado a partir de coincidencias en registros más ampliación few-shot con GPT-4, sin anotación manual."
-  - "Clasificador BERT elegido frente a las líneas base SVM y Random Forest, optimizado en precisión y coste de inferencia."
-  - "Revisiones manuales aleatorias de calidad tanto de los emparejamientos como de las predicciones del modelo."
-  - "Documentación y paquete de replicación para que los responsables puedan reproducir todo el flujo."
+  - "Las empresas que no tenían ninguna etiqueta sectorial acaban todas con un código NAICS/SIC: las emparejadas, a partir de los registros; el resto, a partir del clasificador BERT."
+  - "El conjunto de entrenamiento salió de las coincidencias en registros ampliadas con etiquetado few-shot con GPT-4, así que no hubo que anotar registros a mano con ese volumen."
+  - "BERT se eligió frente a las líneas base SVM y Random Forest, optimizado tanto en precisión como en coste de inferencia."
+  - "Las revisiones manuales aleatorias de emparejamientos y predicciones, junto con un paquete de replicación, permiten a los responsables comprobar y volver a ejecutar todo el flujo."
 metrics:
-  - label: Anotación manual
-    value: "ninguna (few-shot con GPT-4)"
-  - label: Modelos comparados
-    value: "3 (BERT, SVM, Random Forest)"
-  - label: Cobertura de empresas
-    value: "todas las empresas con código NAICS/SIC"
+  - label: "Empresas con código NAICS/SIC"
+    before: "Ninguna"
+    value: "Todas"
+  - label: "Registros anotados a mano"
+    value: "Ninguno"
 ---
 
 ## El problema

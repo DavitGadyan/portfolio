@@ -4,21 +4,19 @@ coverAlt: "Portada de HubAIOps: el titular sobre agentes de IA de HubSpot que se
 summary: "Web de optimización de HubSpot y aplicación de auditoría. Puntúa un portal de HubSpot en 7 casos de uso de IA con 31 comprobaciones, 15 de ellas medidas en vivo con un escaneo OAuth de solo lectura, y Claude convierte los hallazgos en un plan Hacer ya / Después / Más adelante en una página de resultados para compartir. Incluye una biblioteca de casos filtrable con puntuaciones de preparación antes y después, captación de leads, panel de administración y una versión estática en GitHub Pages."
 description: "Auditoría de preparación para IA en HubSpot: 31 comprobaciones en 7 casos de uso, escaneo OAuth de solo lectura y un plan priorizado escrito por Claude. Next.js y TypeScript."
 outcomes:
-  - 7 casos de uso de IA y 31 comprobaciones, 15 de ellas medidas en vivo contra la API de HubSpot, cada una con su «por qué importa» y su «primer paso».
-  - Claude escribe el plan como JSON validado por esquema, con caché de prompts y un plan determinista de respaldo si el modelo no está disponible.
-  - Solo lectura por diseño; los tokens se cifran y se destruyen tras el escaneo, y ningún dato personal llega al modelo.
-  - Una sola base de código publica la aplicación completa para un servidor Node y una web estática en GitHub Pages; lint, comprobación de tipos, 24 tests y ambas builds en cada push.
+  - "La auditoría mide el portal en vez de preguntar por él: un escaneo de solo lectura de HubSpot mide directamente 15 de las 31 comprobaciones, como contactos duplicados, etapas del ciclo de vida ausentes y huecos de asociación."
+  - "Cada uno de los 7 casos de uso de IA recibe una nota de 0 a 100 ponderada por gravedad, para que la primera llamada de estrategia empiece con un diagnóstico."
+  - "Claude convierte los hallazgos en un plan Hacer ya / Después / Más adelante validado contra un esquema, y si el modelo no está disponible entra un plan determinista basado en la rúbrica."
+  - "Permisos de solo lectura, tokens AES-256-GCM borrados tras el escaneo y ningún registro de contacto enviado al modelo; solo se guardan recuentos y porcentajes."
 metrics:
-  - label: Casos de uso de IA puntuados
+  - label: "Comprobaciones medidas en vivo"
+    value: "15 de 31"
+  - label: "Casos de uso de IA puntuados de 0 a 100"
     value: "7"
-  - label: Comprobaciones
-    value: "31"
-  - label: Medidas en vivo con la API de HubSpot
-    value: "15"
-  - label: Casos de estudio
-    value: "25"
-  - label: Tests automatizados
-    value: "24"
+  - label: "Contactos enviados al modelo"
+    value: "Ninguno"
+  - label: "Tokens OAuth tras el escaneo"
+    value: "Borrados"
 ---
 
 ## El problema

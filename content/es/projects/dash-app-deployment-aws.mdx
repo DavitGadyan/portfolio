@@ -4,16 +4,13 @@ coverAlt: "Sitio de Jacqueline McShan: cabecera azul con retrato, texto About Me
 summary: "Despliegue de la aplicación Dash Plotly de ML de Jacqueline McShan en AWS. Revisé la documentación, fijé las versiones de los paquetes para que la app se instale de forma reproducible e hice los ajustes necesarios para el alojamiento; después la puse en marcha en una instancia AWS EC2 con Route 53 dirigiendo las peticiones a su dominio propio. El sitio está en producción en jacquelinemcshan.net."
 description: "Aplicación Dash Plotly puesta en producción en AWS: fijación de dependencias y revisión de la documentación, alojamiento en EC2 y enrutado con Route 53 a un dominio propio."
 outcomes:
-  - "Aplicación alojada en una instancia AWS EC2 con Route 53 enrutando a un dominio propio."
-  - "Documentación revisada y versiones de paquetes fijadas para un alojamiento reproducible."
-  - "Sitio en producción en jacquelinemcshan.net."
+  - "La app pasó de su máquina a una instancia AWS EC2, así que funciona como servicio alojado y no como servidor de desarrollo local."
+  - "Route 53 dirige las peticiones de su dominio propio a la instancia, y el sitio está en producción en jacquelinemcshan.net."
+  - "Las versiones de paquetes fijadas y la documentación revisada permiten reconstruir la configuración a partir de la documentación, no solo en una única máquina."
 metrics:
-  - label: Alojamiento
-    value: "máquina local → AWS EC2"
-  - label: Dominio público
-    value: "jacquelinemcshan.net en producción"
-  - label: Versiones de dependencias
-    value: "sin fijar → fijadas y reproducibles"
+  - label: "Dónde se ejecuta la app"
+    before: "Su máquina"
+    value: "AWS EC2"
 ---
 
 ## El problema

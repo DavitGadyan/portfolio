@@ -24,15 +24,15 @@ stack:
   security: []
 links: {}
 outcomes:
-  - "URL-in, structured-summary-out web app with a clean Excel download."
-  - "Key details extracted according to the fields the client specified, not a generic summary."
+  - "Manual reading and copying replaced by one small web app: paste a URL and get the summary and key details back."
+  - "ChatGPT extracts the key details the client specified, so the output follows those fields rather than a generic summary."
+  - "Results land in a clean table that downloads as Excel, ready to open in a spreadsheet."
 metrics:
-  - label: Page to structured data
-    value: "1 URL → Excel table"
-  - label: Reading and copying
-    value: "manual → automated"
-  - label: Extracted fields
-    value: "client-specified, not generic"
+  - label: "Reading and copying page details"
+    before: "manual"
+    value: "automated"
+  - label: "Input to get an Excel table"
+    value: "1 URL"
 featured: false
 ---
 

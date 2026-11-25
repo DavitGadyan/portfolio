@@ -4,19 +4,20 @@ coverAlt: "Portada de Audit Pro: el título Audit Pro, la línea An LLM first pa
 summary: "Un asistente que da a los auditores una primera revisión del informe financiero NIIF de un cliente. Lee un PDF, un enlace o texto pegado y redacta los errores (cifras que no cuadran entre páginas, totales que no suman, desviaciones de las NIIF) y los puntos de interés que conviene comprobar, cada uno con su página, la evidencia citada, la referencia NIIF y un procedimiento sugerido, siempre en un único esquema JSON fijo. Un verificador determinista y un paso de anclaje impiden que el modelo invente hallazgos, y todo se ejecuta en la GPU de la propia firma, así que ningún informe sale de ella. Un laboratorio de benchmarks eligió el modelo: 76 configuraciones de 19 modelos abiertos medidas en una RTX 4090 por calidad, latencia, rendimiento y coste, con pruebas A/B de cada técnica. Producción sirve ya Qwen3-14B FP8 con una API compatible con OpenAI. FastAPI, un laboratorio en Next.js, Docker y Helm, imágenes firmadas en CI."
 description: "Un LLM que da a los auditores una primera revisión de informes NIIF: errores entre páginas, puntos de interés y referencias NIIF, en la GPU de la firma, con 76 configuraciones medidas."
 outcomes:
-  - "Un primer borrador para el auditor: cada hallazgo con su página, cifras, evidencia citada y referencia NIIF."
+  - "La decodificación por sufijos redujo una auditoría de 44,0 s a 23,5 s (−47 %), a 0,69 $ por 1.000 auditorías en alquiler de GPU."
+  - "A través de la API de producción en una RTX 4090, 12 de 12 informes nuevos se auditaron en 58,6 s cada uno, unas 245 auditorías por hora."
+  - "En esos 12 informes encontró el 74 % de los errores inyectados (31 de 42), cada hallazgo con su página, evidencia citada y referencia NIIF para que el auditor lo verifique."
   - "Sin cifras inventadas: comprobaciones decimales exactas, y una cifra o cita que no está en su página se descarta."
   - "Los informes del cliente no salen de la firma: la inferencia corre en su GPU, sin API externa de LLM."
-  - "76 configuraciones de 19 modelos abiertos medidas por calidad, latencia, rendimiento y coste en una RTX 4090."
-  - "En producción: Qwen3-14B FP8 + KV FP8 (calidad 70,8). Decodificación por sufijos: 23,5 s por auditoría, 0,69 $ por 1.000."
 metrics:
-  - label: Configuraciones medidas (19 modelos)
-    value: "76"
-  - label: Tiempo de auditoría con decodificación por sufijos
-    value: "−47 %"
-  - label: Coste por 1.000 auditorías (decodificación por sufijos)
+  - label: "Tiempo por auditoría (sufijos)"
+    before: "44,0 s"
+    value: "23,5 s"
+  - label: "Coste por 1.000 auditorías (sufijos)"
     value: "0,69 $"
-  - label: Datos de informes enviados a API externas de LLM
+  - label: "Errores hallados en informes nuevos"
+    value: "31 de 42"
+  - label: "Datos enviados a API externas de LLM"
     value: "0"
 ---
 

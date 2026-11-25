@@ -4,16 +4,15 @@ coverAlt: "Dashboard en Next.js con puntuaciones de leads y riesgo de abandono p
 summary: "Motor de IA que puntúa leads por probabilidad de volver a convertir y detecta riesgo de abandono dentro de S1mple.ai, con dashboard en Next.js, backend en FastAPI y LangChain y conectores MCP a HubSpot, Monday, Zoho y cuatro bases de datos, escalado en Kubernetes."
 description: "SaaS de lead scoring y detección de churn con IA: dashboard Next.js, FastAPI, LangChain, conectores MCP a HubSpot/Monday/Zoho y Postgres/MySQL/Supabase/MongoDB, Kubernetes."
 outcomes:
-  - El esfuerzo de marketing se concentra en las cuentas con más probabilidad de volver a convertir y en las que están en riesgo de abandono.
-  - "Un único motor de puntuación, independiente del CRM: HubSpot, Monday y Zoho mediante conectores MCP."
-  - "Funciona sobre la base de datos que ya tiene el cliente: Postgres, MySQL, Supabase o MongoDB."
+  - "En lugar de un presupuesto repartido por igual en todo el CRM, el esfuerzo de marketing se concentra ahora en las cuentas con más probabilidad de volver a convertir y en las que están en riesgo de abandono."
+  - "Cada contacto recibe dos señales, probabilidad de repetir conversión y riesgo de abandono, y el dashboard muestra el razonamiento de cada una."
+  - "Las puntuaciones salen de los datos que el cliente ya tenía: HubSpot, Monday y Zoho mediante conectores MCP, y Postgres, MySQL, Supabase o MongoDB, con herramientas en lugar de código pegamento a medida."
+  - "Los resultados vuelven al CRM además de al dashboard, para que las campañas actúen sobre ellos donde están los contactos."
 metrics:
-  - label: CRM compatibles
-    value: "3 (HubSpot, Monday, Zoho)"
-  - label: Bases de datos compatibles
-    value: "4 (Postgres, MySQL, Supabase, MongoDB)"
-  - label: Señales por cuenta
-    value: "2 (probabilidad de conversión, riesgo de abandono)"
+  - label: "CRM conectados mediante MCP"
+    value: "3"
+  - label: "Bases de datos del cliente sin migrar"
+    value: "4"
 ---
 
 ## El problema

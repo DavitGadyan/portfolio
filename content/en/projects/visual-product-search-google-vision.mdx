@@ -24,15 +24,20 @@ stack:
   security: []
 links: {}
 outcomes:
-  - "Service returns the top 10 visually similar products per input image as an Excel export."
-  - "Processes a whole batch of images in one run rather than one upload per query."
+  - "Matching clothing photos against a large catalogue by eye was slow; the service now returns the top 10 visually similar catalogue products for each input image."
+  - "A whole batch of images is processed in one run instead of one upload per query, and the matches arrive as an Excel file for review in a spreadsheet."
+  - "Reusing Google Cloud's Product Search API avoided building and training a custom similarity model from scratch."
 metrics:
-  - label: Matches per image
-    value: "top 10 similar products"
-  - label: Query mode
-    value: "1 upload per query → batch run"
-  - label: Custom models trained
-    value: "none (API reused)"
+  - label: "Catalogue matching"
+    before: "By eye"
+    value: "Automatic"
+  - label: "Input per run"
+    before: "1 upload"
+    value: "Whole batch"
+  - label: "Matches returned per image"
+    value: "Top 10"
+  - label: "Custom model trained"
+    value: "None"
 featured: false
 ---
 

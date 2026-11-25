@@ -29,13 +29,13 @@ links:
     - label: Live demo on AWS EC2
       note: Demo retired
 outcomes:
-  - High-quality background removal on apparel photography.
-  - Deployed as a web service on AWS EC2 and demoable from a browser with any image URL.
+  - "Garment cut-outs that do not scale by hand are produced automatically by a U-Net segmentation model, with very good results on apparel photography."
+  - "Deployed as a web service on AWS EC2 that takes any image URL and returns the image with the background removed."
+  - "The client could validate quality on real catalogue photos from a browser before integrating the service anywhere."
 metrics:
-  - label: Garment cut-outs
-    value: "manual retouching → automated"
-  - label: Model delivery
-    value: "notebook → hosted HTTP endpoint"
+  - label: "Garment cut-outs"
+    before: "By hand"
+    value: "Automated"
 featured: false
 ---
 

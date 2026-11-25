@@ -43,22 +43,22 @@ stack:
 links:
   github: https://github.com/DavitGadyan/SmartSearch
 outcomes:
-  - Ranking quality on 233k human relevance grades rises from NDCG@10 0.688 for keyword search to 0.705 with hybrid retrieval and 0.722 with the learned ranker, in 5-fold cross-validation with behavioural features zeroed so no click can leak.
-  - In the online A/B test the new ranker lifts search click-through by 4.3% (p = 0.0004) and cuts searches without a click by 7.1%. Conversion is up 4.2% but not significant at 7,000 shoppers per arm, so the engine's verdict is keep running, not ship.
-  - Every search result explains its position, with the ranker score, the personalization term and the top feature contributions in a drawer next to the results.
-  - A Claude assistant searches, explains each pick, adds to the cart and checks out through the Agentic Commerce Protocol, the same endpoints an external AI agent would use, and it can only present products the store's own tools returned.
-  - A merchant describes a storefront change in one sentence and gets an A/B test with both arms previewed, a sample-size plan and a reject or fail-to-reject verdict. 48 backend tests cover the platform, with the statistics verified against scipy and statsmodels.
+  - "To prove the ranker on human judgments without leakage, NDCG@10 on 233k relevance grades rises from 0.688 for keyword search to 0.705 with hybrid retrieval and 0.722 with the learned ranker, with behavioural features zeroed so no click can leak."
+  - "On the 96 test queries never searched during warm-up, ranking quality rises from 0.584 for BM25 with a popularity boost to 0.729 for the fused list."
+  - "In the simulated online A/B test the new ranker lifts search click-through by 4.3% (p = 0.0004) and cuts searches without a click by 7.1%; conversion is up 4.2% but not significant at 7,000 shoppers per arm, so the engine's verdict is keep running, not ship."
+  - "The live test also stopped a bad launch: a contextual bandit that looked 4% better in off-policy evaluation showed −6.2% conversion live (p = 0.27), so it was not shipped on the estimate."
+  - "One checkout over the Agentic Commerce Protocol serves both shoppers and AI agents, and the Claude assistant can only present products the store's own tools returned."
 metrics:
-  - label: Real products searched
-    value: "42,994"
-  - label: Human relevance grades
-    value: "233k"
-  - label: Ranking quality, NDCG@10
-    value: "0.688 → 0.722"
-  - label: Search click-through in the A/B test
+  - label: "Offline ranking quality, NDCG@10"
+    before: "0.688"
+    value: "0.722"
+  - label: "NDCG@10 on queries unseen in warm-up"
+    before: "0.584"
+    value: "0.729"
+  - label: "Search click-through, simulated A/B"
     value: "+4.3%"
-  - label: Backend tests
-    value: "48"
+  - label: "Searches without a click, simulated A/B"
+    value: "−7.1%"
 featured: true
 order: 15
 ---

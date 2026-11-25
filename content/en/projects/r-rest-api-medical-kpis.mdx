@@ -24,16 +24,19 @@ stack:
   security: []
 links: {}
 outcomes:
-  - "Production KPI algorithm for CTE medical image experts served over REST from R."
-  - "Interactive Plotly graphs built to client specification inside the existing Vue.js app."
-  - "Three consecutive contracts, each extending the previous one."
+  - "The R KPI algorithm for CTE medical image experts went from a standalone script to a production service behind an R REST API that the Vue.js app calls."
+  - "Users see KPI results as interactive R Plotly graphs, built to the client's specification, instead of raw numbers."
+  - "The R service and the graphs became part of the existing Vue.js platform rather than a separate tool."
+  - "The work continued across three consecutive contracts, each extending the API and the visualisations delivered in the previous one."
 metrics:
-  - label: Consecutive contracts
+  - label: "How the KPI algorithm runs"
+    before: "script"
+    value: "REST API"
+  - label: "KPI results shown to users as"
+    before: "raw numbers"
+    value: "graphs"
+  - label: "Consecutive contracts"
     value: "3"
-  - label: KPI algorithm
-    value: "standalone script → production REST API"
-  - label: Results for users
-    value: "raw numbers → interactive graphs"
 featured: false
 ---
 

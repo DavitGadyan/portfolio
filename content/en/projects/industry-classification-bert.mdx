@@ -27,17 +27,16 @@ stack:
   security: []
 links: {}
 outcomes:
-  - "Labelled training set built from registry matches plus GPT-4 few-shot augmentation, with no manual annotation."
-  - "BERT classifier chosen over SVM and Random Forest baselines, optimised for accuracy and inference cost."
-  - "Random manual QA reviews of both the matching results and the model predictions."
-  - "Documentation and a replication package so stakeholders can reproduce the whole workflow."
+  - "Firms that had no industry labels at all each end up with a NAICS/SIC code: matched ones from the registries, the rest from the BERT classifier."
+  - "The training set came from registry matches expanded with GPT-4 few-shot labelling, so no records had to be annotated by hand at that volume."
+  - "BERT was chosen over SVM and Random Forest baselines, optimised for both accuracy and inference cost."
+  - "Random manual QA reviews of the matches and predictions, plus a replication package, let stakeholders check and rerun the whole workflow."
 metrics:
-  - label: Manual annotation
-    value: "none (GPT-4 few-shot)"
-  - label: Models benchmarked
-    value: "3 (BERT, SVM, Random Forest)"
-  - label: Firm coverage
-    value: "every firm assigned a NAICS/SIC code"
+  - label: "Firms with a NAICS/SIC code"
+    before: "None"
+    value: "Every firm"
+  - label: "Records annotated by hand"
+    value: "None"
 featured: false
 ---
 

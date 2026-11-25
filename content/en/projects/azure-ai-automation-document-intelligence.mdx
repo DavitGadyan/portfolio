@@ -41,21 +41,21 @@ stack:
 links:
   github: https://github.com/DavitGadyan/Azure
 outcomes:
-  - Retrieval recall@5 of 1.00 and MRR 1.00 on the bilingual site-handbook golden set.
-  - QA correctness and abstention accuracy rose from 0.875 to 1.00 after switching to the multilingual bge-m3 embedding model, a gap the eval view made visible.
-  - Extraction field accuracy of 0.97 across six English and German PDFs; all 30 provenance quotes of a certificate located on the page.
-  - Every write action of the agent waits for a human approver, also when called through MCP, and every run is a costed OpenTelemetry trace.
+  - "Prompt and embedding changes are decided on golden-set numbers: switching to the multilingual bge-m3 model took QA correctness and abstention accuracy from 0.875 to 1.00."
+  - "Retrieval recall@5 of 1.00 and MRR 1.00 on the bilingual site-handbook golden set, with an explicit abstention when the documents do not cover the question."
+  - "Extraction field accuracy of 0.97 across six English and German PDFs; all 30 provenance quotes of a certificate located on the page, and an invoice whose line items do not sum to the net amount is flagged instead of booked."
+  - "Every write action of the agent waits for a human approver, also when called through MCP, and tool errors go back to the model instead of crashing the loop."
+  - "Every run is an OpenTelemetry trace with token counts and cost per model call."
 metrics:
-  - label: Retrieval recall@5
+  - label: "QA correctness and abstention"
+    before: "0.875"
     value: "1.00"
-  - label: QA correctness after bge-m3
+  - label: "Retrieval recall@5, bilingual set"
     value: "1.00"
-  - label: Extraction field accuracy
+  - label: "Extraction field accuracy"
     value: "0.97"
-  - label: Provenance quotes located
-    value: "30/30"
-  - label: Document languages
-    value: "EN + DE"
+  - label: "Agent writes needing human approval"
+    value: "all"
 featured: true
 order: 7
 ---

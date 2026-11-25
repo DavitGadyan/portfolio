@@ -4,18 +4,21 @@ coverAlt: "Receptra: una recepcionista sonriente con auriculares junto al lema A
 summary: "Receptra es una recepcionista de voz con IA multiempresa para oficios, clínicas, centros de estética, peluquerías, despachos de abogados, inmobiliarias y alquiler de eventos. Atiende todas las llamadas con una voz natural, reserva citas contra un calendario real, clasifica las emergencias, deriva a una persona cuando toca y envía un resumen por SMS a ambas partes. Un negocio nuevo se incorpora en una hora aproximadamente desde un formulario o un PDF con la lista de precios, sin código nuevo."
 description: "Receptra: SaaS de recepcionista de voz con IA multiempresa. Atiende llamadas, reserva citas, clasifica emergencias y envía resúmenes por SMS. FastAPI, Next.js 15, OpenAI, Vapi, Twilio."
 outcomes:
-  - Una sola base de código sirve a siete sectores; cada negocio es configuración, no código.
-  - Incorporación en una hora aproximadamente desde un formulario o un PDF con la lista de precios, aprobada campo por campo.
-  - La recepcionista solo dice "confirmado" cuando la herramienta de reserva lo consigue, y cada llamada registra la versión del perfil con la que se ejecutó.
-  - "Tras cada llamada: transcripción, resumen de dos frases, campos extraídos, resumen por SMS, WhatsApp o correo, webhooks firmados y seguimientos a los 2, 5 y 10 días."
-  - Coste operativo estimado de unos 30 $ al mes con 200 minutos de voz (estimación combinada de Vapi, Deepgram, GPT-4o-mini, ElevenLabs y Twilio).
+  - "Las llamadas ya no acaban en el buzón de voz: la recepcionista atiende 24/7, como desbordamiento o fuera de horario, reserva contra un calendario real, clasifica emergencias y envía un SMS tras las llamadas perdidas."
+  - "Una sola base de código multiempresa sirve a siete sectores en lugar de un bot por cliente; cada negocio es configuración, no código."
+  - "Un negocio nuevo entra en servicio en una hora aproximadamente desde un formulario o un PDF con la lista de precios, aprobado campo por campo."
+  - "Las reservas solo se confirman cuando la herramienta de reserva lo consigue, y cada llamada termina con transcripción, resumen de dos frases, resumen por SMS, WhatsApp o correo y seguimientos a los 2, 5 y 10 días a los leads no convertidos."
+  - "Coste operativo estimado de unos 30 $ al mes con 200 minutos de voz (estimación combinada), con una canalización autoalojada como vía para reducirlo aproximadamente a la mitad."
 metrics:
-  - label: Sectores cubiertos por los presets
+  - label: "Cobertura de llamadas"
+    before: "buzón de voz"
+    value: "24/7"
+  - label: "Incorporar un negocio nuevo"
+    value: "1 h aprox."
+  - label: "Sectores en un solo despliegue"
     value: "7"
-  - label: Incorporar un negocio nuevo
-    value: "alrededor de 1 hora"
-  - label: Herramientas de la recepcionista (teléfono, chat, simulador)
-    value: "13"
+  - label: "Coste estimado, 200 min de voz"
+    value: "~30 $/mes"
 ---
 
 ## El problema

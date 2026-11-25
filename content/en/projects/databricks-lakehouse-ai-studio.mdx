@@ -41,22 +41,21 @@ stack:
 links:
   github: https://github.com/DavitGadyan/Databricks
 outcomes:
-  - 2.96M real NYC taxi trips through bronze, silver and gold, with about 35,000 bad rows sent to quarantine instead of into the numbers, and a reconciliation that accounts for every row and every dollar.
-  - Every AI answer shows its SQL or its sources; rules, scores and risk levels come from code, the model only explains, and high-risk actions wait for a person and land in an append-only audit log.
-  - A job that really runs out of memory is diagnosed from Spark's event logs, gets a drafted runbook, and reruns only after an approver says so.
-  - Each AI task is routed to a local model or a hosted one from Settings, with tokens and time logged per call, so a client controls API costs and data exposure per task.
-  - A new client setup is a new folder in packs/ (sources, SQL models, checks, KPIs, rules), not new platform code; three packs ship, and 88 backend tests cover the platform.
+  - "2.96M real NYC taxi trips run through bronze, silver and gold, about 35,000 bad rows go to quarantine instead of into the numbers, and reconciliation accounts for every row and every dollar."
+  - "Every AI answer shows its SQL or its sources, and rules, scores and risk levels come from code, so the model only explains."
+  - "High-risk actions and reruns wait for an approver and land in an append-only audit log; a job that really runs out of memory is diagnosed from Spark's event logs and reruns only after approval."
+  - "Each AI task is routed to a local or a hosted model from Settings, with tokens and time logged per call, so a client controls API costs and data exposure per task."
+  - "A new client setup is a new folder in packs/ (sources, SQL models, checks, KPIs, rules), not new platform code."
 metrics:
-  - label: Real taxi trips processed
+  - label: "Real taxi trips processed"
     value: "2.96M"
-  - label: Bad rows quarantined (demo)
+  - label: "Bad rows kept out of the numbers"
     value: "~35,000"
-  - label: Model options per AI task
-    value: "3"
-  - label: Client packs included
-    value: "3"
-  - label: Backend tests
-    value: "88"
+  - label: "High-risk actions without a person"
+    value: "None"
+  - label: "New client setup"
+    before: "New code"
+    value: "New folder"
 featured: true
 order: 14
 ---

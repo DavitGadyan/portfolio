@@ -4,21 +4,20 @@ coverAlt: "Portada de CareLens: «Healthcare AI, safe on Kubernetes», de PDF cl
 summary: "Un producto consciente de HIPAA que convierte PDF clínicos en registros al estilo FHIR con Claude, construido para ejercitar de principio a fin una plataforma Kubernetes de producción. La información sanitaria identificable se elimina antes de cualquier llamada a la IA, una persona revisora aprueba cada resultado y cada acceso queda en un registro de auditoría encadenado por hash. Se entrega con un chart de Helm, despliegues canary y blue-green, GitOps con Argo CD en dev, staging y prod, Prometheus y Loki, NetworkPolicies de denegación por defecto, imágenes firmadas y Terraform validado para un AKS privado, con un mapa de controles HIPAA, SOC 2 y RGPD."
 description: "De PDF clínicos a datos al estilo FHIR con Claude en una plataforma Kubernetes: redacción de PHI, revisión humana, auditoría encadenada, canary, GitOps y Terraform para AKS."
 outcomes:
-  - La información identificable se sustituye por marcadores estables antes de cualquier llamada al modelo y el resultado se vuelve a escanear; un identificador residual bloquea la llamada y envía el documento a una persona.
-  - Cada inicio de sesión (fallidos incluidos), consulta de PHI, subida, revisión, borrado y llamada a herramienta del Copilot queda en una tabla de auditoría de solo inserción encadenada con SHA-256, verificada cada 30 minutos con una alerta ante manipulación.
-  - Quince proyectos de plataforma Kubernetes implementados como funciones reales, desde CI/CD con puerta Trivy y firma cosign hasta despliegues canary con reversión automática, GitOps en tres entornos, CronJobs, StatefulSets y Jobs por lotes indexados.
-  - Puertas de calidad en el momento de escribir esto, 23 tests de backend, 162/162 manifiestos de Helm válidos con kubeconform estricto, Checkov 0 fallos de 2.140 comprobaciones, Trivy 0 hallazgos HIGH/CRITICAL corregibles, Gitleaks limpio y Terraform válido para dev, staging y prod.
+  - "La información identificable se sustituye por marcadores estables y se vuelve a escanear antes de cualquier llamada al modelo; un identificador residual bloquea la llamada y envía el documento a una persona."
+  - "Cada inicio de sesión (fallidos incluidos), consulta de PHI, subida, revisión, borrado y llamada a herramienta del Copilot queda en una tabla de auditoría encadenada con SHA-256 verificada cada 30 minutos, con una alerta ante manipulación."
+  - "Los cambios se publican con seguridad: el canary de la API pasa por el 10, 30, 60 y 100 % y se aborta y revierte solo si el 5xx no se mantiene por debajo del 2 % y el p95 por debajo de 1 s."
+  - "Puertas de seguridad en el momento de escribir esto: Checkov 0 fallos de 2.140 comprobaciones, Trivy 0 hallazgos HIGH/CRITICAL corregibles, Gitleaks limpio y ninguna credencial cloud de larga duración gracias a la identidad de carga y la federación OIDC."
+  - "Cada salvaguarda técnica de HIPAA, criterio de SOC 2 y artículo del RGPD está asociado al código o la configuración que lo implementa (lista para HIPAA, no una certificación)."
 metrics:
-  - label: Comprobaciones de Checkov
-    value: "2.140 superadas, 0 fallos"
-  - label: Manifiestos de Helm válidos (kubeconform estricto)
-    value: "162/162"
-  - label: Hallazgos HIGH/CRITICAL corregibles (Trivy)
+  - label: "Verificación de la cadena de auditoría"
+    value: "cada 30 min"
+  - label: "Reversión del canary (5xx, p95)"
+    value: "2 %, 1 s"
+  - label: "Fallos de Checkov (de 2.140)"
     value: "0"
-  - label: Proyectos de plataforma Kubernetes
-    value: "15"
-  - label: Puerta del canary
-    value: "5xx < 2 %, p95 < 1 s"
+  - label: "Credenciales cloud de larga duración"
+    value: "ninguna"
 ---
 
 ## El problema

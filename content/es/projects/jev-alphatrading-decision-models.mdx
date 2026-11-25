@@ -4,20 +4,23 @@ coverAlt: "Portada de Jev AlphaTrading: el título Jev AlphaTrading, la línea J
 summary: "Una plataforma de investigación de trading cripto construida sobre modelos de decisión tipados, Jev 1.14 y Microsoft Decision-1.1. Un motor de reglas determinista convierte velas de 1 minuto en hechos exactos y encuentra setups de day trading; el modelo de decisión juzga cada uno y devuelve LONG, NEUTRAL o SHORT con stop, objetivo y probabilidades. Un backtester de 1 minuto cobra comisiones y deslizamiento y compara cada ejecución con comprar y mantener y con entradas aleatorias, y RLVR, un ciclo de autoaprendizaje, solo cambia la estrategia cuando el cambio se sostiene en datos que no ha visto. Su primer cambio aceptado redujo la pérdida por operación un 63 % y el drawdown a la mitad. FastAPI, Next.js, MongoDB, OpenRouter, 837 tests."
 description: "Investigación de trading cripto con Jev 1.14 y Microsoft Decision-1.1: motor de reglas, backtests de 1 minuto tras costes, ciclo RLVR y paper trading en vivo."
 outcomes:
-  - El primer cambio aceptado del ciclo de autoaprendizaje redujo la pérdida por operación de −0,37R a −0,14R (un 63 % menos) y el drawdown máximo de −10,3 % a −5,2 % en cinco monedas entre 2022 y 2024, y la mejora se mantuvo en datos de 2025 que nunca había visto (de −0,19R a −0,06R).
-  - Los modelos de decisión se integran de forma segura. Jev 1.14 y Microsoft Decision-1.1 ven un estado de mercado anonimizado (sin moneda, fechas ni precios), cada respuesta se guarda en caché, el gasto tiene un tope fijo y una negativa cuenta como no. 1.826 llamadas al modelo costaron 0,12 $.
-  - Cada idea pasa la misma prueba. Un backtester de 1 minuto cobra un 0,10 % de comisión más deslizamiento por lado y compara cada ejecución con comprar y mantener, entradas aleatorias y entradas aleatorias filtradas por tendencia, y los datos divididos y congelados con un registro de pruebas impiden el sobreajuste.
-  - La investigación se cuenta tal como se midió. Los dos modelos confirmaron los 197 setups que juzgaron y no eligieron ganadores mejor que el azar (AUC 0,47–0,48), y las entradas de day trading no tenían ventaja tras costes. El seguimiento lento de tendencia fue la única estrategia positiva en todos los periodos, con un 29 % anual.
-  - Esa regla de tendencia opera ahora en paper trading dentro de la API con el mismo código del backtest. Desde el 12 de septiembre de 2026, un periodo que la investigación nunca tocó, obtuvo −1,9 % en 67 días mientras comprar y mantener perdía un 24,2 %, con un drawdown máximo del −9 %.
+  - "El primer cambio aceptado del ciclo de autoaprendizaje redujo la pérdida por operación de −0,37R a −0,14R (un 63 % menos) y el drawdown máximo de −10,3 % a −5,2 % en cinco monedas entre 2022 y 2024."
+  - "La mejora se mantuvo en datos de 2025 que nunca había visto, con el resultado por operación de −0,19R a −0,06R."
+  - "Los modelos de decisión se integran de forma segura y barata: ven un estado anonimizado sin moneda, fechas ni precios, el gasto tiene un tope fijo y 1.826 llamadas al modelo costaron 0,12 $."
+  - "El backtester de 1 minuto cobra un 0,10 % de comisión más deslizamiento por lado y compara cada ejecución con comprar y mantener y con entradas aleatorias, lo que mostró que los dos modelos no eligieron ganadores mejor que el azar (AUC 0,47–0,48)."
+  - "La regla de tendencia opera ahora en paper trading dentro de la API con el mismo código del backtest y obtuvo −1,9 % en 67 días desde el 12 de septiembre de 2026, mientras comprar y mantener perdía un 24,2 %."
 metrics:
-  - label: Pérdida por operación tras el ciclo de aprendizaje
-    value: "−63 %"
-  - label: Drawdown máximo
-    value: "−10,3 % → −5,2 %"
-  - label: Llamadas al modelo de decisión, coste total
-    value: "1.826 · 0,12 $"
-  - label: Tests automáticos
-    value: "837"
+  - label: "Pérdida por operación, 2022–2024"
+    before: "−0,37R"
+    value: "−0,14R"
+  - label: "Drawdown máximo, 2022–2024"
+    before: "−10,3 %"
+    value: "−5,2 %"
+  - label: "Pérdida por operación, 2025 sin ver"
+    before: "−0,19R"
+    value: "−0,06R"
+  - label: "Coste de 1.826 llamadas al modelo"
+    value: "0,12 $"
 ---
 
 ## El problema

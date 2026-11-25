@@ -30,16 +30,16 @@ links:
     - label: "chilldays.com (private project link)"
       note: "Site offline: deployment disabled as of October 2026"
 outcomes:
-  - "Hybrid recommender deployed as a REST API on GCP."
-  - "Endpoints serving restaurant, beach-party and night-club recommendations from Firebase data."
-  - "Client's AI engineering team guided through design, code review and deployment."
+  - "The hybrid recommender went from design through review into production as a REST API on Google Cloud that the ChillDays app calls."
+  - "Endpoints answer the app's three kinds of request, where to eat, which beach party and which night club, from Firebase data."
+  - "Combining rule-based, collaborative and content-based filtering means recommendations do not depend on a single signal."
+  - "The client's own engineers built and own the system, with architecture, code review and mentoring from me rather than another pair of hands."
 metrics:
-  - label: Filtering strategies combined
-    value: "3 (rule-based, collaborative, content-based)"
-  - label: Recommendation types served
-    value: "3 (restaurants, beach parties, night clubs)"
-  - label: Recommender status
-    value: "design → production API on GCP"
+  - label: "Recommender stage"
+    before: "design"
+    value: "production"
+  - label: "Recommendation types served"
+    value: "3"
 featured: false
 ---
 

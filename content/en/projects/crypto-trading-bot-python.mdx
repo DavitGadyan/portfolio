@@ -25,16 +25,16 @@ stack:
   security: []
 links: {}
 outcomes:
-  - Identified and traded a time-zone and size-driven price lag on a smaller exchange.
-  - Signal-following bot deployed against a custom TradingView strategy.
-  - "Honest result: profitable at times, but trading fees and regime change mean the strategy needs constant monitoring and tuning."
+  - "Chart-watching replaced by two bots that trade through exchange APIs such as Binance without anyone at the keyboard."
+  - "The edge came from market analysis: the smaller exchange lagged the larger markets because of its time zone and size, and one bot trades that lag."
+  - "The TradingView bot runs in the cloud as an always-on listener, so the client's own strategy signals become orders around the clock."
+  - "Honest result: profitable at times, but high trading fees and a changing market meant the edge was not stable and needed constant monitoring and tuning."
 metrics:
-  - label: Trading bots deployed
-    value: "2"
-  - label: Trade execution
-    value: "manual → unattended, around the clock"
-  - label: Profitability
-    value: "profitable at times, not stable"
+  - label: "Trade execution"
+    before: "manual"
+    value: "unattended"
+  - label: "Signal bot connection"
+    value: "always on"
 featured: true
 order: 5
 ---

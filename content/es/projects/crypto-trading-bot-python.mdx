@@ -4,16 +4,16 @@ coverAlt: "Primer plano de una pantalla de trading con barras de velas verdes, l
 summary: "Dos bots de trading de criptomonedas en Python para Dale Hefferman: uno explota el retardo de precio de un exchange pequeño, causado por su zona horaria y su tamaño, y el otro ejecuta señales de una estrategia personalizada de TradingView; ambos operan a través de API de exchanges como Binance y se desplegaron en la nube. Rentables por momentos, pero las comisiones y los cambios de mercado exigieron monitorización constante."
 description: "Bots de trading cripto en Python con la API de Binance: uno opera el retardo horario de un exchange pequeño, otro ejecuta señales de TradingView; desplegados en la nube."
 outcomes:
-  - Retardo de precio por zona horaria y tamaño identificado y operado en un exchange pequeño.
-  - Bot seguidor de señales desplegado contra una estrategia personalizada de TradingView.
-  - "Resultado honesto: rentable por momentos, pero las comisiones y el cambio de régimen obligan a monitorizar y ajustar la estrategia constantemente."
+  - "La vigilancia de gráficos sustituida por dos bots que operan a través de API de exchanges como Binance sin nadie al teclado."
+  - "La ventaja salió del análisis de mercado: el exchange pequeño iba por detrás de los mercados grandes por su zona horaria y su tamaño, y un bot opera ese retardo."
+  - "El bot de TradingView corre en la nube como un oyente permanente, así que las señales de la propia estrategia del cliente se convierten en órdenes las 24 horas."
+  - "Resultado honesto: rentable por momentos, pero las altas comisiones y un mercado cambiante hicieron que la ventaja no fuera estable y necesitara monitorización y ajustes constantes."
 metrics:
-  - label: Bots de trading desplegados
-    value: "2"
-  - label: Ejecución de operaciones
-    value: "manual → desatendida, las 24 horas"
-  - label: Rentabilidad
-    value: "rentable por momentos, no estable"
+  - label: "Ejecución de operaciones"
+    before: "manual"
+    value: "desatendida"
+  - label: "Conexión del bot de señales"
+    value: "permanente"
 ---
 
 ## El problema

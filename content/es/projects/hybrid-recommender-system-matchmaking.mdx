@@ -4,17 +4,18 @@ coverAlt: "Ilustración plana de un hombre cogiendo bolsas de compra que salen d
 summary: "Sistema de recomendación híbrido para la web de matchmaking de Rafi Newman, en tres capas Python: reglas del cliente, como el emparejamiento por género y una diferencia máxima de edad; filtrado colaborativo basado en las elecciones previas de los miembros; y una capa basada en contenido, un ensemble de regresión logística, Random Forest y red neuronal. Sus emparejamientos coincidieron con los que los expertos de la empresa recomendaban a mano."
 description: "Recomendador híbrido de tres capas para una web de matchmaking: reglas de negocio, filtrado colaborativo y un ensemble de regresión logística, Random Forest y red neuronal en Python."
 outcomes:
-  - "Arquitectura de tres capas: reglas del cliente, filtrado colaborativo y, por último, un modelo ensemble basado en contenido."
-  - Las recomendaciones coincidieron con las parejas que los expertos humanos de la empresa recomendaban manualmente.
+  - "Las parejas que los expertos internos elegían en gran medida a mano las propone automáticamente un pipeline Python de tres capas."
+  - "Las recomendaciones coincidieron con las parejas que los propios expertos de la empresa recomendaban manualmente, lo que hizo el sistema utilizable junto al proceso existente."
+  - "Las reglas del cliente, como el emparejamiento hombre-mujer y una diferencia máxima de edad, se aplican primero, así que ninguna pareja que incumpla una regla de negocio llega a la fase de ranking."
+  - "El filtrado colaborativo aprende de las elecciones previas de los miembros, y un ensemble de regresión logística, Random Forest y una red neuronal puntúa las parejas candidatas."
 metrics:
-  - label: Capas del recomendador
-    value: "3 (reglas, colaborativa, contenido)"
-  - label: Modelos del ensemble
-    value: "3 (reg. logística, Random Forest, red neuronal)"
-  - label: Selección de parejas
-    value: "a mano → automatizada"
-  - label: Coincidencia con expertos
-    value: "igual que las elecciones manuales"
+  - label: "Selección de parejas"
+    before: "A mano"
+    value: "Automática"
+  - label: "Coincidencia con las parejas de expertos"
+    value: "Coinciden"
+  - label: "Parejas fuera de regla en el ranking"
+    value: "Ninguna"
 ---
 
 ## El problema

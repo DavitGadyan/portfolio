@@ -27,16 +27,16 @@ stack:
   security: []
 links: {}
 outcomes:
-  - "Prototyped OCR-plus-NLP and custom YOLO field detection; both too slow at about 10 seconds per image."
-  - "Shipped Textract plus regex instead, extracting the fields in under 5 seconds per image."
-  - "Deployed as a REST API, replacing manual data entry at scale for Sick.org / Curogram."
+  - "Document data entry went from typing driver licences and insurance cards into the system by hand to one REST API call that returns the fields."
+  - "Textract plus regex returns the fields in under 5 seconds per image, against about 10 seconds for the YOLO and OCR-plus-NLP prototypes."
+  - "The service absorbs the growing volume of booking requests that manual entry could not keep up with."
 metrics:
-  - label: Extraction latency
-    value: "~10 s → < 5 s per image"
-  - label: Document data entry
-    value: "manual → API call"
-  - label: Document types covered
-    value: "driver licences + insurance cards"
+  - label: "Time per image vs first prototypes"
+    before: "~10 s"
+    value: "< 5 s"
+  - label: "Document data entry"
+    before: "Manual"
+    value: "API call"
 featured: false
 ---
 

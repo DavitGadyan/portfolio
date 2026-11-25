@@ -26,18 +26,14 @@ stack:
   security: []
 links: {}
 outcomes:
-  - "Zero-shot billboard detection with Grounding DINO feeding a Stable Diffusion inpaint-and-upscale chain."
-  - "Advert regenerated in place at 1280x1664 with new details while the original composition is preserved."
-  - "Full generation parameters documented, so the result can be reproduced exactly."
+  - "Grounding DINO finds the billboard from a text prompt with no billboard training data and OpenCV crops it out, so only the advert is regenerated, not the whole scene."
+  - "The advert is regenerated at 1280x1664 with new details, with ControlNet holding the original structure and a denoising strength of 0.4 so only the details change."
+  - "Every generation parameter, seed included, is recorded, so the client can rerun or adjust the result instead of depending on a lucky seed."
 metrics:
-  - label: Output resolution
-    value: "1280 × 1664 px"
-  - label: Upscaler
-    value: "4x-UltraSharp, 512 px tiles"
-  - label: Denoising strength
-    value: "0.4 (details only)"
-  - label: Detector training data
-    value: "zero-shot, none"
+  - label: "Billboard training data needed"
+    value: "none"
+  - label: "Output resolution (px)"
+    value: "1280×1664"
 featured: false
 ---
 

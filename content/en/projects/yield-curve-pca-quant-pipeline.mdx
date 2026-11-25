@@ -29,16 +29,19 @@ stack:
   security: []
 links: {}
 outcomes:
-  - "Dominant curve movements extracted with PCA; reconstruction residuals flag mispriced sectors automatically."
-  - "Optional KMeans clustering groups sectors with similar residual patterns."
-  - "Interactive Plotly and static Matplotlib output for analyst review."
+  - "Spotting mispriced sectors by eye was slow and inconsistent; residuals from reconstructing each sector with the top principal components now flag cheap or expensive segments automatically."
+  - "The whole workflow, from pulling the curves out of Bloomberg via xbbg to flagging the sectors, runs as one Python program instead of a chain of manual exports and spreadsheets."
+  - "Analysts drill into each flag in interactive Plotly charts instead of reading tables, and optional KMeans groups sectors with similar residual patterns."
 metrics:
-  - label: Cheap/expensive flagging
-    value: "by eye → automatic"
-  - label: Workflow
-    value: "manual exports → 1 Python program"
-  - label: Analyst output
-    value: "tables → interactive charts"
+  - label: "Cheap or expensive sector flags"
+    before: "By eye"
+    value: "Automatic"
+  - label: "Bloomberg-to-flag workflow"
+    before: "Manual"
+    value: "1 program"
+  - label: "Analyst review"
+    before: "Tables"
+    value: "Interactive"
 featured: false
 ---
 

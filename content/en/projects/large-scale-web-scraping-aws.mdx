@@ -27,16 +27,17 @@ stack:
   security: []
 links: {}
 outcomes:
-  - Millions of data points extracted and stored in S3 under a defined folder and naming convention.
-  - Ran on schedule from an EC2 Ubuntu instance without being blocked.
-  - Custom Scrapy middleware pushed scraped items straight into S3.
+  - "Millions of Indeed data points landed in S3 under the client's folder and naming convention, ready for downstream use directly from the bucket."
+  - "Crawls start on a schedule from an EC2 Ubuntu instance rather than by hand, so the pipeline no longer depends on someone remembering to run it."
+  - "Crawlera proxy rotation sent requests from a changing pool of addresses, so the crawler ran at that volume without being blocked."
 metrics:
-  - label: Indeed pages crawled
+  - label: "Data points extracted to S3"
     value: "millions"
-  - label: Crawl runs
-    value: "manual → scheduled on EC2"
-  - label: Blocked crawls
-    value: "none (Crawlera rotation)"
+  - label: "How each crawl starts"
+    before: "by hand"
+    value: "scheduled"
+  - label: "Crawl runs blocked"
+    value: "none"
 featured: false
 ---
 

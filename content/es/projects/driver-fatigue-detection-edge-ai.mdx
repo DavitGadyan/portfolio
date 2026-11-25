@@ -4,19 +4,17 @@ coverAlt: "Ilustración de stock de un robot humanoide blanco junto a una red de
 summary: "Detección de fatiga del conductor en el propio dispositivo para un cliente privado: un detector facial ONNX y un modelo de puntos faciales alimentan, con características FFT y FFV tomadas de un método publicado de entropía del movimiento facial, un clasificador XGBoost que lee la posición de la cabeza en una ventana de 3 a 5 segundos, con alarmas por bostezo y ojos cerrados basadas en reglas. Dockerizado y desplegado en Raspberry Pi 4 y Jetson Nano."
 description: "Detección de fatiga del conductor en el edge: ONNX para cara y puntos faciales, XGBoost sobre FFT/FFV, alarmas por bostezo y ojos cerrados, Docker en Raspberry Pi 4 y Jetson Nano."
 outcomes:
-  - Enfoque basado en investigación, a partir de un algoritmo publicado de fatiga por entropía del movimiento facial.
-  - XGBoost sobre el valor actual y los 10 anteriores de FFT/FFV lee la posición de la cabeza en una ventana de 3 a 5 segundos.
-  - Detectores de bostezo y ojos cerrados basados en reglas, por encima del modelo.
-  - Dockerizado y desplegado en Jetson Nano y Raspberry Pi 4 dentro de los límites de cómputo del edge.
+  - "La fatiga se detecta por completo en el dispositivo, sin conexión a un servidor, así que el aviso sale de dentro del vehículo."
+  - "El modelo XGBoost lee la posición de la cabeza durante los últimos 3 a 5 segundos, de modo que un conductor con la cabeza baja dispara la alarma y uno que mira el tráfico no."
+  - "Los detectores de bostezo y ojos cerrados basados en reglas también activan la alarma, como red de seguridad por encima del modelo."
+  - "Una misma imagen Docker se despliega en Raspberry Pi 4 y Jetson Nano, con la inferencia dentro de los límites de ese hardware."
 metrics:
-  - label: Ventana de decisión
-    value: "3–5 s de movimiento de cabeza"
-  - label: Historial FFT/FFV por predicción
-    value: "valor actual + 10 anteriores"
-  - label: Placas edge objetivo
-    value: "2 (Pi 4, Jetson Nano)"
-  - label: Inferencia
-    value: "servidor → en el dispositivo"
+  - label: "Conexión a servidor necesaria"
+    value: "Ninguna"
+  - label: "Ventana de movimiento por decisión"
+    value: "3–5 s"
+  - label: "Placas edge donde se ejecuta"
+    value: "Pi 4, Nano"
 ---
 
 ## El problema

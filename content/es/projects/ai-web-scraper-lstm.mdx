@@ -4,15 +4,15 @@ coverAlt: "Imagen de stock de una mano abierta que sostiene un holograma de cere
 summary: "Crawler Scrapy para Robin Tar que visita miles de sitios web de un sector y extrae la página «sobre nosotros», la dirección, las noticias y la información de empleados de cada empresa. Como cada sitio tenía una estructura HTML distinta, entrené un modelo LSTM con un conjunto etiquetado para detectar qué etiquetas contienen cada campo, sustituyendo las reglas XPath por sitio, y lo desplegué en la nube detrás del crawler."
 description: "Crawler Scrapy más un modelo LSTM de deep learning que detecta qué etiquetas HTML contienen datos de empresas y empleados en miles de diseños web distintos, desplegado en la nube."
 outcomes:
-  - Reglas XPath por sitio sustituidas por un modelo de detección de etiquetas aprendido, de modo que el crawler generaliza en miles de diseños.
-  - Modelo LSTM entrenado con un conjunto etiquetado y desplegado en la nube en producción detrás del bot Scrapy.
+  - "Miles de reglas XPath por sitio se sustituyeron por un único modelo LSTM de detección de etiquetas aprendido, de modo que la extracción deja de depender del diseño de cada sitio."
+  - "El crawler generalizó en miles de sitios web del sector, cada uno con una estructura HTML distinta, extrayendo la página «sobre nosotros», la dirección, las noticias y la información de empleados."
+  - "El modelo se ejecuta en producción en la nube detrás del bot Scrapy y no solo en un notebook."
 metrics:
-  - label: Sitios web cubiertos
-    value: "miles, cada uno con su diseño"
-  - label: Reglas de extracción
-    value: "miles de XPath → 1 modelo"
-  - label: Campos extraídos por sitio
-    value: "4 (acerca de, dirección, noticias, empleados)"
+  - label: "Reglas de extracción que mantener"
+    before: "miles"
+    value: "1 modelo"
+  - label: "Diseños web cubiertos"
+    value: "miles"
 ---
 
 ## El problema

@@ -4,15 +4,15 @@ coverAlt: "Manos tecleando en un portátil con un gráfico luminoso de Chat GPT 
 summary: "Aplicación web que recibe una URL, hace scraping de la página y envía el contenido a ChatGPT para resumirlo y extraer los datos clave especificados por el cliente, devueltos en una tabla limpia descargable como archivo Excel. Desarrollada en Python Dash con la API de ChatGPT para un cliente particular como herramienta de URL de entrada y resumen estructurado de salida."
 description: "App web en Python Dash que hace scraping de una URL, la resume con la API de ChatGPT, extrae los campos definidos por el cliente y la exporta como tabla Excel descargable."
 outcomes:
-  - "Aplicación web de URL de entrada y resumen estructurado de salida con descarga limpia en Excel."
-  - "Datos clave extraídos según los campos especificados por el cliente, no un resumen genérico."
+  - "La lectura y el copiado manuales sustituidos por una pequeña aplicación web: se pega una URL y se reciben el resumen y los datos clave."
+  - "ChatGPT extrae los datos clave especificados por el cliente, de modo que la salida sigue esos campos y no un resumen genérico."
+  - "Los resultados aparecen en una tabla limpia descargable en Excel, lista para abrirse en una hoja de cálculo."
 metrics:
-  - label: De página a datos estructurados
-    value: "1 URL → tabla Excel"
-  - label: Lectura y copia
-    value: "manual → automatizada"
-  - label: Campos extraídos
-    value: "definidos por el cliente, no genéricos"
+  - label: "Lectura y copia de datos de la página"
+    before: "manual"
+    value: "automatizada"
+  - label: "Entrada para obtener una tabla Excel"
+    value: "1 URL"
 ---
 
 ## El problema

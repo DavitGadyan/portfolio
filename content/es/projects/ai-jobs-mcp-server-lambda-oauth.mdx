@@ -4,19 +4,17 @@ coverAlt: "Portada de AI Jobs MCP: el título Remote MCP Server y la línea Goog
 summary: "Un servidor MCP remoto en producción que permite a Claude, Cursor y cualquier otro cliente MCP buscar ofertas de empleo en IA en tiempo real guardadas en Supabase. Los usuarios inician sesión con Google a través de una página de consentimiento con marca propia, todas las herramientas son de solo lectura y las llamadas a herramientas se limitan a 2 por minuto por IP. Funciona sin servidores en AWS Lambda (arm64) detrás de una Function URL, guarda el estado OAuth cifrado en DynamoDB, se despliega con un solo comando mediante uv y AWS SAM y cuesta céntimos al mes. Python, FastMCP, Supabase REST, 24 tests automáticos."
 description: "Servidor MCP remoto para ofertas de empleo en IA: inicio de sesión con Google OAuth, herramientas de solo lectura, límite por IP y AWS Lambda con DynamoDB, desplegado con SAM."
 outcomes:
-  - Claude, Cursor o cualquier cliente MCP pueden pedir ofertas de empleo en IA en lenguaje natural, por ejemplo los empleos de IA más recientes en Barcelona, y reciben filas en tiempo real de Supabase a través de cinco herramientas de solo lectura.
-  - Cualquier persona con una cuenta de Google verificada puede conectarse. La primera conexión muestra una página de consentimiento con marca propia y después el inicio de sesión de Google, y a partir de ahí los clientes renuevan sus tokens sin pedir nada.
-  - El servidor solo puede leer. Solo envía peticiones GET, cada herramienta lleva la anotación de solo lectura y un test comprueba ambas cosas.
-  - El abuso queda limitado a 2 llamadas a herramientas por minuto por IP, contadas en DynamoDB para que el límite se mantenga entre instancias de Lambda, mientras que el handshake y el inicio de sesión no cuentan.
-  - Un solo comando construye el paquete arm64 y despliega la pila de SAM. Con tráfico personal el servidor se mantiene dentro de los niveles gratuitos de Lambda y DynamoDB, así que cuesta céntimos al mes.
+  - "Las ofertas se pueden consultar donde ya se trabaja: Claude, Cursor o cualquier cliente MCP las pide en lenguaje natural, por ejemplo los empleos de IA más recientes en Barcelona, y recibe filas en tiempo real de Supabase a través de cinco herramientas de solo lectura."
+  - "Quién puede conectarse lo resuelve el inicio de sesión de Google tras una página de consentimiento con marca propia, solo con los scopes openid y email, así que cualquier cuenta de Google verificada obtiene acceso y la app de Google no necesita revisión."
+  - "Lo que se puede hacer es solo leer: el servidor solo envía peticiones GET, cada herramienta lleva la anotación de solo lectura y un test comprueba ambas cosas."
+  - "El abuso queda limitado a 2 llamadas a herramientas por minuto por IP, contadas en DynamoDB para que el límite se mantenga entre instancias de Lambda."
+  - "El coste se queda en céntimos al mes dentro de los niveles gratuitos de Lambda y DynamoDB con tráfico personal, y un solo comando construye y despliega la pila."
 metrics:
-  - label: Herramientas MCP, todas de solo lectura
-    value: "5"
-  - label: Llamadas a herramientas por minuto por IP
-    value: "2"
-  - label: Tests automáticos
-    value: "24"
-  - label: Despliegue
+  - label: "Coste con tráfico personal"
+    value: "céntimos/mes"
+  - label: "Llamadas permitidas por IP"
+    value: "2 / min"
+  - label: "Construir y desplegar"
     value: "1 comando"
 ---
 

@@ -4,20 +4,20 @@ coverAlt: "Portada de SF Ops Copilot: «IA sobre tus datos de Salesforce, con se
 summary: "SF Ops Copilot permite a un equipo usar IA sobre los datos de Salesforce sin salir de Salesforce, sin pagar de más por un único modelo y sin filtrar datos de clientes. Un router de políticas envía cada petición al propio Salesforce, a Claude, a ChatGPT o a un LLM privado en la red de la empresa según la sensibilidad, lo que está en juego y el coste, y enmascara los datos personales antes de que nada salga. Encima: revisión de Apex y Flows que devuelve el código corregido y una clase de test masivo, un agente de ingresos que trabaja leads dormidos con borradores verificados contra el CRM, y un planificador de refresh de sandbox y de migración. Nada se escribe en Salesforce hasta que una persona lo aprueba, y cada decisión de la IA queda registrada con tokens y coste."
 description: "Un router envía cada petición a Salesforce, Claude, ChatGPT o un LLM privado con PII enmascarada; además, revisión de Apex, agente de ventas y planes de refresh, con aprobación."
 outcomes:
-  - Cada petición se enruta según sensibilidad, riesgo y coste; una pregunta sobre el pipeline la responde el propio Salesforce por 0 $, y la misma evaluación de riesgo de una oportunidad costó 0,007 $ en Claude Opus, 0,0001 $ en Claude Haiku y nada por llamada en el modelo privado.
-  - Los datos médicos y de tarjetas solo van a un modelo dentro de la red; nombres, correos y teléfonos se sustituyen por tokens antes de que un modelo externo los vea y se restauran en la respuesta.
-  - En una clase de pagos de ejemplo las reglas encontraron 8 problemas y Claude los confirmó y halló 4 más, incluido un callout después de DML, y devolvió el código corregido y una clase de test masivo.
-  - Los agentes solo proponen; cada actualización del CRM, correo y fusión espera a una persona, y cada ejecución, llamada al modelo, llamada a herramienta y decisión queda registrada con tokens y coste.
+  - "Para reducir el gasto en modelos, cada petición se enruta según sensibilidad, riesgo y coste: una pregunta sobre el pipeline la responde el propio Salesforce por 0 $, y la misma evaluación de riesgo de una oportunidad costó 0,007 $ en Claude Opus frente a 0,0001 $ en Claude Haiku y nada por llamada en el modelo privado."
+  - "Para que los datos del CRM no se filtren, los datos médicos y de tarjetas solo van a un modelo dentro de la red, y nombres, correos y teléfonos se sustituyen por tokens antes de que un modelo externo los vea y se restauran en la respuesta."
+  - "Para que el Apex escrito con IA no se rompa en producción, las reglas encontraron 8 problemas en una clase de pagos de ejemplo y Claude halló 4 más, incluido un callout después de DML que detiene el trabajo tras el primer registro, y devolvió el código corregido y una clase de test masivo."
+  - "Cada lead dormido recibe una puntuación, una siguiente mejor acción y un borrador de correo con cada dato comprobado contra el registro, y cada refresh de sandbox recibe una lista construida a partir de los metadatos de la propia org en lugar de hacerse de memoria."
+  - "Los agentes solo proponen, así que 0 escrituras llegan a Salesforce sin la aprobación de una persona, y cada llamada al modelo y cada decisión quedan registradas con tokens y coste."
 metrics:
-  - label: Módulos
-    value: "5"
-  - label: Rutas de modelo
-    value: "5"
-  - label: Evaluación de riesgo en Claude Haiku
+  - label: "Riesgo de oportunidad, Opus vs Haiku"
+    before: "0,007 $"
     value: "0,0001 $"
-  - label: Hallazgos de Apex en una clase (reglas + Claude)
+  - label: "Datos médicos/tarjeta fuera de la red"
+    value: "Ninguno"
+  - label: "Hallazgos de Apex, reglas + Claude"
     value: "8 + 4"
-  - label: Escrituras sin aprobación humana
+  - label: "Escrituras sin aprobación humana"
     value: "0"
 ---
 

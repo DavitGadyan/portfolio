@@ -37,21 +37,20 @@ stack:
 links:
   github: https://github.com/DavitGadyan/Snowflake
 outcomes:
-  - 100 % of the GL-to-warehouse variance attributed to four seeded defects (duplicate join, soft-delete leak, timezone period shift, unmapped account), each caught by a dbt-style test with a one-click fix.
-  - Every AI-generated query passes six checks before it runs, so the analyst can only read certified tables, with e-mails masked and rows filtered by the active role.
-  - FinOps recommendations ranked by monthly savings, about $7,800 a month in the demo dataset, and a what-if simulator for warehouse size and auto-suspend.
-  - Runs with no credentials and no Snowflake account in about 20 seconds from a deterministic seed; the same design ships as real Snowflake DDL for the live mode.
+  - "When the report does not match NetSuite, 100 % of the GL-to-warehouse variance is attributed to four seeded defects (duplicate join, soft-delete leak, timezone period shift, unmapped account), each caught by a dbt-style test with a one-click fix, so finance can sign off on the numbers."
+  - "So the AI assistant stops querying the wrong table, every generated query passes six checks before it runs: one read-only statement, only tables granted to the active role, e-mails masked and rows filtered by region."
+  - "A breaking schema change fails loudly and holds the watermark instead of quietly filling reports with bad data, and additive drift evolves the target automatically."
+  - "To explain a high Snowflake bill, recommendations are ranked by monthly savings, about $7,800 a month in the demo dataset, and a what-if simulator shows the cost and speed effect of warehouse size and auto-suspend before anything changes in production."
+  - "Salesforce, HubSpot and Stripe are joined into one golden account per domain, and CRM-versus-billing checks find duplicates, deals won but never billed and untracked ARR."
 metrics:
-  - label: Reconciliation variance explained
+  - label: "GL-to-warehouse variance explained"
     value: "100 %"
-  - label: Guardrail checks before any AI query
+  - label: "Seeded defects caught by tests"
+    value: "4 of 4"
+  - label: "Ranked FinOps savings (demo data)"
+    value: "~$7,800/mo"
+  - label: "Checks before any AI query runs"
     value: "6"
-  - label: Ranked FinOps savings (demo)
-    value: "~$7,800 / month"
-  - label: Scenarios in one product
-    value: "5"
-  - label: Backend tests
-    value: "48"
 featured: true
 order: 11
 ---

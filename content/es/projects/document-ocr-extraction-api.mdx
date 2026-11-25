@@ -4,16 +4,16 @@ coverAlt: "Portátil isométrico con un marco de escaneo OCR y una flecha desde 
 summary: "API REST de OCR y extracción de campos para Sick.org/Curogram, una plataforma sanitaria de citas que tecleaba a mano los permisos de conducir y las tarjetas de seguro en su sistema. Prototipé detectores YOLO a medida y modelos de OCR más NLP con AWS Textract, Comprehend y Rekognition, comprobé que eran demasiado lentos (unos 10 segundos por imagen) y entregué Textract más regex en menos de 5 segundos."
 description: "API REST que extrae campos de permisos de conducir y tarjetas de seguro con AWS Textract y regex en menos de 5 segundos, tras evaluar prototipos con YOLO, Comprehend y Rekognition."
 outcomes:
-  - "Prototipos de OCR más NLP y de detección de campos con YOLO a medida; ambos demasiado lentos, unos 10 segundos por imagen."
-  - "Entregado Textract más regex en su lugar, extrayendo los campos en menos de 5 segundos por imagen."
-  - "Desplegado como API REST, sustituyendo la entrada manual de datos a escala en Sick.org / Curogram."
+  - "La entrada de datos pasó de teclear a mano los permisos de conducir y las tarjetas de seguro a una llamada a una API REST que devuelve los campos."
+  - "Textract más regex devuelve los campos en menos de 5 segundos por imagen, frente a unos 10 segundos de los prototipos con YOLO y con OCR más NLP."
+  - "El servicio absorbe el volumen creciente de solicitudes de reserva con el que la entrada manual no daba abasto."
 metrics:
-  - label: Latencia de extracción
-    value: "≈ 10 s → < 5 s por imagen"
-  - label: Entrada de datos de documentos
-    value: "manual → llamada a la API"
-  - label: Tipos de documento cubiertos
-    value: "permisos de conducir + tarjetas de seguro"
+  - label: "Tiempo por imagen frente a prototipos"
+    before: "≈ 10 s"
+    value: "< 5 s"
+  - label: "Entrada de datos de documentos"
+    before: "Manual"
+    value: "Llamada API"
 ---
 
 ## El problema

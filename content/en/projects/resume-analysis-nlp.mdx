@@ -26,16 +26,13 @@ stack:
   security: []
 links: {}
 outcomes:
-  - "EDA on a client-labelled set of around 30 CVs drove the feature engineering and parameter tuning."
-  - "High-accuracy classifier separating high-value from low-value prospect candidates."
-  - "Non-obvious patterns, similarities and differences between the two groups made explicit."
+  - "Differences between high-value and low-value candidates that were not obvious on a read-through are now an explicit picture of patterns, similarities and differences."
+  - "A classifier built with NLP and LLM (ChatGPT) tooling separates the two candidate groups with high accuracy."
+  - "EDA on a client-labelled set of around 30 CVs drove the feature engineering and tuning, making the modelling more reliable than an unlabelled corpus would have."
 metrics:
-  - label: Labelled CVs
-    value: "~30 client-labelled"
-  - label: Candidate groups separated
-    value: "2 (high vs low value)"
-  - label: Group differences
-    value: "hidden → explicit"
+  - label: "Group differences"
+    before: "hidden"
+    value: "explicit"
 featured: false
 ---
 

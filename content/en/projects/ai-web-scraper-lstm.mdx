@@ -29,15 +29,15 @@ stack:
   security: []
 links: {}
 outcomes:
-  - Replaced per-site XPath rules with a learned tag-detection model, so the crawler generalises across thousands of layouts.
-  - LSTM model trained on a labelled set and deployed to the cloud in production behind the Scrapy bot.
+  - "Thousands of per-site XPath rules were replaced by one learned LSTM tag-detection model, so extraction no longer depends on any site's layout."
+  - "The crawler generalised across thousands of sector websites, each with a different HTML structure, pulling about pages, addresses, news and employee information."
+  - "The model runs in production in the cloud behind the Scrapy bot rather than only in a notebook."
 metrics:
-  - label: Websites covered
-    value: "thousands, each a different layout"
-  - label: Extraction rules
-    value: "thousands of XPaths → 1 model"
-  - label: Fields extracted per site
-    value: "4 (about, address, news, staff)"
+  - label: "Extraction rules to maintain"
+    before: "thousands"
+    value: "1 model"
+  - label: "Site layouts handled"
+    value: "thousands"
 featured: false
 ---
 

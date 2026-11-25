@@ -32,17 +32,18 @@ links:
     - label: Heroku demo (synth3-s2shape)
       note: Demo retired
 outcomes:
-  - "Usable by non-coders and ML engineers alike: upload, normalise, choose X, Y and Z lenses, tune hyperparameters."
-  - Interactive D3 force-directed graph with node selection and colouring by dimension.
-  - Results exported back to CSV or Excel with cluster IDs appended for downstream analysis.
-  - Deployed as a Heroku web app; product rights held by SecondSight.
+  - "Analysts who understand clustering but not Python run DBSCAN, MeanShift or MST and tune their hyperparameters in the UI, without touching code."
+  - "The full loop from raw spreadsheet to interactive D3 graph to exported cluster IDs runs inside the browser."
+  - "Results go back to CSV or Excel with cluster IDs appended, so the analysis continues in a spreadsheet."
+  - "Hosted on Heroku, so the client shares a link instead of installing anything."
 metrics:
-  - label: Clustering algorithms
-    value: "3 (DBSCAN, MeanShift, MST)"
-  - label: Analysis dimensions
-    value: "3 lenses (X, Y, Z)"
-  - label: Coding required
-    value: "code → no-code"
+  - label: "Coding needed to run clustering"
+    before: "Python"
+    value: "none"
+  - label: "Algorithms to compare in the UI"
+    value: "3"
+  - label: "Local setup needed"
+    value: "none"
 featured: false
 ---
 

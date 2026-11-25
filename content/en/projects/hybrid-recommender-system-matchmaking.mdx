@@ -28,17 +28,18 @@ stack:
   security: []
 links: {}
 outcomes:
-  - "Three-layer architecture: client rules, collaborative filtering, then an ensemble content-based model."
-  - Recommendations matched the pairs the company's human experts were recommending manually.
+  - "Pairs that in-house experts chose largely by hand are proposed automatically by a three-layer Python pipeline."
+  - "The recommendations matched the pairs the company's own experts had been recommending manually, which made the system usable alongside the existing process."
+  - "Client rules such as male-female pairing and a maximum age difference run first, so no pair that breaks a business rule reaches the ranking stage."
+  - "Collaborative filtering learns from members' previous choices, and an ensemble of Logistic Regression, Random Forest and a neural network scores the candidate pairs."
 metrics:
-  - label: Recommender layers
-    value: "3 (rules, collaborative, content)"
-  - label: Ensemble models
-    value: "3 (LogReg, Random Forest, NN)"
-  - label: Pair selection
-    value: "by hand → automated"
-  - label: Agreement with experts
-    value: "matched manual picks"
+  - label: "Pair selection"
+    before: "By hand"
+    value: "Automated"
+  - label: "Agreement with expert picks"
+    value: "Matched"
+  - label: "Rule-breaking pairs reaching ranking"
+    value: "None"
 featured: false
 ---
 

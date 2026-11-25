@@ -4,21 +4,20 @@ coverAlt: "Portada de Snowflake AI Data Copilot: el título con las etiquetas Sn
 summary: "Una plataforma de datos Snowflake + IA, ejecutable, construida en torno a los cinco problemas por los que más se contrata a especialistas en Snowflake: un AI Analyst que escribe SQL gobernado a partir de métricas certificadas, una conciliación entre el almacén y NetSuite que explica cada dólar de diferencia, pipelines incrementales que se detienen con seguridad ante un cambio de esquema incompatible, un centro FinOps con ahorros ordenados y un simulador what-if, y un motor RevOps que une Salesforce, HubSpot y Stripe. FastAPI, DuckDB organizado como una cuenta de Snowflake, Next.js, el mismo diseño en DDL de Snowflake, 48 tests."
 description: "Plataforma de datos Snowflake + IA: texto a SQL gobernado desde métricas certificadas, conciliación con NetSuite, pipelines MERGE incrementales, ahorros FinOps y un motor RevOps."
 outcomes:
-  - El 100 % de la diferencia entre el libro mayor y el almacén atribuido a cuatro defectos sembrados (join duplicado, fuga de borrados lógicos, desplazamiento de periodo por zona horaria, cuenta sin mapear), cada uno detectado por un test al estilo dbt con arreglo en un clic.
-  - Cada consulta generada por la IA pasa seis comprobaciones antes de ejecutarse, así que el analista solo puede leer tablas certificadas, con los correos enmascarados y las filas filtradas según el rol activo.
-  - Recomendaciones FinOps ordenadas por ahorro mensual, unos 7.800 $ al mes en el conjunto de datos de demostración, y un simulador what-if para el tamaño del warehouse y el auto-suspend.
-  - Arranca sin credenciales ni cuenta de Snowflake en unos 20 segundos a partir de una semilla determinista; el mismo diseño se entrega como DDL real de Snowflake para el modo en vivo.
+  - "Cuando el informe no cuadra con NetSuite, el 100 % de la diferencia entre el libro mayor y el almacén se atribuye a cuatro defectos sembrados (join duplicado, fuga de borrados lógicos, desplazamiento de periodo por zona horaria, cuenta sin mapear), cada uno detectado por un test al estilo dbt con arreglo en un clic, de modo que finanzas puede firmar las cifras."
+  - "Para que el asistente de IA deje de consultar la tabla equivocada, cada consulta generada pasa seis comprobaciones antes de ejecutarse: una sola sentencia de solo lectura, solo tablas concedidas al rol activo, correos enmascarados y filas filtradas por región."
+  - "Un cambio de esquema incompatible falla de forma visible y retiene la marca de agua en lugar de llenar los informes de datos malos sin avisar, y la deriva aditiva evoluciona el destino automáticamente."
+  - "Para explicar una factura de Snowflake alta, las recomendaciones se ordenan por ahorro mensual, unos 7.800 $ al mes en el conjunto de demostración, y un simulador what-if muestra el efecto del tamaño del warehouse y del auto-suspend sobre el coste y la velocidad antes de tocar nada en producción."
+  - "Salesforce, HubSpot y Stripe se unen en una cuenta maestra por dominio, y las comprobaciones CRM frente a facturación encuentran duplicados, operaciones ganadas nunca facturadas y ARR sin seguimiento."
 metrics:
-  - label: Diferencia de conciliación explicada
+  - label: "Diferencia mayor-almacén explicada"
     value: "100 %"
-  - label: Comprobaciones antes de cada consulta de la IA
+  - label: "Defectos sembrados detectados por tests"
+    value: "4 de 4"
+  - label: "Ahorros FinOps ordenados (demo)"
+    value: "~7.800 $/mes"
+  - label: "Comprobaciones antes de cada consulta IA"
     value: "6"
-  - label: Ahorros FinOps ordenados (demo)
-    value: "~7.800 $ / mes"
-  - label: Escenarios en un solo producto
-    value: "5"
-  - label: Tests de backend
-    value: "48"
 ---
 
 ## El problema

@@ -4,16 +4,17 @@ coverAlt: "Fotograma de un gráfico de barras horizontales con los 20 dominios c
 summary: "Visualización animada bar chart race e informes de principio a fin: ETL con pandas y SQLAlchemy desde las bases de datos relacionales del cliente, un prototipo en Plotly Dash, una reconstrucción en D3.js con animación JavaScript a medida para ganar fluidez y control de estilo, y un pipeline de exportación con FFmpeg a vídeo compartible y componentes web integrables."
 description: "Visualización animada bar chart race: ETL con pandas y SQLAlchemy desde bases de datos relacionales, prototipo en Plotly Dash, animación en D3.js y exportación con FFmpeg a vídeo."
 outcomes:
-  - "Gráfico de carrera reconstruido en D3.js cuando Plotly Dash no alcanzó la fluidez ni el control de estilo requeridos."
-  - "Pipeline de exportación de vídeo con FFmpeg y Python para vídeo compartible y componentes web integrables."
-  - "Informes entregados con gráficos estáticos, secuencias animadas y una cadena de herramientas documentada y reproducible."
+  - "El gráfico de carrera alcanza la fluidez y el estilo requeridos tras pasar de un prototipo en Plotly Dash, que se quedó corto, a D3.js con animación a medida y mejores tasas de fotogramas."
+  - "La animación se puede compartir como vídeo e integrar en la web gracias a un pipeline de exportación con FFmpeg y Python."
+  - "Los datos del gráfico y de los informes salen directamente de las bases de datos relacionales del cliente mediante una capa ETL con pandas y SQLAlchemy, y no de un fichero preparado a mano."
+  - "Los informes combinan gráficos estáticos y secuencias animadas sobre una cadena de herramientas documentada y reproducible."
 metrics:
-  - label: Motor del gráfico de carrera
-    value: "Plotly Dash → D3.js"
-  - label: Formatos de salida
-    value: "2 (vídeo + componente web integrable)"
-  - label: Fuente de datos
-    value: "archivo preparado a mano → ETL en vivo"
+  - label: "Motor del gráfico de carrera"
+    before: "Plotly Dash"
+    value: "D3.js"
+  - label: "Origen de los datos del gráfico"
+    before: "manual"
+    value: "ETL desde BD"
 ---
 
 ## El problema

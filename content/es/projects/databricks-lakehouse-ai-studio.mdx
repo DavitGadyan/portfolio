@@ -4,22 +4,21 @@ coverAlt: "Portada de Lakehouse AI Studio: tres placas metálicas apiladas, bron
 summary: "Un acelerador full-stack para proyectos de integración de IA en Databricks: datos públicos, en la nube y locales fluyen por bronce, plata y oro con comprobaciones de calidad, cuarentena y conciliación, y después alimentan preguntas en lenguaje natural respondidas con su SQL, búsqueda en documentos, agentes antifraude cuyas acciones de riesgo esperan a una persona, y un copiloto de operaciones que diagnostica un fallo real por falta de memoria a partir de los logs de Spark. Cada tarea de IA corre en un modelo local o en uno alojado. Probado con 2,96 millones de viajes reales de taxi de Nueva York y datos de fraude sintéticos; React, FastAPI, PySpark y Delta, pgvector, MLflow, LangGraph, 88 tests de backend. No es un producto oficial de Databricks."
 description: "Acelerador para Databricks: pipelines medallón con calidad, texto a SQL vigilado y RAG, agentes antifraude con aprobación humana, diagnóstico de Spark, modelos locales o alojados."
 outcomes:
-  - 2,96 millones de viajes reales de taxi de Nueva York por bronce, plata y oro, con unas 35.000 filas defectuosas enviadas a cuarentena en vez de a las cifras, y una conciliación que da cuenta de cada fila y de cada dólar.
-  - Cada respuesta de la IA muestra su SQL o sus fuentes; las reglas, las puntuaciones y los niveles de riesgo salen del código, el modelo solo explica, y las acciones de alto riesgo esperan a una persona y quedan en un registro de auditoría de solo escritura.
-  - Un trabajo que de verdad se queda sin memoria se diagnostica a partir de los logs de eventos de Spark, recibe un runbook redactado y solo se vuelve a ejecutar cuando un aprobador lo autoriza.
-  - Cada tarea de IA se enruta a un modelo local o a uno alojado desde Ajustes, con tokens y tiempo registrados por llamada, de modo que el cliente controla el coste de API y la exposición de datos por tarea.
-  - La configuración de un cliente nuevo es una carpeta nueva en packs/ (fuentes, modelos SQL, comprobaciones, KPI, reglas), no código nuevo de plataforma; se incluyen tres packs y 88 tests de backend cubren la plataforma.
+  - "2,96 millones de viajes reales de taxi de Nueva York pasan por bronce, plata y oro, unas 35.000 filas defectuosas van a cuarentena en vez de a las cifras y la conciliación da cuenta de cada fila y de cada dólar."
+  - "Cada respuesta de la IA muestra su SQL o sus fuentes, y las reglas, las puntuaciones y los niveles de riesgo salen del código, así que el modelo solo explica."
+  - "Las acciones de alto riesgo y las nuevas ejecuciones esperan a un aprobador y quedan en un registro de auditoría de solo escritura; un trabajo que de verdad se queda sin memoria se diagnostica a partir de los logs de eventos de Spark y solo se vuelve a ejecutar tras la aprobación."
+  - "Cada tarea de IA se enruta a un modelo local o a uno alojado desde Ajustes, con tokens y tiempo registrados por llamada, de modo que el cliente controla el coste de API y la exposición de datos por tarea."
+  - "La configuración de un cliente nuevo es una carpeta nueva en packs/ (fuentes, modelos SQL, comprobaciones, KPI, reglas), no código nuevo de plataforma."
 metrics:
-  - label: Viajes reales de taxi procesados
+  - label: "Viajes reales de taxi procesados"
     value: "2,96 M"
-  - label: Filas defectuosas en cuarentena (demo)
+  - label: "Filas defectuosas fuera de las cifras"
     value: "~35.000"
-  - label: Opciones de modelo por tarea de IA
-    value: "3"
-  - label: Packs de cliente incluidos
-    value: "3"
-  - label: Tests de backend
-    value: "88"
+  - label: "Acciones de alto riesgo sin una persona"
+    value: "Ninguna"
+  - label: "Configuración de un cliente nuevo"
+    before: "Código nuevo"
+    value: "Una carpeta"
 ---
 
 ## El problema

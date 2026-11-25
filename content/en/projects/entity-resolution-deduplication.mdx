@@ -25,16 +25,14 @@ stack:
   security: []
 links: {}
 outcomes:
-  - Benchmarked JedAI and rejected it because compute time was too high.
-  - Selected and trained the ML-based dedupe library on a labelled training set.
-  - Output analysis confirmed match quality, and dedupe was adopted as the solution.
+  - "Duplicate records that refer to the same customer are matched and removed, so every downstream analysis counts each customer once."
+  - "JedAI was rejected because its compute time was too high for the client's datasets, and dedupe matched duplicates at a compute cost JedAI could not reach."
+  - "dedupe learned which records match from a labelled set of real matching and non-matching pairs, and output analysis confirmed it found the right duplicates before it was adopted."
 metrics:
-  - label: Toolkits benchmarked
-    value: "2 (JedAI, dedupe)"
-  - label: Matching rules
-    value: "hand-written → learned"
-  - label: Rows per customer
-    value: "duplicates → 1"
+  - label: "Times each customer is counted"
+    value: "Once"
+  - label: "Compute cost vs JedAI"
+    value: "Lower"
 featured: false
 ---
 

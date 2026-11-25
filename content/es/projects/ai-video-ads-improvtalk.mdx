@@ -4,19 +4,23 @@ coverAlt: "ImprovTalk en dos teléfonos: la pantalla de bienvenida con una parej
 summary: "ImprovTalk es una app móvil voice-first para desarrollar carisma, comunicación y rapport. Eliges una escena real, mantienes pulsado un botón y hablas en voz alta con un personaje de IA en directo; al terminar recibes un Charisma Score con feedback línea a línea sobre lo que dijiste y cómo sonaste. La diseñé y construí de principio a fin: sistema de diseño y UX, front end en React Native, back end en FastAPI, voz en tiempo real, el paywall de tres planes y los anuncios en vídeo con IA generativa que la promocionan."
 description: "ImprovTalk, app voice-first en React Native: habla con un personaje de IA en directo y recibe un Charisma Score medido en tu voz. Sistema de diseño, FastAPI, paywall y anuncios con IA."
 outcomes:
-  - Un único recorrido de sesión (configuración, llamada de voz en directo, puntuación, historial) en lugar de cinco funciones inconexas.
-  - Una interfaz basada en tokens para iOS y Android con tema oscuro y tema claro derivado; la CI hace fallar el build ante cualquier color literal fuera del archivo de tokens.
-  - Un paywall de tres planes (Free, Pro y Max) sobre Apple In-App Purchase y Stripe; la app está en TestFlight y el lanzamiento en App Store está en curso.
-  - Anuncios en vídeo por segmento y plataforma para Instagram, Meta, TikTok y YouTube desde un único pipeline de Higgsfield dirigido por Claude, con Seedance y Kling 2.6 Pro comparados.
+  - "Practice, Simulate, Learn, History y Custom Practice comparten ahora un único camino de sesión (configuración, llamada de voz en directo, puntuación, historial) en lugar de cinco funciones inconexas."
+  - "Se practica en voz alta y sin guion: mantienes pulsado un botón, hablas con un personaje de IA en tiempo real y recibes un Charisma Score con ritmo, pausas, entonación y muletillas medidos desde tu propia voz."
+  - "El lenguaje visual que se había desviado es ahora una sola paleta de tokens en iOS y Android; la CI hace fallar el build ante cualquier color literal fuera del archivo de tokens, y el degradado de marca pasó de cada botón a Hold-to-speak y la intro solamente."
+  - "Los anuncios en vídeo para Instagram, Meta, TikTok y YouTube salen de un solo brief a través de un pipeline de Higgsfield dirigido por Claude, en lugar de producirse a mano."
 metrics:
-  - label: Escenarios en directo
-    value: "128"
-  - label: Técnicas de conversación
-    value: "104"
-  - label: Idiomas
-    value: "3 (EN, ES, RU)"
-  - label: "Charisma Score: fluidez / confianza / improvisación"
-    value: "40 / 35 / 25 %"
+  - label: "Camino de la sesión"
+    before: "5 funciones"
+    value: "1 recorrido"
+  - label: "Colores fuera del archivo de tokens"
+    before: "a mano"
+    value: "fallan en CI"
+  - label: "Dónde aparece el degradado de marca"
+    before: "cada botón"
+    value: "2 sitios"
+  - label: "Producción de anuncios en vídeo"
+    before: "a mano"
+    value: "generados"
 ---
 
 ## El problema

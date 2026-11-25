@@ -4,16 +4,17 @@ coverAlt: "Lienzo de n8n: nodo AI Agent conectado a OpenAI, memoria y herramient
 summary: "Asistente de IA low-code construido en n8n sobre OpenAI GPT-4o para emprendedores y profesionales con poco tiempo. Un único flujo agéntico investiga temas en la web, crea, actualiza y elimina eventos de Google Calendar, envía correos con Gmail, guarda contactos en Google Sheets y redacta publicaciones para X. Publicado como flujo abierto y reutilizable en GitHub."
 description: "Asistente de productividad con IA en n8n y GPT-4o: investigación web, eventos de Google Calendar, envío con Gmail, contactos en Google Sheets y publicaciones para X."
 outcomes:
-  - Un solo asistente cubre investigación web, CRUD de calendario, envío de correos, captura de contactos y generación de publicaciones para X.
-  - Construido en low-code con n8n, así que cada capacidad es un nodo de herramienta visible y no código de aplicación a medida.
-  - Publicado como flujo abierto y reutilizable en GitHub.
+  - "La administración que estaba repartida entre cinco herramientas (buscador, calendario, correo, contactos y X) empieza ahora con una única petición en lenguaje natural a un solo asistente."
+  - "A partir de esa petición el agente investiga en la web, crea, actualiza y elimina eventos de Google Calendar, envía correos con Gmail, guarda contactos en Google Sheets y redacta publicaciones para X, así que el usuario deja de saltar entre herramientas."
+  - "Construido en n8n sin backend a medida, así que cada capacidad es un nodo de herramienta visible y una capacidad nueva es un nodo nuevo, no un cambio de código."
+  - "Publicado como flujo abierto en GitHub para que otros lo importen y conecten sus propias cuentas de Google y de X."
 metrics:
-  - label: Capacidades en un solo agente
-    value: "5"
-  - label: Operaciones sobre eventos
-    value: "crear / actualizar / eliminar"
-  - label: Código de backend a medida
-    value: "ninguno (low-code en n8n)"
+  - label: "Herramientas entre las que saltar"
+    before: "5"
+    value: "1 petición"
+  - label: "Añadir una capacidad"
+    before: "tocar código"
+    value: "nodo nuevo"
 ---
 
 ## El problema
