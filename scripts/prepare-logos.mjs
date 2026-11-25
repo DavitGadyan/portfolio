@@ -50,7 +50,10 @@ const direct = { grok: 'https://svgl.app/library/grok-dark.svg', base44: 'https:
   // GPU serving marks the projects publish themselves (vLLM via the MIT @lobehub icon set) and IBM (Granite), tinted IBM blue below.
   // SGLang (rasterised from its repo's logo_square.svg), DeepSpeed, llm-d and Loki are PNGs in assets/logos cropped to the symbol from their repos' wordmarks
   vllm: 'https://unpkg.com/@lobehub/icons-static-svg@1.106.0/icons/vllm-color.svg',
-  ibm: 'https://unpkg.com/@lobehub/icons-static-svg@1.106.0/icons/ibm.svg' };
+  ibm: 'https://unpkg.com/@lobehub/icons-static-svg@1.106.0/icons/ibm.svg',
+  // Jev-style decision models (AI Agents node): TypeSafe's mark (Jev) drawn white for the dark map, Laya Studio's own icon. H2O.ai's tile is a PNG in assets/logos
+  typesafe: 'https://unpkg.com/@lobehub/icons-static-svg@1.106.0/icons/typesafeai.svg', laya: 'https://laya.studio/icon.svg' };
+const tint = { ibm: '#0F62FE', typesafe: '#FFFFFF' };
 // official Azure architecture icons (assets/logos/azure/README.md has the provenance and Microsoft's terms): copied as they are
 const azure = fs.readdirSync('assets/logos/azure').filter((f) => f.endsWith('.svg'));
 for (const f of azure) fs.copyFileSync(path.join('assets/logos/azure', f), path.join(DST, f));
@@ -62,7 +65,7 @@ for (const [name, url] of all) {
   const res = await fetch(url);
   const text = await res.text();
   if (!res.ok || !text.trimStart().startsWith('<svg')) { console.error('svg fetch failed for', url, res.status); continue; }
-  fs.writeFileSync(out, name === 'ibm' ? text.replace('fill="currentColor"', 'fill="#0F62FE"') : text); fetched++;
+  fs.writeFileSync(out, tint[name] ? text.replace('fill="currentColor"', `fill="${tint[name]}"`) : text); fetched++;
 }
 for (const [name, [slug, hex]] of Object.entries(jsd)) {
   const out = path.join(DST, name + '.svg');

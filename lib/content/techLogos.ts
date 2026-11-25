@@ -23,12 +23,12 @@ const ALIASES: [RegExp, LogoId][] = [
   [/^R\b|\bR (shiny|studio|package)/i, 'r'],
   [/three\.?js/i, 'threejs'], [/keycloak/i, 'keycloak'], [/terraform/i, 'terraform'], [/prometheus/i, 'prometheus'], [/grafana/i, 'grafana'], [/\bargo\b/i, 'argo'], [/opencv/i, 'opencv'], [/scrapy/i, 'scrapy'], [/sqlalchemy/i, 'sqlalchemy'], [/firebase/i, 'firebase'], [/\bvue(\.js)?\b/i, 'vue'], [/hubspot/i, 'hubspot'], [/duckdb/i, 'duckdb'], [/rabbitmq/i, 'rabbitmq'], [/ffmpeg/i, 'ffmpeg'], [/\bonnx\b/i, 'onnx'], [/google calendar/i, 'gcal'], [/\bgmail\b/i, 'gmail'], [/google sheets/i, 'gsheets'], [/\bx\/twitter\b|\btwitter\b|\btweet/i, 'x'], [/reddit/i, 'reddit'], [/kaggle/i, 'kaggle'], [/digitalocean/i, 'digitalocean'], [/\bhelm\b/i, 'helm'], [/tanstack/i, 'tanstack'], [/pydantic/i, 'pydantic'], [/\bzoho\b/i, 'zoho'], [/\bresend\b/i, 'resend'], [/\bapple\b|testflight|\bios\b/i, 'apple'], [/\btrivy\b/i, 'trivy'], [/openvino/i, 'intel'], [/whatsapp/i, 'whatsapp'], [/pytest/i, 'pytest'], [/\bruff\b/i, 'ruff'], [/sqlite/i, 'sqlite'], [/paperspace/i, 'paperspace'], [/\bmqtt\b/i, 'mqtt'],
   [/\bvllm\b/i, 'vllm'], [/sglang/i, 'sglang'], [/deepspeed/i, 'deepspeed'], [/\bllm-d\b/i, 'llmd'], [/\bloki\b/i, 'loki'], [/datadog/i, 'datadog'], [/\bsentry\b/i, 'sentry'],
-  [/\bcelery\b/i, 'celery'], [/^ray\b|\bray (serve|cluster|train|tune|data)\b/i, 'ray'], [/\bphi-?\d/i, 'phi'], [/\bgranite\b/i, 'granite'],
+  [/\bcelery\b/i, 'celery'], [/^ray\b|\bray (serve|cluster|train|tune|data)\b/i, 'ray'], [/\bphi-?\d/i, 'phi'], [/\bgranite\b/i, 'granite'], [/\bjev\b|typesafe/i, 'jev'], [/\blaya\b/i, 'laya'], [/\bclef\b/i, 'clef'], [/h2o[- ]lightning/i, 'h2o'],
   [/cloudflare/i, 'cloudflare'], [/opentelemetry/i, 'opentelemetry'], [/key vault/i, 'azure'], [/dynamodb|cloudwatch|route 53|cognito|\baurora\b|secrets manager/i, 'aws'],
 ];
 
 /** Marks drawn in white or pale grey for the dark skills map. On a white disc they need darkening, or the chip looks empty. */
-export const LIGHT_MARKS: ReadonlySet<LogoId> = new Set<LogoId>(['github', 'grok', 'mysql', 'kali']);
+export const LIGHT_MARKS: ReadonlySet<LogoId> = new Set<LogoId>(['github', 'grok', 'mysql', 'kali', 'jev']);
 
 const match = (text: string): LogoId | null => {
   for (const [re, id] of ALIASES) if (re.test(text)) return id;

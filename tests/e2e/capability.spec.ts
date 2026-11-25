@@ -17,11 +17,12 @@ test.describe('skills map', () => {
     await ai.click({ force: true }); // force: the gentle float animation never lets Playwright's stability check pass
     await expect(ai).toHaveAttribute('aria-expanded', 'true');
     const icons = b.locator('.brain__icon');
-    await expect(icons).toHaveCount(23); // the LLM vendors (Mistral, Meta Llama, Qwen, DeepSeek, Microsoft Decision-1, Phi, IBM Granite) and Microsoft Foundry joined the agent tools
+    await expect(icons).toHaveCount(27); // the LLM vendors (Mistral, Meta Llama, Qwen, DeepSeek, Microsoft Decision-1, Phi, IBM Granite), the Jev-style decision models (Jev, Laya, Clef, H2O-Lightning) and Microsoft Foundry joined the agent tools
     await expect(b.locator('.brain__icon[aria-label="LangGraph"]')).toBeVisible();
     await expect(b.locator('.brain__icon[aria-label="Grok (xAI)"]')).toBeVisible();
     await expect(b.locator('.brain__icon[aria-label="Meta Llama"]')).toBeVisible();
     await expect(b.locator('.brain__icon[aria-label="Microsoft Decision-1"]')).toBeVisible();
+    await expect(b.locator('.brain__icon[aria-label="Jev (TypeSafe)"]')).toBeVisible();
     await expect.poll(() => icons.locator('img').evaluateAll((imgs) => imgs.every((i) => (i as HTMLImageElement).naturalWidth > 0)), { timeout: 10000 }).toBe(true);
     expect(logoRequests.length).toBeGreaterThan(0);
     // the expanded node sits at the centre of the map

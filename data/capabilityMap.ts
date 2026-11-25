@@ -19,7 +19,7 @@ export const capabilityStages: GraphStage[] = [
     title: { en: 'AI Integration & Agents', es: 'Integración de IA y agentes' }, short: { en: 'AI Agents', es: 'Agentes IA' },
     line: { en: 'LLMs, RAG, agentic workflows with LangChain/LangGraph, MCP tools and n8n automations wired into your product.',
             es: 'LLM, RAG, flujos agénticos con LangChain/LangGraph, herramientas MCP y automatizaciones n8n conectadas a tu producto.' },
-    skills: ['openai', 'claude', 'claudecode', 'gemini', 'grok', 'mistral', 'llama', 'qwen', 'deepseek', 'decision1', 'phi', 'granite', 'foundry', 'langgraph', 'langchain', 'mcp', 'n8n', 'huggingface', 'bedrock', 'azureai', 'pytorch', 'tensorflow', 'yolo'] },
+    skills: ['openai', 'claude', 'claudecode', 'gemini', 'grok', 'mistral', 'llama', 'qwen', 'deepseek', 'decision1', 'jev', 'laya', 'clef', 'h2o', 'phi', 'granite', 'foundry', 'langgraph', 'langchain', 'mcp', 'n8n', 'huggingface', 'bedrock', 'azureai', 'pytorch', 'tensorflow', 'yolo'] },
   { id: 'data', order: 4, categoryIds: ['databases-data-eng', 'data-science-ml'],
     title: { en: 'Data & Databases', es: 'Datos y bases de datos' }, short: { en: 'Data Science', es: 'Ciencia de datos' },
     line: { en: 'Schema design, Postgres, MySQL, MongoDB or Supabase, vector stores, pipelines and scraping that keep the data clean.',
