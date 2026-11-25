@@ -14,7 +14,7 @@ export const capabilityStages: GraphStage[] = [
     title: { en: 'Full-Stack Build', es: 'Desarrollo full-stack' }, short: { en: 'Full-Stack', es: 'Full-Stack' },
     line: { en: 'Next.js/React front end, FastAPI or Node back end, typed APIs, auth and payments.',
             es: 'Frontend en Next.js/React, backend en FastAPI o Node, APIs tipadas, autenticación y pagos.' },
-    skills: ['nextjs', 'react', 'reactnative', 'typescript', 'nodejs', 'fastapi', 'python', 'dash', 'plotly', 'd3', 'postgresql', 'supabase', 'redis', 'stripe', 'docker', 'github'] },
+    skills: ['nextjs', 'react', 'reactnative', 'framer', 'typescript', 'nodejs', 'fastapi', 'python', 'dash', 'plotly', 'd3', 'postgresql', 'supabase', 'redis', 'stripe', 'docker', 'github'] },
   { id: 'ai', order: 3, categoryIds: ['ai-agents'],
     title: { en: 'AI Integration & Agents', es: 'Integración de IA y agentes' }, short: { en: 'AI Agents', es: 'Agentes IA' },
     line: { en: 'LLMs, RAG, agentic workflows with LangChain/LangGraph, MCP tools and n8n automations wired into your product.',

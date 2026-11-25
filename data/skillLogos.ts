@@ -45,6 +45,7 @@ export const logos = {
   // open models measured in the Audit Pro benchmark (data/projects/auditproBench.ts): Phi has no mark of its own, so it reuses Microsoft's, Granite uses IBM's
   phi: ['microsoft.svg', 'Microsoft Phi'], granite: ['ibm.svg', 'IBM Granite'],
   // typed decision models (Jev and its open, Jev-compatible alternatives); Clef has no mark of its own, so it uses Cloudflare's
+  framer: ['framer.svg', 'Framer'],
   jev: ['typesafe.svg', 'Jev (TypeSafe)'], laya: ['laya.svg', 'Laya (Convai Innovations)'], clef: ['cloudflare.svg', 'Cloudflare Clef'], h2o: ['h2o.png', 'H2O-Lightning (H2O.ai)'],
 } as const;
 export type LogoId = keyof typeof logos;
