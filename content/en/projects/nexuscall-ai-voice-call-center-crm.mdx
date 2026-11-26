@@ -1,0 +1,122 @@
+---
+title: "NexusCall: Multi-Tenant AI Voice Call Center & CRM Platform"
+date: 2026-11-26
+lastmod: 2026-11-26
+cover: /images/portfolio/nexuscall-cover.jpg
+coverAlt: "NexusCall cover: the title NexusCall, AI Call Center & CRM Platform, an OWASP LLM Top 10 Protected badge, a laptop with a live AI call, call-center KPIs and a leads table, a headset on the desk and a glowing AI Gateway shield with a padlock"
+summary: "A multi-tenant SaaS platform for call agencies. AI voice agents make and answer phone calls, qualify leads and book appointments. It also has a CRM, call and email campaigns, and AI-drafted email replies that a person approves before they are sent. Every model call goes through an AI gateway built against the OWASP Top 10 for LLM applications. 16 Python microservices, a Next.js web app, PostgreSQL row-level security per tenant, HashiCorp Vault, Keycloak with MFA, Kubernetes. About 1,400 automated tests."
+description: "Multi-tenant AI call center: voice agents that call, qualify and book, CRM, call and email campaigns, human-approved AI email, and an AI gateway built against the OWASP LLM Top 10."
+categories:
+  - ai-agents
+  - ai-erp-saas
+  - security-compliance
+stack:
+  frontend:
+    - Next.js, TypeScript, Tailwind (99 routes)
+    - Backend-for-frontend, tokens stay on the server
+  backend:
+    - FastAPI (16 microservices, one database each)
+    - RabbitMQ + Celery (outbox and inbox)
+    - Traefik edge (rate and body limits)
+  ai:
+    - Anthropic Claude through the AI gateway
+    - Twilio voice, Deepgram STT, ElevenLabs TTS
+    - Voice and email agents with versioned prompts
+  data:
+    - PostgreSQL + pgvector, forced row-level security
+    - Redis (authorization cache, limits, breakers)
+    - Amazon SES email, S3-compatible storage
+  infra:
+    - Kubernetes, Helm, Terraform
+    - OpenTelemetry, Prometheus, Grafana
+    - "pytest + web tests: about 1,400"
+  security:
+    - OWASP Top 10 for LLM applications
+    - Keycloak SSO, MFA step-up for sensitive actions
+    - HashiCorp Vault for every provider key
+    - Hash-chained audit log
+outcomes:
+  - "Phone work an agency did by hand now runs on AI voice agents: they place and answer calls, qualify the lead and book the appointment, with AI disclosure, recording consent, do-not-call checks before every dial and a live hand-off to a person."
+  - "No AI-written email reaches a customer without a person: the AI drafts the reply, someone with approval rights approves the exact version, and tests prove an unapproved draft cannot be sent."
+  - "Prompt injection cannot make an agent act: in tests, an injected email or caller cannot run a tool that was not granted, fake an approval or read a secret, because those checks run outside the model."
+  - "One client can never see another: row-level security is forced on every tenant table, and cross-tenant tests check that one tenant cannot read, change, export or search another tenant's data."
+  - "AI spend cannot run away: monthly budgets per client and per agent are hard caps checked before each call, with rate limits, loop limits, a circuit breaker per provider and kill switches."
+metrics:
+  - label: "Lead calls, qualifying, booking"
+    before: "by hand"
+    value: "AI agents"
+  - label: "AI email sent without approval"
+    value: "none"
+  - label: "Tool run from injected text"
+    value: "blocked"
+  - label: "AI spend per client and agent"
+    value: "hard cap"
+featured: true
+order: 20
+---
+
+## The problem
+
+An agency that runs phone and email outreach for many clients needs a lot of people to call leads, qualify them, book appointments and answer email. AI voice agents can do much of that work, but they raise new risks. A caller or an email can try to give the agent orders (prompt injection). An agent can say or send something wrong. One client's data can leak to another. Model costs can grow without limit. NexusCall is a call-center platform that uses AI for the routine work and keeps each of these risks under control. The controls run in code outside the model, so they hold even when the model does what an attacker asks.
+
+## The product in use
+
+<Video src="/videos/nexuscall-demo.mp4" poster="/videos/nexuscall-demo.webp" ratio="16 / 9" title="NexusCall walkthrough" caption="The workspace dashboard, outbound AI call campaigns, inbound and outbound AI calls, a call timeline and transcript, appointments booked by the agent, the CRM, AI email drafts waiting for approval, analytics, the platform console with every client workspace, and the AI gateway's security events." />
+
+## What I built
+
+**An AI call center for every client of the agency.** Each client gets its own workspace. The dashboard shows calls answered, qualified leads, appointments, AI replies sent and total cost for the last 30 days, with daily charts. The agency's platform console shows all client workspaces, with usage and cost per tenant for telephony, AI and email.
+
+![NexusCall workspace dashboard for a demo home-services company: cards for 128 calls answered, 66 qualified leads, 48 appointments, 17 AI replies sent (every one approved by a person) and a $5.83 total cost, with 30-day charts of calls answered, appointments booked, emails delivered and AI spend](/images/portfolio/nexuscall-dashboard.jpg)
+
+**AI voice agents that call, qualify and book.** A call comes in through Twilio. Deepgram turns speech into text, Claude decides the next turn through the AI gateway, and ElevenLabs speaks the answer. The caller can interrupt the agent (barge-in). The agent says that it is an AI, asks for recording consent where required, and can hand the call to a person. Outbound campaigns call a CRM segment inside a calling window, at a set pace, and check the do-not-call list again just before each dial. One switch stops every outbound call in a workspace at once.
+
+![Call campaigns page: a workspace call kill switch with a Stop all calls button, and seven campaigns with their state (draft, scheduled, running, paused, completed), audience, calling window in the America/New_York time zone and a pace of 6 calls per minute, at most 3 at a time](/images/portfolio/nexuscall-campaigns.jpg)
+
+**Every call on record.** Each call has its outcome, qualification, talk time and cost, a timeline from creation to hang-up, and the transcript. Phone numbers are masked. Opening a transcript or a recording writes an entry to the audit log with the reader's name and the time.
+
+![Inbound call detail: outcome appointment requested, qualified yes, talk time 1:08, cost $0.0462, AI disclosure played, a timeline of six events, an "access is audited" notice and the transcript of the AI agent helping a caller whose furnace stopped working](/images/portfolio/nexuscall-call.jpg)
+
+**AI writes the email, a person sends it.** Inbound email is classified, and the AI drafts a reply using the client's knowledge base. The draft waits in an approval queue, where urgent and sensitive messages are flagged. A person compares it with the original email, edits it and approves it. Only that exact approved version can be sent. The send endpoint accepts only a draft ID and a version, never a recipient or a body.
+
+![Approval queue: eight AI reply drafts in pending review, for example a question about weekend appointments, an escalated and sensitive complaint, a billing dispute marked sensitive and a quote request, each with priority, assignee and waiting time](/images/portfolio/nexuscall-approvals.jpg)
+
+**Settings each client controls, inside platform limits.** A client admin chooses the allowed models, the monthly AI budget and the highest data classification that may reach a model. Some settings are locked by the platform: prompt text is never stored, and AI email always needs human approval.
+
+![Tenant AI settings: allowed models claude-haiku-5-5 and claude-sonnet-5-5, a monthly budget of 200 USD, highest data classification Confidential, and two locked settings: store prompt content (off by platform policy) and send AI drafts automatically (off, human approval required)](/images/portfolio/nexuscall-ai-settings.jpg)
+
+Also in the product: a CRM with leads, contacts, imports, segments, consent records and suppression lists; a calendar that rejects double bookings; email campaigns that pause on their own when bounces pass 5% or complaints pass 0.1%; analytics with call, email, AI-draft and booking funnels; and three role-based web interfaces (client workspace, client admin, platform admin).
+
+## Security against the OWASP Top 10 for LLM applications
+
+All model traffic goes through one AI gateway. Emails, call transcripts, knowledge documents and tool output always reach the model as untrusted data, and the caller cannot mark them as trusted. Tests run the gateway against a simulated model that obeys injected instructions on purpose. So each test checks what the platform blocked, not whether the model happened to refuse.
+
+![AI gateway security events in the platform console: prompt-injection attempts from email flagged as OWASP LLM01 with signals such as exfiltration, delimiter spoofing, encoded override instructions and hidden characters, and a denied tool call crm.add_note flagged as LLM03; a notice says viewing the list is audited and events never contain prompt or completion text](/images/portfolio/nexuscall-security-events.jpg)
+
+| OWASP LLM risk | How NexusCall handles it |
+|---|---|
+| LLM01 Prompt injection | Untrusted text is wrapped in random delimiters, after Unicode normalisation and removal of hidden characters. Injection signals are only recorded: the decision to run a tool never depends on them. A tool runs only if it was granted to this agent. |
+| LLM02 Sensitive information | API keys, tokens and passwords are removed from every input, tool output and answer. Personal data is removed from restricted data. Prompt and answer text is never stored or logged. |
+| LLM03 Excessive agency | Tools offered to the model = the tools the agent asked for and was granted. Arguments are checked against a schema. High-impact tools need a human approval stored in the database, which model text cannot fake. Privileged tools are never offered. If the tool registry is down, nothing runs. |
+| LLM04 Supply chain | Only registered models can be used, and the provider address comes from configuration, never from a request. Dependencies are pinned by hash. CI runs a Trivy image scan and gitleaks and produces an SBOM. |
+| LLM05 Data and model poisoning | Knowledge documents keep their source and are always treated as untrusted. No model is fine-tuned. |
+| LLM06 Unbounded consumption | Size limits, output-token caps, monthly budgets as hard caps, rate and concurrency limits, limits on agent loops, a circuit breaker per provider and kill switches at five levels. |
+| LLM07 Misinformation | Callers get the real result of each tool call (done, needs approval, denied, failed), never the model's claim. Structured answers must match a schema, or the request fails. |
+| LLM08 System prompt leakage | Credentials can never be put in a system prompt. A canary token and an overlap check stop a leak, and streamed answers are released sentence by sentence only after that check. |
+| LLM09 Vector and embedding weaknesses | Knowledge search runs with the tenant filter and row-level security inside the vector query. Secrets are never embedded. |
+| LLM10 Improper output handling | Answers are cleaned of markdown images used for exfiltration, active HTML, javascript: links and control characters. Model output is never run as code, SQL or shell. |
+
+The adversarial tests also found and fixed three real issues. The Anthropic SDK logged full request bodies at debug level. A 12-word overlap window missed an 11-word leak of the system prompt. A short system prompt could be echoed before the canary appeared in a stream.
+
+## Platform security
+
+- **Tenant isolation in the database.** Each service has its own PostgreSQL database. Every tenant table has row-level security switched on and forced. The runtime role is neither the table owner nor allowed to bypass it. The tenant is set per transaction, so pooled connections cannot leak data between tenants.
+- **Identity.** Keycloak handles single sign-on and asks for MFA again before sensitive actions. A backend-for-frontend keeps access tokens on the server: the browser holds only an HttpOnly session cookie, and every change needs a CSRF token. Support access to a client's data needs a reason, a ticket and MFA, lasts at most 4 hours, and the client owner is told.
+- **Secrets.** Every provider key (Twilio, SES, Anthropic, Deepgram, ElevenLabs, OAuth) lives in HashiCorp Vault. Each service may read only its own paths, databases store references only, and the console shows metadata, never values.
+- **Webhooks and egress.** Twilio and SES webhooks are checked by signature and replay window. Outbound calls to external APIs are limited to an allowlist, and requests to private or cloud-metadata addresses are refused (SSRF).
+- **Reliable events.** Services talk over RabbitMQ with the outbox and inbox pattern, so no event is lost or processed twice. Create, send and book requests take an idempotency key.
+- **Audit.** Sensitive reads and every admin action go to an append-only, hash-chained audit log.
+
+Delivery: a Helm chart with default-deny network policies, restricted pod security, migration jobs and Vault agent injection, Terraform for cluster add-ons, k6 load tests, runbooks and a compliance checklist. About 1,400 automated tests: 1,085 Python tests against real PostgreSQL, RabbitMQ and Redis, and 307 web tests.
+
+The screenshots and the video use a demo workspace with fictional clients and sample data. The security events include prompt-injection attacks sent to the live AI gateway during recording. This is engineering work, not a compliance certification: calling and email laws need legal review in each country where the platform runs.

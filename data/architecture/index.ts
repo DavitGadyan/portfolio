@@ -7,11 +7,13 @@ import { flow as improvtalk } from './ai-video-ads-improvtalk';
 import { flow as yolo26 } from './computer-vision-yolo26-demos';
 import { flow as cryptoBots } from './crypto-trading-bot-python';
 import { flow as jev } from './jev-alphatrading-decision-models';
+import { flow as nexuscall } from './nexuscall-ai-voice-call-center-crm';
 
 /** slug → hand-written flow; projects without one get the diagram built from their stack (lib/content/architecture.ts). */
 export const flows: Record<string, Flow> = {
   'virgil-ai-health-insurance-agent': virgil, 'auditpro-ifrs-audit-review-llm': auditpro, 'ai-video-ads-improvtalk': improvtalk,
   'computer-vision-yolo26-demos': yolo26, 'crypto-trading-bot-python': cryptoBots, 'jev-alphatrading-decision-models': jev,
+  'nexuscall-ai-voice-call-center-crm': nexuscall,
 };
 
 export function flowSpec(slug: string, locale: Locale): ArchSpec | null {

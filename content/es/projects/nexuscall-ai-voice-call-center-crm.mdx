@@ -1,0 +1,88 @@
+---
+title: "NexusCall: call center multicliente con agentes de voz IA y CRM"
+coverAlt: "Portada de NexusCall: el título NexusCall, AI Call Center & CRM Platform, una insignia OWASP LLM Top 10 Protected, un portátil con una llamada de IA en curso, KPI del call center y una tabla de leads, unos auriculares sobre la mesa y un escudo luminoso de AI Gateway con un candado"
+summary: "Una plataforma SaaS multicliente para agencias de llamadas. Agentes de voz con IA hacen y atienden llamadas, cualifican leads y reservan citas. Incluye además un CRM, campañas de llamadas y de correo, y respuestas de correo redactadas por la IA que una persona aprueba antes de enviarse. Cada llamada al modelo pasa por un gateway de IA construido frente al OWASP Top 10 para aplicaciones LLM. 16 microservicios en Python, una aplicación web en Next.js, seguridad a nivel de fila en PostgreSQL por cliente, HashiCorp Vault, Keycloak con MFA y Kubernetes. Unos 1.400 tests automáticos."
+description: "Call center multicliente con IA: agentes de voz que llaman, cualifican y reservan, CRM, campañas, correo IA aprobado por personas y gateway de IA frente al OWASP LLM Top 10."
+outcomes:
+  - "El trabajo telefónico que la agencia hacía a mano lo hacen ahora agentes de voz con IA: hacen y atienden llamadas, cualifican al lead y reservan la cita, con aviso de que es una IA, consentimiento de grabación, comprobación de la lista de no llamar antes de cada marcación y traspaso en directo a una persona."
+  - "Ningún correo escrito por la IA llega a un cliente sin pasar por una persona: la IA redacta la respuesta, alguien con permiso de aprobación aprueba la versión exacta, y los tests demuestran que un borrador sin aprobar no se puede enviar."
+  - "La inyección de prompts no puede hacer actuar a un agente: en los tests, un correo o una llamada con instrucciones inyectadas no consigue ejecutar una herramienta no concedida, fingir una aprobación ni leer un secreto, porque esas comprobaciones se hacen fuera del modelo."
+  - "Un cliente nunca ve los datos de otro: la seguridad a nivel de fila está forzada en cada tabla de cliente, y los tests entre clientes comprueban que ninguno puede leer, cambiar, exportar ni buscar los datos de otro."
+  - "El gasto en IA no se dispara: los presupuestos mensuales por cliente y por agente son topes estrictos que se comprueban antes de cada llamada, con límites de uso, límites de bucles, un cortacircuitos por proveedor e interruptores de parada."
+metrics:
+  - label: "Llamar, cualificar y reservar citas"
+    before: "a mano"
+    value: "agentes IA"
+  - label: "Correo IA enviado sin aprobación"
+    value: "ninguno"
+  - label: "Herramienta lanzada por texto inyectado"
+    value: "bloqueada"
+  - label: "Gasto IA por cliente y agente"
+    value: "tope estricto"
+---
+
+## El problema
+
+Una agencia que gestiona llamadas y correos para muchos clientes necesita mucha gente para llamar a leads, cualificarlos, reservar citas y responder correos. Los agentes de voz con IA pueden hacer buena parte de ese trabajo, pero traen riesgos nuevos. Quien llama o un correo puede intentar dar órdenes al agente (inyección de prompts). Un agente puede decir o enviar algo incorrecto. Los datos de un cliente pueden filtrarse a otro. El coste de los modelos puede crecer sin límite. NexusCall es una plataforma de call center que usa la IA para el trabajo rutinario y mantiene cada uno de esos riesgos bajo control. Los controles están en código fuera del modelo, así que se mantienen incluso cuando el modelo hace lo que pide un atacante.
+
+## El producto en uso
+
+<Video src="/videos/nexuscall-demo.mp4" poster="/videos/nexuscall-demo.webp" ratio="16 / 9" title="Recorrido por NexusCall" caption="El panel del espacio de trabajo, las campañas de llamadas salientes con IA, llamadas de IA entrantes y salientes, la cronología y la transcripción de una llamada, las citas reservadas por el agente, el CRM, los borradores de correo de la IA esperando aprobación, la analítica, la consola de plataforma con todos los espacios de clientes y los eventos de seguridad del gateway de IA." />
+
+## Qué construí
+
+**Un call center con IA para cada cliente de la agencia.** Cada cliente tiene su propio espacio de trabajo. El panel muestra las llamadas atendidas, los leads cualificados, las citas, las respuestas de IA enviadas y el coste total de los últimos 30 días, con gráficos diarios. La consola de plataforma de la agencia muestra todos los espacios de clientes, con el uso y el coste por cliente en telefonía, IA y correo.
+
+![Panel del espacio de trabajo NexusCall de una empresa de servicios para el hogar de demostración: tarjetas con 128 llamadas atendidas, 66 leads cualificados, 48 citas, 17 respuestas de IA enviadas (todas aprobadas por una persona) y un coste total de 5,83 $, con gráficos de 30 días de llamadas atendidas, citas reservadas, correos entregados y gasto en IA](/images/portfolio/nexuscall-dashboard.jpg)
+
+**Agentes de voz con IA que llaman, cualifican y reservan.** Una llamada entra por Twilio. Deepgram pasa la voz a texto, Claude decide el siguiente turno a través del gateway de IA y ElevenLabs pronuncia la respuesta. Quien llama puede interrumpir al agente (barge-in). El agente avisa de que es una IA, pide consentimiento de grabación cuando hace falta y puede pasar la llamada a una persona. Las campañas salientes llaman a un segmento del CRM dentro de una franja horaria, a un ritmo fijado, y vuelven a comprobar la lista de no llamar justo antes de cada marcación. Un solo interruptor detiene a la vez todas las llamadas salientes de un espacio de trabajo.
+
+![Página de campañas de llamadas: un interruptor de parada de llamadas del espacio de trabajo con el botón Stop all calls, y siete campañas con su estado (borrador, programada, en curso, en pausa, completada), audiencia, franja horaria en la zona America/New_York y un ritmo de 6 llamadas por minuto, como máximo 3 a la vez](/images/portfolio/nexuscall-campaigns.jpg)
+
+**Cada llamada queda registrada.** Cada llamada tiene su resultado, su cualificación, la duración, el coste, una cronología desde su creación hasta que se cuelga y la transcripción. Los números de teléfono aparecen enmascarados. Abrir una transcripción o una grabación escribe una entrada en el registro de auditoría con el nombre de quien la abre y la hora.
+
+![Detalle de una llamada entrante: resultado cita solicitada, cualificado sí, duración 1:08, coste 0,0462 $, aviso de IA reproducido, una cronología de seis eventos, un aviso de "acceso auditado" y la transcripción del agente de IA ayudando a alguien cuya caldera ha dejado de funcionar](/images/portfolio/nexuscall-call.jpg)
+
+**La IA redacta el correo, una persona lo envía.** Los correos entrantes se clasifican y la IA redacta una respuesta con la base de conocimiento del cliente. El borrador espera en una cola de aprobación, donde los mensajes urgentes y sensibles van marcados. Una persona lo compara con el correo original, lo edita y lo aprueba. Solo se puede enviar esa versión exacta aprobada. El endpoint de envío acepta únicamente un ID de borrador y una versión, nunca un destinatario ni un cuerpo.
+
+![Cola de aprobación: ocho borradores de respuesta de IA pendientes de revisión, por ejemplo una pregunta sobre citas en fin de semana, una queja escalada y sensible, una disputa de facturación marcada como sensible y una petición de presupuesto, cada uno con prioridad, persona asignada y tiempo de espera](/images/portfolio/nexuscall-approvals.jpg)
+
+**Ajustes que controla cada cliente, dentro de los límites de la plataforma.** El administrador de un cliente elige los modelos permitidos, el presupuesto mensual de IA y la clasificación de datos más alta que puede llegar a un modelo. Algunos ajustes los bloquea la plataforma: el texto de los prompts nunca se guarda, y el correo de la IA siempre necesita aprobación humana.
+
+![Ajustes de IA de un cliente: modelos permitidos claude-haiku-5-5 y claude-sonnet-5-5, un presupuesto mensual de 200 USD, clasificación de datos más alta Confidencial y dos ajustes bloqueados: guardar el contenido de los prompts (desactivado por política de la plataforma) y enviar borradores de IA automáticamente (desactivado, requiere aprobación humana)](/images/portfolio/nexuscall-ai-settings.jpg)
+
+Además, el producto incluye un CRM con leads, contactos, importaciones, segmentos, registros de consentimiento y listas de exclusión; un calendario que rechaza las reservas dobles; campañas de correo que se pausan solas cuando los rebotes superan el 5 % o las quejas el 0,1 %; analítica con embudos de llamadas, correo, borradores de IA y reservas; y tres interfaces web por rol (espacio del cliente, administración del cliente y administración de la plataforma).
+
+## Seguridad frente al OWASP Top 10 para aplicaciones LLM
+
+Todo el tráfico hacia los modelos pasa por un único gateway de IA. Los correos, las transcripciones de llamadas, los documentos de conocimiento y la salida de las herramientas llegan siempre al modelo como datos no fiables, y quien llama al gateway no puede marcarlos como fiables. Los tests usan un modelo simulado que obedece a propósito las instrucciones inyectadas. Así, cada test comprueba lo que la plataforma bloqueó, no si el modelo se negó por casualidad.
+
+![Eventos de seguridad del gateway de IA en la consola de plataforma: intentos de inyección de prompts por correo marcados como OWASP LLM01, con señales como exfiltración, suplantación de delimitadores, instrucciones codificadas y caracteres ocultos, y una llamada denegada a la herramienta crm.add_note marcada como LLM03; un aviso indica que consultar la lista queda auditado y que los eventos nunca contienen texto de prompts ni de respuestas](/images/portfolio/nexuscall-security-events.jpg)
+
+| Riesgo OWASP LLM | Cómo lo trata NexusCall |
+|---|---|
+| LLM01 Inyección de prompts | El texto no fiable se envuelve en delimitadores aleatorios, tras normalizar el Unicode y quitar los caracteres ocultos. Las señales de inyección solo se registran: la decisión de ejecutar una herramienta nunca depende de ellas. Una herramienta solo se ejecuta si se concedió a ese agente. |
+| LLM02 Información sensible | Las claves de API, tokens y contraseñas se eliminan de cada entrada, salida de herramienta y respuesta. Los datos personales se eliminan de los datos restringidos. El texto de prompts y respuestas nunca se guarda ni se registra en logs. |
+| LLM03 Agencia excesiva | Las herramientas que se ofrecen al modelo son las que el agente pidió y tiene concedidas. Los argumentos se validan con un esquema. Las herramientas de alto impacto necesitan una aprobación humana guardada en la base de datos, que el texto del modelo no puede fingir. Las herramientas privilegiadas nunca se ofrecen. Si el registro de herramientas no responde, no se ejecuta nada. |
+| LLM04 Cadena de suministro | Solo se pueden usar modelos registrados, y la dirección del proveedor sale de la configuración, nunca de una petición. Las dependencias están fijadas por hash. La CI escanea las imágenes con Trivy, ejecuta gitleaks y genera un SBOM. |
+| LLM05 Envenenamiento de datos y modelos | Los documentos de conocimiento conservan su origen y siempre se tratan como no fiables. No se hace fine-tuning de ningún modelo. |
+| LLM06 Consumo sin límites | Límites de tamaño, topes de tokens de salida, presupuestos mensuales como topes estrictos, límites de uso y de concurrencia, límites a los bucles del agente, un cortacircuitos por proveedor e interruptores de parada en cinco niveles. |
+| LLM07 Desinformación | Quien llama recibe el resultado real de cada herramienta (hecha, pendiente de aprobación, denegada, fallida), nunca lo que afirma el modelo. Las respuestas estructuradas deben cumplir un esquema o la petición falla. |
+| LLM08 Filtración del prompt de sistema | Nunca se pueden poner credenciales en un prompt de sistema. Un token canario y una comprobación de coincidencias detienen una filtración, y las respuestas en streaming se liberan frase a frase solo después de esa comprobación. |
+| LLM09 Debilidades de vectores y embeddings | La búsqueda de conocimiento se ejecuta con el filtro de cliente y la seguridad a nivel de fila dentro de la consulta vectorial. Los secretos nunca se convierten en embeddings. |
+| LLM10 Gestión incorrecta de la salida | Las respuestas se limpian de imágenes markdown usadas para exfiltrar datos, HTML activo, enlaces javascript: y caracteres de control. La salida del modelo nunca se ejecuta como código, SQL ni shell. |
+
+Los tests adversariales también encontraron y corrigieron tres fallos reales. El SDK de Anthropic registraba en los logs los cuerpos completos de las peticiones en nivel debug. Una ventana de coincidencia de 12 palabras no detectaba una filtración de 11 palabras del prompt de sistema. Un prompt de sistema corto podía repetirse en un stream antes de que apareciera el canario.
+
+## Seguridad de la plataforma
+
+- **Aislamiento de clientes en la base de datos.** Cada servicio tiene su propia base de datos PostgreSQL. Cada tabla de cliente tiene la seguridad a nivel de fila activada y forzada. El rol de ejecución no es propietario de las tablas ni puede saltársela. El cliente se fija en cada transacción, así que las conexiones compartidas no pueden mezclar datos de clientes.
+- **Identidad.** Keycloak gestiona el inicio de sesión único y vuelve a pedir MFA antes de las acciones sensibles. Un backend-for-frontend guarda los tokens de acceso en el servidor: el navegador solo tiene una cookie de sesión HttpOnly, y cada cambio necesita un token CSRF. El acceso de soporte a los datos de un cliente requiere un motivo, un ticket y MFA, dura como máximo 4 horas y se avisa al propietario del cliente.
+- **Secretos.** Cada clave de proveedor (Twilio, SES, Anthropic, Deepgram, ElevenLabs, OAuth) vive en HashiCorp Vault. Cada servicio solo puede leer sus propias rutas, las bases de datos guardan solo referencias y la consola muestra metadatos, nunca valores.
+- **Webhooks y salida a Internet.** Los webhooks de Twilio y SES se verifican por firma y por ventana de repetición. Las llamadas a APIs externas se limitan a una lista permitida, y se rechazan las peticiones a direcciones privadas o de metadatos de la nube (SSRF).
+- **Eventos fiables.** Los servicios se comunican por RabbitMQ con el patrón outbox e inbox, así que ningún evento se pierde ni se procesa dos veces. Las peticiones de crear, enviar y reservar llevan una clave de idempotencia.
+- **Auditoría.** Las lecturas sensibles y cada acción de administración van a un registro de auditoría de solo escritura, encadenado por hashes.
+
+Entrega: un chart de Helm con políticas de red que deniegan todo por defecto, seguridad de pods restringida, jobs de migración e inyección del agente de Vault, Terraform para los complementos del clúster, pruebas de carga con k6, runbooks y una lista de verificación de cumplimiento. Unos 1.400 tests automáticos: 1.085 tests de Python contra PostgreSQL, RabbitMQ y Redis reales, y 307 tests web.
+
+Las capturas y el vídeo usan un espacio de trabajo de demostración con clientes ficticios y datos de ejemplo. Los eventos de seguridad incluyen ataques de inyección de prompts enviados al gateway de IA real durante la grabación. Esto es trabajo de ingeniería, no una certificación de cumplimiento: las leyes de llamadas y de correo necesitan revisión legal en cada país donde funcione la plataforma.

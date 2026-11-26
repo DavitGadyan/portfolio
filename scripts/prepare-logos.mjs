@@ -38,7 +38,9 @@ const svgs = { 'kali-linux': 'kalilinux/557C94', owasp: 'owasp/000000', 'burp-su
   // project stack chips (lib/content/techLogos.ts), brand colours
   threejs: 'threedotjs', keycloak: 'keycloak', terraform: 'terraform', prometheus: 'prometheus', grafana: 'grafana', argo: 'argo', opencv: 'opencv', scrapy: 'scrapy', sqlalchemy: 'sqlalchemy', firebase: 'firebase', vue: 'vuedotjs', hubspot: 'hubspot', duckdb: 'duckdb', rabbitmq: 'rabbitmq', ffmpeg: 'ffmpeg', onnx: 'onnx', gcal: 'googlecalendar', gmail: 'gmail', gsheets: 'googlesheets', x: 'x', reddit: 'reddit', kaggle: 'kaggle', digitalocean: 'digitalocean', helm: 'helm', tanstack: 'tanstack', pydantic: 'pydantic', zoho: 'zoho', resend: 'resend', apple: 'apple', trivy: 'trivy', intel: 'intel', whatsapp: 'whatsapp', pytest: 'pytest', ruff: 'ruff', sqlite: 'sqlite', paperspace: 'paperspace', mqtt: 'mqtt',
   // DevOps/MLOps node: queues, GPU serving and monitoring (Nov 25 2026)
-  celery: 'celery', ray: 'ray', datadog: 'datadog', sentry: 'sentry', framer: 'framer' };
+  celery: 'celery', ray: 'ray', datadog: 'datadog', sentry: 'sentry', framer: 'framer',
+  // NexusCall (AI call center): voice and edge providers
+  deepgram: 'deepgram', elevenlabs: 'elevenlabs/000000', traefik: 'traefikproxy' };
 // marks the simpleicons.org CDN no longer serves but the npm package still ships (pinned version): fetched from jsDelivr and tinted with the brand colour
 const jsd = { powerbi: ['powerbi', 'F2C811'], sharepoint: ['microsoftsharepoint', '0078D4'] };
 // official marks served by the brands themselves or by svgl.app (no Simple Icons entry): name → URL. Microsoft Fabric comes from Microsoft's own
@@ -52,7 +54,9 @@ const direct = { grok: 'https://svgl.app/library/grok-dark.svg', base44: 'https:
   vllm: 'https://unpkg.com/@lobehub/icons-static-svg@1.106.0/icons/vllm-color.svg',
   ibm: 'https://unpkg.com/@lobehub/icons-static-svg@1.106.0/icons/ibm.svg',
   // Jev-style decision models (AI Agents node): TypeSafe's mark (Jev) drawn white for the dark map, Laya Studio's own icon. H2O.ai's tile is a PNG in assets/logos
-  typesafe: 'https://unpkg.com/@lobehub/icons-static-svg@1.106.0/icons/typesafeai.svg', laya: 'https://laya.studio/icon.svg' };
+  typesafe: 'https://unpkg.com/@lobehub/icons-static-svg@1.106.0/icons/typesafeai.svg', laya: 'https://laya.studio/icon.svg',
+  // Twilio is no longer on Simple Icons: its own red mark via svgl
+  twilio: 'https://svgl.app/library/twilio.svg' };
 const tint = { ibm: '#0F62FE', typesafe: '#FFFFFF' };
 // official Azure architecture icons (assets/logos/azure/README.md has the provenance and Microsoft's terms): copied as they are
 const azure = fs.readdirSync('assets/logos/azure').filter((f) => f.endsWith('.svg'));
