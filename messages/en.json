@@ -54,6 +54,7 @@
     "portraitAlt": "David Gadyan, Data Scientist & AI SaaS Engineer in Barcelona"
   },
   "capability": {
+    "fresh": "New",
     "intro": "A unique mix of skills that guarantees end-to-end, SaaS-level AI application development.",
     "points": [
       "Speed up development 3x",
@@ -224,7 +225,7 @@
   },
   "meta": {
     "homeTitle": "EXPERT-VETTED AI Engineer | Data Scientist | AI Agent | Generative AI | SaaS",
-    "homeDescription": "David Gadyan, Upwork Expert-Vetted AI Engineer and Data Scientist in Barcelona: AI agents, generative AI, full-stack SaaS, DevOps, security. 190+ projects, 8+ years.",
+    "homeDescription": "David Gadyan, Upwork Expert-Vetted AI Engineer and Data Scientist in Barcelona: AI agents, generative AI, full-stack SaaS, DevOps, security. 190+ projects, 9+ years.",
     "portfolioTitle": "Portfolio: 48 AI, Full-Stack & Data Projects",
     "portfolioDescription": "48 case studies by David Gadyan: AI agents and RAG, Next.js and FastAPI products, databases, Docker and Kubernetes deployments, security-aware builds and GA4 marketing measurement.",
     "blogTitle": "Blog: AI, Data & Building Products",

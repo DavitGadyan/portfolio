@@ -26,9 +26,9 @@ export const capabilityStages: GraphStage[] = [
             es: 'Diseño de esquemas, Postgres, MySQL, MongoDB o Supabase, bases vectoriales, pipelines y scraping que mantienen los datos limpios.' },
     skills: ['python', 'postgresql', 'mysql', 'mongodb', 'supabase', 'redis', 'neo4j', 'bigquery', 'snowflake', 'databricks', 'fabric', 'datafactory', 'foundry', 'aisearch', 'docintel', 'azuresql', 'mssql', 'pandas', 'numpy', 'scipy', 'sklearn', 'xgboost', 'r', 'textract'] },
   { id: 'deploy', order: 5, categoryIds: ['cloud-devops-llmops'],
-    title: { en: 'Deployment, DevOps, MLOps & LLMOps', es: 'Despliegue, DevOps, MLOps y LLMOps' }, short: { en: 'DevOps/MLOps', es: 'DevOps/MLOps' },
-    line: { en: 'Docker, Kubernetes, AWS, GCP or Vercel, CI/CD, queues, GPU model serving with vLLM, SGLang or TensorRT-LLM, monitoring, evals and cost control for models in production.',
-            es: 'Docker, Kubernetes, AWS, GCP o Vercel, CI/CD, colas, servicio de modelos en GPU con vLLM, SGLang o TensorRT-LLM, monitorización, evaluaciones y control de costes para modelos en producción.' },
+    title: { en: 'Deployment, DevOps, MLOps, AIOps & LLMOps', es: 'Despliegue, DevOps, MLOps, AIOps y LLMOps' }, short: { en: 'DevOps/MLOps', es: 'DevOps/MLOps' },
+    line: { en: 'Docker, Kubernetes, AWS, GCP or Vercel, CI/CD, queues, GPU model serving with vLLM, SGLang or TensorRT-LLM, inference optimization, quantization (AWQ, GPTQ, FP8, INT4), tensor and data parallelism (TP, DP), monitoring, evals and cost control for models in production.',
+            es: 'Docker, Kubernetes, AWS, GCP o Vercel, CI/CD, colas, servicio de modelos en GPU con vLLM, SGLang o TensorRT-LLM, optimización de inferencia, cuantización (AWQ, GPTQ, FP8, INT4), paralelismo de tensores y de datos (TP, DP), monitorización, evaluaciones y control de costes para modelos en producción.' },
     skills: ['docker', 'kubernetes', 'eks', 'aws', 'gcp', 'azure', 'vercel', 'linux', 'github', 'raspberrypi', 'namecheap',
       'rabbitmq', 'celery', 'kafka',
       'nvidia', 'cuda', 'pytorch', 'vllm', 'sglang', 'tensorrt', 'triton', 'ray', 'deepspeed', 'nccl', 'llmd',
@@ -44,6 +44,19 @@ export const capabilityStages: GraphStage[] = [
             es: 'Seguimiento de conversiones con GA4/GTM/Ads, SEO técnico y GEO/AEO para que el producto se encuentre, se mida y mejore.' },
     skills: ['ga4', 'gtm', 'gsc', 'adsconv', 'adsmeasure', 'adsvideo', 'facebook', 'instagram', 'linkedin', 'tiktok', 'youtube', 'namecheap'] },
 ];
+
+/**
+ * The newest practices, highlighted on the skills map ("New" tag, first node at the top of the ring): how agents are built and
+ * kept in bounds (harness, loops, MCP, A2A), how they are secured (OWASP Top 10 for LLM and GenAI, AI gateways) and how models
+ * are served fast and cheap on GPUs (tensor and data parallelism, quantization). Shown in the brain only, not in the 1→7 chain.
+ */
+export const capabilityFrontier: GraphStage & { fresh: true } = {
+  id: 'frontier', order: 0, categoryIds: ['ai-agents', 'security-compliance', 'cloud-devops-llmops'], fresh: true,
+  title: { en: 'Frontier AI Engineering', es: 'Ingeniería de IA de frontera' }, short: { en: 'Frontier AI', es: 'IA frontera' },
+  line: { en: 'Agent harness, loop and improvement-loop engineering, MCP and A2A, RLHF and RLVR, Mixture-of-Experts models, OWASP Top 10 for LLM and GenAI, AI gateways, and inference optimization on GPUs with tensor and data parallelism and quantization.',
+          es: 'Ingeniería de harness, de bucles y de bucles de mejora para agentes, MCP y A2A, RLHF y RLVR, modelos Mixture of Experts, OWASP Top 10 para LLM y GenAI, gateways de IA y optimización de inferencia en GPU con paralelismo de tensores y de datos y cuantización.' },
+  skills: ['harness', 'loopeng', 'improveloop', 'mcp', 'a2a', 'jev', 'decision1', 'rlhf', 'rlvr', 'moe', 'owaspgenai', 'aigateway', 'inferopt', 'gpu', 'tp', 'dp', 'quant', 'vllm', 'sglang'],
+};
 
 /** Branch node: not part of the 1→7 chain, linked to AI and Data in the graph. */
 export const capabilityBranch: GraphStage = {

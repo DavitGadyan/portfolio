@@ -7,7 +7,7 @@ test.describe('skills map', () => {
     await page.goto('/');
     const b = page.locator('.brain');
     await b.scrollIntoViewIfNeeded();
-    await expect(b.locator('.brain__node')).toHaveCount(8);
+    await expect(b.locator('.brain__node')).toHaveCount(9);
     expect(logoRequests).toHaveLength(0);
 
     const ai = b.locator('.brain__node[data-id="ai"]');
@@ -68,6 +68,15 @@ test.describe('skills map', () => {
       expect(Math.hypot(dboxes[i][0] - dboxes[j][0], dboxes[i][1] - dboxes[j][1]), `DevOps marks ${i} and ${j} overlap`).toBeGreaterThan((dboxes[i][2] + dboxes[j][2]) / 2 * 0.9);
     }
     await page.keyboard.press('Escape'); // collapse before the next click: a forced click on a node still gliding can miss it on phones
+    await expect(icons).toHaveCount(0);
+    // the newest skills: first node, tagged "New", nineteen marks on two rings
+    const frontier = b.locator('.brain__node[data-id="frontier"]');
+    await expect(frontier).toHaveAttribute('data-fresh', '');
+    await expect(frontier.locator('.brain__new')).toHaveText(/New|Nuevo/);
+    await frontier.click({ force: true });
+    await expect(icons).toHaveCount(19);
+    for (const l of ['Harness Engineering', 'Loop Engineering', 'A2A (Agent2Agent)', 'MCP', 'OWASP Top 10 for LLM & GenAI', 'AI Gateway', 'Inference Optimization', 'Tensor Parallelism (TP)', 'Data Parallelism (DP)', 'Quantization (FP8, INT4, AWQ, GPTQ, NVFP4)', 'Mixture of Experts (MoE)', 'Improvement Loop']) await expect(b.locator(`.brain__icon[aria-label="${l}"]`)).toBeVisible();
+    await page.keyboard.press('Escape');
     await expect(icons).toHaveCount(0);
     await b.locator('.brain__node[data-id="security"]').click({ force: true });
     await expect(b.locator('.brain__icon[aria-label="Kali Linux"]')).toBeVisible();

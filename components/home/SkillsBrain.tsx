@@ -5,8 +5,8 @@ import { CertDialog, type CertInfo, type CertStrings } from './CertDialog';
 import brain from '@/assets/images/my-logo.png';
 
 export type BrainSkill = { id: string; src: string; label: string; scale?: number; cert?: CertInfo };
-export type BrainNode = { id: string; order: number; title: string; short: string; skills: BrainSkill[] };
-export type BrainStrings = { label: string; close: string; tools: string; certHint: string } & CertStrings;
+export type BrainNode = { id: string; order: number; title: string; short: string; line?: string; fresh?: boolean; skills: BrainSkill[] };
+export type BrainStrings = { label: string; close: string; tools: string; certHint: string; fresh: string } & CertStrings;
 
 /**
  * Skills map: the brain in the centre, one node per area of expertise on a ring around it. Clicking a node glides it
@@ -44,11 +44,13 @@ export function SkillsBrain({ nodes, locale, t }: { nodes: BrainNode[]; locale: 
         const size = n.short.length > 9 ? 'lg' : n.short.length > 6 ? 'md' : 'sm';
         return (
           <button
-            key={n.id} type="button" className={`brain__node brain__node--${size}`} data-id={n.id}
+            key={n.id} type="button" className={`brain__node brain__node--${size}`} data-id={n.id} data-fresh={n.fresh ? '' : undefined} data-tipup={Math.sin(angle(i, N)) > 0.2 ? '' : undefined}
             style={{ '--cx': Math.cos(angle(i, N)).toFixed(4), '--cy': Math.sin(angle(i, N)).toFixed(4), '--i': i } as CSSProperties}
-            aria-expanded={open === n.id} aria-label={open === n.id ? `${n.title}. ${t.close}` : n.title}
+            aria-expanded={open === n.id} aria-label={`${n.fresh ? t.fresh + ': ' : ''}${n.title}${open === n.id ? '. ' + t.close : ''}`} aria-description={n.line}
             onClick={() => setOpen((o) => (o === n.id ? null : n.id))}
           >
+            {n.fresh && <span className="brain__new" aria-hidden="true">{t.fresh}</span>}
+            {n.line && <span className="brain__ntip" aria-hidden="true"><strong>{n.title}</strong>{n.line}</span>}
             <span className="brain__lbl" aria-hidden="true">{n.short.split('/').map((part, i) => (i ? <Fragment key={i}>/<wbr />{part}</Fragment> : part))}</span>
           </button>
         );

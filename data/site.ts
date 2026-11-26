@@ -13,7 +13,7 @@ export const site = {
   email: 'david.gadyan@bse.eu',
   languagesSpoken: ['en', 'es', 'ru', 'hy'],
   since: 2018,
-  stats: { projects: 190, clients: 50, hours: 8700, years: 8 },
+  stats: { projects: 190, clients: 50, hours: 8700, years: 9 },
   shareCard: { en: '/share-card.jpg', es: '/share-card-es.jpg' } as Localized<string>,
   about: {
     en: [

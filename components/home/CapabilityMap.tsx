@@ -2,7 +2,7 @@ import { Check } from 'lucide-react';
 import type { Locale } from '@/lib/i18n/config';
 import { getMessages, fmt } from '@/lib/i18n/messages';
 import { withBasePath } from '@/lib/site';
-import { capabilityStages, capabilityBranch } from '@/data/capabilityMap';
+import { capabilityStages, capabilityBranch, capabilityFrontier } from '@/data/capabilityMap';
 import { logos, logoSrc, logoScale } from '@/data/skillLogos';
 import { certs, certSrc } from '@/data/certs';
 import { Reveal } from '@/components/ui/Reveal';
@@ -11,8 +11,8 @@ import { SkillsBrain } from './SkillsBrain';
 
 export function CapabilityMap({ locale }: { locale: Locale }) {
   const m = getMessages(locale);
-  const nodes = [...capabilityStages, capabilityBranch].map((s) => ({
-    id: s.id, order: s.order, title: s.title[locale], short: s.short[locale],
+  const nodes = [capabilityFrontier, ...capabilityStages, capabilityBranch].map((s) => ({
+    id: s.id, order: s.order, title: s.title[locale], short: s.short[locale], line: s.line[locale], fresh: 'fresh' in s,
     skills: s.skills.map((id) => {
       const c = certs[id];
       const cert = c ? { src: withBasePath(certSrc(c)), title: c.title[locale], issued: c.issued, expires: c.expires, id: c.id } : undefined;
@@ -42,7 +42,7 @@ export function CapabilityMap({ locale }: { locale: Locale }) {
               </Reveal>
             ))}
           </ol>
-          <SkillsBrain nodes={nodes} locale={locale} t={{ label: m.capability.graphLabel, close: m.capability.back, tools: m.capability.tools, certHint: m.capability.certHint, closeCert: m.capability.closeCert, issued: m.capability.issued, validUntil: m.capability.validUntil, certId: m.capability.certId }} />
+          <SkillsBrain nodes={nodes} locale={locale} t={{ label: m.capability.graphLabel, fresh: m.capability.fresh, close: m.capability.back, tools: m.capability.tools, certHint: m.capability.certHint, closeCert: m.capability.closeCert, issued: m.capability.issued, validUntil: m.capability.validUntil, certId: m.capability.certId }} />
         </div>
       </div>
     </section>

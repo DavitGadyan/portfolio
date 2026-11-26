@@ -8,7 +8,7 @@ import { getMessages } from '@/lib/i18n/messages';
 import { localizePath } from '@/lib/locale-path';
 import { site } from '@/data/site';
 import { services } from '@/data/services';
-import { capabilityStages } from '@/data/capabilityMap';
+import { capabilityStages, capabilityFrontier } from '@/data/capabilityMap';
 import { faq } from '@/data/faq';
 import { testimonials } from '@/data/testimonials';
 import { categoryById } from '@/data/categories';
@@ -48,6 +48,7 @@ export function buildLlms(locale: Locale, full: boolean): string {
   for (const p of m.capability.points) L.push(`- ${p}`);
   L.push('');
   for (const s of capabilityStages) L.push(`${s.order}. **${s.title[locale]}** — ${s.line[locale]}`);
+  L.push(`- **${capabilityFrontier.title[locale]}** — ${capabilityFrontier.line[locale]}`);
   L.push('');
   L.push(`## ${m.sections.materials}`);
   L.push('');

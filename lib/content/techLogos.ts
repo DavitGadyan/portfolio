@@ -25,7 +25,7 @@ const ALIASES: [RegExp, LogoId][] = [
   [/\bvllm\b/i, 'vllm'], [/sglang/i, 'sglang'], [/deepspeed/i, 'deepspeed'], [/\bllm-d\b/i, 'llmd'], [/\bloki\b/i, 'loki'], [/datadog/i, 'datadog'], [/\bsentry\b/i, 'sentry'],
   [/\bcelery\b/i, 'celery'], [/^ray\b|\bray (serve|cluster|train|tune|data)\b/i, 'ray'], [/\bphi-?\d/i, 'phi'], [/\bgranite\b/i, 'granite'], [/\bjev\b|typesafe/i, 'jev'], [/\blaya\b/i, 'laya'], [/\bclef\b/i, 'clef'], [/h2o[- ]lightning/i, 'h2o'], [/\bframer\b/i, 'framer'],
   [/cloudflare/i, 'cloudflare'], [/opentelemetry/i, 'opentelemetry'], [/key vault/i, 'azure'], [/dynamodb|cloudwatch|route 53|cognito|\baurora\b|secrets manager|amazon ses|\bses\b/i, 'aws'],
-  [/twilio/i, 'twilio'], [/deepgram/i, 'deepgram'], [/elevenlabs/i, 'elevenlabs'], [/traefik/i, 'traefik'], [/hashicorp vault/i, 'vault'],
+  [/twilio/i, 'twilio'], [/deepgram/i, 'deepgram'], [/elevenlabs/i, 'elevenlabs'], [/traefik/i, 'traefik'], [/hashicorp vault/i, 'vault'], [/\ba2a\b|agent2agent/i, 'a2a'],
 ];
 
 /** Marks drawn in white or pale grey for the dark skills map. On a white disc they need darkening, or the chip looks empty. */

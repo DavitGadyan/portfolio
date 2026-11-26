@@ -56,7 +56,9 @@ const direct = { grok: 'https://svgl.app/library/grok-dark.svg', base44: 'https:
   // Jev-style decision models (AI Agents node): TypeSafe's mark (Jev) drawn white for the dark map, Laya Studio's own icon. H2O.ai's tile is a PNG in assets/logos
   typesafe: 'https://unpkg.com/@lobehub/icons-static-svg@1.106.0/icons/typesafeai.svg', laya: 'https://laya.studio/icon.svg',
   // Twilio is no longer on Simple Icons: its own red mark via svgl
-  twilio: 'https://svgl.app/library/twilio.svg' };
+  twilio: 'https://svgl.app/library/twilio.svg',
+  // A2A (Agent2Agent protocol): the project's own mark
+  a2a: 'https://a2a-protocol.org/latest/assets/a2a-logo-black.svg' };
 const tint = { ibm: '#0F62FE', typesafe: '#FFFFFF' };
 // official Azure architecture icons (assets/logos/azure/README.md has the provenance and Microsoft's terms): copied as they are
 const azure = fs.readdirSync('assets/logos/azure').filter((f) => f.endsWith('.svg'));
@@ -95,3 +97,15 @@ if (!rnSvg.includes('<rect')) {
   fs.writeFileSync(rn, `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128"><rect width="128" height="128" rx="26" fill="#20232a"/><svg x="14" y="18" width="100" height="92" viewBox="0 0 112 102">${inner}</svg></svg>`);
   console.log('react-native.svg wrapped on its navy tile');
 }
+
+// Frontier AI node (skills map): practices with no brand mark get a tile, a Lucide (ISC) line icon or a short label in white on a
+// teal-to-violet square, so they read as one family next to the brand marks. Rewritten on every run (cheap, deterministic).
+const lucide = async (name) => (await import(`lucide-react/dist/esm/icons/${name}.mjs`)).__iconData.node
+  .map(([tag, attrs]) => `<${tag} ${Object.entries(attrs).filter(([k]) => k !== 'key').map(([k, v]) => `${k}="${v}"`).join(' ')}/>`).join('');
+const tile = (inner) => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0d9488"/><stop offset="1" stop-color="#6d28d9"/></linearGradient></defs><rect width="48" height="48" rx="11" fill="url(#g)"/>${inner}</svg>\n`;
+const glyph = async (name) => `<g transform="translate(10 10) scale(1.1667)" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">${await lucide(name)}</g>`;
+const label = (t) => `<text x="24" y="24" dy=".35em" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-weight="700" font-size="${t.length > 3 ? 13 : 17}" letter-spacing=".5" fill="#fff">${t}</text>`;
+const tiles = { 'harness-eng': await glyph('blocks'), 'loop-eng': await glyph('refresh-cw'), 'ai-gateway': await glyph('shield-check'), 'inference-opt': await glyph('gauge'),
+  tp: label('TP'), dp: label('DP'), quant: label('INT4'), moe: label('MoE'), rlhf: label('RLHF'), rlvr: label('RLVR'), 'improve-loop': await glyph('trending-up') };
+for (const [name, inner] of Object.entries(tiles)) fs.writeFileSync(path.join(DST, name + '.svg'), tile(inner));
+console.log(`${Object.keys(tiles).length} concept tiles`);
