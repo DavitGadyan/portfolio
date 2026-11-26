@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 258" width="100%" role="img" aria-label="Industrial robots installed worldwide per year (thousands): 2022 553K; 2025 (record) 603K; 2026 (forecast) 655K; 2029 (forecast) 806K" style="height:auto;display:block">
+  <title>Industrial robots installed worldwide per year (thousands)</title>
+  <text x="380.0" y="26" text-anchor="middle" font-size="14" font-weight="600" fill="#313131">Industrial robots installed worldwide per year (thousands)</text>
+  <text x="238" y="71" text-anchor="end" font-size="12.5" fill="#313131">2022</text>
+  <rect x="250" y="56" width="267.6" height="24" rx="4" fill="#e8f2fb" stroke="#0078D4" />
+  <text x="525.6" y="72" font-size="12.5" font-weight="600" fill="#313131">553K</text>
+  <text x="238" y="111" text-anchor="end" font-size="12.5" fill="#313131">2025 (record)</text>
+  <rect x="250" y="96" width="291.8" height="24" rx="4" fill="#f3ecfb" stroke="#6D28D9" />
+  <text x="549.8" y="112" font-size="12.5" font-weight="600" fill="#313131">603K</text>
+  <text x="238" y="151" text-anchor="end" font-size="12.5" fill="#313131">2026 (forecast)</text>
+  <rect x="250" y="136" width="316.9" height="24" rx="4" fill="#e8f2fb" stroke="#0078D4" />
+  <text x="574.9" y="152" font-size="12.5" font-weight="600" fill="#313131">655K</text>
+  <text x="238" y="191" text-anchor="end" font-size="12.5" fill="#313131">2029 (forecast)</text>
+  <rect x="250" y="176" width="390.0" height="24" rx="4" fill="#e8f2fb" stroke="#0078D4" />
+  <text x="648.0" y="192" font-size="12.5" font-weight="600" fill="#313131">806K</text>
+  <text x="380.0" y="244" text-anchor="middle" font-size="11.5" fill="#6f6f6f">IFR World Robotics 2026. China installed 59% of the 2025 total; 5.08 million robots now operate.</text>
+</svg>

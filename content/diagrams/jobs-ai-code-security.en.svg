@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 298" width="100%" role="img" aria-label="AI-generated code that failed security tests, by language (%): Java 72%; C# 45%; JavaScript 43%; Python 38%; All languages 45%" style="height:auto;display:block">
+  <title>AI-generated code that failed security tests, by language (%)</title>
+  <text x="380.0" y="26" text-anchor="middle" font-size="14" font-weight="600" fill="#313131">AI-generated code that failed security tests, by language (%)</text>
+  <text x="238" y="71" text-anchor="end" font-size="12.5" fill="#313131">Java</text>
+  <rect x="250" y="56" width="280.8" height="24" rx="4" fill="#e8f2fb" stroke="#0078D4" />
+  <text x="538.8" y="72" font-size="12.5" font-weight="600" fill="#313131">72%</text>
+  <text x="238" y="111" text-anchor="end" font-size="12.5" fill="#313131">C#</text>
+  <rect x="250" y="96" width="175.5" height="24" rx="4" fill="#e8f2fb" stroke="#0078D4" />
+  <text x="433.5" y="112" font-size="12.5" font-weight="600" fill="#313131">45%</text>
+  <text x="238" y="151" text-anchor="end" font-size="12.5" fill="#313131">JavaScript</text>
+  <rect x="250" y="136" width="167.7" height="24" rx="4" fill="#e8f2fb" stroke="#0078D4" />
+  <text x="425.7" y="152" font-size="12.5" font-weight="600" fill="#313131">43%</text>
+  <text x="238" y="191" text-anchor="end" font-size="12.5" fill="#313131">Python</text>
+  <rect x="250" y="176" width="148.2" height="24" rx="4" fill="#e8f2fb" stroke="#0078D4" />
+  <text x="406.2" y="192" font-size="12.5" font-weight="600" fill="#313131">38%</text>
+  <text x="238" y="231" text-anchor="end" font-size="12.5" fill="#313131">All languages</text>
+  <rect x="250" y="216" width="175.5" height="24" rx="4" fill="#f3ecfb" stroke="#6D28D9" />
+  <text x="433.5" y="232" font-size="12.5" font-weight="600" fill="#313131">45%</text>
+  <text x="380.0" y="284" text-anchor="middle" font-size="11.5" fill="#6f6f6f">Veracode GenAI Code Security Report, July 2025: more than 100 LLMs tested.</text>
+</svg>

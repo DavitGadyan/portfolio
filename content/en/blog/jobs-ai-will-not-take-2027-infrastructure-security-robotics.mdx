@@ -1,0 +1,197 @@
+---
+title: 'Jobs AI Will Not Take in the Next 1 to 2 Years: AI Infrastructure, Cybersecurity and Physical AI'
+date: '2026-11-26'
+lastmod: '2026-11-26'
+author: David Gadyan
+cover: /images/blog/jobs-ai-will-not-take-2027.png
+coverAlt: 'Dark cover titled "Jobs AI will not take by 2027" with the line "Infrastructure, Cybersecurity, Physical AI" and three tiles: AI infrastructure and LLM inference, AI cybersecurity, Physical AI and robotics'
+tags:
+  - ai jobs
+  - future of work
+  - mlops
+  - llm inference
+  - ai security
+  - robotics
+  - physical ai
+  - careers
+articleSection: AI Careers
+description: >-
+  Three job families AI is creating faster than it can automate: LLM
+  infrastructure and inference engineers, AI cybersecurity, and physical AI
+  and robotics, with figures from Gartner, IBM, Veracode, IFR, BLS and WEF.
+summary: >-
+  AI is automating code and office tasks fastest, and young workers in exposed
+  jobs already feel it. Three areas move the other way through 2027: the
+  engineers who run and optimise LLM inference on GPUs, data centres and
+  private servers; the security people who clean up after AI-built apps and
+  AI-armed attackers; and the engineers who make robots work in the physical
+  world. This post explains why, with sourced numbers and five charts.
+about:
+  - Future of work
+  - AI infrastructure
+  - LLM inference
+  - MLOps
+  - AI security
+  - Physical AI
+  - Robotics
+takeaways:
+  - >-
+    **AI changes jobs more than it removes them, but not evenly.** WEF
+    expects 170 million jobs created and 92 million displaced by 2030. Stanford
+    researchers found employment for 22 to 25 year olds in AI-exposed jobs 19%
+    below trend, while experienced workers show no such gap.
+  - >-
+    **Inference infrastructure is a growth job.** Gartner forecasts
+    AI-optimised cloud infrastructure spending to grow from $21.5B in 2025 to
+    $66.1B in 2027, and inference spending overtakes training in 2026. Every
+    GPU needs someone to size, serve, quantise and secure the models on it.
+  - >-
+    **AI makes security work grow, not shrink.** 45% of AI-generated code
+    failed Veracode's security tests, 1 in 4 malicious breaches in 2026 used
+    AI, and the US expects information security analyst jobs to grow 21% by
+    2035, against 3% for all jobs.
+  - >-
+    **The physical world is slow to automate.** A record 603,307 industrial
+    robots were installed in 2025, yet robots succeed at only 12% of real
+    household tasks and the IFR calls most humanoids prototypes. Someone has
+    to deploy, integrate and maintain them.
+  - >-
+    **The common thread is responsibility for systems that touch the real
+    world:** hardware, money, safety and attackers. Those jobs grow with AI
+    instead of being replaced by it.
+faq:
+  - q: Which jobs are safest from AI in 2026 and 2027?
+    a: >-
+      Jobs that operate AI rather than compete with it. Three clear examples
+      are AI infrastructure and MLOps engineers who run models on GPUs and
+      private servers, cybersecurity specialists who secure AI-built
+      software, and engineers who deploy robots and physical AI. All three
+      grow with AI spending and all need hands-on responsibility.
+  - q: Which jobs is AI replacing first?
+    a: >-
+      The WEF Future of Jobs Report 2025 lists postal service clerks, bank
+      tellers, data entry clerks, cashiers and administrative assistants as
+      the fastest-declining roles. Stanford's payroll study shows the first
+      effect on early-career workers in AI-exposed occupations such as
+      software development and customer service.
+  - q: Why will AI not replace infrastructure and MLOps engineers soon?
+    a: >-
+      Because AI itself is the workload. Gartner expects AI-optimised cloud
+      infrastructure spending to roughly triple from 2025 to 2027, and the IEA
+      expects data-centre electricity use to more than double by 2030. Choosing
+      GPUs, serving engines, quantisation and parallelism, and keeping cost
+      and latency under control, is new work that grows with that spending.
+  - q: Does AI-generated code create more security work?
+    a: >-
+      Yes. Veracode found that 45% of AI-generated code samples from more than
+      100 LLMs failed security tests, with cross-site scripting left open in
+      86% of samples. Founders now ship apps faster than they can review them,
+      and attackers use AI too, so the demand for people who find and fix
+      these flaws rises.
+  - q: Are humanoid robots about to take physical jobs?
+    a: >-
+      Not in the next one to two years. The IFR says most humanoids remain
+      prototypes or pilots, and the Stanford AI Index 2026 reports robots
+      succeed at only 12% of real household tasks. Investment is high,
+      $11.9B in humanoid startups in 2026 by late November per Dealroom, which
+      creates jobs for the engineers who build and deploy them.
+---
+
+Every week someone asks me which jobs are still safe from AI. I build AI systems for a living, so my answer is not "none" and not "all". It is: the jobs that run AI, secure it and connect it to the physical world grow with it. This post looks at three of them for the next one to two years, with the numbers behind each.
+
+First, a fair picture. AI is changing many jobs fast. The WEF Future of Jobs Report 2025 expects **170 million jobs created and 92 million displaced** between 2025 and 2030, a net gain of 78 million, and expects **39%** of workers' core skills to change. A Stanford Digital Economy Lab study of ADP payroll data found that workers aged 22 to 25 in the most AI-exposed occupations are **19% below** where they would be had they kept pace with less-exposed peers, while experienced workers show no comparable gap. The fastest-declining roles in the WEF list are clerical: postal clerks, bank tellers, data entry clerks, cashiers and administrative assistants.
+
+The three areas below go the other way, and the reasons are structural, not hopeful.
+
+## Why will AI infrastructure and MLOps engineers stay in demand?
+
+Because AI itself is the workload, and it is growing faster than any team can automate away. Somebody has to choose the GPUs, serve the model, make it fast and cheap enough, keep private data on private servers, and stay up at 3 a.m. when it breaks.
+
+<Figure src="jobs-ai-infra-spend.en.svg" caption="Figure 1. Gartner forecasts AI-optimised IaaS spending to triple from 2025 to 2027, and inference spending ($23.3B) overtakes training ($19.0B) in 2026." />
+
+The scale is large and still rising:
+
+| Signal | Figure | Source |
+| --- | --- | --- |
+| AI-optimised IaaS spending | $21.5B in 2025, $42.3B in 2026, $66.1B in 2027 (forecast) | Gartner, August 2026 |
+| Inference share | Inference overtakes training in 2026 and reaches 59% of that spend in 2027 (forecast) | Gartner, August 2026 |
+| AI infrastructure overall | $2.397 trillion in 2027, 59% of all AI spending (forecast) | Gartner, November 2026 |
+| Data-centre electricity | 415 TWh in 2024, about 945 TWh in 2030 (forecast) | IEA, Energy and AI |
+| AI data-centre power | 29.6 GW, about New York State's peak demand | Stanford AI Index 2026 |
+| Cost of GPT-3.5-level inference | Fell more than 280-fold from November 2022 to October 2024 | Stanford AI Index 2025 |
+
+The last line is the important one. Cheaper inference does not remove the engineer; it multiplies the number of workloads worth running, and each one has to be sized, served and paid for. The work is specific: choosing between vLLM, SGLang and TensorRT-LLM, quantising to FP8 or INT4 without losing accuracy, splitting a model across GPUs with tensor or data parallelism, separating prefill and decode, and planning KV cache memory so the server does not fall over under load. I measured this kind of trade-off on a real project: the [Audit Pro case study](/portfolio/auditpro-ifrs-audit-review-llm/) tested 76 setups of 19 open models on one GPU before choosing what to run in production. The [model-serving comparison](/blog/model-serving-vllm-tensorrt-llm-sglang-triton-llm-d/) explains the tools.
+
+Private servers add a second reason. Regulated companies want models on their own hardware, behind their own [AI gateway](/portfolio/private-ai-gateway-litellm-openbao/), with keys in a vault and spend capped per team. LinkedIn reported more than 600,000 new AI-enabled data-centre jobs globally in a year and AI Engineer as the fastest-growing US role two years in a row. My own job-lead database had 103 open roles with "inference" in the title on 26 November 2026.
+
+## Why does AI create more cybersecurity jobs instead of fewer?
+
+Because AI raises both the volume of software that needs securing and the skill of the attackers. Founders can now build and ship an app in a weekend with AI, and much of that code is insecure by default. Attackers use the same tools to move faster.
+
+<Figure src="jobs-ai-code-security.en.svg" caption="Figure 2. Veracode tested code from more than 100 LLMs in July 2025: 45% of samples failed security tests, and Java code failed 72% of the time." />
+
+The builder side: Veracode's GenAI Code Security Report found that **45%** of AI-generated code samples failed security tests, and cross-site scripting was left undefended in **86%** of samples. The attacker side: IBM's 2026 Cost of a Data Breach study found that **1 in 4 malicious breaches** were AI-enabled, costing about **$6 million** each, and the global average breach reached a record **$4.99 million**. In November 2025 Anthropic reported a state-sponsored espionage campaign in which AI performed 80 to 90% of the work against about 30 targets. CrowdStrike measured an average eCrime breakout time of 48 minutes, the fastest 51 seconds.
+
+<Figure src="jobs-breach-cost.en.svg" caption="Figure 3. Global average cost of a data breach from IBM's reports, and the average cost of an AI-enabled breach in 2026." />
+
+The people side is already short. ISC2 counted a global cybersecurity workforce gap of **4.8 million** in 2024 against an active workforce of 5.5 million, and in 2025 AI became the top skill need. The US Bureau of Labor Statistics projects information security analyst jobs to grow **21%** from 2025 to 2035.
+
+<Figure src="jobs-security-growth.en.svg" caption="Figure 4. US projected job growth for information security analysts against all occupations, 2025 to 2035." />
+
+| Problem AI creates | The work it creates |
+| --- | --- |
+| AI-written apps ship with injection, XSS and leaked secrets | Code review, security testing and secure-by-default templates for fast-moving teams |
+| LLM features add prompt injection, data leaks and tool abuse | Guardrails, AI gateways, tool authorization and testing against the OWASP Top 10 for LLM applications |
+| Employees paste company data into public AI tools (shadow AI) | Private AI platforms, access control and audit logging |
+| Attackers phish, scan and exploit faster with AI | Detection, response and identity hardening |
+
+This is the area I spend most of my security time on. The [NexusCall case study](/portfolio/nexuscall-ai-voice-call-center-crm/) shows what it looks like in practice: an AI call center where prompt injection cannot make an agent act, because tool permissions, approvals and tenant isolation are enforced outside the model.
+
+## Why is physical AI and robotics hard for AI to take over?
+
+Because the physical world is the hardest place for AI. Hans Moravec wrote in 1988 that it is comparatively easy to make computers perform like adults on intelligence tests, and difficult or impossible to give them the perception and mobility of a one-year-old. Steven Pinker put it shorter: the hard problems are easy and the easy problems are hard. Writing an essay is easy for a model; folding a towel in a stranger's kitchen is not.
+
+<Figure src="jobs-robot-installs.en.svg" caption="Figure 5. Industrial robots installed worldwide per year, from the IFR. 2025 set a record of 603,307 units; the IFR forecasts 806,000 in 2029." />
+
+The numbers show both the growth and the gap:
+
+| Signal | Figure | Source |
+| --- | --- | --- |
+| Industrial robots installed in 2025 | 603,307, a record, +11% | IFR World Robotics 2026 |
+| Robots operating in factories | 5,079,078 | IFR World Robotics 2026 |
+| Share installed in China | 59% of the 2025 total | IFR World Robotics 2026 |
+| Humanoid startup funding | $4.8B in 2025, $11.9B in 2026 to 23 November | Dealroom |
+| Robot success on real household tasks | 12% | Stanford AI Index 2026 |
+| IFR view of humanoids | Most remain prototypes or pilot-stage; general-purpose physical AI is not yet industry-grade | IFR, September 2026 |
+
+That gap is where the jobs are. Every new robot needs someone to integrate it into a line, connect it to sensors and data, write the safety cases, train and evaluate its models, and fix it when the real world does something the simulation did not. Money keeps arriving, so the engineers who can make robots work outside a demo stay scarce. My own work here is on the perception side, such as [computer vision with YOLO](/portfolio/computer-vision-yolo26-demos/) and [driver-fatigue detection on edge devices](/portfolio/driver-fatigue-detection-edge-ai/).
+
+## What do these three jobs have in common?
+
+Each one is responsibility for a system that touches the real world: expensive hardware, money, safety or an attacker. AI can draft the code, but someone has to own the result when the GPU bill arrives, when a breach happens or when a robot arm stops. That accountability, plus hands-on work on physical or adversarial systems, is what keeps these roles growing while AI automates routine digital tasks.
+
+| Area | Why AI grows it | What to learn first |
+| --- | --- | --- |
+| AI infrastructure and MLOps | Inference spending grows faster than any other AI cost | GPUs and VRAM, vLLM or SGLang, quantisation, tensor and data parallelism, Kubernetes, cost monitoring |
+| AI cybersecurity | AI multiplies insecure code and gives attackers speed | Application security, the OWASP Top 10 for LLM applications, identity and access, AI gateways |
+| Physical AI and robotics | The physical world is slow to automate and heavily funded | Robotics middleware, computer vision, edge deployment, simulation, safety |
+
+If you are choosing where to grow in 2027, pick the side of AI that runs, secures or embodies it. If you are a company, these are the skills to secure early, because everyone else will want them too.
+
+## Sources
+
+- World Economic Forum, [Future of Jobs Report 2025](https://reports.weforum.org/docs/WEF_Future_of_Jobs_Report_2025.pdf) (January 2025): 170 million jobs created and 92 million displaced by 2030 (forecast), 39% of skills changing, fastest-growing and fastest-declining roles. Read on 26 November 2026.
+- Brynjolfsson, Chandar and Chen, Stanford Digital Economy Lab, [Canaries in the Coal Mine](https://digitaleconomy.stanford.edu/publication/canaries-in-the-coal-mine/) (revised 12 August 2026): 19% gap for workers aged 22 to 25 in AI-exposed occupations. Read on 26 November 2026.
+- Stanford HAI, [AI Index 2025](https://hai.stanford.edu/ai-index/2025-ai-index-report): inference cost fell more than 280-fold. [AI Index 2026 takeaways](https://hai.stanford.edu/news/inside-the-ai-index-12-takeaways-from-the-2026-report): 29.6 GW AI data-centre power, 12% household-task success. Read on 26 November 2026.
+- Gartner, [AI-optimized IaaS spending forecast](https://gcom.pdo.aws.gartner.com/en/newsroom/press-releases/2026-08-10-gartner-forecasts-worldwide-artificial-intelligence-optimized-iaas-spending-to-grow-96-percent-in-2026) (10 August 2026) and [AI infrastructure spending forecast](https://gcom.pdo.aws.gartner.com/en/newsroom/press-releases/2026-11-12-gartner-forecasts-artificial-intelligence-infrastructure-spending-to-represent-59-percent-of-total-global-artificial-intelligence-spending-in-2027) (12 November 2026). Forecasts. Read on 26 November 2026.
+- IEA, [Energy and AI](https://www.iea.org/reports/energy-and-ai/executive-summary): data-centre electricity 415 TWh in 2024, about 945 TWh in 2030 (forecast). Read on 26 November 2026.
+- LinkedIn, [2026 Davos press release](https://news.linkedin.com/2026/2026-Davos-Press-Release) (14 January 2026): 600,000+ AI-enabled data-centre jobs, AI Engineer fastest-growing US role. Read on 26 November 2026.
+- Veracode, [GenAI Code Security Report](https://www.veracode.com/blog/genai-code-security-report/) (30 July 2025): 45% failure rate, by-language rates, 86% XSS. Read on 26 November 2026.
+- IBM, Cost of a Data Breach: [2024](https://newsroom.ibm.com/2024-07-30-ibm-report-escalating-data-breach-disruption-pushes-costs-to-new-highs), [2025](https://newsroom.ibm.com/2025-07-30-ibm-report-13-of-organizations-reported-breaches-of-ai-models-or-applications,-97-of-which-reported-lacking-proper-ai-access-controls) and [2026](https://newsroom.ibm.com/2026-07-29-ibm-study-one-in-four-malicious-breaches-are-ai-enabled,-costing-companies-6-million-on-average). Read on 26 November 2026.
+- Anthropic, [Disrupting the first reported AI-orchestrated cyber espionage campaign](https://www.anthropic.com/news/disrupting-AI-espionage) (13 November 2025). CrowdStrike, [2025 Global Threat Report](https://www.crowdstrike.com/en-us/press-releases/crowdstrike-releases-2025-global-threat-report/). Read on 26 November 2026.
+- ISC2, [2024 Cybersecurity Workforce Study](https://www.isc2.org/Insights/2024/09/Employers-Must-Act-Cybersecurity-Workforce-Growth-Stalls-as-Skills-Gaps-Widen) (4.8 million gap) and [2025 study](https://www.isc2.org/Insights/2025/12/ISC2-publishes-2025-cybersecurity-workforce-study) (AI the top skill need; no gap figure published). Read on 26 November 2026.
+- US Bureau of Labor Statistics, [Information Security Analysts](https://www.bls.gov/ooh/computer-and-information-technology/information-security-analysts.htm): +21% projected growth 2025 to 2035, median pay $129,180. Read on 26 November 2026.
+- IFR, [World Robotics 2026 executive summary](https://ifr.org/img/worldrobotics/Executive_Summary_WR_2026_-_Industrial_Robots.pdf) and [press release](https://ifr.org/ifr-press-releases/news/five-million-robots-now-operate-in-factories-globally) (24 September 2026). Read on 26 November 2026.
+- Dealroom, [Humanoid robotics funding](https://dealroom.co/charts/humanoid-robotics). Read on 26 November 2026.
+- Moravec's paradox: Hans Moravec, Mind Children (1988), p. 15, and Steven Pinker, as cited in [Wikipedia](https://en.wikipedia.org/wiki/Moravec%27s_paradox).
+- My AI Jobs MCP server: 103 roles with "inference" in the title, counted on 26 November 2026.

@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 298" width="100%" role="img" aria-label="AI-optimized cloud infrastructure (IaaS) spending, USD billions: 2025 $21.5B; 2026 (forecast) $42.3B; 2027 (forecast) $66.1B; 2026: inference $23.3B; 2026: training $19B" style="height:auto;display:block">
+  <title>AI-optimized cloud infrastructure (IaaS) spending, USD billions</title>
+  <text x="380.0" y="26" text-anchor="middle" font-size="14" font-weight="600" fill="#313131">AI-optimized cloud infrastructure (IaaS) spending, USD billions</text>
+  <text x="238" y="71" text-anchor="end" font-size="12.5" fill="#313131">2025</text>
+  <rect x="250" y="56" width="126.9" height="24" rx="4" fill="#e8f2fb" stroke="#0078D4" />
+  <text x="384.9" y="72" font-size="12.5" font-weight="600" fill="#313131">$21.5B</text>
+  <text x="238" y="111" text-anchor="end" font-size="12.5" fill="#313131">2026 (forecast)</text>
+  <rect x="250" y="96" width="249.6" height="24" rx="4" fill="#e8f2fb" stroke="#0078D4" />
+  <text x="507.6" y="112" font-size="12.5" font-weight="600" fill="#313131">$42.3B</text>
+  <text x="238" y="151" text-anchor="end" font-size="12.5" fill="#313131">2027 (forecast)</text>
+  <rect x="250" y="136" width="390.0" height="24" rx="4" fill="#e8f2fb" stroke="#0078D4" />
+  <text x="648.0" y="152" font-size="12.5" font-weight="600" fill="#313131">$66.1B</text>
+  <text x="238" y="191" text-anchor="end" font-size="12.5" fill="#313131">2026: inference</text>
+  <rect x="250" y="176" width="137.5" height="24" rx="4" fill="#f3ecfb" stroke="#6D28D9" />
+  <text x="395.5" y="192" font-size="12.5" font-weight="600" fill="#313131">$23.3B</text>
+  <text x="238" y="231" text-anchor="end" font-size="12.5" fill="#313131">2026: training</text>
+  <rect x="250" y="216" width="112.1" height="24" rx="4" fill="#e8f2fb" stroke="#0078D4" />
+  <text x="370.1" y="232" font-size="12.5" font-weight="600" fill="#313131">$19B</text>
+  <text x="380.0" y="284" text-anchor="middle" font-size="11.5" fill="#6f6f6f">Gartner, August 2026. In 2026 inference spending overtakes training for the first time.</text>
+</svg>

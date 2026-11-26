@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 178" width="100%" role="img" aria-label="Crecimiento previsto del empleo en EE. UU., 2025 a 2035 (%): Analistas de seguridad de la información +21 %; Todas las ocupaciones +3 %" style="height:auto;display:block">
+  <title>Crecimiento previsto del empleo en EE. UU., 2025 a 2035 (%)</title>
+  <text x="380.0" y="26" text-anchor="middle" font-size="14" font-weight="600" fill="#313131">Crecimiento previsto del empleo en EE. UU., 2025 a 2035 (%)</text>
+  <text x="238" y="71" text-anchor="end" font-size="12.5" fill="#313131">Analistas de seguridad de la información</text>
+  <rect x="250" y="56" width="390.0" height="24" rx="4" fill="#f3ecfb" stroke="#6D28D9" />
+  <text x="648.0" y="72" font-size="12.5" font-weight="600" fill="#313131">+21 %</text>
+  <text x="238" y="111" text-anchor="end" font-size="12.5" fill="#313131">Todas las ocupaciones</text>
+  <rect x="250" y="96" width="55.7" height="24" rx="4" fill="#e8f2fb" stroke="#0078D4" />
+  <text x="313.7" y="112" font-size="12.5" font-weight="600" fill="#313131">+3 %</text>
+  <text x="380.0" y="164" text-anchor="middle" font-size="11.5" fill="#6f6f6f">Oficina de Estadísticas Laborales de EE. UU. Salario mediano 129.180 USD (mayo de 2025).</text>
+</svg>
