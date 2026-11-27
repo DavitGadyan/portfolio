@@ -1,0 +1,140 @@
+---
+title: "Mosaic BI: AI Analyst Team on MoE, RLHF + RLVR and an OWASP AI Gateway"
+date: 2026-11-27
+lastmod: 2026-11-27
+cover: /images/portfolio/mosaicbi-cover.jpg
+coverAlt: "Mosaic BI cover: company data sources flow through a glowing AI Gateway shield (policy, audit, secrets vault, OWASP LLM Top 10) into a Mixture-of-Experts router that sends work to Data, Finance, Marketing, Sales, Customer, Statistician and Executive experts, an executive dashboard on the right and a Continuous Learning loop of RLHF and RLVR underneath"
+summary: "An AI business-intelligence department. A manager asks \"why did our revenue fall this quarter?\" and a team of analyst experts, chosen by a Mixture-of-Experts router, investigates through an AI Gateway mapped to the OWASP Top 10 for LLM applications. Every number comes from governed SQL, every finding is checked by deterministic verifiers and cited to evidence, and the revenue change reconciles to a residual of 0.00. A continuous-learning loop turns reviewer preferences into RLHF data and the same verifiers into RLVR rewards for per-expert QLoRA adapters. FastAPI, LangGraph, DuckDB, Next.js, Ollama MoE models, Claude, TRL. 351 automated tests."
+description: "AI analyst team for business questions: MoE router of 7 experts, OWASP-mapped AI Gateway, verified SQL evidence, RLHF + RLVR learning loop with QLoRA, GRPO and DPO."
+categories:
+  - ai-agents
+  - data-science-ml
+  - security-compliance
+stack:
+  frontend:
+    - Next.js 15, TypeScript, Tailwind, Recharts
+    - Executive dashboard, live investigation timeline
+  backend:
+    - FastAPI, SQLAlchemy, arq worker
+    - LangGraph investigation state machine
+    - Python analysis sandbox (no network)
+  ai:
+    - MoE router over 7 analyst experts
+    - DeepSeek-V2-Lite and Qwen MoE on Ollama
+    - Anthropic Claude behind the gateway
+    - "RLHF + RLVR: TRL SFT, GRPO, DPO, QLoRA"
+  data:
+    - DuckDB file per workspace, read-only
+    - PostgreSQL, Redis, MinIO
+    - Semantic metric layer, sqlglot SQL gateway
+  infra:
+    - Docker Compose, GPU training host (RTX 4090)
+    - PyTorch, Transformers, PEFT
+    - "pytest: 351 tests"
+  security:
+    - AI Gateway mapped to the OWASP LLM Top 10
+    - HashiCorp Vault for every secret
+    - RBAC, row filters, hash-chained audit log
+outcomes:
+  - "A question like \"why did revenue fall?\" gets a full investigation instead of a spreadsheet afternoon: on the sample company, net revenue −22.96% (3.25M → 2.51M) is split into order value −17.10 pp, volume −6.09 pp, refunds −0.68 pp and discounts +0.92 pp, with a residual of 0.00."
+  - "No invented numbers reach a manager: every figure comes from SQL run through the gateway, each finding must match its cited evidence, and an executive summary with an untraceable number is replaced by the evidence-only version."
+  - "Agents cannot change or leak company data: SQL is parsed and only read-only queries on the caller's own workspace pass, each workspace has its own DuckDB file, and 30+ security tests cover OWASP LLM01 to LLM10."
+  - "The analysts can improve without losing trust: reviewer preferences become RLHF pairs, the same verifiers become RLVR rewards, and a new adapter is promoted only if it beats the baseline with no safety regression, through canary and with rollback."
+metrics:
+  - label: "Unexplained revenue change"
+    value: "0.00"
+  - label: "Numbers without SQL evidence"
+    before: "in LLM text"
+    value: "blocked"
+  - label: "Write or drop SQL from agents"
+    value: "blocked"
+  - label: "Adapter promoted without gate"
+    value: "never"
+featured: true
+order: 21
+---
+
+## The problem
+
+Managers ask questions such as "why did our revenue fall 18% this quarter?". Answering well takes a data analyst, a finance analyst, marketing and sales people and a statistician, and a few days. A chatbot over the same data answers in seconds, but it can invent a number, run a query it should not, or leak one client's data into another's answer. Mosaic BI is an AI analytics department that gives the fast answer with the discipline of the real team: numbers only from governed SQL, every finding checked, and every model call through one security gateway.
+
+## The product in use
+
+<Video src="/videos/mosaicbi-demo.mp4" poster="/videos/mosaicbi-demo.webp" ratio="16 / 10" title="Mosaic BI walkthrough" caption="The executive overview, asking a business question, the investigation with verified findings and the revenue bridge, the analyst department, the SQL studio blocking a destructive query, the AI Gateway, Training Studio with RLVR verifier pass rates, and the MoE Lab." />
+
+## What I built
+
+**An executive overview where every KPI is computed by SQL.** Net revenue, gross profit and margin, orders, new customers and average order value, with trends, region and segment breakdowns, top products and alerts. The language model never produces a number on this page.
+
+![Mosaic BI executive overview for the sample company Meridian Goods: net revenue $2.51M (−23.0% vs the previous quarter), gross profit, margin, orders, new customers and average order value cards, a revenue trend, revenue by region and segment, sales performance and a KPI summary, with the caption "every KPI is computed by governed SQL, never by the LLM"](/images/portfolio/mosaicbi-dashboard.jpg)
+
+**Ask in plain English.** The manager types a question and picks a mode: auto (the router chooses the analysts), manual, review (the plan waits for approval) or deep. Suggested questions come from the approved datasets and metrics.
+
+![Ask AI page: a question box with "Why did our revenue decline this quarter", the period and data sources in scope, suggested questions and the routing options auto, manual, review, deep and quick](/images/portfolio/mosaicbi-ask.jpg)
+
+**A team of analyst experts, routed by Mixture of Experts.** The investigation runs as a LangGraph state machine: clarify, plan, execute, report. A business-role router chooses the minimum set of experts for the question and the data that exists (marketing runs only if a spend metric exists) and builds a dependency graph: the data analyst first, then finance, sales, customer and marketing in parallel, then the statistician and the executive advisor. Each expert has its own model, tools, permissions, step and token limits, and version history.
+
+![Analyst Department page: Data Analyst, Financial Analyst, Marketing Analyst and Sales Analyst cards, each with its model, tools such as list_datasets and run_approved_readonly_query, permissions, limits of 6 steps and 4,000 tokens, and recent tasks](/images/portfolio/mosaicbi-analysts.jpg)
+
+**Findings that cite their evidence.** Each expert runs a deterministic analysis pack whose SQL goes through the gateway and is stored as evidence, then makes one bounded model pass that must return a strict schema. Verifiers then check that every number exists in its cited evidence, that units are right and that no causal claim is made without support. Findings that fail are dropped.
+
+![Investigation timeline: measured findings with high confidence and a Verified badge, for example 7,003 orders rows covering 91 of 91 days, 0 duplicate order keys and marketing spend −15.24%, each with evidence chips and a thumbs up or down for reviewers](/images/portfolio/mosaicbi-findings.jpg)
+
+**A revenue bridge that adds up.** Net revenue = gross sales − discounts − refunds, and gross sales = orders × average order value. The gross change is split with LMDI, which is exact with no interaction term, and the residual is always shown. On the sample company the change of −22.96% splits into average order value −17.10 pp, order volume −6.09 pp, refunds −0.68 pp and discounts +0.92 pp, residual 0.00. The statistician adds Welch and Mann-Whitney tests, two-proportion z-tests with Holm correction, a seasonality reference and a Simpson's-paradox check, and the report states that the split is an accounting decomposition, not causal proof.
+
+![KPI decomposition: a waterfall from the comparison quarter (3.3M) to the current quarter (2.5M) through order volume, average order value, discounts and refunds, marked Reconciles, with residual 0](/images/portfolio/mosaicbi-bridge.jpg)
+
+## Mixture of Experts, in two layers
+
+The platform uses MoE at two levels and never mixes them up:
+
+- **Layer A, business-role routing.** A deterministic, auditable router picks which analyst roles work on a question, like a gating network over people's jobs. Independent experts run in parallel.
+- **Layer B, neural MoE models.** Open MoE models such as DeepSeek-V2-Lite (64 routed experts) and Qwen MoE are served locally through Ollama, with Claude as an API option behind the same gateway. The MoE Lab lists each model's provider, quantisation, context, number of experts and active experts per token, benchmarks latency, tokens per second and VRAM, and shows expert-routing heatmaps only when real router telemetry is collected from the GPU host. Otherwise it says the telemetry is unavailable, and it states that neural experts are not the business roles.
+
+![MoE Lab: a note that neural experts are not business-role analysts, a model table with deepseek-v2:16b on Ollama (Q4_0, 64 experts, 6 per token), Qwen1.5-MoE-A2.7B-Chat (60 experts, 4 per token) and claude-sonnet-5-5 over the API, benchmarks and an expert routing heatmap section](/images/portfolio/mosaicbi-moe.jpg)
+
+## RLHF and RLVR: a continuous-learning loop
+
+The analysts are built to get better from real use without losing trust:
+
+| Stage | What happens |
+| --- | --- |
+| Capture | Every run stores its verifier results. Reviewers rate findings, correct them, and compare two candidate answers side by side, judged on the evidence, not on how persuasive the text is. |
+| RLHF data | Preference pairs need a majority vote and no factual issues; inter-rater agreement (kappa) is tracked. They train the experts with DPO. |
+| RLVR rewards | The same deterministic verifiers that gate answers at runtime become the reward: SQL safety, cited evidence exists, numbers match the evidence, the decomposition reconciles, statistics are correct, no unsupported causal claims. A hard failure scores 0. GRPO optimises against these rewards. |
+| Curate | Only fully verified runs with no negative feedback become SFT examples. Data is de-identified, re-scanned for personal data, de-duplicated and approved by an admin before export. |
+| Train | One QLoRA adapter per expert on a shared base model, on a single RTX 4090: SFT, then GRPO with the verifier rewards, then DPO on the preference pairs. |
+| Promote | A model registry keeps hashes, datasets and configs. An adapter must beat the prompt-only baseline with no safety or factuality regression, then goes to a canary share of investigations, then to everyone, with one-click rollback. |
+
+Training Studio shows the loop and the RLVR pass rate per verifier and per role.
+
+![Training Studio: the continuous improvement loop (capture, verify, curate, train on the Ubuntu GPU, evaluate, canary, promote), preference labels and reviewers, and bar charts of the RLVR pass rate by verifier and by role](/images/portfolio/mosaicbi-training.jpg)
+
+The training pipeline is complete and tested (110 tests on CPU; the GPU tests skip without a GPU). The first SFT, GRPO and DPO runs on the RTX 4090 are the next step, so no trained-adapter results are claimed here.
+
+## Security: an AI Gateway mapped to the OWASP Top 10 for LLM applications
+
+Every model call, tool call and SQL query goes through one gateway that denies by default. Everything uploaded, returned by a tool or written by a model is treated as untrusted.
+
+![AI Gateway overview: gateway status on, policy version, model requests allowed and denied, tool calls allowed and denied, prompt-injection detections, DLP redactions, cross-tenant denials and rate-limit events, and recent security alerts where the SQL policy denied queries](/images/portfolio/mosaicbi-gateway.jpg)
+
+| OWASP LLM risk | How Mosaic BI handles it |
+| --- | --- |
+| LLM01 Prompt injection | Every context block carries a trust label and untrusted blocks are wrapped in delimiters. Injection signals (including Unicode tricks and base64) are recorded, but authorization is checked again on every tool call, so content cannot change what an agent may do. |
+| LLM02 Sensitive information | Each workspace has its own DuckDB file; membership is checked on every request; restricted columns are never given to agents; row filters are added to SQL; DLP redacts model context and output. |
+| LLM03 Excessive agency | Only narrow read-only tools. A tool must be registered and allowed for the role and the agent, and its arguments must match a closed schema. There are no write, admin or shell tools. |
+| LLM04 Supply chain | Pinned dependencies, adapter artifacts registered with a hash, tool versions pinned in the registry. |
+| LLM05 Data and model poisoning | Uploaded data is profiled and quarantined until approved; training data needs verified runs, majority-vote preferences and admin approval. |
+| LLM06 Unbounded consumption | Token, step, tool-call and cost budgets per run, context caps, rate limits, SQL timeouts and row caps, sandbox resource limits. |
+| LLM07 Misinformation | Numbers come only from SQL, each finding's value must exist in its evidence, causal language and units are checked, the residual is reported and statistics use Holm correction. |
+| LLM08 System prompt and secret exposure | Secrets live only in HashiCorp Vault; APIs return status, never values; keys and tokens are redacted from logs and audit. |
+| LLM09 Vector and embedding weaknesses | Retrieval is switched off by policy in this version; the policy requires access-control filtering before it can be enabled. |
+| LLM10 Improper output handling | SQL is parsed with sqlglot against an allowlist (no DDL, DML, ATTACH, COPY, PRAGMA or table functions); the UI renders safe markdown with a strict CSP; spreadsheet exports escape formulas. |
+
+![SQL and Python Studio: a DROP TABLE orders query in the editor, the schema of nine tables, saved queries, and the caption "AI Gateway SQL policy: unsafe or destructive SQL is blocked before it reaches the data"](/images/portfolio/mosaicbi-sql.jpg)
+
+Other controls: a SHA-256 hash-chained audit log that can be verified, fail-closed behaviour when a provider or secret is missing, and session revocation. The security suite has 30+ cases across LLM01 to LLM10, including 15 SQL attack payloads.
+
+## Testing and status
+
+351 automated tests: 47 backend tests (an end-to-end investigation checked against a hidden ground truth, the dashboard agreeing with the investigation, the security suite, the RLHF-to-export loop), 194 verifier tests including reward-hacking cases, and 110 training-pipeline tests. The frontend passes lint, type checks and a production build. The recorded runs used the offline deterministic provider, which gives the same numbers as Claude because numbers never come from the model; only the narrative wording changes. The sample company, Meridian Goods, is synthetic: 18 months of data in nine related tables.

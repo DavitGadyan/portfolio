@@ -1,0 +1,106 @@
+---
+title: "Mosaic BI: equipo de analistas IA con MoE, RLHF + RLVR y gateway OWASP"
+coverAlt: "Portada de Mosaic BI: las fuentes de datos de la empresa pasan por un escudo luminoso de AI Gateway (política, auditoría, bóveda de secretos, OWASP LLM Top 10) hacia un router Mixture-of-Experts que reparte el trabajo entre expertos de datos, finanzas, marketing, ventas, clientes, estadística y dirección, un panel ejecutivo a la derecha y debajo un bucle de aprendizaje continuo con RLHF y RLVR"
+summary: "Un departamento de business intelligence con IA. Un directivo pregunta \"¿por qué han caído los ingresos este trimestre?\" y un equipo de analistas expertos, elegidos por un router Mixture-of-Experts, investiga a través de un gateway de IA alineado con el OWASP Top 10 para aplicaciones LLM. Cada cifra sale de SQL gobernado, cada hallazgo lo comprueban verificadores deterministas y cita su evidencia, y la variación de ingresos cuadra con un residuo de 0,00. Un bucle de aprendizaje continuo convierte las preferencias de los revisores en datos de RLHF y los mismos verificadores en recompensas de RLVR para adaptadores QLoRA por experto. FastAPI, LangGraph, DuckDB, Next.js, modelos MoE en Ollama, Claude, TRL. 351 tests automáticos."
+description: "Equipo de analistas IA para preguntas de negocio: router MoE de 7 expertos, gateway de IA según OWASP, evidencia SQL verificada y bucle RLHF + RLVR con QLoRA, GRPO y DPO."
+outcomes:
+  - "Una pregunta como \"¿por qué han caído los ingresos?\" recibe una investigación completa en lugar de una tarde de hojas de cálculo: en la empresa de ejemplo, los ingresos netos −22,96 % (3,25 M → 2,51 M) se descomponen en valor medio del pedido −17,10 pp, volumen −6,09 pp, devoluciones −0,68 pp y descuentos +0,92 pp, con un residuo de 0,00."
+  - "Ninguna cifra inventada llega a un directivo: cada número sale de SQL ejecutado a través del gateway, cada hallazgo debe coincidir con su evidencia citada, y un resumen ejecutivo con una cifra sin respaldo se sustituye por la versión basada solo en evidencia."
+  - "Los agentes no pueden modificar ni filtrar datos de la empresa: el SQL se analiza y solo pasan consultas de lectura sobre el propio espacio de trabajo, cada espacio tiene su propio fichero DuckDB y más de 30 tests de seguridad cubren de OWASP LLM01 a LLM10."
+  - "Los analistas pueden mejorar sin perder confianza: las preferencias de los revisores se convierten en pares de RLHF, los mismos verificadores en recompensas de RLVR, y un adaptador nuevo solo se promueve si supera la línea base sin regresión de seguridad, pasando por canary y con vuelta atrás."
+metrics:
+  - label: "Variación de ingresos sin explicar"
+    value: "0,00"
+  - label: "Cifras sin evidencia SQL"
+    before: "en texto LLM"
+    value: "bloqueadas"
+  - label: "SQL de escritura o borrado"
+    value: "bloqueado"
+  - label: "Adaptador promovido sin control"
+    value: "nunca"
+---
+
+## El problema
+
+Los directivos hacen preguntas como "¿por qué han caído un 18 % los ingresos este trimestre?". Responder bien requiere un analista de datos, uno financiero, gente de marketing y ventas y un estadístico, y unos días. Un chatbot sobre los mismos datos responde en segundos, pero puede inventar una cifra, ejecutar una consulta que no debe o filtrar datos de un cliente en la respuesta de otro. Mosaic BI es un departamento de análisis con IA que da la respuesta rápida con la disciplina del equipo real: cifras solo de SQL gobernado, cada hallazgo comprobado y cada llamada a un modelo a través de un único gateway de seguridad.
+
+## El producto en uso
+
+<Video src="/videos/mosaicbi-demo.mp4" poster="/videos/mosaicbi-demo.webp" ratio="16 / 10" title="Recorrido por Mosaic BI" caption="El panel ejecutivo, una pregunta de negocio, la investigación con hallazgos verificados y el puente de ingresos, el departamento de analistas, el estudio SQL bloqueando una consulta destructiva, el gateway de IA, Training Studio con las tasas de acierto de los verificadores de RLVR y el MoE Lab." />
+
+## Qué construí
+
+**Un panel ejecutivo en el que cada KPI lo calcula SQL.** Ingresos netos, beneficio bruto y margen, pedidos, nuevos clientes y valor medio del pedido, con tendencias, desglose por región y segmento, productos principales y alertas. El modelo de lenguaje nunca produce una cifra en esta página.
+
+![Panel ejecutivo de Mosaic BI para la empresa de ejemplo Meridian Goods: tarjetas de ingresos netos 2,51 M$ (−23,0 % frente al trimestre anterior), beneficio bruto, margen, pedidos, nuevos clientes y valor medio del pedido, una tendencia de ingresos, ingresos por región y segmento, rendimiento de ventas y un resumen de KPI, con el rótulo "cada KPI se calcula con SQL gobernado, nunca con el LLM"](/images/portfolio/mosaicbi-dashboard.jpg)
+
+**Preguntar en lenguaje natural.** El directivo escribe una pregunta y elige un modo: automático (el router elige a los analistas), manual, revisión (el plan espera aprobación) o profundo. Las preguntas sugeridas salen de los datasets y métricas aprobados.
+
+![Página Ask AI: una caja de pregunta con "Why did our revenue decline this quarter", el periodo y las fuentes de datos incluidas, preguntas sugeridas y las opciones de enrutado auto, manual, review, deep y quick](/images/portfolio/mosaicbi-ask.jpg)
+
+**Un equipo de analistas expertos, enrutado con Mixture of Experts.** La investigación funciona como una máquina de estados de LangGraph: aclarar, planificar, ejecutar e informar. Un router por roles de negocio elige el mínimo de expertos para la pregunta y los datos disponibles (marketing solo interviene si existe una métrica de inversión) y construye un grafo de dependencias: primero el analista de datos, después finanzas, ventas, clientes y marketing en paralelo, y al final el estadístico y el asesor ejecutivo. Cada experto tiene su modelo, herramientas, permisos, límites de pasos y tokens e historial de versiones.
+
+![Página Analyst Department: tarjetas de Data Analyst, Financial Analyst, Marketing Analyst y Sales Analyst, cada una con su modelo, herramientas como list_datasets y run_approved_readonly_query, permisos, límites de 6 pasos y 4.000 tokens, y tareas recientes](/images/portfolio/mosaicbi-analysts.jpg)
+
+**Hallazgos que citan su evidencia.** Cada experto ejecuta un paquete de análisis determinista cuyo SQL pasa por el gateway y se guarda como evidencia, y después hace una única pasada acotada del modelo que debe devolver un esquema estricto. Los verificadores comprueban que cada cifra existe en su evidencia citada, que las unidades son correctas y que no hay afirmaciones causales sin respaldo. Los hallazgos que fallan se descartan.
+
+![Cronología de la investigación: hallazgos medidos con confianza alta y la insignia Verified, por ejemplo 7.003 filas de pedidos que cubren 91 de 91 días, 0 claves de pedido duplicadas e inversión en marketing −15,24 %, cada uno con sus referencias de evidencia y un pulgar arriba o abajo para los revisores](/images/portfolio/mosaicbi-findings.jpg)
+
+**Un puente de ingresos que cuadra.** Ingresos netos = ventas brutas − descuentos − devoluciones, y ventas brutas = pedidos × valor medio del pedido. La variación bruta se reparte con LMDI, que es exacto y sin término de interacción, y el residuo siempre se muestra. En la empresa de ejemplo la caída del −22,96 % se reparte en valor medio del pedido −17,10 pp, volumen de pedidos −6,09 pp, devoluciones −0,68 pp y descuentos +0,92 pp, con residuo 0,00. El estadístico añade tests de Welch y Mann-Whitney, tests z de dos proporciones con corrección de Holm, una referencia de estacionalidad y una comprobación de la paradoja de Simpson, y el informe aclara que el reparto es una descomposición contable, no una prueba causal.
+
+![Descomposición de KPI: una cascada del trimestre de comparación (3,3 M) al actual (2,5 M) pasando por volumen de pedidos, valor medio, descuentos y devoluciones, marcada Reconciles, con residuo 0](/images/portfolio/mosaicbi-bridge.jpg)
+
+## Mixture of Experts, en dos capas
+
+La plataforma usa MoE en dos niveles y nunca los mezcla:
+
+- **Capa A, enrutado por roles de negocio.** Un router determinista y auditable elige qué roles de analista trabajan en una pregunta, como una red de compuerta sobre los puestos de trabajo. Los expertos independientes trabajan en paralelo.
+- **Capa B, modelos MoE neuronales.** Modelos MoE abiertos como DeepSeek-V2-Lite (64 expertos enrutados) y Qwen MoE se sirven en local con Ollama, con Claude como opción por API detrás del mismo gateway. El MoE Lab muestra el proveedor, la cuantización, el contexto, el número de expertos y los expertos activos por token de cada modelo, mide latencia, tokens por segundo y VRAM, y solo muestra mapas de calor del enrutado de expertos cuando se recoge telemetría real del router desde el servidor con GPU. Si no, indica que la telemetría no está disponible y aclara que los expertos neuronales no son los roles de negocio.
+
+![MoE Lab: un aviso de que los expertos neuronales no son los analistas por rol, una tabla de modelos con deepseek-v2:16b en Ollama (Q4_0, 64 expertos, 6 por token), Qwen1.5-MoE-A2.7B-Chat (60 expertos, 4 por token) y claude-sonnet-5-5 por API, benchmarks y una sección de mapa de calor del enrutado de expertos](/images/portfolio/mosaicbi-moe.jpg)
+
+## RLHF y RLVR: un bucle de aprendizaje continuo
+
+Los analistas están construidos para mejorar con el uso real sin perder confianza:
+
+| Etapa | Qué ocurre |
+| --- | --- |
+| Captura | Cada ejecución guarda los resultados de sus verificadores. Los revisores valoran y corrigen hallazgos y comparan dos respuestas candidatas lado a lado, juzgando la evidencia y no lo convincente que suena el texto. |
+| Datos de RLHF | Los pares de preferencia necesitan mayoría de votos y ningún problema factual; se mide el acuerdo entre revisores (kappa). Entrenan a los expertos con DPO. |
+| Recompensas de RLVR | Los mismos verificadores deterministas que filtran las respuestas en ejecución se convierten en la recompensa: seguridad del SQL, existencia de la evidencia citada, cifras que coinciden con la evidencia, descomposición que cuadra, estadística correcta y sin afirmaciones causales sin respaldo. Un fallo grave puntúa 0. GRPO optimiza frente a estas recompensas. |
+| Curación | Solo las ejecuciones totalmente verificadas y sin valoraciones negativas se convierten en ejemplos de SFT. Los datos se anonimizan, se vuelven a revisar en busca de datos personales, se deduplican y un administrador los aprueba antes de exportarlos. |
+| Entrenamiento | Un adaptador QLoRA por experto sobre un modelo base compartido, en una sola RTX 4090: SFT, después GRPO con las recompensas de los verificadores y después DPO con los pares de preferencia. |
+| Promoción | Un registro de modelos guarda hashes, datasets y configuraciones. Un adaptador debe superar la línea base solo con prompts sin regresión de seguridad ni factual, después pasa a un porcentaje canary de investigaciones y luego a todas, con vuelta atrás en un clic. |
+
+Training Studio muestra el bucle y la tasa de acierto de RLVR por verificador y por rol.
+
+![Training Studio: el bucle de mejora continua (captura, verificación, curación, entrenamiento en la GPU Ubuntu, evaluación, canary, promoción), etiquetas de preferencia y revisores, y gráficos de barras con la tasa de acierto de RLVR por verificador y por rol](/images/portfolio/mosaicbi-training.jpg)
+
+El pipeline de entrenamiento está completo y probado (110 tests en CPU; los tests de GPU se omiten sin GPU). Las primeras ejecuciones de SFT, GRPO y DPO en la RTX 4090 son el siguiente paso, así que aquí no se presentan resultados de adaptadores entrenados.
+
+## Seguridad: un gateway de IA alineado con el OWASP Top 10 para aplicaciones LLM
+
+Cada llamada a un modelo, a una herramienta y cada consulta SQL pasa por un único gateway que deniega por defecto. Todo lo que se sube, lo que devuelve una herramienta o lo que escribe un modelo se trata como no fiable.
+
+![Resumen del AI Gateway: estado del gateway activo, versión de la política, peticiones a modelos permitidas y denegadas, llamadas a herramientas permitidas y denegadas, detecciones de inyección de prompts, redacciones DLP, denegaciones entre clientes y eventos de límite de uso, y alertas recientes en las que la política SQL denegó consultas](/images/portfolio/mosaicbi-gateway.jpg)
+
+| Riesgo OWASP LLM | Cómo lo trata Mosaic BI |
+| --- | --- |
+| LLM01 Inyección de prompts | Cada bloque de contexto lleva una etiqueta de confianza y los bloques no fiables van entre delimitadores. Las señales de inyección (incluidos trucos Unicode y base64) se registran, pero la autorización se comprueba de nuevo en cada llamada a herramienta, así que el contenido no puede cambiar lo que un agente puede hacer. |
+| LLM02 Información sensible | Cada espacio de trabajo tiene su propio fichero DuckDB; la pertenencia se comprueba en cada petición; las columnas restringidas nunca llegan a los agentes; se añaden filtros de filas al SQL; DLP redacta el contexto y la salida del modelo. |
+| LLM03 Agencia excesiva | Solo herramientas estrechas de lectura. Una herramienta debe estar registrada y permitida para el rol y el agente, y sus argumentos deben cumplir un esquema cerrado. No hay herramientas de escritura, administración ni shell. |
+| LLM04 Cadena de suministro | Dependencias fijadas, adaptadores registrados con hash y versiones de herramientas fijadas en el registro. |
+| LLM05 Envenenamiento de datos y modelos | Los datos subidos se perfilan y quedan en cuarentena hasta su aprobación; los datos de entrenamiento requieren ejecuciones verificadas, preferencias por mayoría y aprobación de un administrador. |
+| LLM06 Consumo sin límites | Presupuestos de tokens, pasos, llamadas a herramientas y coste por ejecución, límites de contexto, límites de uso, tiempos máximos y límites de filas en SQL y límites de recursos del sandbox. |
+| LLM07 Desinformación | Las cifras solo salen de SQL, el valor de cada hallazgo debe existir en su evidencia, se comprueban el lenguaje causal y las unidades, se informa del residuo y la estadística usa corrección de Holm. |
+| LLM08 Exposición de prompts y secretos | Los secretos solo viven en HashiCorp Vault; las APIs devuelven el estado, nunca el valor; claves y tokens se redactan en logs y auditoría. |
+| LLM09 Debilidades de vectores y embeddings | La recuperación está desactivada por política en esta versión; la política exige filtrado por permisos antes de poder activarla. |
+| LLM10 Gestión incorrecta de la salida | El SQL se analiza con sqlglot contra una lista permitida (sin DDL, DML, ATTACH, COPY, PRAGMA ni funciones de tabla); la interfaz muestra markdown seguro con una CSP estricta; las exportaciones a hoja de cálculo escapan las fórmulas. |
+
+![SQL & Python Studio: una consulta DROP TABLE orders en el editor, el esquema de nueve tablas, consultas guardadas y el rótulo "la política SQL del AI Gateway bloquea el SQL inseguro o destructivo antes de que llegue a los datos"](/images/portfolio/mosaicbi-sql.jpg)
+
+Otros controles: un registro de auditoría encadenado con SHA-256 que se puede verificar, comportamiento a prueba de fallos cuando falta un proveedor o un secreto, y revocación de sesiones. La batería de seguridad tiene más de 30 casos de LLM01 a LLM10, incluidos 15 ataques de SQL.
+
+## Tests y estado
+
+351 tests automáticos: 47 tests de backend (una investigación de extremo a extremo comparada con una verdad oculta, el panel coincidiendo con la investigación, la batería de seguridad y el bucle de RLHF a exportación), 194 tests de verificadores que incluyen casos de reward hacking y 110 tests del pipeline de entrenamiento. El frontend pasa lint, comprobación de tipos y la build de producción. Las ejecuciones grabadas usaron el proveedor determinista sin conexión, que da las mismas cifras que Claude porque las cifras nunca salen del modelo; solo cambia la redacción. La empresa de ejemplo, Meridian Goods, es sintética: 18 meses de datos en nueve tablas relacionadas.
