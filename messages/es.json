@@ -83,7 +83,7 @@
     "button": "Reserva una llamada de 15 min"
   },
   "portfolio": {
-    "intro": "Estos 51 proyectos muestran cómo David Gadyan cubre todo el stack como un único ingeniero: agentes de IA y RAG, productos en Next.js y FastAPI, bases de datos Postgres y vectoriales, Docker y Kubernetes en AWS y GCP, seguridad conforme a HIPAA y medición de marketing con GA4. Filtra por capacidad o empieza por los proyectos destacados.",
+    "intro": "Estos 52 proyectos muestran cómo David Gadyan cubre todo el stack como un único ingeniero: agentes de IA y RAG, productos en Next.js y FastAPI, bases de datos Postgres y vectoriales, Docker y Kubernetes en AWS y GCP, seguridad conforme a HIPAA y medición de marketing con GA4. Filtra por capacidad o empieza por los proyectos destacados.",
     "filterAll": "Todos",
     "filterLabel": "Filtrar proyectos por capacidad",
     "seeMore": "Ver todos los proyectos",
@@ -226,8 +226,8 @@
   "meta": {
     "homeTitle": "Ingeniero de IA EXPERT-VETTED | Científico de datos | Agentes de IA | IA generativa | SaaS",
     "homeDescription": "David Gadyan, Ingeniero de IA y Científico de datos Expert-Vetted en Upwork, en Barcelona: agentes de IA, IA generativa, SaaS full-stack, DevOps y seguridad. Más de 190 proyectos.",
-    "portfolioTitle": "Portfolio: 51 proyectos de IA, full-stack y datos",
-    "portfolioDescription": "51 casos prácticos de David Gadyan: agentes de IA y RAG, productos en Next.js y FastAPI, bases de datos, despliegues con Docker y Kubernetes, seguridad y medición de marketing con GA4.",
+    "portfolioTitle": "Portfolio: 52 proyectos de IA, full-stack y datos",
+    "portfolioDescription": "52 casos prácticos de David Gadyan: agentes de IA y RAG, productos en Next.js y FastAPI, bases de datos, despliegues con Docker y Kubernetes, seguridad y medición de marketing con GA4.",
     "blogTitle": "Blog: IA, datos y creación de productos",
     "blogDescription": "Artículos de David Gadyan, Ingeniero de IA y Científico de datos Expert-Vetted en Barcelona: integración de LLM y agentes, ciencia de datos, trading algorítmico y productos de IA que llegan a producción.",
     "cookiesTitle": "Política de cookies",
@@ -351,6 +351,25 @@
     "nojs": "El quiz necesita JavaScript. La chuleta de arriba funciona sin él."
   },
   "mindmaps": {
+    "pipe": {
+      "heading": "Pipelines de entrenamiento, paso a paso",
+      "hint": "Elige un método y pulsa Siguiente o haz clic en una tarjeta para seguir el cálculo. Las cifras son un ejemplo resuelto, no una medición.",
+      "step": "Paso {n} de {m}",
+      "prev": "Paso anterior",
+      "next": "Paso siguiente",
+      "calc": "Cálculo",
+      "all": "Todos los pasos en texto",
+      "kinds": {
+        "data": "Datos",
+        "model": "Modelo entrenado",
+        "frozen": "Modelo congelado",
+        "human": "Persona",
+        "verifier": "Verificador",
+        "op": "Cálculo",
+        "loss": "Pérdida",
+        "update": "Actualización"
+      }
+    },
     "heading": "Mapas mentales",
     "tagline": "Los conceptos clave de una tecnología en un solo mapa conectado: componentes, casos de uso y capacidades de IA, a partir de apuntes de cursos y documentación de los proveedores.",
     "open": "Abrir la carpeta",

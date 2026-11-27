@@ -6,8 +6,8 @@ import { childrenOf, layoutTree, NODE_H, NODE_W, ROOT_W } from '@/lib/mindmap/la
 
 describe('mind maps', () => {
   it('sections: every map sits in exactly one section, in study order, with an icon and both languages', () => {
-    expect(mindmapGroups.map((g) => g.id)).toEqual(['foundations', 'serving', 'ops', 'data']);
-    expect(mindmapGroups.map((g) => g.maps)).toEqual([['llms', 'gpu'], ['serving'], ['llmops', 'gateway'], ['snowflake', 'databricks']]);
+    expect(mindmapGroups.map((g) => g.id)).toEqual(['foundations', 'training', 'serving', 'ops', 'data']);
+    expect(mindmapGroups.map((g) => g.maps)).toEqual([['llms', 'gpu'], ['posttrain'], ['serving'], ['llmops', 'gateway'], ['snowflake', 'databricks']]);
     expect(ungroupedMaps).toEqual([]);
     const ids = mindmapGroups.flatMap((g) => g.maps);
     expect(new Set(ids).size).toBe(ids.length);
@@ -143,6 +143,7 @@ describe('mind maps', () => {
     expect(dbx.filter((p) => p.side === 'right').map((p) => p.id).filter((id) => !id.includes('-'))).toEqual(['de', 'plat', 'arch', 'nb']);
     expect(expectCleanLayout('llms', 94, 8, 'vram')).toHaveLength(8 + 8); // the VRAM branch and its eight children; quantisation and GPU tiers stay folded
     expect(expectCleanLayout('gpu', 85, 11, 'ladder')).toHaveLength(11 + 6); // the ladder branch and its six children
+    expect(expectCleanLayout('posttrain', 75, 8, 'cmp')).toHaveLength(8 + 7); // the RLHF-vs-RLVR comparison and its seven children
     expect(expectCleanLayout('gateway', 84, 9, 'scen')).toHaveLength(9 + 9); // the scenarios branch and its nine children; the chooser keeps its seven folded
   });
   it('LLM serving: nine branches, 88 concepts, the exam branch open at start, EAGLE-3 explained in five steps', () => {

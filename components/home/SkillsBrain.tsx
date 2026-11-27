@@ -46,7 +46,7 @@ export function SkillsBrain({ nodes, locale, t }: { nodes: BrainNode[]; locale: 
           <button
             key={n.id} type="button" className={`brain__node brain__node--${size}`} data-id={n.id} data-fresh={n.fresh ? '' : undefined} data-tipup={Math.sin(angle(i, N)) > 0.2 ? '' : undefined}
             style={{ '--cx': Math.cos(angle(i, N)).toFixed(4), '--cy': Math.sin(angle(i, N)).toFixed(4), '--i': i } as CSSProperties}
-            aria-expanded={open === n.id} aria-label={`${n.fresh ? t.fresh + ': ' : ''}${n.title}${open === n.id ? '. ' + t.close : ''}`} aria-description={n.line}
+            aria-expanded={open === n.id} aria-label={`${n.fresh ? t.fresh + ': ' : ''}${n.title}${open === n.id ? '. ' + t.close : ''}`}
             onClick={() => setOpen((o) => (o === n.id ? null : n.id))}
           >
             {n.fresh && <span className="brain__new" aria-hidden="true">{t.fresh}</span>}

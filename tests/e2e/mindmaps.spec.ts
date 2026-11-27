@@ -11,19 +11,19 @@ const START = 21; // the root, eight branches and the twelve Cortex concepts ope
 const DBX_START = 19; // the root, eight branches and the ten platform capabilities open at start
 
 test.describe('mind maps', () => {
-  test('a folder tile on the Materials index, four sections in study order, each tile inside its section', async ({ page }) => {
+  test('a folder tile on the Materials index, five sections in study order, each tile inside its section', async ({ page }) => {
     await page.goto('/materials/');
     const tile = page.locator('.tg__tile', { hasText: 'Mind Maps' });
-    await expect(tile).toContainText('7 maps');
+    await expect(tile).toContainText('8 maps');
     await tile.click();
     await page.waitForURL(/\/materials\/mindmaps\/$/);
     await expect(page.locator('h1')).toHaveText('Mind Maps');
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', /\/materials\/mindmaps\/$/);
     const groups = page.locator('.mmgroup');
-    await expect(groups).toHaveCount(4);
-    await expect(groups.locator('h2')).toHaveText(['1LLM foundations and hardware', '2LLM serving and inference', '3LLMOps and AI gateways', '4Data and ML platforms']);
+    await expect(groups).toHaveCount(5);
+    await expect(groups.locator('h2')).toHaveText(['1LLM foundations and hardware', '2Model training and alignment', '3LLM serving and inference', '4LLMOps and AI gateways', '5Data and ML platforms']);
     await expect(groups.first().locator('h2 svg')).toHaveCount(1); // the section icon
-    await expect(page.locator('.tg__tile')).toHaveCount(7);
+    await expect(page.locator('.tg__tile')).toHaveCount(8);
     await expect(page.locator('#g-serving .tg__tile')).toHaveCount(1);
     await expect(page.locator('#g-ops .tg__tile').first()).toContainText('LLMOps');
     const data = page.locator('#g-data .tg__tile');
@@ -34,14 +34,14 @@ test.describe('mind maps', () => {
     await expect(data.nth(1).locator('img')).toHaveAttribute('src', /\/logos\/databricks\.svg$/);
     await data.first().click();
     await page.waitForURL(/\/materials\/mindmaps\/snowflake\/$/);
-    await expect(page.locator('.mmgroup__chip')).toHaveText('Section 4: Data and ML platforms'); // the way back to its section
+    await expect(page.locator('.mmgroup__chip')).toHaveText('Section 5: Data and ML platforms'); // the way back to its section
   });
 
   test('the Databricks map: the platform branch open at start, a figure with its lesson, nested folds, Spanish, no JavaScript', async ({ page, browser }) => {
     await page.goto('/materials/mindmaps/databricks/');
     await expect(page.locator('h1')).toHaveText(/Databricks Mind Map/);
     await expect(page.locator('link[rel="alternate"][hreflang="es"]')).toHaveAttribute('href', /\/es\/materials\/mindmaps\/databricks\/$/);
-    await expect(page.locator('.tg__tool')).toHaveCount(7); // the switcher lists every map
+    await expect(page.locator('.tg__tool')).toHaveCount(8); // the switcher lists every map
     await expect(page.locator('.tg__tool[aria-current="page"]')).toContainText('Databricks');
     const nodes = page.locator('.react-flow__node');
     await expect(nodes).toHaveCount(DBX_START, { timeout: 20_000 });
@@ -115,11 +115,11 @@ test.describe('mind maps', () => {
   test('the serving map: exam points open at start, EAGLE-3 steps, comparison tables, section chip, Spanish, no JavaScript', async ({ page, browser }) => {
     await page.goto('/materials/mindmaps/serving/');
     await expect(page.locator('.react-flow__node')).toHaveCount(20, { timeout: 20_000 }); // the root, nine branches and the ten exam points
-    await expect(page.locator('.mmgroup__chip')).toHaveText('Section 2: LLM serving and inference');
+    await expect(page.locator('.mmgroup__chip')).toHaveText('Section 3: LLM serving and inference');
     await expect(page.locator('#sec-engines table tbody tr')).toHaveCount(4);
     await expect(page.locator('#sec-spec table tbody tr')).toHaveCount(5);
     await page.goto('/es/materials/mindmaps/serving/');
-    await expect(page.locator('.mmgroup__chip')).toHaveText('Sección 2: Servir LLM e inferencia');
+    await expect(page.locator('.mmgroup__chip')).toHaveText('Sección 3: Servir LLM e inferencia');
     const ctx = await browser.newContext({ javaScriptEnabled: false });
     const p = await ctx.newPage();
     await p.goto('/materials/mindmaps/serving/');
@@ -132,7 +132,7 @@ test.describe('mind maps', () => {
   test('the LLMOps map: exam points open at start, release and evaluation tables', async ({ page }) => {
     await page.goto('/materials/mindmaps/llmops/');
     await expect(page.locator('.react-flow__node')).toHaveCount(19, { timeout: 20_000 }); // the root, nine branches and the nine exam points
-    await expect(page.locator('.mmgroup__chip')).toHaveText('Section 3: LLMOps and AI gateways');
+    await expect(page.locator('.mmgroup__chip')).toHaveText('Section 4: LLMOps and AI gateways');
     await expect(page.locator('#sec-release table tbody tr')).toHaveCount(4);
     await expect(page.locator('#sec-eval table tbody tr')).toHaveCount(4);
   });
@@ -304,5 +304,28 @@ test.describe('mind maps', () => {
     const canvases = await p.locator('.mm').count();
     if (canvases) expect(await p.locator('.mm').first().evaluate((el) => getComputedStyle(el).display)).toBe('none');
     await ctx.close();
+  });
+  test('post-training map: the step-through pipelines compute RLHF and GRPO numbers, Spanish too', async ({ page }) => {
+    await page.goto('/materials/mindmaps/posttrain/');
+    await expect(page.locator('#g-training, .mmgroup__chip').first()).toBeVisible();
+    const pl = page.locator('.pl');
+    await pl.scrollIntoViewIfNeeded();
+    await expect(pl.locator('.pl__tab')).toHaveText(['SFT', 'Reward model', 'RLHF (PPO)', 'RLVR', 'GRPO']);
+    await pl.getByRole('tab', { name: 'RLHF (PPO)' }).click();
+    await expect(pl.locator('.pl__count')).toHaveText('Step 1 of 10');
+    const kl = pl.locator('.pl__node', { hasText: 'r − β·KL' });
+    await expect(kl.locator('.pl__value')).toHaveText('?'); // not computed yet
+    for (let i = 0; i < 3; i++) await pl.getByRole('button', { name: 'Next step' }).click();
+    await expect(pl.locator('.pl__count')).toHaveText('Step 4 of 10');
+    await expect(pl.locator('.pl__calc')).toContainText('0.80 − 0.1 × 0.5 = 0.75');
+    await expect(kl.locator('.pl__value')).toHaveText('r_total = 0.75');
+    await pl.locator('.pl__node', { hasText: 'PPO clip' }).click({ force: true }); // a card jumps to its step
+    await expect(pl.locator('.pl__calc')).toContainText('min(0.195, 0.180) = 0.180');
+    await pl.getByRole('tab', { name: 'GRPO' }).click();
+    await expect(pl.locator('.pl__count')).toHaveText('Step 1 of 8');
+    await expect(pl.locator('.pl__node[data-kind="verifier"]')).toHaveCount(1);
+    await expect(pl.locator('.pl__node', { hasText: 'Critic' })).toHaveCount(0); // GRPO has no critic
+    await page.goto('/es/materials/mindmaps/posttrain/');
+    await expect(page.locator('.pl__h')).toHaveText('Pipelines de entrenamiento, paso a paso');
   });
 });

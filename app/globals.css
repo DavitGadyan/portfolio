@@ -743,6 +743,57 @@ body {
   .tg__close:hover { background: rgba(255,255,255,.1); }
   .tg__close:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 2px; }
   /* Diagrams and comparison tables under a mind map (MapSection in data/mindmaps/types.ts) */
+  /* step-through training pipelines under a mind map (components/materials/PipelineLab.tsx) */
+  .pl { max-width: 72rem; margin: 3rem auto 0; --pk: #6f6f6f; }
+  .pl__h { font-size: 1.5rem; line-height: 1.25; margin: 0; font-weight: 700; color: var(--color-ink-800); }
+  .pl__hint { margin: .4rem 0 1rem; color: var(--color-ink-500); font-size: .95rem; }
+  .pl__tabs { display: flex; flex-wrap: wrap; gap: .4rem; }
+  .pl__tab { padding: .45rem .9rem; border-radius: 9999px; border: 1px solid var(--color-ink-200); background: var(--color-paper-0); color: var(--color-ink-700); font: inherit; font-size: .9rem; font-weight: 600; cursor: pointer; transition: border-color .2s, background-color .2s, color .2s; }
+  .pl__tab:hover { border-color: var(--color-ink-400); }
+  .pl__tab[aria-selected="true"] { background: var(--color-ink-800); border-color: var(--color-ink-800); color: #fff; }
+  .pl__tab:focus-visible, .pl__node:focus-visible, .pl__btn:focus-visible { outline: 3px solid var(--color-focus, #1faa55); outline-offset: 2px; }
+  .pl__panel { margin-top: 1rem; border: 1px solid var(--color-ink-200); border-radius: 1rem; background: var(--color-paper-0); padding: 1.1rem 1.1rem 1.25rem; }
+  .pl__title { margin: 0; font-size: 1.1rem; font-weight: 700; color: var(--color-ink-800); }
+  .pl__intro { margin: .35rem 0 0; color: var(--color-ink-600); font-size: .93rem; max-width: 52rem; }
+  .pl__scroll { margin-top: .9rem; overflow-x: auto; border-radius: .75rem; background: var(--color-paper-50, #fafafa); }
+  .pl__fit { margin: 0 auto; }
+  .pl__stage { position: relative; transform-origin: 0 0; }
+  .pl__edges { position: absolute; inset: 0; overflow: visible; }
+  .pl__edge path { fill: none; stroke: #c6c9cf; stroke-width: 1.6; transition: stroke .25s; }
+  .pl__edge marker path, .pl__edges marker path { fill: #9aa0a8; }
+  .pl__edge text { font-size: 10.5px; font-weight: 600; fill: #8a8f97; paint-order: stroke; stroke: var(--color-paper-50, #fafafa); stroke-width: 4px; }
+  .pl__edge[data-on] path { stroke: #6d28d9; stroke-width: 2.2; }
+  .pl__edge[data-on] text { fill: #4c1d95; }
+  .pl__node { position: absolute; display: flex; flex-direction: column; justify-content: center; gap: 1px; padding: .3rem .6rem .3rem .7rem; border: 1.5px solid color-mix(in srgb, var(--pk) 45%, #fff); border-left-width: 4px; border-left-color: var(--pk); border-radius: .65rem; background: #fff; color: var(--color-ink-800); font: inherit; text-align: left; cursor: pointer; box-shadow: 0 6px 16px -12px rgba(0,0,0,.45); transition: opacity .25s, box-shadow .25s, border-color .25s, translate .25s; }
+  .pl__node[data-kind="data"] { --pk: #64748b; } .pl__node[data-kind="model"] { --pk: #2f7cf6; } .pl__node[data-kind="frozen"] { --pk: #8b95a3; border-style: dashed; border-left-style: solid; }
+  .pl__node[data-kind="human"] { --pk: #e8890c; } .pl__node[data-kind="verifier"] { --pk: #1faa55; } .pl__node[data-kind="op"] { --pk: #7c3aed; }
+  .pl__node[data-kind="loss"] { --pk: #d94848; } .pl__node[data-kind="update"] { --pk: #0e9fb3; }
+  .pl__stage:has(.pl__node[data-on]) .pl__node:not([data-on]) { opacity: .42; }
+  .pl__node[data-on] { box-shadow: 0 0 0 1.5px var(--pk), 0 10px 22px -12px rgba(0,0,0,.5); }
+  .pl__node[data-cur] { box-shadow: 0 0 0 3px var(--pk), 0 12px 26px -10px color-mix(in srgb, var(--pk) 70%, transparent); }
+  .pl__kind { font-size: .6rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--pk); }
+  .pl__label { font-size: .8rem; font-weight: 700; line-height: 1.2; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+  .pl__value { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .7rem; color: var(--color-ink-600); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .pl__value[data-hidden] { color: var(--color-ink-300); }
+  .pl__node[data-kind="op"] .pl__label { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .76rem; }
+  .pl__step { margin-top: 1rem; }
+  .pl__nav { display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; }
+  .pl__btn { display: inline-grid; place-items: center; width: 2.1rem; height: 2.1rem; border-radius: 9999px; border: 1px solid var(--color-ink-200); background: #fff; color: var(--color-ink-800); cursor: pointer; }
+  .pl__btn:disabled { opacity: .35; cursor: default; }
+  .pl__count { font-size: .85rem; font-weight: 700; color: var(--color-ink-700); min-width: 6.5rem; text-align: center; }
+  .pl__dots { display: inline-flex; gap: 4px; margin-left: .25rem; }
+  .pl__dots span { width: 7px; height: 7px; border-radius: 9999px; background: var(--color-ink-200); }
+  .pl__dots span[data-done] { background: #c4b5fd; } .pl__dots span[data-on] { background: #6d28d9; }
+  .pl__stitle { margin: .7rem 0 0; font-weight: 700; color: var(--color-ink-800); }
+  .pl__stext { margin: .2rem 0 0; color: var(--color-ink-600); font-size: .93rem; }
+  .pl__calcl { margin: .7rem 0 .3rem; font-size: .7rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #6d28d9; }
+  .pl__calc { margin: 0; padding: .75rem .9rem; border-radius: .6rem; background: #17171c; color: #e9e6ff; font-size: .82rem; line-height: 1.55; overflow-x: auto; white-space: pre; }
+  .pl__all { margin-top: 1rem; font-size: .9rem; color: var(--color-ink-700); }
+  .pl__all summary { cursor: pointer; font-weight: 600; }
+  .pl__all h3 { font-size: 1rem; margin: 1rem 0 .3rem; }
+  .pl__all li { margin: .25rem 0; } .pl__all code { font-size: .78rem; }
+  @media (prefers-reduced-motion: reduce) { .pl__node, .pl__edge path, .pl__tab { transition: none; } }
+  @media (max-width: 40rem) { .pl__panel { padding: .9rem .75rem 1rem; } .pl__calc { font-size: .74rem; } }
   .mmsec { max-width: 62rem; margin: 3rem auto 0; }
   .mmsec > h2 { font-size: 1.5rem; line-height: 1.25; margin: 0 0 .75rem; }
   .mmsec > p { max-width: 46rem; }

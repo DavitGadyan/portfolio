@@ -16,6 +16,8 @@ import { JsonLd } from '@/components/seo/JsonLd';
 import { TechIcon } from '@/components/materials/icons';
 import { Figure } from '@/components/content/Figure';
 import { MindMapLab } from '@/components/materials/MindMapLab';
+import { PipelineLab } from '@/components/materials/PipelineLab';
+import { pipelinesByMap } from '@/data/mindmaps/pipelines';
 import type { MindMapView, MindStrings } from '@/components/materials/MindMapFlow';
 
 const MATERIALS = '/materials/';
@@ -174,6 +176,17 @@ export function MindMapPage({ locale, id }: { locale: Locale; id: string }) {
             </ol>
             <MindMapLab view={mapView(x, locale)} t={t} />
           </div>
+          {pipelinesByMap[x.id] && (
+            <PipelineLab
+              t={m.mindmaps.pipe}
+              pipes={pipelinesByMap[x.id].map((q) => ({
+                id: q.id, tab: q.tab[locale], title: q.title[locale], intro: q.intro[locale],
+                nodes: q.nodes.map((n) => ({ id: n.id, kind: n.kind, col: n.col, row: n.row, label: n.label[locale], value: n.value, note: n.note[locale] })),
+                edges: q.edges.map((e) => ({ from: e.from, to: e.to, label: e.label?.[locale] })),
+                steps: q.steps.map((st) => ({ title: st.title[locale], text: st.text[locale], nodes: st.nodes, calc: st.calc })),
+              }))}
+            />
+          )}
           {x.sections?.map((sec) => (
             <section key={sec.id} id={sec.id} className="mmsec prose-dg">
               <h2>{sec.title[locale]}</h2>
